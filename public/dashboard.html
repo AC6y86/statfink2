@@ -746,6 +746,8 @@
             // Load data for specific tabs
             if (tabName === 'teams') {
                 loadTeams();
+            } else if (tabName === 'rosters') {
+                loadTeamFilters();
             } else if (tabName === 'stats') {
                 loadDatabaseStats();
             } else if (tabName === 'admin') {
@@ -1002,12 +1004,12 @@
                 const response = await fetch(`/api/teams/${teamId}/roster`);
                 const data = await response.json();
                 
-                if (data.data.length === 0) {
+                if (!data.success || !data.data.roster || data.data.roster.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="5" class="loading">No players on this roster</td></tr>';
                     return;
                 }
 
-                tbody.innerHTML = data.data.map(player => `
+                tbody.innerHTML = data.data.roster.map(player => `
                     <tr>
                         <td><strong>${player.name}</strong></td>
                         <td><span class="position-badge position-${player.position}">${player.position}</span></td>
