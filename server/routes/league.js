@@ -1,0 +1,152 @@
+const express = require('express');
+const { asyncHandler, APIError } = require('../utils/errorHandler');
+const router = express.Router();
+
+// Get league settings
+router.get('/settings', asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const settings = await db.getLeagueSettings();
+    
+    if (!settings) {
+        throw new APIError('League settings not found', 404);
+    }
+    
+    res.json({
+        success: true,
+        data: settings
+    });
+}));
+
+// Get current standings
+router.get('/standings', asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    
+    // Get teams ordered by wins, then by total points
+    const teams = await db.all(`
+        SELECT 
+            team_id,
+            team_name,
+            owner_name,
+            wins,
+            losses,
+            ties,
+            total_points,
+            (wins + ties * 0.5) as points,
+            CASE 
+                WHEN (wins + losses + ties) > 0 
+                THEN ROUND((wins + ties * 0.5) / (wins + losses + ties) * 100, 1)
+                ELSE 0 
+            END as win_percentage
+        FROM teams 
+        ORDER BY points DESC, total_points DESC
+    `);
+    
+    // Add rank to each team
+    const standings = teams.map((team, index) => ({
+        ...team,
+        rank: index + 1,
+        games_played: team.wins + team.losses + team.ties
+    }));
+    
+    res.json({
+        success: true,
+        data: standings,
+        count: standings.length
+    });
+}));
+
+// Get scoring rules
+router.get('/scoring', asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const rules = await db.getScoringRules();
+    
+    // Group rules by category for better organization
+    const groupedRules = {
+        passing: rules.filter(r => r.stat_type.startsWith('passing')),
+        rushing: rules.filter(r => r.stat_type.startsWith('rushing')),
+        receiving: rules.filter(r => r.stat_type.startsWith('receiving') || r.stat_type === 'receptions'),
+        defense: rules.filter(r => r.stat_type.startsWith('def_') || r.stat_type === 'sacks' || r.stat_type === 'safeties'),
+        kicking: rules.filter(r => r.stat_type.includes('field_goal') || r.stat_type.includes('extra_point')),
+        misc: rules.filter(r => !['passing', 'rushing', 'receiving', 'def_', 'field_goal', 'extra_point', 'sacks', 'safeties', 'receptions'].some(prefix => r.stat_type.startsWith(prefix) || r.stat_type.includes(prefix)))
+    };
+    
+    res.json({
+        success: true,
+        data: {
+            rules,
+            groupedRules,
+            scoringType: 'PPR'
+        }
+    });
+}));
+
+// Get league summary/overview
+router.get('/overview', asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    
+    const [settings, teams, totalPlayers] = await Promise.all([
+        db.getLeagueSettings(),
+        db.getAllTeams(),
+        db.get('SELECT COUNT(*) as count FROM nfl_players WHERE is_active = 1')
+    ]);
+    
+    // Calculate some basic stats
+    const totalGames = teams.reduce((sum, team) => sum + team.wins + team.losses + team.ties, 0);
+    const avgPointsPerTeam = teams.length > 0 
+        ? teams.reduce((sum, team) => sum + team.total_points, 0) / teams.length 
+        : 0;
+    
+    // Get highest and lowest scoring teams
+    const sortedByPoints = [...teams].sort((a, b) => b.total_points - a.total_points);
+    const highestScoring = sortedByPoints[0];
+    const lowestScoring = sortedByPoints[sortedByPoints.length - 1];
+    
+    res.json({
+        success: true,
+        data: {
+            league: settings,
+            stats: {
+                totalTeams: teams.length,
+                totalPlayers: totalPlayers.count,
+                totalGames: Math.floor(totalGames / 2), // Each game involves 2 teams
+                averagePoints: Math.round(avgPointsPerTeam * 100) / 100,
+                highestScoringTeam: highestScoring ? {
+                    name: highestScoring.team_name,
+                    owner: highestScoring.owner_name,
+                    points: highestScoring.total_points
+                } : null,
+                lowestScoringTeam: lowestScoring ? {
+                    name: lowestScoring.team_name,
+                    owner: lowestScoring.owner_name,
+                    points: lowestScoring.total_points
+                } : null
+            }
+        }
+    });
+}));
+
+// Update current week (admin function)
+router.put('/week', asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const { week, adminPassword } = req.body;
+    
+    // Simple admin authentication
+    if (adminPassword !== process.env.ADMIN_PASSWORD) {
+        throw new APIError('Unauthorized', 401);
+    }
+    
+    if (!week || week < 1 || week > 18) {
+        throw new APIError('Week must be between 1 and 18', 400);
+    }
+    
+    await db.updateCurrentWeek(week);
+    const updatedSettings = await db.getLeagueSettings();
+    
+    res.json({
+        success: true,
+        data: updatedSettings,
+        message: `Current week updated to ${week}`
+    });
+}));
+
+module.exports = router;
