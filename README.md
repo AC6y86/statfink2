@@ -1,35 +1,47 @@
 # StatFink Fantasy Football
 
-A single-league fantasy football management application with comprehensive data validation, scoring calculations, and database management.
+A single-league fantasy football management application with a web dashboard for database management and real-time NFL player synchronization.
 
-## Current Status: Database Layer Complete ✅
+## Current Status: Express API Server & Dashboard Complete ✅
 
-The project currently has a **complete and tested database layer** with:
-- ✅ Full SQLite schema for fantasy football data
-- ✅ Comprehensive input validation
-- ✅ Fantasy scoring calculations for all positions
-- ✅ 40+ unit tests passing
-- ✅ Error handling and logging
-- ✅ League initialization with 12 teams
+The project has a **complete full-stack application** with:
+- ✅ Express API server with all fantasy football endpoints
+- ✅ Tank01 NFL API integration with 1,792+ players synchronized
+- ✅ Web dashboard for database viewing and management
+- ✅ Complete SQLite schema with defensive and kicking stats
+- ✅ 98+ unit and integration tests passing
+- ✅ Comprehensive error handling and logging
+- ✅ Network-only deployment (no authentication required)
 
-**Next Phase**: Express API server implementation
+**Current Phase**: Ready for roster management and scoring implementation
 
 ## Features Implemented
 
-- **Database Schema**: Complete SQLite3 database with all fantasy football entities
-- **Data Validation**: Comprehensive validation for players, stats, teams, matchups
-- **Scoring Engine**: PPR scoring for QB, RB, WR, TE, K, DST positions
-- **Error Handling**: Custom error classes and logging utilities
-- **Testing**: 40+ unit tests with Jest framework
-- **League Management**: 12-team league initialization
+### Core Infrastructure ✅
+- **Express API Server**: Complete REST API with all fantasy football endpoints
+- **Database Schema**: SQLite3 with defensive stats, kicking stats, and PPR scoring
+- **Tank01 Integration**: Live NFL player data sync with 1,792+ players
+- **Web Dashboard**: Comprehensive database viewing and management interface
+- **Player Sync Service**: Automated NFL player data synchronization
+- **Testing Suite**: 98+ unit and integration tests with Jest
+
+### Fantasy Football Features ✅
+- **Data Validation**: Input validation for all entities (players, stats, teams, matchups)
+- **Scoring Engine**: PPR scoring calculations for all positions including DST
+- **Error Handling**: Custom error classes with Express middleware
+- **League Management**: 12-team league with complete roster support
+- **Admin Controls**: Network-accessible admin interface (no password required)
+- **Real-time Data**: Live player statistics and team information
 
 ## Technology Stack
 
-- **Database**: SQLite3 with sqlite3 npm package
-- **Testing**: Jest with comprehensive unit tests
-- **Validation**: Custom validation framework
-- **Scoring**: Fantasy point calculations for all positions
-- **Language**: Node.js with CommonJS modules
+- **Backend**: Node.js with Express 4.x server
+- **Database**: SQLite3 with comprehensive fantasy football schema
+- **External API**: Tank01 NFL API for live player data
+- **Frontend**: Pure JavaScript web dashboard (no frameworks)
+- **Testing**: Jest with 98+ unit and integration tests
+- **Validation**: Custom validation framework with error handling
+- **Deployment**: Network-only (no authentication required)
 
 ## Setup and Development
 
@@ -47,7 +59,8 @@ npm install
 3. Set up environment variables:
 ```bash
 cp .env.example .env
-# Edit .env with your configuration
+# Add your Tank01 API key to .env:
+# TANK01_API_KEY=your_api_key_here
 ```
 
 4. Initialize the league database:
@@ -55,9 +68,23 @@ cp .env.example .env
 npm run init-league
 ```
 
-5. Run tests to verify setup:
+5. Start the server:
 ```bash
-npm test tests/unit/
+npm start
+```
+
+6. Access the web dashboard:
+```
+http://localhost:3000/dashboard
+```
+
+7. Run tests to verify setup:
+```bash
+# Fast unit tests (recommended for development)
+npm run test:fast
+
+# Full test suite (requires running server)
+npm test
 ```
 
 ## Project Structure
@@ -66,14 +93,19 @@ npm test tests/unit/
 statfink2/
 ├── server/
 │   ├── database/         # Database schema, connection, validation
-│   ├── services/         # Business logic (scoring, etc.)
-│   ├── utils/            # Utilities (error handling, initialization)
-│   └── routes/           # API routes (empty - next phase)
+│   ├── services/         # Tank01 API, player sync, scoring
+│   ├── routes/           # Complete API routes (6 modules)
+│   ├── utils/            # Error handling, initialization, backup
+│   └── app.js            # Express server with graceful shutdown
 ├── tests/
-│   ├── unit/             # Unit tests (40+ tests)
-│   ├── integration/      # Integration tests
-│   └── fixtures/         # Test data
-├── public/               # Frontend files (planned)
+│   ├── unit/             # Unit tests (40 tests - no dependencies)
+│   ├── integration/      # Integration tests (58+ tests - require server)
+│   ├── fixtures/         # Test data and sample objects
+│   ├── test-runner.js    # Guided test runner script
+│   └── README.md         # Comprehensive test documentation
+├── public/
+│   └── dashboard.html    # Web dashboard interface
+├── data/                 # SQLite database and backups
 ├── DESIGN.md             # Original design document
 ├── IMPLEMENTATION_STEPS.md  # Implementation guide
 └── README.md             # This file
@@ -82,43 +114,89 @@ statfink2/
 ## Available Commands
 
 ```bash
+# Server
+npm start                # Start the Express server
+npm run dev              # Start with auto-reload (development)
+
 # Database
 npm run init-league      # Initialize league with 12 teams
 
-# Testing (recommended: use unit tests for development)
-npm run test:fast        # Run unit tests silently (fastest)
-npm run test:unit        # Run unit tests with output
-npm run test:integration # Run database integration tests (slower)
-npm test                 # Run all tests
+# Testing (98+ total tests)
+npm run test:fast        # Unit tests only, silent (< 1 second)
+npm run test:unit        # Unit tests with output (~1 second)
+npm run test:integration # Integration tests (requires server, ~30 seconds)
+npm test                 # Run all tests (~45 seconds)
 npm run test:watch       # Run tests in watch mode
 npm run test:coverage    # Run tests with coverage report
+
+# Test runner with server checking
+node tests/test-runner.js [unit|integration|fast|all|help]
 ```
 
 ## Development Status
 
 - ✅ **Phase 1**: Database layer with validation and testing
-- 🔄 **Phase 2**: Express API server (next)
-- ⏳ **Phase 3**: Frontend interface
-- ⏳ **Phase 4**: Tank01 API integration
+- ✅ **Phase 2**: Express API server with all endpoints
+- ✅ **Phase 3**: Tank01 NFL API integration with player sync
+- ✅ **Phase 4**: Web dashboard interface
+- 🔄 **Phase 5**: Roster management system (next)
+- ⏳ **Phase 6**: Automated scoring and stats updates
+- ⏳ **Phase 7**: Real-time features and analytics
 
-## Database
+## API Endpoints
 
-The project uses SQLite3 with a comprehensive schema including:
-- Teams and rosters
-- NFL players (QB, RB, WR, TE, K, DST)
-- Player statistics with defensive and kicking stats
-- Weekly matchups
-- PPR scoring rules
+### Core Endpoints
+- `GET /health` - Server health check with service status
+- `GET /dashboard` - Web dashboard interface
+- `GET /api/players` - List all NFL players with filtering
+- `GET /api/teams` - Fantasy teams with standings
+- `GET /api/league` - League settings and configuration
 
-All database operations include validation and error handling.
+### Fantasy Football Features
+- `GET /api/players/position/:position` - Players by position
+- `GET /api/players/available/:position?` - Available free agents
+- `GET /api/teams/:id/roster` - Team roster with starters/bench
+- `GET /api/matchups/week/:week` - Weekly matchups and scores
+- `GET /api/stats/rankings/:position` - Player rankings by position
+
+### Admin Features (Network Only)
+- `GET /api/admin/dashboard` - Admin overview with statistics
+- `GET /api/admin/sync/status` - Tank01 sync status
+- `POST /api/admin/sync/players` - Trigger player synchronization
 
 ## Testing
 
-40+ unit tests covering:
-- Data validation
-- Fantasy scoring calculations
-- Error handling
-- Database operations
+98+ comprehensive tests covering:
+
+### Unit Tests (40 tests - no dependencies)
+- Data validation for all entities
+- Fantasy scoring calculations (PPR, DST, kicking)
+- Error handling and custom error classes
+- Business logic and utility functions
+
+### Integration Tests (58+ tests - require server)
+- Database operations with real connections
+- API endpoint responses and data consistency
+- Tank01 API integration and player synchronization
+- Web dashboard functionality and performance
+- Admin interface without authentication
+
+### Test Features
+- **Fast Development**: Unit tests run in < 1 second
+- **Server Detection**: Integration tests skip gracefully when server not running
+- **Parallel Execution**: Optimized for CI/CD with Jest maxWorkers
+- **Comprehensive Coverage**: All major functionality tested
+
+### Running Tests
+```bash
+# Development workflow
+npm run test:fast           # Quick feedback during coding
+
+# Before committing
+npm start &                  # Start server in background
+npm run test:integration     # Verify all integrations work
+npm test                     # Full validation
+```
 
 ## License
 
