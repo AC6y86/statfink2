@@ -1,4 +1,5 @@
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
+const { createDefensePreservationHook } = require('../utils/addTeamDefenses');
 
 class PlayerSyncService {
     constructor(db, tank01Service) {
@@ -6,6 +7,7 @@ class PlayerSyncService {
         this.tank01Service = tank01Service;
         this.lastSyncTime = null;
         this.syncInProgress = false;
+        this.defenseHook = createDefensePreservationHook();
     }
 
     // Main sync function
@@ -26,6 +28,9 @@ class PlayerSyncService {
         try {
             logInfo('Starting player synchronization from Tank01 API');
             
+            // Preserve defenses before sync
+            const preserved = await this.defenseHook.beforeSync(this.db);
+            
             // Get player list from Tank01 API
             const apiData = await this.tank01Service.getPlayerList();
             
@@ -40,6 +45,9 @@ class PlayerSyncService {
 
             // Bulk insert/update players
             await this.db.upsertPlayersBulk(players);
+            
+            // Restore defenses after sync
+            await this.defenseHook.afterSync(this.db, preserved);
 
             // Update sync metadata
             this.lastSyncTime = new Date();

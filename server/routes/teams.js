@@ -140,13 +140,7 @@ router.post('/:teamId/roster/add', asyncHandler(async (req, res) => {
         throw new APIError('Player is already on a roster', 400);
     }
 
-    // If adding to injured reserve, check if team already has an IR player
-    if (rosterPosition === 'injured_reserve') {
-        const hasIR = await db.hasInjuredReservePlayer(parseInt(teamId));
-        if (hasIR) {
-            throw new APIError('Team already has a player on injured reserve', 400);
-        }
-    }
+    // No limit on injured reserve players
     
     await db.addPlayerToRoster(parseInt(teamId), playerId, rosterPosition);
     
@@ -263,13 +257,7 @@ router.put('/:teamId/roster/move', asyncHandler(async (req, res) => {
         throw new APIError('Player is not on this team\'s roster', 400);
     }
 
-    // If moving to injured reserve, check if team already has an IR player
-    if (rosterPosition === 'injured_reserve' && rosterEntry.roster_position !== 'injured_reserve') {
-        const hasIR = await db.hasInjuredReservePlayer(parseInt(teamId));
-        if (hasIR) {
-            throw new APIError('Team already has a player on injured reserve', 400);
-        }
-    }
+    // No limit on injured reserve players
     
     // Update roster position
     await db.run(

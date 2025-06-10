@@ -119,8 +119,15 @@ app.get('/health', async (req, res) => {
     }
 });
 
-// Serve static files from public directory
-app.use(express.static(path.join(__dirname, '../public')));
+// Dashboard route (before static middleware)
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/dashboard.html'));
+});
+
+// Roster management route (before static middleware)
+app.get('/roster', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/roster.html'));
+});
 
 // API Routes
 app.use('/api/teams', require('./routes/teams'));
@@ -132,10 +139,8 @@ app.use('/api/league', require('./routes/league'));
 // Admin routes
 app.use('/api/admin', require('./routes/admin'));
 
-// Dashboard route
-app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/dashboard.html'));
-});
+// Serve static files from public directory (after specific routes)
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Serve main page for any non-API routes
 app.get('*', (req, res) => {

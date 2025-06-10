@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roster Management - StatFink</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            text-align: center;
+            color: white;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .controls {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .form-group select, .form-group input {
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            min-width: 200px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        .roster-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .roster-header {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .roster-header h2 {
+            margin: 0;
+            color: #495057;
+        }
+
+        .roster-content {
+            padding: 1.5rem;
+        }
+
+        .roster-sections {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .roster-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #6c757d;
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header.starters {
+            background: #28a745;
+        }
+
+        .section-header.injured-reserve {
+            background: #dc3545;
+        }
+
+        .section-body {
+            padding: 1rem;
+        }
+
+        .player-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .player-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .player-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .player-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .player-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #212529;
+        }
+
+        .player-details {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .position-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+            margin-right: 0.5rem;
+        }
+
+        .position-QB { background: #e74c3c; }
+        .position-RB { background: #3498db; }
+        .position-WR { background: #f39c12; }
+        .position-TE { background: #9b59b6; }
+        .position-K { background: #1abc9c; }
+        .position-DST { background: #34495e; }
+
+        .team-badge {
+            background: #6c757d;
+            color: white;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .player-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .empty-section {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .add-player-section {
+            background: #e8f5e8;
+            border: 1px solid #d4edda;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .add-player-section h3 {
+            margin-bottom: 1rem;
+            color: #155724;
+        }
+
+        .add-player-form {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .form-group select, .form-group input {
+                min-width: auto;
+                width: 100%;
+            }
+            
+            .player-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .player-actions {
+                align-self: stretch;
+                justify-content: space-between;
+            }
+
+            .add-player-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏈 Roster Management</h1>
+        <p>Manage your fantasy football team rosters</p>
+    </div>
+
+    <div class="container">
+        <div class="controls">
+            <div class="form-group">
+                <label for="team-select">Select Team:</label>
+                <select id="team-select">
+                    <option value="">Choose a team...</option>
+                </select>
+            </div>
+            <button class="btn" onclick="window.location.href='/'">← Back to Dashboard</button>
+        </div>
+
+        <div id="message-container"></div>
+
+        <div id="add-player-section" class="add-player-section" style="display: none;">
+            <h3>Add Player to Roster</h3>
+            <div class="add-player-form">
+                <div class="form-group">
+                    <label for="player-select">Select Player:</label>
+                    <select id="player-select">
+                        <option value="">Choose a player...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="position-select">Roster Position:</label>
+                    <select id="position-select">
+                        <option value="starter">Starter</option>
+                        <option value="injured_reserve">Injured Reserve</option>
+                    </select>
+                </div>
+                <button class="btn btn-success" onclick="addPlayerToRoster()">Add to Roster</button>
+            </div>
+        </div>
+
+        <div class="roster-container">
+            <div class="roster-header">
+                <h2 id="roster-title">Select a team to view roster</h2>
+            </div>
+            <div class="roster-content">
+                <div id="roster-sections" class="loading">
+                    Loading...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTeamId = null;
+        let allPlayers = [];
+
+        // Load teams on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTeams();
+            loadAvailablePlayers();
+        });
+
+        // Team selection handler
+        document.getElementById('team-select').addEventListener('change', function() {
+            const teamId = this.value;
+            if (teamId) {
+                currentTeamId = teamId;
+                loadTeamRoster(teamId);
+                document.getElementById('add-player-section').style.display = 'block';
+            } else {
+                currentTeamId = null;
+                document.getElementById('roster-sections').innerHTML = '<div class="loading">Select a team to view roster</div>';
+                document.getElementById('roster-title').textContent = 'Select a team to view roster';
+                document.getElementById('add-player-section').style.display = 'none';
+            }
+        });
+
+        // Load all teams
+        async function loadTeams() {
+            try {
+                const response = await fetch('/api/teams');
+                const data = await response.json();
+                
+                const teamSelect = document.getElementById('team-select');
+                teamSelect.innerHTML = '<option value="">Choose a team...</option>';
+                
+                data.data.forEach(team => {
+                    teamSelect.innerHTML += `<option value="${team.team_id}">${team.team_name} (${team.owner_name})</option>`;
+                });
+            } catch (error) {
+                showMessage(`Error loading teams: ${error.message}`, 'error');
+            }
+        }
+
+        // Load available players
+        async function loadAvailablePlayers() {
+            try {
+                const response = await fetch('/api/players/available');
+                const data = await response.json();
+                
+                const playerSelect = document.getElementById('player-select');
+                
+                // Build HTML string first, then set innerHTML once
+                let html = '<option value="">Choose a player...</option>';
+                
+                // Group by position for easier selection
+                const positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DST'];
+                positions.forEach(position => {
+                    const positionPlayers = data.data.filter(p => p.position === position);
+                    if (positionPlayers.length > 0) {
+                        html += `<optgroup label="${position}">`;
+                        positionPlayers.forEach(player => {
+                            html += `<option value="${player.player_id}">${player.name} (${player.team})</option>`;
+                        });
+                        html += `</optgroup>`;
+                    }
+                });
+                
+                // Set innerHTML once at the end
+                playerSelect.innerHTML = html;
+                allPlayers = data.data;
+            } catch (error) {
+                showMessage(`Error loading available players: ${error.message}`, 'error');
+            }
+        }
+
+        // Load team roster
+        async function loadTeamRoster(teamId) {
+            try {
+                const response = await fetch(`/api/teams/${teamId}/roster`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to load roster');
+                }
+
+                // Update title
+                const teamSelect = document.getElementById('team-select');
+                const selectedTeam = teamSelect.options[teamSelect.selectedIndex].text;
+                document.getElementById('roster-title').textContent = `${selectedTeam} Roster`;
+
+                // Display roster
+                displayRoster(data.data);
+                
+            } catch (error) {
+                showMessage(`Error loading roster: ${error.message}`, 'error');
+                document.getElementById('roster-sections').innerHTML = '<div class="loading">Error loading roster</div>';
+            }
+        }
+
+        // Display roster sections
+        function displayRoster(data) {
+            const starters = data.starters || [];
+            const injuredReserve = data.injuredReserve || [];
+            
+            let html = '<div class="roster-sections">';
+            
+            // Starters section
+            html += `
+                <div class="roster-section">
+                    <div class="section-header starters">
+                        <span>Starters</span>
+                        <span>${starters.length} players</span>
+                    </div>
+                    <div class="section-body">
+            `;
+            
+            if (starters.length > 0) {
+                starters.forEach(player => {
+                    html += createPlayerCard(player, 'starter');
+                });
+            } else {
+                html += '<div class="empty-section">No starters on roster</div>';
+            }
+            
+            html += '</div></div>';
+            
+            // Injured Reserve section
+            html += `
+                <div class="roster-section">
+                    <div class="section-header injured-reserve">
+                        <span>Injured Reserve</span>
+                        <span>${injuredReserve.length} players</span>
+                    </div>
+                    <div class="section-body">
+            `;
+            
+            if (injuredReserve.length > 0) {
+                injuredReserve.forEach(player => {
+                    html += createPlayerCard(player, 'injured_reserve');
+                });
+            } else {
+                html += '<div class="empty-section">No players on injured reserve</div>';
+            }
+            
+            html += '</div></div>';
+            html += '</div>';
+            
+            document.getElementById('roster-sections').innerHTML = html;
+        }
+
+        // Create player card HTML
+        function createPlayerCard(player, currentPosition) {
+            const otherPosition = currentPosition === 'starter' ? 'injured_reserve' : 'starter';
+            const otherPositionLabel = currentPosition === 'starter' ? 'IR' : 'Starter';
+            
+            return `
+                <div class="player-card">
+                    <div class="player-info">
+                        <div class="player-name">${player.name}</div>
+                        <div class="player-details">
+                            <span class="position-badge position-${player.position}">${player.position}</span>
+                            <span class="team-badge">${player.team}</span>
+                            ${player.bye_week ? `Bye: Week ${player.bye_week}` : ''}
+                        </div>
+                    </div>
+                    <div class="player-actions">
+                        <button class="btn btn-small" onclick="movePlayer('${player.player_id}', '${otherPosition}')">
+                            To ${otherPositionLabel}
+                        </button>
+                        <button class="btn btn-small btn-danger" onclick="removePlayer('${player.player_id}')">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Add player to roster
+        async function addPlayerToRoster() {
+            const playerId = document.getElementById('player-select').value;
+            const position = document.getElementById('position-select').value;
+            
+            if (!currentTeamId) {
+                showMessage('Please select a team first', 'error');
+                return;
+            }
+            
+            if (!playerId) {
+                showMessage('Please select a player', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/teams/${currentTeamId}/roster/add`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        playerId: playerId,
+                        rosterPosition: position
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(result.message, 'success');
+                    loadTeamRoster(currentTeamId); // Refresh roster
+                    loadAvailablePlayers(); // Refresh available players
+                    document.getElementById('player-select').value = '';
+                } else {
+                    showMessage(result.error || 'Failed to add player', 'error');
+                }
+                
+            } catch (error) {
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Move player between positions
+        async function movePlayer(playerId, newPosition) {
+            if (!currentTeamId) {
+                showMessage('No team selected', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/teams/${currentTeamId}/roster/move`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        playerId: playerId,
+                        rosterPosition: newPosition
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(result.message, 'success');
+                    loadTeamRoster(currentTeamId); // Refresh roster
+                } else {
+                    showMessage(result.error || 'Failed to move player', 'error');
+                }
+                
+            } catch (error) {
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Remove player from roster
+        async function removePlayer(playerId) {
+            if (!currentTeamId) {
+                showMessage('No team selected', 'error');
+                return;
+            }
+            
+            if (!confirm('Are you sure you want to remove this player from the roster?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/teams/${currentTeamId}/roster/remove`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        playerId: playerId
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(result.message, 'success');
+                    loadTeamRoster(currentTeamId); // Refresh roster
+                    loadAvailablePlayers(); // Refresh available players
+                } else {
+                    showMessage(result.error || 'Failed to remove player', 'error');
+                }
+                
+            } catch (error) {
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Show message to user
+        function showMessage(message, type) {
+            const container = document.getElementById('message-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+            
+            container.innerHTML = '';
+            container.appendChild(messageDiv);
+            
+            // Auto-hide success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageDiv.remove();
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
