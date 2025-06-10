@@ -25,7 +25,8 @@ npm start
 ```
 
 ### Access Points
-- **Web Dashboard**: http://localhost:3000/dashboard
+- **Main Dashboard**: http://localhost:3000/dashboard
+- **Roster Management**: http://localhost:3000/roster
 - **API Base URL**: http://localhost:3000/api
 - **Health Check**: http://localhost:3000/health
 
@@ -50,12 +51,14 @@ Navigate to `http://localhost:3000/dashboard` for the comprehensive web interfac
 - **Filter by Team** - All 32 NFL teams
 - **Pagination** - 50 players per page
 
-#### **Roster Management (Admin Tab):**
+#### **Roster Management:**
+- **Dedicated Interface** - http://localhost:3000/roster
 - **Select Team** - Choose from 12 fantasy teams
 - **Add Players** - Add available players to roster
-- **Move Players** - Change between starter/bench/injured reserve
+- **Move Players** - Change between starter/injured reserve
 - **Remove Players** - Drop players from roster
-- **IR Management** - Place one player on injured reserve per team
+- **Unlimited IR** - Place multiple players on injured reserve
+- **PFL Constraints** - Enforces minimum roster requirements
 
 ---
 
@@ -394,6 +397,21 @@ curl http://localhost:3000/api/teams | jq '.count'
 curl -X POST http://localhost:3000/api/admin/sync/players
 ```
 
+### Database Maintenance Utilities
+```bash
+# Add all 32 NFL team defenses
+node server/utils/addTeamDefenses.js
+
+# Clean up duplicate players
+node server/utils/deduplicatePlayers.js
+
+# Import roster from file
+node server/utils/importRoster.js /path/to/roster-file.txt
+
+# Clean up duplicate teams
+node server/utils/cleanupTeams.js
+```
+
 ---
 
 ## 🚨 Error Handling
@@ -429,9 +447,10 @@ curl -X POST http://localhost:3000/api/admin/sync/players
 
 ### Roster Management Constraints
 
-- **One IR Player Per Team:** Each team can only have one player on injured reserve
+- **PFL Roster Requirements:** Teams must maintain minimum players (2 QB, 5 RB, 6 WR/TE, 2 K, 2 DST)
 - **Player Availability:** Players can only be on one roster at a time
-- **Valid Positions:** Only `starter`, `bench`, or `injured_reserve` are allowed
+- **Valid Positions:** Only `starter` or `injured_reserve` are allowed
+- **Unlimited IR:** Teams can have multiple players on injured reserve
 - **Position Validation:** All roster positions are validated before operations
 
 ---

@@ -1,19 +1,23 @@
 # StatFink Fantasy Football
 
-A single-league fantasy football management application with a web dashboard for database management and real-time NFL player synchronization.
+A comprehensive Personal Football League (PFL) management system with automated player data synchronization, advanced roster management, and web-based interfaces.
 
-## Current Status: Express API Server & Dashboard Complete ✅
+## Current Status: Complete Fantasy Football System ✅
 
-The project has a **complete full-stack application** with:
+The project has a **complete full-stack fantasy football application** with:
 - ✅ Express API server with all fantasy football endpoints
-- ✅ Tank01 NFL API integration with 1,792+ players synchronized
-- ✅ Web dashboard for database viewing and management
+- ✅ Tank01 NFL API integration with 1,800+ players synchronized
+- ✅ All 32 NFL team defenses automatically managed
+- ✅ Web dashboard with comprehensive roster management
+- ✅ PFL-specific roster constraints and validation
+- ✅ Unlimited injured reserve management
+- ✅ Player deduplication and data integrity
 - ✅ Complete SQLite schema with defensive and kicking stats
 - ✅ 98+ unit and integration tests passing
 - ✅ Comprehensive error handling and logging
 - ✅ Network-only deployment (no authentication required)
 
-**Current Phase**: Ready for roster management and scoring implementation
+**Current Phase**: Ready for production league management
 
 ## Features Implemented
 
@@ -30,7 +34,10 @@ The project has a **complete full-stack application** with:
 - **Scoring Engine**: PPR scoring calculations for all positions including DST
 - **Error Handling**: Custom error classes with Express middleware
 - **League Management**: 12-team league with complete roster support
-- **Injured Reserve**: Each team can have one player on IR (no scoring, unavailable to other teams)
+- **PFL Roster Constraints**: Minimum requirements (2 QB, 5 RB, 6 WR/TE, 2 K, 2 DST)
+- **Unlimited Injured Reserve**: Teams can have multiple players on IR
+- **All NFL Defenses**: 32 team defenses with preservation during API syncs
+- **Player Deduplication**: Automatic cleanup of duplicate player entries
 - **Admin Controls**: Network-accessible admin interface (no password required)
 - **Real-time Data**: Live player statistics and team information
 
@@ -74,9 +81,10 @@ npm run init-league
 npm start
 ```
 
-6. Access the web dashboard:
+6. Access the web interfaces:
 ```
-http://localhost:3000/dashboard
+http://localhost:3000/dashboard    # Main dashboard
+http://localhost:3000/roster       # Roster management
 ```
 
 7. Run tests to verify setup:
@@ -105,7 +113,8 @@ statfink2/
 │   ├── test-runner.js    # Guided test runner script
 │   └── README.md         # Comprehensive test documentation
 ├── public/
-│   └── dashboard.html    # Web dashboard interface
+│   ├── dashboard.html    # Main web dashboard interface
+│   └── roster.html       # Dedicated roster management interface
 ├── data/                 # SQLite database and backups
 ├── DESIGN.md             # Original design document
 ├── IMPLEMENTATION_STEPS.md  # Implementation guide
@@ -140,15 +149,17 @@ node tests/test-runner.js [unit|integration|fast|all|help]
 - ✅ **Phase 2**: Express API server with all endpoints
 - ✅ **Phase 3**: Tank01 NFL API integration with player sync
 - ✅ **Phase 4**: Web dashboard interface
-- 🔄 **Phase 5**: Roster management system (next)
-- ⏳ **Phase 6**: Automated scoring and stats updates
-- ⏳ **Phase 7**: Real-time features and analytics
+- ✅ **Phase 5**: Complete roster management system
+- ✅ **Phase 6**: PFL roster constraints and validation
+- ⏳ **Phase 7**: Automated scoring and stats updates
+- ⏳ **Phase 8**: Real-time features and analytics
 
 ## API Endpoints
 
 ### Core Endpoints
 - `GET /health` - Server health check with service status
-- `GET /dashboard` - Web dashboard interface
+- `GET /dashboard` - Main web dashboard interface
+- `GET /roster` - Dedicated roster management interface
 - `GET /api/players` - List all NFL players with filtering
 - `GET /api/teams` - Fantasy teams with standings
 - `GET /api/league` - League settings and configuration
