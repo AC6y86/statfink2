@@ -2,6 +2,58 @@ const express = require('express');
 const { asyncHandler, APIError } = require('../utils/errorHandler');
 const router = express.Router();
 
+// PFL Roster Constraints (from PFL_RULES.md)
+const ROSTER_CONSTRAINTS = {
+    QB: { min: 2, max: null }, // Minimum 2 QBs
+    RB: { min: 5, max: null }, // Minimum 5 RBs  
+    WR: { min: 6, max: null }, // 6 WRs and/or TEs combined
+    TE: { min: 6, max: null }, // 6 WRs and/or TEs combined (shared with WR)
+    K: { min: 2, max: null },  // Minimum 2 Kickers
+    DST: { min: 2, max: null } // Minimum 2 Defenses
+};
+
+// Validate roster constraints for PFL rules
+async function validateRosterConstraints(db, teamId, position, action) {
+    // Get current roster by position
+    const roster = await db.all(`
+        SELECT p.position, COUNT(*) as count
+        FROM fantasy_rosters r
+        JOIN nfl_players p ON r.player_id = p.player_id
+        WHERE r.team_id = ? AND r.roster_position = 'starter'
+        GROUP BY p.position
+    `, [teamId]);
+    
+    const currentCounts = {};
+    roster.forEach(row => {
+        currentCounts[row.position] = parseInt(row.count);
+    });
+    
+    // Handle WR/TE combined constraint (6 total minimum)
+    const wrTeCount = (currentCounts.WR || 0) + (currentCounts.TE || 0);
+    
+    if (action === 'add') {
+        // Check if adding this position would exceed any constraints
+        // For now, we only enforce minimums, not maximums
+        // Future: could add maximum roster size constraints here
+        return true;
+        
+    } else if (action === 'remove') {
+        // Check if removing would violate minimum constraints
+        const newCount = (currentCounts[position] || 0) - 1;
+        const constraint = ROSTER_CONSTRAINTS[position];
+        
+        if (constraint && newCount < constraint.min) {
+            // Special handling for WR/TE combined constraint
+            if ((position === 'WR' || position === 'TE') && wrTeCount - 1 >= 6) {
+                return true; // OK to remove if combined WR/TE still >= 6
+            }
+            throw new APIError(`Cannot remove ${position}. Team must maintain at least ${constraint.min} ${position}s on roster.`, 400);
+        }
+    }
+    
+    return true;
+}
+
 // Get all teams with standings
 router.get('/', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
@@ -140,7 +192,10 @@ router.post('/:teamId/roster/add', asyncHandler(async (req, res) => {
         throw new APIError('Player is already on a roster', 400);
     }
 
-    // No limit on injured reserve players
+    // Validate roster constraints for starters (not IR)
+    if (rosterPosition === 'starter') {
+        await validateRosterConstraints(db, parseInt(teamId), player.position, 'add');
+    }
     
     await db.addPlayerToRoster(parseInt(teamId), playerId, rosterPosition);
     
@@ -196,6 +251,11 @@ router.delete('/:teamId/roster/remove', asyncHandler(async (req, res) => {
     
     if (!rosterEntry) {
         throw new APIError('Player is not on this team\'s roster', 400);
+    }
+    
+    // Validate roster constraints for starters (not IR)
+    if (rosterEntry.roster_position === 'starter') {
+        await validateRosterConstraints(db, parseInt(teamId), player.position, 'remove');
     }
     
     await db.removePlayerFromRoster(parseInt(teamId), playerId);
