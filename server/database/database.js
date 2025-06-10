@@ -177,7 +177,7 @@ class DatabaseManager {
         return this.all(query, [teamId]);
     }
 
-    async addPlayerToRoster(teamId, playerId, rosterPosition = 'bench') {
+    async addPlayerToRoster(teamId, playerId, rosterPosition = 'starter') {
         // First check if player is already on another team
         const existing = await this.get('SELECT team_id FROM fantasy_rosters WHERE player_id = ?', [playerId]);
         

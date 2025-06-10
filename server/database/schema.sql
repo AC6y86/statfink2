@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS fantasy_rosters (
     roster_id INTEGER PRIMARY KEY AUTOINCREMENT,
     team_id INTEGER NOT NULL,
     player_id VARCHAR(50) NOT NULL,
-    roster_position VARCHAR(20) DEFAULT 'bench',
+    roster_position VARCHAR(20) DEFAULT 'starter',
     acquisition_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (team_id) REFERENCES teams(team_id),
     FOREIGN KEY (player_id) REFERENCES nfl_players(player_id),

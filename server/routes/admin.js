@@ -11,14 +11,14 @@ const requireAdmin = (req, res, next) => {
 // Add player to team roster
 router.post('/roster/add', requireAdmin, asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
-    const { teamId, playerId, rosterPosition = 'bench' } = req.body;
+    const { teamId, playerId, rosterPosition = 'starter' } = req.body;
     
     if (!teamId || !playerId) {
         throw new APIError('Team ID and Player ID are required', 400);
     }
     
-    if (!['starter', 'bench', 'injured_reserve'].includes(rosterPosition)) {
-        throw new APIError('Invalid roster position. Must be: starter, bench, or injured_reserve', 400);
+    if (!['starter', 'injured_reserve'].includes(rosterPosition)) {
+        throw new APIError('Invalid roster position. Must be: starter or injured_reserve', 400);
     }
     
     // Validate team exists
@@ -90,8 +90,8 @@ router.post('/roster/position', requireAdmin, asyncHandler(async (req, res) => {
         throw new APIError('Team ID, Player ID, and roster position are required', 400);
     }
     
-    if (!['starter', 'bench', 'injured_reserve'].includes(rosterPosition)) {
-        throw new APIError('Invalid roster position. Must be: starter, bench, or injured_reserve', 400);
+    if (!['starter', 'injured_reserve'].includes(rosterPosition)) {
+        throw new APIError('Invalid roster position. Must be: starter or injured_reserve', 400);
     }
     
     // Get player and team info for response

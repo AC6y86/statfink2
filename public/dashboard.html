@@ -659,7 +659,6 @@
                                 <option value="">Choose a player...</option>
                             </select>
                             <select id="position-select">
-                                <option value="bench">Bench</option>
                                 <option value="starter">Starter</option>
                                 <option value="injured_reserve">Injured Reserve</option>
                             </select>
@@ -1183,8 +1182,7 @@
                 
                 // Group by roster position
                 const starters = data.data.starters || [];
-                const bench = data.data.bench || [];
-                const ir = data.data.roster.filter(p => p.roster_position === 'injured_reserve') || [];
+                const ir = data.data.injuredReserve || [];
                 
                 if (starters.length > 0) {
                     rosterHTML += '<div class="roster-section"><h5>Starters</h5>';
@@ -1193,7 +1191,6 @@
                             <div class="roster-player">
                                 <span class="player-info">${player.name} (${player.position} - ${player.team})</span>
                                 <div class="player-actions">
-                                    <button class="btn btn-small" onclick="movePlayer('${teamId}', '${player.player_id}', 'bench')">To Bench</button>
                                     <button class="btn btn-small" onclick="movePlayer('${teamId}', '${player.player_id}', 'injured_reserve')">To IR</button>
                                     <button class="btn btn-small btn-danger" onclick="removePlayer('${teamId}', '${player.player_id}')">Remove</button>
                                 </div>
@@ -1203,22 +1200,6 @@
                     rosterHTML += '</div>';
                 }
                 
-                if (bench.length > 0) {
-                    rosterHTML += '<div class="roster-section"><h5>Bench</h5>';
-                    bench.forEach(player => {
-                        rosterHTML += `
-                            <div class="roster-player">
-                                <span class="player-info">${player.name} (${player.position} - ${player.team})</span>
-                                <div class="player-actions">
-                                    <button class="btn btn-small" onclick="movePlayer('${teamId}', '${player.player_id}', 'starter')">To Starter</button>
-                                    <button class="btn btn-small" onclick="movePlayer('${teamId}', '${player.player_id}', 'injured_reserve')">To IR</button>
-                                    <button class="btn btn-small btn-danger" onclick="removePlayer('${teamId}', '${player.player_id}')">Remove</button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    rosterHTML += '</div>';
-                }
                 
                 if (ir.length > 0) {
                     rosterHTML += '<div class="roster-section"><h5>Injured Reserve</h5>';
@@ -1228,7 +1209,6 @@
                                 <span class="player-info">${player.name} (${player.position} - ${player.team})</span>
                                 <div class="player-actions">
                                     <button class="btn btn-small" onclick="movePlayer('${teamId}', '${player.player_id}', 'starter')">To Starter</button>
-                                    <button class="btn btn-small" onclick="movePlayer('${teamId}', '${player.player_id}', 'bench')">To Bench</button>
                                     <button class="btn btn-small btn-danger" onclick="removePlayer('${teamId}', '${player.player_id}')">Remove</button>
                                 </div>
                             </div>

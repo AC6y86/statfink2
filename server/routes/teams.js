@@ -69,7 +69,6 @@ router.get('/:teamId/roster', asyncHandler(async (req, res) => {
             roster,
             groupedByPosition: groupedRoster,
             starters: roster.filter(p => p.roster_position === 'starter'),
-            bench: roster.filter(p => p.roster_position === 'bench'),
             injuredReserve: roster.filter(p => p.roster_position === 'injured_reserve')
         }
     });
@@ -105,7 +104,7 @@ router.put('/:teamId/stats', asyncHandler(async (req, res) => {
 router.post('/:teamId/roster/add', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const { teamId } = req.params;
-    const { playerId, rosterPosition = 'bench' } = req.body;
+    const { playerId, rosterPosition = 'starter' } = req.body;
     
     if (!teamId || isNaN(teamId)) {
         throw new APIError('Invalid team ID', 400);
@@ -115,8 +114,8 @@ router.post('/:teamId/roster/add', asyncHandler(async (req, res) => {
         throw new APIError('Player ID is required', 400);
     }
     
-    if (!['starter', 'bench', 'injured_reserve'].includes(rosterPosition)) {
-        throw new APIError('Invalid roster position. Must be: starter, bench, or injured_reserve', 400);
+    if (!['starter', 'injured_reserve'].includes(rosterPosition)) {
+        throw new APIError('Invalid roster position. Must be: starter or injured_reserve', 400);
     }
     
     // Validate team exists
@@ -222,7 +221,7 @@ router.delete('/:teamId/roster/remove', asyncHandler(async (req, res) => {
     });
 }));
 
-// Move player between roster positions (starter/bench/injured_reserve)
+// Move player between roster positions (starter/injured_reserve)
 router.put('/:teamId/roster/move', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const { teamId } = req.params;
@@ -236,8 +235,8 @@ router.put('/:teamId/roster/move', asyncHandler(async (req, res) => {
         throw new APIError('Player ID and roster position are required', 400);
     }
     
-    if (!['starter', 'bench', 'injured_reserve'].includes(rosterPosition)) {
-        throw new APIError('Invalid roster position. Must be: starter, bench, or injured_reserve', 400);
+    if (!['starter', 'injured_reserve'].includes(rosterPosition)) {
+        throw new APIError('Invalid roster position. Must be: starter or injured_reserve', 400);
     }
     
     // Validate team and player exist
