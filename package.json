@@ -7,7 +7,9 @@
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
     "init-league": "node server/utils/initializeLeague.js",
-    "test-db": "node server/utils/testDatabase.js"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,8 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "jest": "^30.0.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.1"
   }
 }
