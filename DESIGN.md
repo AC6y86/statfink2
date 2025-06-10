@@ -89,6 +89,7 @@ CREATE TABLE player_stats (
     player_id VARCHAR(50),
     week INTEGER,
     season INTEGER,
+    -- Offensive stats
     passing_yards INTEGER DEFAULT 0,
     passing_tds INTEGER DEFAULT 0,
     interceptions INTEGER DEFAULT 0,
@@ -98,6 +99,23 @@ CREATE TABLE player_stats (
     receiving_tds INTEGER DEFAULT 0,
     receptions INTEGER DEFAULT 0,
     fumbles INTEGER DEFAULT 0,
+    -- Defensive stats (for DST)
+    sacks INTEGER DEFAULT 0,
+    def_interceptions INTEGER DEFAULT 0,
+    fumbles_recovered INTEGER DEFAULT 0,
+    def_touchdowns INTEGER DEFAULT 0,
+    safeties INTEGER DEFAULT 0,
+    points_allowed INTEGER DEFAULT 0,
+    yards_allowed INTEGER DEFAULT 0,
+    -- Kicking stats
+    field_goals_made INTEGER DEFAULT 0,
+    field_goals_attempted INTEGER DEFAULT 0,
+    extra_points_made INTEGER DEFAULT 0,
+    extra_points_attempted INTEGER DEFAULT 0,
+    field_goals_0_39 INTEGER DEFAULT 0,
+    field_goals_40_49 INTEGER DEFAULT 0,
+    field_goals_50_plus INTEGER DEFAULT 0,
+    -- Calculated
     fantasy_points REAL DEFAULT 0,
     last_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (player_id) REFERENCES nfl_players(player_id)
@@ -195,7 +213,7 @@ class ScoringService {
     calculateFantasyPoints(playerStats, scoringRules) {
         let points = 0;
         
-        // Standard scoring calculations
+        // Offensive scoring
         points += playerStats.passing_yards * 0.04; // 1 pt per 25 yards
         points += playerStats.passing_tds * 4;
         points -= playerStats.interceptions * 2;
@@ -205,6 +223,29 @@ class ScoringService {
         points += playerStats.receiving_tds * 6;
         points += playerStats.receptions * 1; // PPR
         points -= playerStats.fumbles * 2;
+        
+        // Defensive scoring (DST)
+        points += playerStats.sacks * 1;
+        points += playerStats.def_interceptions * 2;
+        points += playerStats.fumbles_recovered * 2;
+        points += playerStats.def_touchdowns * 6;
+        points += playerStats.safeties * 2;
+        
+        // Points allowed scoring for DST
+        if (playerStats.points_allowed === 0) points += 10;
+        else if (playerStats.points_allowed <= 6) points += 7;
+        else if (playerStats.points_allowed <= 13) points += 4;
+        else if (playerStats.points_allowed <= 20) points += 1;
+        else if (playerStats.points_allowed <= 27) points += 0;
+        else if (playerStats.points_allowed <= 34) points -= 1;
+        else points -= 4;
+        
+        // Kicking scoring
+        points += playerStats.extra_points_made * 1;
+        points += playerStats.field_goals_0_39 * 3;
+        points += playerStats.field_goals_40_49 * 4;
+        points += playerStats.field_goals_50_plus * 5;
+        points -= (playerStats.field_goals_attempted - playerStats.field_goals_made) * 1; // Missed FGs
         
         return Math.round(points * 100) / 100; // Round to 2 decimals
     }
