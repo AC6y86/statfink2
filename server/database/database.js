@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 const path = require('path');
 const { Validator, ValidationError } = require('./validation');
-const { DatabaseError, logError } = require('../utils/errorHandler');
+const { DatabaseError, logError, logInfo } = require('../utils/errorHandler');
 
 class DatabaseManager {
     constructor() {

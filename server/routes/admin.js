@@ -214,6 +214,13 @@ router.get('/dashboard', requireAdmin, asyncHandler(async (req, res) => {
         }
     }
     
+    // Get sync status if available
+    const playerSyncService = req.app.locals.playerSyncService;
+    let syncStatus = null;
+    if (playerSyncService) {
+        syncStatus = playerSyncService.getSyncStatus();
+    }
+    
     res.json({
         success: true,
         data: {
@@ -225,8 +232,107 @@ router.get('/dashboard', requireAdmin, asyncHandler(async (req, res) => {
                 availablePlayers: totalPlayers.count - rosteredPlayers.count,
                 teamsWithIssues: teamsWithIssues.length
             },
-            issues: teamsWithIssues
+            issues: teamsWithIssues,
+            sync: syncStatus
         }
+    });
+}));
+
+// Sync players from Tank01 API
+router.post('/sync/players', requireAdmin, asyncHandler(async (req, res) => {
+    const playerSyncService = req.app.locals.playerSyncService;
+    
+    if (!playerSyncService) {
+        throw new APIError('Player sync service not available', 500);
+    }
+    
+    const result = await playerSyncService.syncPlayers();
+    
+    if (result.success) {
+        res.json({
+            success: true,
+            message: 'Player sync completed successfully',
+            data: result
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: 'Player sync failed',
+            error: result.error || result.message
+        });
+    }
+}));
+
+// Sync player stats for a specific week
+router.post('/sync/stats', requireAdmin, asyncHandler(async (req, res) => {
+    const playerSyncService = req.app.locals.playerSyncService;
+    const { week, season } = req.body;
+    
+    if (!playerSyncService) {
+        throw new APIError('Player sync service not available', 500);
+    }
+    
+    if (!week || !season) {
+        throw new APIError('Week and season are required', 400);
+    }
+    
+    const result = await playerSyncService.syncPlayerStats(parseInt(week), parseInt(season));
+    
+    if (result.success) {
+        res.json({
+            success: true,
+            message: `Stats sync completed for week ${week}, season ${season}`,
+            data: result
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: 'Stats sync failed',
+            error: result.error || result.message
+        });
+    }
+}));
+
+// Get sync status
+router.get('/sync/status', requireAdmin, asyncHandler(async (req, res) => {
+    const playerSyncService = req.app.locals.playerSyncService;
+    const tank01Service = req.app.locals.tank01Service;
+    
+    if (!playerSyncService) {
+        throw new APIError('Player sync service not available', 500);
+    }
+    
+    const syncStatus = playerSyncService.getSyncStatus();
+    
+    // Get Tank01 health if available
+    let tank01Health = null;
+    if (tank01Service) {
+        tank01Health = await tank01Service.healthCheck();
+    }
+    
+    res.json({
+        success: true,
+        data: {
+            sync: syncStatus,
+            tank01: tank01Health
+        }
+    });
+}));
+
+// Force sync (for testing)
+router.post('/sync/force', requireAdmin, asyncHandler(async (req, res) => {
+    const playerSyncService = req.app.locals.playerSyncService;
+    
+    if (!playerSyncService) {
+        throw new APIError('Player sync service not available', 500);
+    }
+    
+    const result = await playerSyncService.forceSyncPlayers();
+    
+    res.json({
+        success: true,
+        message: 'Force sync initiated',
+        data: result
     });
 }));
 

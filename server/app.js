@@ -4,13 +4,15 @@ const path = require('path');
 const cors = require('cors');
 const DatabaseManager = require('./database/database');
 const ScoringService = require('./services/scoringService');
+const Tank01Service = require('./services/tank01Service');
+const PlayerSyncService = require('./services/playerSyncService');
 const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Initialize services
-let db, scoringService;
+let db, scoringService, tank01Service, playerSyncService;
 
 async function initializeServices() {
     try {
@@ -23,9 +25,24 @@ async function initializeServices() {
         // Initialize scoring service
         scoringService = new ScoringService(db);
         
+        // Initialize Tank01 API service
+        const apiKey = process.env.TANK01_API_KEY;
+        if (apiKey) {
+            tank01Service = new Tank01Service(apiKey);
+            logInfo('Tank01 API service initialized');
+        } else {
+            logError('Tank01 API key not found in environment variables');
+        }
+        
+        // Initialize player sync service
+        playerSyncService = new PlayerSyncService(db, tank01Service);
+        logInfo('Player sync service initialized');
+        
         // Make services available to routes
         app.locals.db = db;
         app.locals.scoringService = scoringService;
+        app.locals.tank01Service = tank01Service;
+        app.locals.playerSyncService = playerSyncService;
         
         logInfo('Services initialized successfully');
     } catch (error) {
@@ -68,12 +85,38 @@ app.use((req, res, next) => {
 });
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-    res.json({ 
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        version: '1.0.0'
-    });
+app.get('/health', async (req, res) => {
+    try {
+        const health = {
+            status: 'healthy',
+            timestamp: new Date().toISOString(),
+            version: '1.0.0',
+            services: {
+                database: 'connected',
+                tank01: tank01Service ? 'initialized' : 'not configured'
+            }
+        };
+        
+        // Check Tank01 API health if available
+        if (tank01Service) {
+            const tank01Health = await tank01Service.healthCheck();
+            health.services.tank01 = tank01Health.status;
+            health.tank01_stats = {
+                requests: tank01Health.requestCount,
+                cache_size: tank01Health.cacheSize,
+                response_time: tank01Health.responseTime
+            };
+        }
+        
+        res.json(health);
+    } catch (error) {
+        logError('Health check failed', error);
+        res.status(500).json({
+            status: 'unhealthy',
+            error: error.message,
+            timestamp: new Date().toISOString()
+        });
+    }
 });
 
 // Serve static files from public directory
