@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
-    "init-league": "node server/utils/initializeLeague.js"
+    "init-league": "node server/utils/initializeLeague.js",
+    "test-db": "node server/utils/testDatabase.js"
   },
   "repository": {
     "type": "git",
