@@ -83,7 +83,7 @@ async function testDashboardEndpoints() {
         console.log('   • 🔍 Search and filter players by name, position, team');
         console.log('   • 📋 Team roster management');
         console.log('   • 📈 System health monitoring');
-        console.log('   • ⚙️  Admin controls for data synchronization');
+        console.log('   • ⚙️  Admin controls for data synchronization (no password required)');
         console.log('   • 📱 Responsive design for mobile/desktop');
         console.log('   • 🎨 Modern UI with color-coded positions');
 

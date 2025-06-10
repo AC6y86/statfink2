@@ -526,7 +526,6 @@
                 <h2>⚙️ Admin Controls</h2>
                 
                 <div class="controls">
-                    <input type="password" id="admin-password" class="search-box" placeholder="Admin password...">
                     <button class="btn" onclick="syncPlayers()">Sync Players</button>
                     <button class="btn btn-secondary" onclick="checkSyncStatus()">Check Status</button>
                 </div>
@@ -625,9 +624,7 @@
                 const teams = await teamsRes.json();
 
                 // Count rostered players
-                const rosteredRes = await fetch('/api/admin/dashboard', {
-                    headers: { 'Authorization': 'Bearer temp' }
-                }).catch(() => ({ json: () => ({ data: { summary: { rosteredPlayers: 0 } } }) }));
+                const rosteredRes = await fetch('/api/admin/dashboard').catch(() => ({ json: () => ({ data: { summary: { rosteredPlayers: 0 } } }) }));
                 
                 const dashboardData = await rosteredRes.json().catch(() => ({ data: { summary: { rosteredPlayers: 0 } } }));
 
@@ -931,19 +928,12 @@
         }
 
         async function syncPlayers() {
-            const password = document.getElementById('admin-password').value;
-            if (!password) {
-                showMessage('Please enter admin password', 'error');
-                return;
-            }
-
             try {
                 showMessage('Starting player sync...', 'success');
                 
                 const response = await fetch('/api/admin/sync/players', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${password}`,
                         'Content-Type': 'application/json'
                     }
                 });
@@ -964,18 +954,7 @@
 
         async function checkSyncStatus() {
             try {
-                const password = document.getElementById('admin-password').value || 'temp';
-                
-                const response = await fetch('/api/admin/sync/status', {
-                    headers: { 'Authorization': `Bearer ${password}` }
-                });
-
-                if (response.status === 401) {
-                    document.getElementById('sync-status').textContent = 'Need admin password';
-                    document.getElementById('db-health').textContent = 'Need admin password';
-                    document.getElementById('api-health').textContent = 'Need admin password';
-                    return;
-                }
+                const response = await fetch('/api/admin/sync/status');
 
                 const result = await response.json();
                 

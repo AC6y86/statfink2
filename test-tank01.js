@@ -4,7 +4,6 @@ const axios = require('axios');
 
 // Test configuration
 const BASE_URL = 'http://localhost:3000';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'test123';
 const TANK01_API_KEY = process.env.TANK01_API_KEY;
 
 console.log('🏈 Tank01 API Integration Test');
@@ -35,9 +34,7 @@ async function testHealthEndpoint() {
 async function testSyncStatus() {
     console.log('\n2. Testing Sync Status...');
     try {
-        const response = await axios.get(`${BASE_URL}/api/admin/sync/status`, {
-            headers: { Authorization: `Bearer ${ADMIN_PASSWORD}` }
-        });
+        const response = await axios.get(`${BASE_URL}/api/admin/sync/status`);
         
         const data = response.data.data;
         console.log(`   📅 Last Sync: ${data.sync.last_sync || 'Never'}`);
@@ -53,11 +50,7 @@ async function testSyncStatus() {
         
         return data.sync.tank01_available;
     } catch (error) {
-        if (error.response?.status === 401) {
-            console.log(`   ⚠️  Need admin password: Set ADMIN_PASSWORD env var`);
-        } else {
-            console.log(`   ❌ Sync status failed: ${error.message}`);
-        }
+        console.log(`   ❌ Sync status failed: ${error.message}`);
         return false;
     }
 }
@@ -73,7 +66,6 @@ async function testPlayerSync() {
     try {
         console.log('   🔄 Starting player sync...');
         const response = await axios.post(`${BASE_URL}/api/admin/sync/players`, {}, {
-            headers: { Authorization: `Bearer ${ADMIN_PASSWORD}` },
             timeout: 60000 // 60 second timeout
         });
         
@@ -84,9 +76,7 @@ async function testPlayerSync() {
         
         return true;
     } catch (error) {
-        if (error.response?.status === 401) {
-            console.log(`   ⚠️  Authentication failed`);
-        } else if (error.response?.data?.error) {
+        if (error.response?.data?.error) {
             console.log(`   ❌ Sync failed: ${error.response.data.error}`);
         } else {
             console.log(`   ❌ Sync failed: ${error.message}`);
@@ -146,9 +136,8 @@ async function runTests() {
     console.log('   1. Copy .env.example to .env');
     console.log('   2. Get Tank01 API key from: https://rapidapi.com/tank01/api/tank01-nfl-live-in-game-real-time-statistics-nfl');
     console.log('   3. Set TANK01_API_KEY in .env file');
-    console.log('   4. Set ADMIN_PASSWORD in .env file');
-    console.log('   5. Restart server: npm start');
-    console.log('   6. Run this test: node test-tank01.js');
+    console.log('   4. Restart server: npm start');
+    console.log('   5. Run this test: node test-tank01.js');
 }
 
 // Run tests if server is available

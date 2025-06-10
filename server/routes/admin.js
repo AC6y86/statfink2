@@ -2,39 +2,11 @@ const express = require('express');
 const { asyncHandler, APIError } = require('../utils/errorHandler');
 const router = express.Router();
 
-// Simple admin authentication middleware
+// No admin authentication required - network-only access
 const requireAdmin = (req, res, next) => {
-    const { adminPassword } = req.body;
-    const authHeader = req.headers.authorization;
-    
-    let password = adminPassword;
-    
-    // Check for Bearer token in Authorization header
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-        password = authHeader.substring(7);
-    }
-    
-    if (password !== process.env.ADMIN_PASSWORD) {
-        throw new APIError('Unauthorized - Invalid admin password', 401);
-    }
-    
+    // Skip authentication for network-only deployment
     next();
 };
-
-// Admin authentication check
-router.post('/auth', (req, res) => {
-    const { password } = req.body;
-    
-    if (password === process.env.ADMIN_PASSWORD) {
-        res.json({
-            success: true,
-            message: 'Admin authenticated successfully',
-            token: process.env.ADMIN_PASSWORD // Simple token approach
-        });
-    } else {
-        throw new APIError('Invalid password', 401);
-    }
-});
 
 // Add player to team roster
 router.post('/roster/add', requireAdmin, asyncHandler(async (req, res) => {
