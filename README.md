@@ -1,29 +1,41 @@
 # StatFink Fantasy Football
 
-A single-league fantasy football management application with a read-only public interface and admin roster management capabilities.
+A single-league fantasy football management application with comprehensive data validation, scoring calculations, and database management.
 
-## Features
+## Current Status: Database Layer Complete ✅
 
-- **Live Score Updates**: Real-time player statistics and fantasy scoring
-- **Roster Management**: Admin interface for managing team rosters
-- **Automated Updates**: Scheduled stats synchronization during games
-- **PPR Scoring**: Full point-per-reception scoring system
-- **Public Interface**: Read-only access to standings, matchups, and team details
-- **Tank01 API Integration**: Professional NFL statistics and player data
+The project currently has a **complete and tested database layer** with:
+- ✅ Full SQLite schema for fantasy football data
+- ✅ Comprehensive input validation
+- ✅ Fantasy scoring calculations for all positions
+- ✅ 40+ unit tests passing
+- ✅ Error handling and logging
+- ✅ League initialization with 12 teams
+
+**Next Phase**: Express API server implementation
+
+## Features Implemented
+
+- **Database Schema**: Complete SQLite3 database with all fantasy football entities
+- **Data Validation**: Comprehensive validation for players, stats, teams, matchups
+- **Scoring Engine**: PPR scoring for QB, RB, WR, TE, K, DST positions
+- **Error Handling**: Custom error classes and logging utilities
+- **Testing**: 40+ unit tests with Jest framework
+- **League Management**: 12-team league initialization
 
 ## Technology Stack
 
-- **Backend**: Node.js with Express.js
-- **Database**: SQLite3 with better-sqlite3
-- **API**: Tank01 NFL API via RapidAPI
-- **Frontend**: HTML/CSS/JavaScript
-- **Scheduler**: node-cron for automated updates
+- **Database**: SQLite3 with sqlite3 npm package
+- **Testing**: Jest with comprehensive unit tests
+- **Validation**: Custom validation framework
+- **Scoring**: Fantasy point calculations for all positions
+- **Language**: Node.js with CommonJS modules
 
-## Quick Start
+## Setup and Development
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/statfink2.git
+git clone https://github.com/AC6y86/statfink2.git
 cd statfink2
 ```
 
@@ -35,45 +47,72 @@ npm install
 3. Set up environment variables:
 ```bash
 cp .env.example .env
-# Edit .env with your API key and settings
+# Edit .env with your configuration
 ```
 
-4. Initialize the database:
+4. Initialize the league database:
 ```bash
 npm run init-league
 ```
 
-5. Start the development server:
+5. Run tests to verify setup:
 ```bash
-npm run dev
-```
-
-6. Access the application at `http://localhost:3000`
-
-## Configuration
-
-Create a `.env` file with the following variables:
-
-```
-RAPIDAPI_KEY=your_tank01_api_key
-PORT=3000
-ADMIN_PASSWORD=your_admin_password
+npm test tests/unit/
 ```
 
 ## Project Structure
 
 ```
 statfink2/
-├── server/           # Backend server code
-├── public/           # Frontend static files
-├── DESIGN.md         # Original design document
+├── server/
+│   ├── database/         # Database schema, connection, validation
+│   ├── services/         # Business logic (scoring, etc.)
+│   ├── utils/            # Utilities (error handling, initialization)
+│   └── routes/           # API routes (empty - next phase)
+├── tests/
+│   ├── unit/             # Unit tests (40+ tests)
+│   ├── integration/      # Integration tests
+│   └── fixtures/         # Test data
+├── public/               # Frontend files (planned)
+├── DESIGN.md             # Original design document
 ├── IMPLEMENTATION_STEPS.md  # Implementation guide
-└── README.md         # This file
+└── README.md             # This file
 ```
 
-## Development
+## Available Commands
 
-See [IMPLEMENTATION_STEPS.md](IMPLEMENTATION_STEPS.md) for detailed development guidelines.
+```bash
+npm run init-league      # Initialize league with 12 teams
+npm test tests/unit/     # Run unit tests (recommended)
+npm run test:watch       # Run tests in watch mode
+npm run test:coverage    # Run tests with coverage report
+```
+
+## Development Status
+
+- ✅ **Phase 1**: Database layer with validation and testing
+- 🔄 **Phase 2**: Express API server (next)
+- ⏳ **Phase 3**: Frontend interface
+- ⏳ **Phase 4**: Tank01 API integration
+
+## Database
+
+The project uses SQLite3 with a comprehensive schema including:
+- Teams and rosters
+- NFL players (QB, RB, WR, TE, K, DST)
+- Player statistics with defensive and kicking stats
+- Weekly matchups
+- PPR scoring rules
+
+All database operations include validation and error handling.
+
+## Testing
+
+40+ unit tests covering:
+- Data validation
+- Fantasy scoring calculations
+- Error handling
+- Database operations
 
 ## License
 

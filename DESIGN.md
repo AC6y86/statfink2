@@ -2,6 +2,8 @@
 
 # Fantasy Football Management App Design
 
+> **Note**: This document contains the original design for a complex multi-user system. The actual implementation uses a **simplified single-league approach** without user authentication. See the current database schema in `server/database/schema.sql` for what was actually built.
+
 ## Technology Stack
 - **Backend**: Node.js with Express.js
 - **Database**: SQLite3 with better-sqlite3 npm package

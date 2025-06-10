@@ -39,13 +39,13 @@ npm run test:coverage
 
 ## Test Categories
 
-### Unit Tests (40 tests passing)
-- **Validation Tests**: Ensure all data validation rules work correctly
-- **Scoring Service Tests**: Verify fantasy point calculations for all positions
-- **Error Handler Tests**: Test custom error classes and middleware
+### Unit Tests (40+ tests passing)
+- **Validation Tests**: 16 tests ensuring all data validation rules work correctly
+- **Scoring Service Tests**: 12 tests verifying fantasy point calculations for all positions
+- **Error Handler Tests**: 12 tests for custom error classes and middleware
 
 ### Integration Tests
-- **Database Tests**: End-to-end database operations with real SQLite
+- **Database Tests**: End-to-end database operations with real SQLite (currently has I/O issues)
 - **Full workflow tests**: Complete data flow from input to storage
 
 ### Test Coverage
