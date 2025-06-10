@@ -437,10 +437,16 @@ class DatabaseManager {
     // Close database connection
     close() {
         return new Promise((resolve, reject) => {
+            if (!this.db) {
+                resolve();
+                return;
+            }
+            
             this.db.close((err) => {
                 if (err) {
-                    logError(err, 'DatabaseManager.close');
-                    reject(new DatabaseError(err.message, 'close'));
+                    logError('Error closing database', err);
+                    // Don't reject, just resolve to allow graceful shutdown
+                    resolve();
                 } else {
                     console.log('Database connection closed');
                     resolve();

@@ -197,29 +197,40 @@ async function startServer() {
         });
 
         // Graceful shutdown
-        process.on('SIGINT', async () => {
-            logInfo('Received SIGINT, shutting down gracefully...');
+        let isShuttingDown = false;
+        
+        const shutdown = async (signal) => {
+            if (isShuttingDown) return;
+            isShuttingDown = true;
+            
+            logInfo(`Received ${signal}, shutting down gracefully...`);
+            
+            // Force exit after 5 seconds if graceful shutdown fails
+            const forceExit = setTimeout(() => {
+                logError('Forcing shutdown after timeout');
+                process.exit(1);
+            }, 5000);
             
             server.close(async () => {
-                if (db) {
-                    await db.close();
+                try {
+                    if (db) {
+                        logInfo('Closing database connection...');
+                        await db.close();
+                        logInfo('Database connection closed');
+                    }
+                    logInfo('Server shut down successfully');
+                    clearTimeout(forceExit);
+                    process.exit(0);
+                } catch (error) {
+                    logError('Error during shutdown', error);
+                    clearTimeout(forceExit);
+                    process.exit(1);
                 }
-                logInfo('Server shut down successfully');
-                process.exit(0);
             });
-        });
+        };
 
-        process.on('SIGTERM', async () => {
-            logInfo('Received SIGTERM, shutting down gracefully...');
-            
-            server.close(async () => {
-                if (db) {
-                    await db.close();
-                }
-                logInfo('Server shut down successfully');
-                process.exit(0);
-            });
-        });
+        process.on('SIGINT', () => shutdown('SIGINT'));
+        process.on('SIGTERM', () => shutdown('SIGTERM'));
 
     } catch (error) {
         logError('Failed to start server', error);
