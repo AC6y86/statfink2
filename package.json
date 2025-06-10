@@ -7,9 +7,12 @@
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
     "init-league": "node server/utils/initializeLeague.js",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test": "jest --maxWorkers=2",
+    "test:unit": "jest tests/unit/ --maxWorkers=2",
+    "test:integration": "jest tests/integration/ --maxWorkers=1 --verbose",
+    "test:watch": "jest --watch --maxWorkers=2",
+    "test:coverage": "jest --coverage --maxWorkers=2",
+    "test:fast": "jest tests/unit/ --silent"
   },
   "repository": {
     "type": "git",

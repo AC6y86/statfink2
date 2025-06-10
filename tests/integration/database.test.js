@@ -8,6 +8,33 @@ describe('Database Integration', () => {
     db = new DatabaseManager();
     // Wait for database to initialize
     await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Initialize test data
+    try {
+      // Add league settings
+      await db.run(`
+        INSERT OR IGNORE INTO league_settings 
+        (league_id, league_name, max_teams, season_year, current_week)
+        VALUES (1, 'StatFink Fantasy League', 12, 2024, 1)
+      `);
+      
+      // Add test teams
+      const testTeams = [
+        { name: 'Test Team Alpha', owner: 'Test Owner 1' },
+        { name: 'Test Team Beta', owner: 'Test Owner 2' },
+        { name: 'Test Team Gamma', owner: 'Test Owner 3' },
+        { name: 'Test Team Delta', owner: 'Test Owner 4' }
+      ];
+      
+      for (const team of testTeams) {
+        await db.run(
+          'INSERT OR IGNORE INTO teams (team_name, owner_name) VALUES (?, ?)',
+          [team.name, team.owner]
+        );
+      }
+    } catch (error) {
+      console.warn('Test data initialization failed:', error.message);
+    }
   });
 
   afterAll(async () => {

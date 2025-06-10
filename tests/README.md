@@ -21,20 +21,19 @@ tests/
 ## Running Tests
 
 ```bash
-# Run all tests
+# Fast unit tests (recommended for development)
+npm run test:fast        # Silent, fastest
+npm run test:unit        # With output
+
+# Integration tests (slower, database operations)
+npm run test:integration
+
+# All tests
 npm test
 
-# Run unit tests only
-npm test tests/unit/
-
-# Run integration tests only
-npm test tests/integration/
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run tests with coverage report
-npm run test:coverage
+# Other options
+npm run test:watch       # Watch mode
+npm run test:coverage    # With coverage report
 ```
 
 ## Test Categories

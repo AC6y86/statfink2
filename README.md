@@ -82,8 +82,14 @@ statfink2/
 ## Available Commands
 
 ```bash
+# Database
 npm run init-league      # Initialize league with 12 teams
-npm test tests/unit/     # Run unit tests (recommended)
+
+# Testing (recommended: use unit tests for development)
+npm run test:fast        # Run unit tests silently (fastest)
+npm run test:unit        # Run unit tests with output
+npm run test:integration # Run database integration tests (slower)
+npm test                 # Run all tests
 npm run test:watch       # Run tests in watch mode
 npm run test:coverage    # Run tests with coverage report
 ```
