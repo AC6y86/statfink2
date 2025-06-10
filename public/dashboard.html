@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StatFink Database Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box, .filter-select {
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-box:focus, .filter-select:focus {
+            border-color: #667eea;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .filter-select {
+            min-width: 150px;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .position-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .position-QB { background: #e74c3c; }
+        .position-RB { background: #2ecc71; }
+        .position-WR { background: #3498db; }
+        .position-TE { background: #f39c12; }
+        .position-K { background: #9b59b6; }
+        .position-DST { background: #34495e; }
+
+        .team-badge {
+            padding: 0.25rem 0.5rem;
+            background: #667eea;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pagination button:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .pagination button.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .status-healthy { background: #28a745; }
+        .status-unhealthy { background: #dc3545; }
+        .status-warning { background: #ffc107; }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e1e5e9;
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-stat {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .quick-stat h4 {
+            font-size: 1.5rem;
+            color: #667eea;
+            margin-bottom: 0.25rem;
+        }
+
+        .quick-stat p {
+            color: #666;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box, .filter-select {
+                min-width: 100%;
+            }
+
+            table {
+                font-size: 0.875rem;
+            }
+
+            th, td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏈 StatFink Database Dashboard</h1>
+        <p>Fantasy Football League Management System</p>
+    </div>
+
+    <div class="container">
+        <!-- Overview Stats -->
+        <div id="overview-stats" class="stats-grid">
+            <div class="stat-card">
+                <h3 id="total-players">...</h3>
+                <p>Total Players</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="total-teams">...</h3>
+                <p>League Teams</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="rostered-players">...</h3>
+                <p>Rostered Players</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="available-players">...</h3>
+                <p>Available Players</p>
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="section">
+            <h2>🔧 System Status</h2>
+            <div id="system-status" class="sync-status">
+                <div class="status-indicator status-warning"></div>
+                <span>Loading system status...</span>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('players')">Players</button>
+            <button class="tab" onclick="showTab('teams')">Teams</button>
+            <button class="tab" onclick="showTab('rosters')">Rosters</button>
+            <button class="tab" onclick="showTab('stats')">Statistics</button>
+            <button class="tab" onclick="showTab('admin')">Admin</button>
+        </div>
+
+        <!-- Players Tab -->
+        <div id="players-tab" class="tab-content active">
+            <div class="section">
+                <h2>👥 NFL Players Database</h2>
+                
+                <div id="players-stats" class="quick-stats">
+                    <div class="quick-stat">
+                        <h4 id="qb-count">-</h4>
+                        <p>Quarterbacks</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h4 id="rb-count">-</h4>
+                        <p>Running Backs</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h4 id="wr-count">-</h4>
+                        <p>Wide Receivers</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h4 id="te-count">-</h4>
+                        <p>Tight Ends</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h4 id="k-count">-</h4>
+                        <p>Kickers</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h4 id="dst-count">-</h4>
+                        <p>Defenses</p>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <input type="text" id="player-search" class="search-box" placeholder="Search players by name...">
+                    <select id="position-filter" class="filter-select">
+                        <option value="">All Positions</option>
+                        <option value="QB">QB</option>
+                        <option value="RB">RB</option>
+                        <option value="WR">WR</option>
+                        <option value="TE">TE</option>
+                        <option value="K">K</option>
+                        <option value="DST">DST</option>
+                    </select>
+                    <select id="team-filter" class="filter-select">
+                        <option value="">All Teams</option>
+                    </select>
+                    <button class="btn" onclick="loadPlayers()">Refresh</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="players-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Team</th>
+                                <th>Status</th>
+                                <th>Last Updated</th>
+                            </tr>
+                        </thead>
+                        <tbody id="players-tbody">
+                            <tr><td colspan="5" class="loading">Loading players...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="players-pagination" class="pagination"></div>
+            </div>
+        </div>
+
+        <!-- Teams Tab -->
+        <div id="teams-tab" class="tab-content">
+            <div class="section">
+                <h2>🏆 Fantasy Teams</h2>
+                <div class="table-container">
+                    <table id="teams-table">
+                        <thead>
+                            <tr>
+                                <th>Team Name</th>
+                                <th>Owner</th>
+                                <th>Wins</th>
+                                <th>Losses</th>
+                                <th>Ties</th>
+                                <th>Total Points</th>
+                                <th>Roster Size</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teams-tbody">
+                            <tr><td colspan="7" class="loading">Loading teams...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rosters Tab -->
+        <div id="rosters-tab" class="tab-content">
+            <div class="section">
+                <h2>📋 Team Rosters</h2>
+                <div class="controls">
+                    <select id="roster-team-filter" class="filter-select">
+                        <option value="">Select Team</option>
+                    </select>
+                    <button class="btn" onclick="loadRoster()">View Roster</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="roster-table">
+                        <thead>
+                            <tr>
+                                <th>Player</th>
+                                <th>Position</th>
+                                <th>NFL Team</th>
+                                <th>Roster Position</th>
+                                <th>Bye Week</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roster-tbody">
+                            <tr><td colspan="5" class="loading">Select a team to view roster...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Tab -->
+        <div id="stats-tab" class="tab-content">
+            <div class="section">
+                <h2>📊 Database Statistics</h2>
+                <div id="db-stats" class="quick-stats">
+                    <!-- Stats will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Tab -->
+        <div id="admin-tab" class="tab-content">
+            <div class="section">
+                <h2>⚙️ Admin Controls</h2>
+                
+                <div class="controls">
+                    <input type="password" id="admin-password" class="search-box" placeholder="Admin password...">
+                    <button class="btn" onclick="syncPlayers()">Sync Players</button>
+                    <button class="btn btn-secondary" onclick="checkSyncStatus()">Check Status</button>
+                </div>
+
+                <div id="admin-messages"></div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Player Sync</strong></td>
+                                <td>Synchronize NFL players from Tank01 API</td>
+                                <td><span id="sync-status">Unknown</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Database Health</strong></td>
+                                <td>Check database connection and integrity</td>
+                                <td><span id="db-health">Unknown</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>API Health</strong></td>
+                                <td>Check Tank01 API connectivity</td>
+                                <td><span id="api-health">Unknown</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        let playersPerPage = 50;
+        let allPlayers = [];
+        let filteredPlayers = [];
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOverviewStats();
+            loadSystemStatus();
+            loadPlayers();
+            loadTeams();
+            loadTeamFilters();
+            
+            // Set up search functionality
+            document.getElementById('player-search').addEventListener('input', filterPlayers);
+            document.getElementById('position-filter').addEventListener('change', filterPlayers);
+            document.getElementById('team-filter').addEventListener('change', filterPlayers);
+        });
+
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+
+            // Load data for specific tabs
+            if (tabName === 'teams') {
+                loadTeams();
+            } else if (tabName === 'stats') {
+                loadDatabaseStats();
+            } else if (tabName === 'admin') {
+                checkSyncStatus();
+            }
+        }
+
+        // Load overview statistics
+        async function loadOverviewStats() {
+            try {
+                const [playersRes, teamsRes] = await Promise.all([
+                    fetch('/api/players'),
+                    fetch('/api/teams')
+                ]);
+
+                const players = await playersRes.json();
+                const teams = await teamsRes.json();
+
+                // Count rostered players
+                const rosteredRes = await fetch('/api/admin/dashboard', {
+                    headers: { 'Authorization': 'Bearer temp' }
+                }).catch(() => ({ json: () => ({ data: { summary: { rosteredPlayers: 0 } } }) }));
+                
+                const dashboardData = await rosteredRes.json().catch(() => ({ data: { summary: { rosteredPlayers: 0 } } }));
+
+                document.getElementById('total-players').textContent = players.data.length;
+                document.getElementById('total-teams').textContent = teams.data.length;
+                document.getElementById('rostered-players').textContent = dashboardData.data?.summary?.rosteredPlayers || '0';
+                document.getElementById('available-players').textContent = 
+                    players.data.length - (dashboardData.data?.summary?.rosteredPlayers || 0);
+
+                // Update position counts
+                const positions = {};
+                players.data.forEach(player => {
+                    positions[player.position] = (positions[player.position] || 0) + 1;
+                });
+
+                document.getElementById('qb-count').textContent = positions.QB || 0;
+                document.getElementById('rb-count').textContent = positions.RB || 0;
+                document.getElementById('wr-count').textContent = positions.WR || 0;
+                document.getElementById('te-count').textContent = positions.TE || 0;
+                document.getElementById('k-count').textContent = positions.K || 0;
+                document.getElementById('dst-count').textContent = positions.DST || 0;
+
+            } catch (error) {
+                console.error('Error loading overview stats:', error);
+            }
+        }
+
+        // Load system status
+        async function loadSystemStatus() {
+            try {
+                const response = await fetch('/health');
+                const health = await response.json();
+                
+                const statusEl = document.getElementById('system-status');
+                const indicator = statusEl.querySelector('.status-indicator');
+                
+                if (health.status === 'healthy') {
+                    indicator.className = 'status-indicator status-healthy';
+                    statusEl.innerHTML = `
+                        <div class="status-indicator status-healthy"></div>
+                        <div>
+                            <strong>System Healthy</strong><br>
+                            Database: ${health.services.database} | Tank01: ${health.services.tank01}
+                            ${health.tank01_stats ? ` | API Requests: ${health.tank01_stats.requests}` : ''}
+                        </div>
+                    `;
+                } else {
+                    indicator.className = 'status-indicator status-unhealthy';
+                    statusEl.innerHTML = `
+                        <div class="status-indicator status-unhealthy"></div>
+                        <span><strong>System Issues</strong> - ${health.error || 'Unknown error'}</span>
+                    `;
+                }
+            } catch (error) {
+                const statusEl = document.getElementById('system-status');
+                statusEl.innerHTML = `
+                    <div class="status-indicator status-unhealthy"></div>
+                    <span><strong>Connection Error</strong> - Unable to reach server</span>
+                `;
+            }
+        }
+
+        // Load players data
+        async function loadPlayers() {
+            try {
+                const response = await fetch('/api/players');
+                const data = await response.json();
+                allPlayers = data.data;
+                filteredPlayers = [...allPlayers];
+                
+                displayPlayers();
+                updatePagination();
+            } catch (error) {
+                document.getElementById('players-tbody').innerHTML = 
+                    '<tr><td colspan="5" class="error">Error loading players: ' + error.message + '</td></tr>';
+            }
+        }
+
+        // Filter players
+        function filterPlayers() {
+            const searchTerm = document.getElementById('player-search').value.toLowerCase();
+            const positionFilter = document.getElementById('position-filter').value;
+            const teamFilter = document.getElementById('team-filter').value;
+
+            filteredPlayers = allPlayers.filter(player => {
+                const matchesSearch = player.name.toLowerCase().includes(searchTerm);
+                const matchesPosition = !positionFilter || player.position === positionFilter;
+                const matchesTeam = !teamFilter || player.team === teamFilter;
+                
+                return matchesSearch && matchesPosition && matchesTeam;
+            });
+
+            currentPage = 1;
+            displayPlayers();
+            updatePagination();
+        }
+
+        // Display players with pagination
+        function displayPlayers() {
+            const startIndex = (currentPage - 1) * playersPerPage;
+            const endIndex = startIndex + playersPerPage;
+            const playersToShow = filteredPlayers.slice(startIndex, endIndex);
+
+            const tbody = document.getElementById('players-tbody');
+            
+            if (playersToShow.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="loading">No players found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = playersToShow.map(player => `
+                <tr>
+                    <td><strong>${player.name}</strong></td>
+                    <td><span class="position-badge position-${player.position}">${player.position}</span></td>
+                    <td><span class="team-badge">${player.team}</span></td>
+                    <td>${player.is_active ? '✅ Active' : '❌ Inactive'}</td>
+                    <td>${new Date(player.last_updated).toLocaleDateString()}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Update pagination
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredPlayers.length / playersPerPage);
+            const paginationEl = document.getElementById('players-pagination');
+            
+            if (totalPages <= 1) {
+                paginationEl.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+            
+            // Previous button
+            if (currentPage > 1) {
+                paginationHTML += `<button onclick="changePage(${currentPage - 1})">‹ Previous</button>`;
+            }
+            
+            // Page numbers
+            for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+                paginationHTML += `<button class="${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+            }
+            
+            // Next button
+            if (currentPage < totalPages) {
+                paginationHTML += `<button onclick="changePage(${currentPage + 1})">Next ›</button>`;
+            }
+
+            paginationEl.innerHTML = paginationHTML;
+        }
+
+        // Change page
+        function changePage(page) {
+            currentPage = page;
+            displayPlayers();
+            updatePagination();
+        }
+
+        // Load teams
+        async function loadTeams() {
+            try {
+                const response = await fetch('/api/teams');
+                const data = await response.json();
+                
+                const tbody = document.getElementById('teams-tbody');
+                tbody.innerHTML = data.data.map(team => `
+                    <tr>
+                        <td><strong>${team.team_name}</strong></td>
+                        <td>${team.owner_name}</td>
+                        <td>${team.wins}</td>
+                        <td>${team.losses}</td>
+                        <td>${team.ties}</td>
+                        <td>${team.total_points.toFixed(1)}</td>
+                        <td><span id="roster-size-${team.team_id}">-</span></td>
+                    </tr>
+                `).join('');
+
+                // Load roster sizes for each team
+                data.data.forEach(async team => {
+                    try {
+                        const rosterRes = await fetch(`/api/teams/${team.team_id}/roster`);
+                        const rosterData = await rosterRes.json();
+                        document.getElementById(`roster-size-${team.team_id}`).textContent = rosterData.data.length;
+                    } catch (error) {
+                        document.getElementById(`roster-size-${team.team_id}`).textContent = 'Error';
+                    }
+                });
+
+            } catch (error) {
+                document.getElementById('teams-tbody').innerHTML = 
+                    '<tr><td colspan="7" class="error">Error loading teams: ' + error.message + '</td></tr>';
+            }
+        }
+
+        // Load team filters
+        async function loadTeamFilters() {
+            try {
+                const [playersRes, teamsRes] = await Promise.all([
+                    fetch('/api/players'),
+                    fetch('/api/teams')
+                ]);
+
+                const players = await playersRes.json();
+                const teams = await teamsRes.json();
+
+                // Populate team filter for players
+                const teamFilter = document.getElementById('team-filter');
+                const uniqueTeams = [...new Set(players.data.map(p => p.team))].sort();
+                teamFilter.innerHTML = '<option value="">All Teams</option>' + 
+                    uniqueTeams.map(team => `<option value="${team}">${team}</option>`).join('');
+
+                // Populate team filter for rosters
+                const rosterTeamFilter = document.getElementById('roster-team-filter');
+                rosterTeamFilter.innerHTML = '<option value="">Select Team</option>' + 
+                    teams.data.map(team => `<option value="${team.team_id}">${team.team_name}</option>`).join('');
+
+            } catch (error) {
+                console.error('Error loading team filters:', error);
+            }
+        }
+
+        // Load roster for selected team
+        async function loadRoster() {
+            const teamId = document.getElementById('roster-team-filter').value;
+            const tbody = document.getElementById('roster-tbody');
+            
+            if (!teamId) {
+                tbody.innerHTML = '<tr><td colspan="5" class="loading">Select a team to view roster...</td></tr>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/teams/${teamId}/roster`);
+                const data = await response.json();
+                
+                if (data.data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="loading">No players on this roster</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = data.data.map(player => `
+                    <tr>
+                        <td><strong>${player.name}</strong></td>
+                        <td><span class="position-badge position-${player.position}">${player.position}</span></td>
+                        <td><span class="team-badge">${player.team}</span></td>
+                        <td>${player.roster_position}</td>
+                        <td>${player.bye_week || 'TBD'}</td>
+                    </tr>
+                `).join('');
+
+            } catch (error) {
+                tbody.innerHTML = '<tr><td colspan="5" class="error">Error loading roster: ' + error.message + '</td></tr>';
+            }
+        }
+
+        // Load database statistics
+        async function loadDatabaseStats() {
+            try {
+                const response = await fetch('/health');
+                const health = await response.json();
+                
+                const statsHTML = `
+                    <div class="quick-stat">
+                        <h4>${health.status === 'healthy' ? '✅' : '❌'}</h4>
+                        <p>System Health</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h4>${health.services?.database === 'connected' ? '✅' : '❌'}</h4>
+                        <p>Database Status</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h4>${health.services?.tank01 === 'healthy' ? '✅' : health.services?.tank01 === 'initialized' ? '⚠️' : '❌'}</h4>
+                        <p>Tank01 API</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h4>${health.tank01_stats?.requests || 0}</h4>
+                        <p>API Requests Made</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h4>${health.tank01_stats?.cache_size || 0}</h4>
+                        <p>Cached Responses</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h4>${health.version}</h4>
+                        <p>Application Version</p>
+                    </div>
+                `;
+                
+                document.getElementById('db-stats').innerHTML = statsHTML;
+            } catch (error) {
+                document.getElementById('db-stats').innerHTML = 
+                    '<div class="error">Error loading database statistics</div>';
+            }
+        }
+
+        // Admin functions
+        function showMessage(message, type = 'success') {
+            const messagesEl = document.getElementById('admin-messages');
+            messagesEl.innerHTML = `<div class="${type}">${message}</div>`;
+            setTimeout(() => messagesEl.innerHTML = '', 5000);
+        }
+
+        async function syncPlayers() {
+            const password = document.getElementById('admin-password').value;
+            if (!password) {
+                showMessage('Please enter admin password', 'error');
+                return;
+            }
+
+            try {
+                showMessage('Starting player sync...', 'success');
+                
+                const response = await fetch('/api/admin/sync/players', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${password}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(`Player sync completed! Synced ${result.data.players_synced} players in ${result.data.duration}ms`, 'success');
+                    loadOverviewStats(); // Refresh stats
+                    loadPlayers(); // Refresh player list
+                } else {
+                    showMessage(`Sync failed: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function checkSyncStatus() {
+            try {
+                const password = document.getElementById('admin-password').value || 'temp';
+                
+                const response = await fetch('/api/admin/sync/status', {
+                    headers: { 'Authorization': `Bearer ${password}` }
+                });
+
+                if (response.status === 401) {
+                    document.getElementById('sync-status').textContent = 'Need admin password';
+                    document.getElementById('db-health').textContent = 'Need admin password';
+                    document.getElementById('api-health').textContent = 'Need admin password';
+                    return;
+                }
+
+                const result = await response.json();
+                
+                document.getElementById('sync-status').textContent = 
+                    result.data.sync.sync_in_progress ? 'In Progress' : 
+                    result.data.sync.last_sync ? `Last: ${new Date(result.data.sync.last_sync).toLocaleString()}` : 'Never';
+                
+                document.getElementById('db-health').textContent = '✅ Connected';
+                document.getElementById('api-health').textContent = 
+                    result.data.tank01?.status === 'healthy' ? '✅ Healthy' : 
+                    result.data.tank01?.status === 'unhealthy' ? '❌ Unhealthy' : 
+                    '⚠️ Not configured';
+
+            } catch (error) {
+                document.getElementById('sync-status').textContent = 'Error';
+                document.getElementById('db-health').textContent = 'Error';
+                document.getElementById('api-health').textContent = 'Error';
+            }
+        }
+    </script>
+</body>
+</html>

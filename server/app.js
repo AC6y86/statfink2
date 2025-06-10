@@ -132,10 +132,13 @@ app.use('/api/league', require('./routes/league'));
 // Admin routes
 app.use('/api/admin', require('./routes/admin'));
 
+// Dashboard route
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/dashboard.html'));
+});
+
 // Serve main page for any non-API routes
 app.get('*', (req, res) => {
-    // For now, return a simple response
-    // Later we'll serve the main frontend app
     res.send(`
         <html>
             <head>
@@ -170,6 +173,23 @@ app.get('*', (req, res) => {
                         border-radius: 4px;
                         margin: 20px 0;
                     }
+                    .dashboard-link {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        padding: 20px;
+                        border-radius: 8px;
+                        margin: 20px 0;
+                        text-align: center;
+                    }
+                    .dashboard-link a {
+                        color: white;
+                        text-decoration: none;
+                        font-size: 1.2rem;
+                        font-weight: 600;
+                    }
+                    .dashboard-link a:hover {
+                        text-decoration: underline;
+                    }
                     code {
                         background: #e9ecef;
                         padding: 2px 6px;
@@ -182,11 +202,15 @@ app.get('*', (req, res) => {
                 <div class="container">
                     <h1>🏈 StatFink Fantasy Football</h1>
                     
+                    <div class="dashboard-link">
+                        <a href="/dashboard">📊 View Database Dashboard</a>
+                    </div>
+                    
                     <div class="status">
                         <strong>✅ Server Status:</strong> Running<br>
                         <strong>📊 Database:</strong> Connected<br>
                         <strong>🧪 Tests:</strong> 58 passing<br>
-                        <strong>⚡ Phase:</strong> API Development
+                        <strong>⚡ Phase:</strong> Tank01 API Integration Complete
                     </div>
                     
                     <h2>Available API Endpoints</h2>
@@ -196,7 +220,8 @@ app.get('*', (req, res) => {
                         
                         <strong>Teams:</strong><br>
                         <code>GET /api/teams</code> - Get all teams<br>
-                        <code>GET /api/teams/:id</code> - Get team details<br><br>
+                        <code>GET /api/teams/:id</code> - Get team details<br>
+                        <code>GET /api/teams/:id/roster</code> - Get team roster<br><br>
                         
                         <strong>Players:</strong><br>
                         <code>GET /api/players</code> - Get all players<br>
@@ -210,10 +235,14 @@ app.get('*', (req, res) => {
                         <code>GET /api/stats/:playerId/:week/:season</code> - Get player stats<br><br>
                         
                         <strong>Matchups:</strong><br>
-                        <code>GET /api/matchups/:week/:season</code> - Get weekly matchups
+                        <code>GET /api/matchups/:week/:season</code> - Get weekly matchups<br><br>
+                        
+                        <strong>Admin:</strong><br>
+                        <code>POST /api/admin/sync/players</code> - Sync NFL players<br>
+                        <code>GET /api/admin/sync/status</code> - Check sync status
                     </div>
                     
-                    <p><em>Frontend interface coming soon...</em></p>
+                    <p><strong>New:</strong> <a href="/dashboard">Database Dashboard</a> - View and manage all database contents</p>
                 </div>
             </body>
         </html>
