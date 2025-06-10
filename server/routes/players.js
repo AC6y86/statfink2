@@ -72,14 +72,14 @@ router.get('/position/:position', asyncHandler(async (req, res) => {
 router.get('/available', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     
-    // Get all rostered players
-    const rosteredPlayers = await db.all(`
-        SELECT DISTINCT player_id FROM fantasy_rosters
+    // Use efficient LEFT JOIN to get available players in one query
+    const availablePlayers = await db.all(`
+        SELECT p.* 
+        FROM nfl_players p
+        LEFT JOIN fantasy_rosters r ON p.player_id = r.player_id
+        WHERE r.player_id IS NULL
+        ORDER BY p.position, p.name
     `);
-    const rosteredIds = new Set(rosteredPlayers.map(p => p.player_id));
-    
-    const players = await db.getAllPlayers();
-    const availablePlayers = players.filter(p => !rosteredIds.has(p.player_id));
     
     res.json({
         success: true,
@@ -94,21 +94,19 @@ router.get('/available/:position', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const { position } = req.params;
     
-    // Get all rostered players
-    const rosteredPlayers = await db.all(`
-        SELECT DISTINCT player_id FROM fantasy_rosters
-    `);
-    const rosteredIds = new Set(rosteredPlayers.map(p => p.player_id));
-    
     const validPositions = ['QB', 'RB', 'WR', 'TE', 'K', 'DST'];
     if (!validPositions.includes(position.toUpperCase())) {
         throw new APIError(`Invalid position. Must be one of: ${validPositions.join(', ')}`, 400);
     }
     
-    const players = await db.getPlayersByPosition(position.toUpperCase());
-    
-    // Filter out rostered players
-    const availablePlayers = players.filter(p => !rosteredIds.has(p.player_id));
+    // Use efficient LEFT JOIN to get available players by position in one query
+    const availablePlayers = await db.all(`
+        SELECT p.* 
+        FROM nfl_players p
+        LEFT JOIN fantasy_rosters r ON p.player_id = r.player_id
+        WHERE r.player_id IS NULL AND p.position = ?
+        ORDER BY p.name
+    `, [position.toUpperCase()]);
     
     res.json({
         success: true,

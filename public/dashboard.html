@@ -750,9 +750,31 @@
             } else if (tabName === 'stats') {
                 loadDatabaseStats();
             } else if (tabName === 'admin') {
-                checkSyncStatus();
-                loadTeamsForRoster();
-                loadAvailablePlayers();
+                console.time('Admin Tab Load');
+                console.log('🔄 Loading Admin tab...');
+                
+                console.time('checkSyncStatus');
+                console.log('🔄 Checking sync status...');
+                checkSyncStatus().then(() => {
+                    console.timeEnd('checkSyncStatus');
+                    console.log('✅ Sync status loaded');
+                });
+                
+                console.time('loadTeamsForRoster');
+                console.log('🔄 Loading teams for roster...');
+                loadTeamsForRoster().then(() => {
+                    console.timeEnd('loadTeamsForRoster');
+                    console.log('✅ Teams for roster loaded');
+                });
+                
+                console.time('loadAvailablePlayers');
+                console.log('🔄 Loading available players...');
+                loadAvailablePlayers().then(() => {
+                    console.timeEnd('loadAvailablePlayers');
+                    console.log('✅ Available players loaded');
+                    console.timeEnd('Admin Tab Load');
+                    console.log('🎉 Admin tab fully loaded');
+                });
             }
         }
 
@@ -1097,7 +1119,9 @@
 
         async function checkSyncStatus() {
             try {
+                console.time('API: /api/admin/sync/status');
                 const response = await fetch('/api/admin/sync/status');
+                console.timeEnd('API: /api/admin/sync/status');
 
                 const result = await response.json();
                 
@@ -1112,6 +1136,7 @@
                     '⚠️ Not configured';
 
             } catch (error) {
+                console.error('checkSyncStatus error:', error);
                 document.getElementById('sync-status').textContent = 'Error';
                 document.getElementById('db-health').textContent = 'Error';
                 document.getElementById('api-health').textContent = 'Error';
@@ -1121,7 +1146,9 @@
         // Roster Management Functions
         async function loadTeamsForRoster() {
             try {
+                console.time('API: /api/teams');
                 const response = await fetch('/api/teams');
+                console.timeEnd('API: /api/teams');
                 const data = await response.json();
                 
                 const teamSelect = document.getElementById('team-select');
@@ -1131,31 +1158,40 @@
                     teamSelect.innerHTML += `<option value="${team.team_id}">${team.team_name} (${team.owner_name})</option>`;
                 });
             } catch (error) {
+                console.error('loadTeamsForRoster error:', error);
                 showMessage(`Error loading teams: ${error.message}`, 'error');
             }
         }
 
         async function loadAvailablePlayers() {
             try {
+                console.time('API: /api/players/available');
                 const response = await fetch('/api/players/available');
+                console.timeEnd('API: /api/players/available');
                 const data = await response.json();
                 
                 const playerSelect = document.getElementById('player-select');
-                playerSelect.innerHTML = '<option value="">Choose a player...</option>';
+                
+                // Build HTML string first, then set innerHTML once
+                let html = '<option value="">Choose a player...</option>';
                 
                 // Group by position for easier selection
                 const positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DST'];
                 positions.forEach(position => {
                     const positionPlayers = data.data.filter(p => p.position === position);
                     if (positionPlayers.length > 0) {
-                        playerSelect.innerHTML += `<optgroup label="${position}">`;
+                        html += `<optgroup label="${position}">`;
                         positionPlayers.forEach(player => {
-                            playerSelect.innerHTML += `<option value="${player.player_id}">${player.name} (${player.team})</option>`;
+                            html += `<option value="${player.player_id}">${player.name} (${player.team})</option>`;
                         });
-                        playerSelect.innerHTML += `</optgroup>`;
+                        html += `</optgroup>`;
                     }
                 });
+                
+                // Set innerHTML once at the end
+                playerSelect.innerHTML = html;
             } catch (error) {
+                console.error('loadAvailablePlayers error:', error);
                 showMessage(`Error loading available players: ${error.message}`, 'error');
             }
         }
