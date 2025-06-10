@@ -75,7 +75,7 @@ describe('Database Dashboard Integration', () => {
         expect(player.name).toBeDefined();
         expect(player.position).toBeDefined();
         expect(player.team).toBeDefined();
-        expect(typeof player.is_active).toBe('number');
+        expect(player.player_id).toBeDefined();
       }
     });
 
@@ -173,11 +173,12 @@ describe('Database Dashboard Integration', () => {
         const result = rosterResponse.data;
         
         expect(result.success).toBe(true);
-        expect(Array.isArray(result.data)).toBe(true);
+        expect(result.data).toBeDefined();
+        expect(Array.isArray(result.data.roster)).toBe(true);
         
         // Check roster structure if not empty
-        if (result.data.length > 0) {
-          const player = result.data[0];
+        if (result.data.roster.length > 0) {
+          const player = result.data.roster[0];
           expect(player.name).toBeDefined();
           expect(player.position).toBeDefined();
           expect(player.team).toBeDefined();
@@ -280,7 +281,9 @@ describe('Database Dashboard Integration', () => {
       for (let i = 0; i < Math.min(5, teams.length); i++) {
         const rosterResponse = await axios.get(`${BASE_URL}/api/teams/${teams[i].team_id}/roster`);
         expect(rosterResponse.status).toBe(200);
-        expect(Array.isArray(rosterResponse.data.data)).toBe(true);
+        expect(rosterResponse.data.success).toBe(true);
+        expect(rosterResponse.data.data).toBeDefined();
+        expect(Array.isArray(rosterResponse.data.data.roster)).toBe(true);
       }
     });
   });

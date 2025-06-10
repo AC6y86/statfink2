@@ -17,8 +17,8 @@ router.post('/roster/add', requireAdmin, asyncHandler(async (req, res) => {
         throw new APIError('Team ID and Player ID are required', 400);
     }
     
-    if (!['starter', 'bench', 'ir'].includes(rosterPosition)) {
-        throw new APIError('Invalid roster position. Must be: starter, bench, or ir', 400);
+    if (!['starter', 'bench', 'injured_reserve'].includes(rosterPosition)) {
+        throw new APIError('Invalid roster position. Must be: starter, bench, or injured_reserve', 400);
     }
     
     // Validate team exists
@@ -90,8 +90,8 @@ router.post('/roster/position', requireAdmin, asyncHandler(async (req, res) => {
         throw new APIError('Team ID, Player ID, and roster position are required', 400);
     }
     
-    if (!['starter', 'bench', 'ir'].includes(rosterPosition)) {
-        throw new APIError('Invalid roster position. Must be: starter, bench, or ir', 400);
+    if (!['starter', 'bench', 'injured_reserve'].includes(rosterPosition)) {
+        throw new APIError('Invalid roster position. Must be: starter, bench, or injured_reserve', 400);
     }
     
     // Get player and team info for response
@@ -164,7 +164,7 @@ router.get('/dashboard', requireAdmin, asyncHandler(async (req, res) => {
     
     const [teams, totalPlayers, settings] = await Promise.all([
         db.getAllTeams(),
-        db.get('SELECT COUNT(*) as count FROM nfl_players WHERE is_active = 1'),
+        db.get('SELECT COUNT(*) as count FROM nfl_players'),
         db.getLeagueSettings()
     ]);
     

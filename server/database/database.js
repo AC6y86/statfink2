@@ -114,11 +114,11 @@ class DatabaseManager {
 
     // Player methods
     async getAllPlayers() {
-        return this.all('SELECT * FROM nfl_players WHERE is_active = 1 ORDER BY position, name');
+        return this.all('SELECT * FROM nfl_players ORDER BY position, name');
     }
 
     async getPlayersByPosition(position) {
-        return this.all('SELECT * FROM nfl_players WHERE position = ? AND is_active = 1 ORDER BY name', [position]);
+        return this.all('SELECT * FROM nfl_players WHERE position = ? ORDER BY name', [position]);
     }
 
     async upsertPlayer(playerId, name, position, team, byeWeek) {
@@ -218,9 +218,29 @@ class DatabaseManager {
             SELECT p.* 
             FROM nfl_players p
             LEFT JOIN fantasy_rosters r ON p.player_id = r.player_id
-            WHERE p.position = ? AND p.is_active = 1 AND r.player_id IS NULL
+            WHERE p.position = ? AND r.player_id IS NULL
             ORDER BY p.name
         `, [position]);
+    }
+
+    // Check if team has an injured reserve player
+    async hasInjuredReservePlayer(teamId) {
+        const result = await this.get(`
+            SELECT COUNT(*) as count 
+            FROM fantasy_rosters 
+            WHERE team_id = ? AND roster_position = 'injured_reserve'
+        `, [teamId]);
+        return result.count > 0;
+    }
+
+    // Get team's injured reserve player
+    async getTeamInjuredReservePlayer(teamId) {
+        return this.get(`
+            SELECT r.*, p.name, p.position, p.team, p.bye_week
+            FROM fantasy_rosters r
+            JOIN nfl_players p ON r.player_id = p.player_id
+            WHERE r.team_id = ? AND r.roster_position = 'injured_reserve'
+        `, [teamId]);
     }
 
     // Stats methods
@@ -362,6 +382,7 @@ class DatabaseManager {
             FROM fantasy_rosters r
             JOIN player_stats ps ON r.player_id = ps.player_id
             WHERE r.team_id = ? AND r.roster_position = 'starter' 
+                AND r.roster_position != 'injured_reserve'
                 AND ps.week = ? AND ps.season = ?
         `, [teamId, week, season]);
         
@@ -389,6 +410,7 @@ class DatabaseManager {
             LEFT JOIN player_stats ps ON r.player_id = ps.player_id 
                 AND ps.week = ? AND ps.season = ?
             WHERE r.team_id = ? AND r.roster_position = 'starter'
+                AND r.roster_position != 'injured_reserve'
             ORDER BY 
                 CASE p.position 
                     WHEN 'QB' THEN 1 

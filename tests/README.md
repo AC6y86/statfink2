@@ -10,10 +10,11 @@ tests/
 │   ├── validation.test.js        # Data validation tests (16 tests)
 │   ├── scoringService.test.js    # Fantasy scoring calculations (12 tests)
 │   └── errorHandler.test.js      # Error handling utilities (12 tests)
-├── integration/              # Integration tests (58+ tests - require server)
+├── integration/              # Integration tests (75+ tests - require server)
 │   ├── database.test.js          # Database operations (18 tests)
 │   ├── tank01.test.js           # Tank01 API integration (8 test groups)
-│   └── dashboard.test.js        # Web dashboard functionality (8 test groups)
+│   ├── dashboard.test.js        # Web dashboard functionality (14 test groups)
+│   └── roster.test.js           # Roster management operations (17 tests)
 ├── fixtures/                 # Test data and sample objects
 │   └── sampleData.js             # Sample players, stats, teams
 ├── setup.js                  # Test environment setup
@@ -51,10 +52,11 @@ node test-runner.js [unit|integration|fast|all|help]
 - **Dependencies**: None (completely isolated)
 - **Speed**: Very fast (< 1 second)
 
-### Integration Tests (58+ tests 🔗)
+### Integration Tests (75+ tests 🔗)
 - **Database Tests** (18): CRUD operations, transactions, constraints
 - **Tank01 API Tests** (8 groups): Health checks, player sync, data transformation
-- **Dashboard Tests** (8 groups): Web interface, API integration, admin functions
+- **Dashboard Tests** (14 groups): Web interface, API integration, admin functions
+- **Roster Management Tests** (17): Player add/drop, position changes, validation
 - **Dependencies**: Running StatFink server (localhost:3000)
 - **Speed**: Moderate (2-30 seconds depending on server state)
 
@@ -94,7 +96,7 @@ npm run test:integration
 - Web dashboard functionality
 
 ### 📊 **Test Statistics**
-- **Total Tests**: 98+ across unit and integration suites
+- **Total Tests**: 115+ across unit and integration suites
 - **Unit Test Runtime**: < 1 second
 - **Integration Test Runtime**: < 30 seconds (with server)
 - **Full Suite Runtime**: < 45 seconds

@@ -69,7 +69,8 @@ router.get('/:teamId/roster', asyncHandler(async (req, res) => {
             roster,
             groupedByPosition: groupedRoster,
             starters: roster.filter(p => p.roster_position === 'starter'),
-            bench: roster.filter(p => p.roster_position === 'bench')
+            bench: roster.filter(p => p.roster_position === 'bench'),
+            injuredReserve: roster.filter(p => p.roster_position === 'injured_reserve')
         }
     });
 }));
@@ -97,6 +98,200 @@ router.put('/:teamId/stats', asyncHandler(async (req, res) => {
         success: true,
         data: updatedTeam,
         message: 'Team stats updated successfully'
+    });
+}));
+
+// Add player to roster
+router.post('/:teamId/roster/add', asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const { teamId } = req.params;
+    const { playerId, rosterPosition = 'bench' } = req.body;
+    
+    if (!teamId || isNaN(teamId)) {
+        throw new APIError('Invalid team ID', 400);
+    }
+    
+    if (!playerId) {
+        throw new APIError('Player ID is required', 400);
+    }
+    
+    if (!['starter', 'bench', 'injured_reserve'].includes(rosterPosition)) {
+        throw new APIError('Invalid roster position. Must be: starter, bench, or injured_reserve', 400);
+    }
+    
+    // Validate team exists
+    const team = await db.getTeam(parseInt(teamId));
+    if (!team) {
+        throw new APIError('Team not found', 404);
+    }
+    
+    // Validate player exists and is available
+    const player = await db.get('SELECT * FROM nfl_players WHERE player_id = ?', [playerId]);
+    if (!player) {
+        throw new APIError('Player not found', 404);
+    }
+    
+    // Check if player is already on a roster
+    const existingRoster = await db.get(
+        'SELECT team_id FROM fantasy_rosters WHERE player_id = ?', 
+        [playerId]
+    );
+    
+    if (existingRoster) {
+        throw new APIError('Player is already on a roster', 400);
+    }
+
+    // If adding to injured reserve, check if team already has an IR player
+    if (rosterPosition === 'injured_reserve') {
+        const hasIR = await db.hasInjuredReservePlayer(parseInt(teamId));
+        if (hasIR) {
+            throw new APIError('Team already has a player on injured reserve', 400);
+        }
+    }
+    
+    await db.addPlayerToRoster(parseInt(teamId), playerId, rosterPosition);
+    
+    res.json({
+        success: true,
+        message: `${player.name} added to ${team.team_name}`,
+        data: {
+            team: team.team_name,
+            player: {
+                id: player.player_id,
+                name: player.name,
+                position: player.position,
+                team: player.team
+            },
+            rosterPosition
+        }
+    });
+}));
+
+// Remove player from roster
+router.delete('/:teamId/roster/remove', asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const { teamId } = req.params;
+    const { playerId } = req.body;
+    
+    if (!teamId || isNaN(teamId)) {
+        throw new APIError('Invalid team ID', 400);
+    }
+    
+    if (!playerId) {
+        throw new APIError('Player ID is required', 400);
+    }
+    
+    // Get player and team info for response
+    const [team, player] = await Promise.all([
+        db.getTeam(parseInt(teamId)),
+        db.get('SELECT * FROM nfl_players WHERE player_id = ?', [playerId])
+    ]);
+    
+    if (!team) {
+        throw new APIError('Team not found', 404);
+    }
+    
+    if (!player) {
+        throw new APIError('Player not found', 404);
+    }
+    
+    // Check if player is actually on this team's roster
+    const rosterEntry = await db.get(
+        'SELECT * FROM fantasy_rosters WHERE team_id = ? AND player_id = ?',
+        [parseInt(teamId), playerId]
+    );
+    
+    if (!rosterEntry) {
+        throw new APIError('Player is not on this team\'s roster', 400);
+    }
+    
+    await db.removePlayerFromRoster(parseInt(teamId), playerId);
+    
+    res.json({
+        success: true,
+        message: `${player.name} removed from ${team.team_name}`,
+        data: {
+            team: team.team_name,
+            player: {
+                id: player.player_id,
+                name: player.name,
+                position: player.position,
+                team: player.team
+            }
+        }
+    });
+}));
+
+// Move player between roster positions (starter/bench/injured_reserve)
+router.put('/:teamId/roster/move', asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const { teamId } = req.params;
+    const { playerId, rosterPosition } = req.body;
+    
+    if (!teamId || isNaN(teamId)) {
+        throw new APIError('Invalid team ID', 400);
+    }
+    
+    if (!playerId || !rosterPosition) {
+        throw new APIError('Player ID and roster position are required', 400);
+    }
+    
+    if (!['starter', 'bench', 'injured_reserve'].includes(rosterPosition)) {
+        throw new APIError('Invalid roster position. Must be: starter, bench, or injured_reserve', 400);
+    }
+    
+    // Validate team and player exist
+    const [team, player] = await Promise.all([
+        db.getTeam(parseInt(teamId)),
+        db.get('SELECT * FROM nfl_players WHERE player_id = ?', [playerId])
+    ]);
+    
+    if (!team) {
+        throw new APIError('Team not found', 404);
+    }
+    
+    if (!player) {
+        throw new APIError('Player not found', 404);
+    }
+    
+    // Check if player is on this team's roster
+    const rosterEntry = await db.get(
+        'SELECT * FROM fantasy_rosters WHERE team_id = ? AND player_id = ?',
+        [parseInt(teamId), playerId]
+    );
+    
+    if (!rosterEntry) {
+        throw new APIError('Player is not on this team\'s roster', 400);
+    }
+
+    // If moving to injured reserve, check if team already has an IR player
+    if (rosterPosition === 'injured_reserve' && rosterEntry.roster_position !== 'injured_reserve') {
+        const hasIR = await db.hasInjuredReservePlayer(parseInt(teamId));
+        if (hasIR) {
+            throw new APIError('Team already has a player on injured reserve', 400);
+        }
+    }
+    
+    // Update roster position
+    await db.run(
+        'UPDATE fantasy_rosters SET roster_position = ? WHERE team_id = ? AND player_id = ?',
+        [rosterPosition, parseInt(teamId), playerId]
+    );
+    
+    res.json({
+        success: true,
+        message: `${player.name} moved to ${rosterPosition}`,
+        data: {
+            team: team.team_name,
+            player: {
+                id: player.player_id,
+                name: player.name,
+                position: player.position,
+                team: player.team
+            },
+            oldPosition: rosterEntry.roster_position,
+            newPosition: rosterPosition
+        }
     });
 }));
 

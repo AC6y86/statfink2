@@ -28,6 +28,9 @@ GET  /api/players/position/:position   # Players by position (QB/RB/WR/TE/K/DST)
 GET  /api/players/available/:position? # Available free agents
 GET  /api/teams                        # Fantasy teams with standings
 GET  /api/teams/:id/roster             # Team roster (starters/bench/IR)
+POST /api/teams/:id/roster/add         # Add player to roster
+PUT  /api/teams/:id/roster/move        # Move player between positions  
+DELETE /api/teams/:id/roster/remove    # Remove player from roster
 GET  /api/league                       # League settings and configuration
 GET  /api/matchups/week/:week          # Weekly matchups and scores
 GET  /api/stats/rankings/:position     # Player rankings by position
@@ -41,7 +44,7 @@ POST /api/admin/sync/players           # Trigger player synchronization
 - **1,792+ NFL Players**: All active players synchronized from Tank01 API
 - **Comprehensive Stats**: Offensive, defensive, and kicking statistics
 - **PPR Scoring**: Fantasy point calculations for all positions
-- **Roster Support**: Starter/bench/IR designations ready
+- **Roster Support**: Starter/bench/injured_reserve designations implemented
 
 ### Web Dashboard Features
 - **Player Browser**: Search, filter, and view all NFL players
@@ -50,14 +53,21 @@ POST /api/admin/sync/players           # Trigger player synchronization
 - **Responsive Design**: Works on desktop and mobile without frameworks
 - **Real-time Updates**: Live data from API endpoints
 
+## ✅ Recently Completed
+
+### Injured Reserve System
+- **IR Designation**: Players can be placed on injured reserve
+- **Scoring Exclusion**: IR players do not contribute to team scoring
+- **Availability Lock**: IR players unavailable to other teams
+- **One Per Team**: Each team limited to one IR player
+- **API Endpoints**: Full CRUD operations for IR management
+
 ## 🔄 Currently Working On (Next Phase)
 
-### Roster Management System
-- **Roster Modification**: POST/PUT/DELETE endpoints for player transactions
-- **Add/Drop Players**: Move players between teams and free agency
-- **Lineup Management**: Set starters vs bench players
-- **Roster Validation**: Enforce lineup constraints and roster limits
-- **Transaction History**: Track all roster moves and changes
+### Scoring System Updates
+- **IR Scoring Exclusion**: Ensure IR players don't score fantasy points
+- **Dashboard IR Display**: Show IR players in web interface
+- **Testing**: Update tests to cover IR functionality
 
 ## 📊 Technical Status
 
@@ -89,21 +99,21 @@ http://localhost:3000/dashboard
 
 ## 🎯 Next Implementation Steps
 
-### Phase 5: Roster Management (Current Focus)
-1. **Roster Modification Endpoints**
-   - `POST /api/teams/:id/roster/add` - Add player to roster
-   - `DELETE /api/teams/:id/roster/remove` - Remove player from roster
-   - `PUT /api/teams/:id/roster/move` - Move player between positions
+### Phase 5: Enhanced Scoring System (Current Focus)
+1. **IR Scoring Implementation**
+   - Update scoring service to exclude IR players
+   - Modify team point calculations
+   - Ensure IR players score zero points
 
-2. **Lineup Management**
-   - Starter/bench designation system
-   - Lineup validation and constraints
-   - Roster position optimization
+2. **Dashboard IR Integration**
+   - Display IR players in team rosters
+   - IR management controls in web interface
+   - Visual distinction for IR players
 
-3. **Transaction System**
-   - Player add/drop with validation
-   - Free agency management
-   - Transaction history tracking
+3. **Testing Coverage**
+   - Unit tests for IR functionality
+   - Integration tests for API endpoints
+   - Validation of scoring exclusions
 
 ### Phase 6: Automated Scoring (Planned)
 1. **Live Stats Integration**

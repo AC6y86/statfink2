@@ -70,6 +70,7 @@ class ScoringService {
             JOIN player_stats ps ON fr.player_id = ps.player_id
             WHERE fr.team_id = ? AND ps.week = ? AND ps.season = ?
             AND fr.roster_position = 'starter'
+            AND fr.roster_position != 'injured_reserve'
         `;
         
         const result = await this.db.get(query, [teamId, week, season]);

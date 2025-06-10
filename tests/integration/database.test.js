@@ -119,10 +119,14 @@ describe('Database Integration', () => {
       expect(players).toBeDefined();
       expect(Array.isArray(players)).toBe(true);
       
-      // All players should be active
-      players.forEach(player => {
-        expect(player.is_active).toBe(1);
-      });
+      // Check player structure
+      if (players.length > 0) {
+        const player = players[0];
+        expect(player.player_id).toBeDefined();
+        expect(player.name).toBeDefined();
+        expect(player.position).toBeDefined();
+        expect(player.team).toBeDefined();
+      }
     });
 
     test('should filter players by position', async () => {

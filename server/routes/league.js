@@ -87,7 +87,7 @@ router.get('/overview', asyncHandler(async (req, res) => {
     const [settings, teams, totalPlayers] = await Promise.all([
         db.getLeagueSettings(),
         db.getAllTeams(),
-        db.get('SELECT COUNT(*) as count FROM nfl_players WHERE is_active = 1')
+        db.get('SELECT COUNT(*) as count FROM nfl_players')
     ]);
     
     // Calculate some basic stats

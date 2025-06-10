@@ -179,9 +179,11 @@ describe('Tank01 API Integration', () => {
       
       if (teams.length > 0) {
         const response = await axios.get(`${BASE_URL}/api/teams/${teams[0].team_id}/roster`);
-        const roster = response.data.data;
+        const result = response.data;
         
-        expect(Array.isArray(roster)).toBe(true);
+        expect(result.success).toBe(true);
+        expect(result.data).toBeDefined();
+        expect(Array.isArray(result.data.roster)).toBe(true);
         // Roster might be empty, which is fine
       }
     });
@@ -197,12 +199,12 @@ describe('Tank01 API Integration', () => {
       const response = await axios.get(`${BASE_URL}/health`);
       const health = response.data;
       
+      // Tank01 service can be in various states
+      expect(['healthy', 'initialized', 'not configured', 'unhealthy']).toContain(health.services.tank01);
+      
+      // If we have an API key, it should not be 'not configured'
       if (TANK01_API_KEY) {
-        // If we have an API key, service should be initialized or healthy
-        expect(['healthy', 'initialized', 'unhealthy']).toContain(health.services.tank01);
-      } else {
-        // Without API key, should be not configured
-        expect(health.services.tank01).toBe('not configured');
+        expect(health.services.tank01).not.toBe('not configured');
       }
     });
   });

@@ -28,7 +28,6 @@ CREATE TABLE IF NOT EXISTS nfl_players (
     position VARCHAR(10) NOT NULL,
     team VARCHAR(10) NOT NULL,
     bye_week INTEGER,
-    is_active BOOLEAN DEFAULT 1,
     last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -133,4 +132,4 @@ INSERT OR IGNORE INTO scoring_rules (stat_type, points_per_unit) VALUES
 CREATE INDEX IF NOT EXISTS idx_player_stats_lookup ON player_stats(player_id, week, season);
 CREATE INDEX IF NOT EXISTS idx_fantasy_rosters_team ON fantasy_rosters(team_id);
 CREATE INDEX IF NOT EXISTS idx_matchups_week ON matchups(week, season);
-CREATE INDEX IF NOT EXISTS idx_nfl_players_position ON nfl_players(position, is_active);
+CREATE INDEX IF NOT EXISTS idx_nfl_players_position ON nfl_players(position);

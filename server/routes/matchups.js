@@ -103,7 +103,7 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
     
     // Get player stats for this week if available
     const team1Stats = await Promise.all(
-        team1Roster.filter(p => p.roster_position === 'starter').map(async player => {
+        team1Roster.filter(p => p.roster_position === 'starter' && p.roster_position !== 'injured_reserve').map(async player => {
             const stats = await db.getPlayerStats(player.player_id, matchup.week, matchup.season);
             return {
                 ...player,
@@ -113,7 +113,7 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
     );
     
     const team2Stats = await Promise.all(
-        team2Roster.filter(p => p.roster_position === 'starter').map(async player => {
+        team2Roster.filter(p => p.roster_position === 'starter' && p.roster_position !== 'injured_reserve').map(async player => {
             const stats = await db.getPlayerStats(player.player_id, matchup.week, matchup.season);
             return {
                 ...player,

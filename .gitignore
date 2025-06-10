@@ -8,6 +8,7 @@ node_modules/
 
 # Database
 *.db
+!fantasy_football.db
 *.sqlite
 *.sqlite3
 test_*.db

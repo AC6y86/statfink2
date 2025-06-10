@@ -30,6 +30,7 @@ The project has a **complete full-stack application** with:
 - **Scoring Engine**: PPR scoring calculations for all positions including DST
 - **Error Handling**: Custom error classes with Express middleware
 - **League Management**: 12-team league with complete roster support
+- **Injured Reserve**: Each team can have one player on IR (no scoring, unavailable to other teams)
 - **Admin Controls**: Network-accessible admin interface (no password required)
 - **Real-time Data**: Live player statistics and team information
 
@@ -155,7 +156,10 @@ node tests/test-runner.js [unit|integration|fast|all|help]
 ### Fantasy Football Features
 - `GET /api/players/position/:position` - Players by position
 - `GET /api/players/available/:position?` - Available free agents
-- `GET /api/teams/:id/roster` - Team roster with starters/bench
+- `GET /api/teams/:id/roster` - Team roster with starters/bench/injured_reserve
+- `POST /api/teams/:id/roster/add` - Add player to roster (starter/bench/injured_reserve)
+- `PUT /api/teams/:id/roster/move` - Move player between positions
+- `DELETE /api/teams/:id/roster/remove` - Remove player from roster
 - `GET /api/matchups/week/:week` - Weekly matchups and scores
 - `GET /api/stats/rankings/:position` - Player rankings by position
 

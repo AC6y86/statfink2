@@ -152,7 +152,7 @@ class Validator {
             errors.push('Player ID is required');
         }
         
-        const validPositions = ['starter', 'bench', 'ir'];
+        const validPositions = ['starter', 'bench', 'injured_reserve'];
         if (rosterPosition && !validPositions.includes(rosterPosition)) {
             errors.push(`Roster position must be one of: ${validPositions.join(', ')}`);
         }

@@ -130,8 +130,7 @@ router.get('/search/:query', asyncHandler(async (req, res) => {
     
     let searchQuery = `
         SELECT * FROM nfl_players 
-        WHERE is_active = 1 
-        AND LOWER(name) LIKE LOWER(?)
+        WHERE LOWER(name) LIKE LOWER(?)
     `;
     const params = [`%${query}%`];
     
