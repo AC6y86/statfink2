@@ -84,7 +84,7 @@ function asyncHandler(fn) {
 module.exports = {
     DatabaseError,
     APIError,
-    ValidationError: require('./validation').ValidationError,
+    ValidationError: require('../database/validation').ValidationError,
     logError,
     logInfo,
     logWarn,

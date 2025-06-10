@@ -158,6 +158,13 @@ describe('Database Integration', () => {
     });
 
     test('should add player to roster', async () => {
+      // First remove the player if they're already on a roster
+      try {
+        await db.removePlayerFromRoster(testTeamId, testPlayerId);
+      } catch (error) {
+        // Player wasn't on roster, that's fine
+      }
+      
       await db.addPlayerToRoster(testTeamId, testPlayerId, 'starter');
       
       const roster = await db.getTeamRoster(testTeamId);
