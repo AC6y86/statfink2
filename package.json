@@ -1,0 +1,34 @@
+{
+  "name": "statfink2",
+  "version": "1.0.0",
+  "description": "A single-league fantasy football management application with a read-only public interface and admin roster management capabilities.",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "init-league": "node server/utils/initializeLeague.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AC6y86/statfink2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AC6y86/statfink2/issues"
+  },
+  "homepage": "https://github.com/AC6y86/statfink2#readme",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "node-cron": "^4.1.0",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
