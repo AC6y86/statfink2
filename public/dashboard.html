@@ -742,11 +742,9 @@
                     <span>Loading week information...</span>
                 </div>
                 <div class="controls">
-                    <select id="roster-team-filter" class="filter-select">
+                    <select id="roster-team-filter" class="filter-select" onchange="loadRoster()">
                         <option value="">Select Team</option>
                     </select>
-                    <button class="btn" onclick="loadRoster()">View Roster</button>
-                    <button class="btn btn-secondary" onclick="refreshRosterInfo()">Refresh</button>
                 </div>
 
                 <div class="table-container">
@@ -960,7 +958,7 @@
                 loadTeams();
             } else if (tabName === 'rosters') {
                 loadTeamFilters();
-                loadRosterWeekInfo();
+                refreshRosterInfo();
             } else if (tabName === 'stats') {
                 loadDatabaseStats();
             } else if (tabName === 'admin') {
@@ -1218,7 +1216,7 @@
                 // Populate team filter for rosters
                 const rosterTeamFilter = document.getElementById('roster-team-filter');
                 rosterTeamFilter.innerHTML = '<option value="">Select Team</option>' + 
-                    teams.data.map(team => `<option value="${team.team_id}">${team.team_name}</option>`).join('');
+                    teams.data.map(team => `<option value="${team.team_id}">${team.owner_name}</option>`).join('');
 
             } catch (error) {
                 console.error('Error loading team filters:', error);
@@ -1228,12 +1226,14 @@
         // Load and display current week information for rosters
         async function loadRosterWeekInfo() {
             try {
-                console.log('Loading roster week info...');
+                const rosterWeekInfo = document.getElementById('roster-week-info');
+                if (!rosterWeekInfo) {
+                    console.error('roster-week-info element not found');
+                    return;
+                }
+                
                 const settingsResponse = await fetch('/api/league/settings');
                 const settingsData = await settingsResponse.json();
-                console.log('Settings data:', settingsData);
-                
-                const rosterWeekInfo = document.getElementById('roster-week-info');
                 
                 if (settingsData.success) {
                     const currentWeek = settingsData.data.current_week;
@@ -1242,12 +1242,10 @@
                     if (currentWeek && currentSeason) {
                         // Check if weekly roster data exists for this week
                         try {
-                            console.log(`Checking snapshot for week ${currentWeek}, season ${currentSeason}`);
                             const snapshotResponse = await fetch(`/api/roster-history/exists/${currentWeek}/${currentSeason}`);
                             const snapshotData = await snapshotResponse.json();
-                            console.log('Snapshot data:', snapshotData);
                             
-                            if (snapshotData.exists) {
+                            if (snapshotData.success && snapshotData.exists) {
                                 rosterWeekInfo.innerHTML = `
                                     <div class="status-indicator status-healthy"></div>
                                     <span><strong>Showing Week ${currentWeek}, ${currentSeason}</strong> - Weekly roster data available</span>
@@ -1277,7 +1275,6 @@
                     `;
                 }
             } catch (error) {
-                console.error('Error in loadRosterWeekInfo:', error);
                 document.getElementById('roster-week-info').innerHTML = `
                     <div class="status-indicator status-unhealthy"></div>
                     <span><strong>Connection Error</strong> - Unable to load week information</span>
@@ -1287,11 +1284,19 @@
 
         // Refresh roster information
         async function refreshRosterInfo() {
-            await loadRosterWeekInfo();
-            // If a team is selected, reload its roster
-            const selectedTeam = document.getElementById('roster-team-filter').value;
-            if (selectedTeam) {
-                await loadRoster();
+            try {
+                await loadRosterWeekInfo();
+                // If a team is selected, reload its roster
+                const selectedTeam = document.getElementById('roster-team-filter').value;
+                if (selectedTeam) {
+                    await loadRoster();
+                }
+            } catch (error) {
+                console.error('Error in refreshRosterInfo:', error);
+                document.getElementById('roster-week-info').innerHTML = `
+                    <div class="status-indicator status-unhealthy"></div>
+                    <span><strong>Error</strong> - Failed to refresh roster info</span>
+                `;
             }
         }
 
@@ -1321,15 +1326,15 @@
                         response = await fetch(`/api/roster-history/team/${teamId}/week/${currentWeek}/${currentSeason}`);
                         data = await response.json();
                         
-                        if (data.success && data.roster && data.roster.length > 0) {
+                        if (data.success && data.roster && data.roster.starters && data.roster.starters.length > 0) {
                             // Use weekly roster data
-                            tbody.innerHTML = data.roster.map(player => `
+                            tbody.innerHTML = data.roster.starters.map(player => `
                                 <tr>
-                                    <td><strong>${player.name}</strong></td>
-                                    <td><span class="position-badge position-${player.position}">${player.position}</span></td>
-                                    <td><span class="team-badge">${player.team}</span></td>
+                                    <td><strong>${player.player_name}</strong></td>
+                                    <td><span class="position-badge position-${player.player_position}">${player.player_position}</span></td>
+                                    <td><span class="team-badge">${player.player_team}</span></td>
                                     <td>${player.roster_position}</td>
-                                    <td>${player.bye_week || 'TBD'}</td>
+                                    <td>TBD</td>
                                 </tr>
                             `).join('');
                             return;
@@ -1863,42 +1868,6 @@
             }, 5000);
         }
 
-        // Load settings when the settings tab is shown
-        function showTab(tabName) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => content.classList.remove('active'));
-            
-            // Hide all tabs
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            
-            // Show the selected tab content
-            document.getElementById(tabName + '-tab').classList.add('active');
-            
-            // Mark the clicked tab as active
-            event.target.classList.add('active');
-            
-            // Load settings if settings tab is selected
-            if (tabName === 'settings') {
-                loadCurrentSettings();
-            }
-            
-            // Load specific data for other tabs if needed
-            if (tabName === 'players') {
-                loadPlayers();
-            } else if (tabName === 'teams') {
-                loadTeams();
-            } else if (tabName === 'rosters') {
-                loadRosters();
-            } else if (tabName === 'stats') {
-                loadStats();
-            } else if (tabName === 'admin') {
-                loadTeamOptions();
-                loadPlayerOptions();
-                checkHealth();
-            }
-        }
     </script>
 </body>
 </html>
