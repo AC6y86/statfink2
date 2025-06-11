@@ -366,6 +366,39 @@ class DatabaseManager {
         return this.run('UPDATE league_settings SET current_week = ? WHERE league_id = 1', [week]);
     }
 
+    async updateSeasonYear(year) {
+        return this.run('UPDATE league_settings SET season_year = ? WHERE league_id = 1', [year]);
+    }
+
+    async updateLeagueSettings(settings) {
+        const { current_week, season_year, league_name } = settings;
+        const updateFields = [];
+        const values = [];
+        
+        if (current_week !== undefined) {
+            updateFields.push('current_week = ?');
+            values.push(current_week);
+        }
+        if (season_year !== undefined) {
+            updateFields.push('season_year = ?');
+            values.push(season_year);
+        }
+        if (league_name !== undefined) {
+            updateFields.push('league_name = ?');
+            values.push(league_name);
+        }
+        
+        if (updateFields.length === 0) {
+            throw new Error('No valid fields to update');
+        }
+        
+        values.push(1); // league_id
+        return this.run(
+            `UPDATE league_settings SET ${updateFields.join(', ')} WHERE league_id = ?`,
+            values
+        );
+    }
+
     // Scoring rules
     async getScoringRules() {
         return this.all('SELECT * FROM scoring_rules ORDER BY stat_type');
@@ -454,6 +487,166 @@ class DatabaseManager {
         `, [teamId]);
         
         return result ? result.starter_count : 0;
+    }
+
+    // Weekly Roster Tracking Methods
+    
+    // Create a snapshot of all team rosters for a specific week
+    async captureWeeklyRosterSnapshot(week, season) {
+        try {
+            await this.beginTransaction();
+            
+            // Clear any existing snapshots for this week/season
+            await this.run('DELETE FROM weekly_rosters WHERE week = ? AND season = ?', [week, season]);
+            
+            // Get all current rosters with player details
+            const allRosters = await this.all(`
+                SELECT 
+                    r.team_id, r.player_id, r.roster_position,
+                    p.name as player_name, p.position as player_position, p.team as player_team
+                FROM fantasy_rosters r
+                JOIN nfl_players p ON r.player_id = p.player_id
+                ORDER BY r.team_id, r.roster_position DESC, p.position
+            `);
+            
+            // Insert snapshot for each roster entry
+            let insertedCount = 0;
+            for (const roster of allRosters) {
+                await this.run(`
+                    INSERT INTO weekly_rosters 
+                    (team_id, player_id, week, season, roster_position, player_name, player_position, player_team)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                `, [
+                    roster.team_id, roster.player_id, week, season, 
+                    roster.roster_position, roster.player_name, 
+                    roster.player_position, roster.player_team
+                ]);
+                insertedCount++;
+            }
+            
+            // Update the last snapshot week in league settings
+            await this.run('UPDATE league_settings SET last_roster_snapshot_week = ? WHERE league_id = 1', [week]);
+            
+            await this.commit();
+            logInfo(`Captured roster snapshot for week ${week}, season ${season} - ${insertedCount} entries`);
+            return insertedCount;
+            
+        } catch (error) {
+            await this.rollback();
+            throw error;
+        }
+    }
+    
+    // Get roster snapshot for a specific team and week
+    async getTeamWeeklyRoster(teamId, week, season) {
+        return this.all(`
+            SELECT 
+                wr.*,
+                t.team_name, t.owner_name
+            FROM weekly_rosters wr
+            JOIN teams t ON wr.team_id = t.team_id
+            WHERE wr.team_id = ? AND wr.week = ? AND wr.season = ?
+            ORDER BY 
+                CASE wr.player_position 
+                    WHEN 'QB' THEN 1 
+                    WHEN 'RB' THEN 2 
+                    WHEN 'WR' THEN 3 
+                    WHEN 'TE' THEN 4 
+                    WHEN 'K' THEN 5
+                    WHEN 'DST' THEN 6
+                    ELSE 7 
+                END,
+                wr.roster_position DESC,
+                wr.player_name
+        `, [teamId, week, season]);
+    }
+    
+    // Get all roster snapshots for a specific week
+    async getAllTeamsWeeklyRosters(week, season) {
+        return this.all(`
+            SELECT 
+                wr.*,
+                t.team_name, t.owner_name
+            FROM weekly_rosters wr
+            JOIN teams t ON wr.team_id = t.team_id
+            WHERE wr.week = ? AND wr.season = ?
+            ORDER BY wr.team_id, 
+                CASE wr.player_position 
+                    WHEN 'QB' THEN 1 
+                    WHEN 'RB' THEN 2 
+                    WHEN 'WR' THEN 3 
+                    WHEN 'TE' THEN 4 
+                    WHEN 'K' THEN 5
+                    WHEN 'DST' THEN 6
+                    ELSE 7 
+                END,
+                wr.roster_position DESC,
+                wr.player_name
+        `, [week, season]);
+    }
+    
+    // Get roster history for a specific player across weeks
+    async getPlayerRosterHistory(playerId, season) {
+        return this.all(`
+            SELECT 
+                wr.*,
+                t.team_name, t.owner_name
+            FROM weekly_rosters wr
+            JOIN teams t ON wr.team_id = t.team_id
+            WHERE wr.player_id = ? AND wr.season = ?
+            ORDER BY wr.week
+        `, [playerId, season]);
+    }
+    
+    // Get available weeks that have roster snapshots
+    async getAvailableSnapshotWeeks(season) {
+        return this.all(`
+            SELECT DISTINCT week, COUNT(*) as roster_count, MIN(snapshot_date) as snapshot_date
+            FROM weekly_rosters 
+            WHERE season = ?
+            GROUP BY week
+            ORDER BY week
+        `, [season]);
+    }
+    
+    // Check if a snapshot exists for a specific week
+    async hasWeeklySnapshot(week, season) {
+        const result = await this.get(`
+            SELECT COUNT(*) as count
+            FROM weekly_rosters
+            WHERE week = ? AND season = ?
+        `, [week, season]);
+        return result.count > 0;
+    }
+    
+    // Get roster changes between two weeks
+    async getRosterChangesBetweenWeeks(teamId, fromWeek, toWeek, season) {
+        const fromRoster = await this.getTeamWeeklyRoster(teamId, fromWeek, season);
+        const toRoster = await this.getTeamWeeklyRoster(teamId, toWeek, season);
+        
+        const fromPlayerIds = new Set(fromRoster.map(r => r.player_id));
+        const toPlayerIds = new Set(toRoster.map(r => r.player_id));
+        
+        const added = toRoster.filter(r => !fromPlayerIds.has(r.player_id));
+        const dropped = fromRoster.filter(r => !toPlayerIds.has(r.player_id));
+        const moved = toRoster.filter(r => {
+            const fromPlayer = fromRoster.find(f => f.player_id === r.player_id);
+            return fromPlayer && fromPlayer.roster_position !== r.roster_position;
+        });
+        
+        return {
+            fromWeek,
+            toWeek,
+            added,
+            dropped,
+            moved
+        };
+    }
+    
+    // Get last captured snapshot week
+    async getLastSnapshotWeek() {
+        const result = await this.get('SELECT last_roster_snapshot_week FROM league_settings WHERE league_id = 1');
+        return result ? result.last_roster_snapshot_week : 0;
     }
 
     // Close database connection

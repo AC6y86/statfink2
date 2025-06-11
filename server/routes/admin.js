@@ -235,35 +235,6 @@ router.post('/sync/players', requireAdmin, asyncHandler(async (req, res) => {
     }
 }));
 
-// Sync player stats for a specific week
-router.post('/sync/stats', requireAdmin, asyncHandler(async (req, res) => {
-    const playerSyncService = req.app.locals.playerSyncService;
-    const { week, season } = req.body;
-    
-    if (!playerSyncService) {
-        throw new APIError('Player sync service not available', 500);
-    }
-    
-    if (!week || !season) {
-        throw new APIError('Week and season are required', 400);
-    }
-    
-    const result = await playerSyncService.syncPlayerStats(parseInt(week), parseInt(season));
-    
-    if (result.success) {
-        res.json({
-            success: true,
-            message: `Stats sync completed for week ${week}, season ${season}`,
-            data: result
-        });
-    } else {
-        res.status(500).json({
-            success: false,
-            message: 'Stats sync failed',
-            error: result.error || result.message
-        });
-    }
-}));
 
 // Get sync status
 router.get('/sync/status', requireAdmin, asyncHandler(async (req, res) => {
@@ -306,6 +277,78 @@ router.post('/sync/force', requireAdmin, asyncHandler(async (req, res) => {
         message: 'Force sync initiated',
         data: result
     });
+}));
+
+// Debug endpoint to inspect Tank01 API data
+router.get('/debug/tank01/:week/:season', requireAdmin, asyncHandler(async (req, res) => {
+    const tank01Service = req.app.locals.tank01Service;
+    const { week, season } = req.params;
+    
+    if (!tank01Service) {
+        throw new APIError('Tank01 service not available', 500);
+    }
+    
+    try {
+        const rawData = await tank01Service.getPlayerStats(parseInt(week), parseInt(season));
+        res.json({
+            success: true,
+            dataType: typeof rawData,
+            dataKeys: rawData ? Object.keys(rawData) : null,
+            sampleData: rawData,
+            hasPlayerStats: rawData && rawData.playerStats ? 'Yes' : 'No'
+        });
+    } catch (error) {
+        res.json({
+            success: false,
+            error: error.message
+        });
+    }
+}));
+
+// Get stats sync status - MUST come before /sync/stats route
+router.get('/sync/stats/status', requireAdmin, asyncHandler(async (req, res) => {
+    const statsSyncService = req.app.locals.statsSyncService;
+    
+    if (!statsSyncService) {
+        throw new APIError('Stats sync service not available', 500);
+    }
+    
+    const status = statsSyncService.getSyncStatus();
+    const health = await statsSyncService.healthCheck();
+    
+    res.json({
+        success: true,
+        data: {
+            ...status,
+            health: health
+        }
+    });
+}));
+
+// Sync player stats for a specific week
+router.post('/sync/stats', requireAdmin, asyncHandler(async (req, res) => {
+    const statsSyncService = req.app.locals.statsSyncService;
+    const { week, season } = req.body;
+    
+    if (!statsSyncService) {
+        throw new APIError('Stats sync service not available', 500);
+    }
+    
+    // Validate parameters
+    const weekNum = parseInt(week);
+    const seasonYear = parseInt(season);
+    
+    if (isNaN(weekNum) || weekNum < 1 || weekNum > 18) {
+        throw new APIError('Week must be between 1 and 18', 400);
+    }
+    
+    if (isNaN(seasonYear) || seasonYear < 2020 || seasonYear > 2030) {
+        throw new APIError('Season must be between 2020 and 2030', 400);
+    }
+    
+    const result = await statsSyncService.syncWeeklyStats(weekNum, seasonYear);
+    
+    res.json(result);
 }));
 
 module.exports = router;

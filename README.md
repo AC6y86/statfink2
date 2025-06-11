@@ -7,17 +7,19 @@ A comprehensive Personal Football League (PFL) management system with automated 
 The project has a **complete full-stack fantasy football application** with:
 - ✅ Express API server with all fantasy football endpoints
 - ✅ Tank01 NFL API integration with 1,800+ players synchronized
+- ✅ Weekly player statistics synchronization from Tank01 API
 - ✅ All 32 NFL team defenses automatically managed
 - ✅ Web dashboard with comprehensive roster management
 - ✅ PFL-specific roster constraints and validation
 - ✅ Unlimited injured reserve management
 - ✅ Player deduplication and data integrity
 - ✅ Complete SQLite schema with defensive and kicking stats
+- ✅ Automatic fantasy point calculations for weekly stats
 - ✅ 98+ unit and integration tests passing
 - ✅ Comprehensive error handling and logging
 - ✅ Network-only deployment (no authentication required)
 
-**Current Phase**: Ready for production league management
+**Current Phase**: Complete NFL data integration with live statistics
 
 ## Features Implemented
 
@@ -25,6 +27,7 @@ The project has a **complete full-stack fantasy football application** with:
 - **Express API Server**: Complete REST API with all fantasy football endpoints
 - **Database Schema**: SQLite3 with defensive stats, kicking stats, and PPR scoring
 - **Tank01 Integration**: Live NFL player data sync with 1,792+ players
+- **Stats Sync Service**: Weekly player statistics synchronization from Tank01 API
 - **Web Dashboard**: Comprehensive database viewing and management interface
 - **Player Sync Service**: Automated NFL player data synchronization
 - **Testing Suite**: 98+ unit and integration tests with Jest
@@ -151,8 +154,8 @@ node tests/test-runner.js [unit|integration|fast|all|help]
 - ✅ **Phase 4**: Web dashboard interface
 - ✅ **Phase 5**: Complete roster management system
 - ✅ **Phase 6**: PFL roster constraints and validation
-- ⏳ **Phase 7**: Automated scoring and stats updates
-- ⏳ **Phase 8**: Real-time features and analytics
+- ✅ **Phase 7**: Tank01 stats sync and fantasy scoring system
+- ⏳ **Phase 8**: Automated matchups and real-time features
 
 ## API Endpoints
 
@@ -178,6 +181,8 @@ node tests/test-runner.js [unit|integration|fast|all|help]
 - `GET /api/admin/dashboard` - Admin overview with statistics
 - `GET /api/admin/sync/status` - Tank01 sync status
 - `POST /api/admin/sync/players` - Trigger player synchronization
+- `GET /api/admin/sync/stats/status` - Stats sync status
+- `POST /api/admin/sync/stats` - Weekly stats synchronization from Tank01
 
 ## Testing
 

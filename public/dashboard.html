@@ -819,6 +819,36 @@
                     </div>
                 </div>
 
+                <!-- Stats Sync Section -->
+                <div class="section">
+                    <h3>📊 Player Stats Sync</h3>
+                    <p>Sync player statistics from Tank01 API for weekly fantasy scoring</p>
+                    
+                    <div class="roster-controls">
+                        <div class="form-group">
+                            <label for="stats-week">Week:</label>
+                            <input type="number" id="stats-week" min="1" max="18" placeholder="Week (1-18)">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="stats-season">Season:</label>
+                            <input type="number" id="stats-season" min="2020" max="2030" placeholder="Season year">
+                        </div>
+                        
+                        <div class="form-group">
+                            <button class="btn" onclick="syncWeeklyStats()" id="sync-stats-btn">Sync Weekly Stats</button>
+                            <button class="btn btn-secondary" onclick="checkStatsStatus()">Check Stats Status</button>
+                        </div>
+                    </div>
+
+                    <div id="stats-sync-messages" class="messages"></div>
+                    
+                    <div id="stats-sync-results" class="settings-display" style="display: none;">
+                        <h4>Last Sync Results</h4>
+                        <div id="stats-results-content"></div>
+                    </div>
+                </div>
+
                 <div class="table-container">
                     <table>
                         <thead>
@@ -987,6 +1017,9 @@
                     console.timeEnd('Admin Tab Load');
                     console.log('🎉 Admin tab fully loaded');
                 });
+                
+                // Load current week/season for stats sync
+                loadCurrentWeekForStats();
             }
         }
 
@@ -1866,6 +1899,174 @@
                     messageDiv.parentNode.removeChild(messageDiv);
                 }
             }, 5000);
+        }
+
+        // Stats Sync Functions
+        async function syncWeeklyStats() {
+            const week = document.getElementById('stats-week').value;
+            const season = document.getElementById('stats-season').value;
+            const syncButton = document.getElementById('sync-stats-btn');
+            
+            if (!week || !season) {
+                showStatsMessage('Please enter both week and season', 'error');
+                return;
+            }
+            
+            // Validate inputs
+            const weekNum = parseInt(week);
+            const seasonYear = parseInt(season);
+            
+            if (weekNum < 1 || weekNum > 18) {
+                showStatsMessage('Week must be between 1 and 18', 'error');
+                return;
+            }
+            
+            if (seasonYear < 2020 || seasonYear > 2030) {
+                showStatsMessage('Season must be between 2020 and 2030', 'error');
+                return;
+            }
+            
+            try {
+                // Disable button and show loading state
+                syncButton.disabled = true;
+                syncButton.textContent = 'Syncing...';
+                showStatsMessage('Starting stats sync from Tank01 API...', 'info');
+                
+                const response = await fetch('/api/admin/sync/stats', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        week: weekNum,
+                        season: seasonYear
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showStatsMessage(result.message, 'success');
+                    
+                    // Show results
+                    const resultsDiv = document.getElementById('stats-sync-results');
+                    const resultsContent = document.getElementById('stats-results-content');
+                    
+                    resultsContent.innerHTML = `
+                        <div class="setting-item">
+                            <span class="setting-label">Players Synced:</span>
+                            <span class="setting-value">${result.data.players_synced}</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Week:</span>
+                            <span class="setting-value">${result.data.week}</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Season:</span>
+                            <span class="setting-value">${result.data.season}</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Duration:</span>
+                            <span class="setting-value">${result.data.duration}ms</span>
+                        </div>
+                    `;
+                    
+                    resultsDiv.style.display = 'block';
+                    
+                    // Clear form inputs
+                    document.getElementById('stats-week').value = '';
+                    document.getElementById('stats-season').value = '';
+                    
+                } else {
+                    showStatsMessage(`Stats sync failed: ${result.error || result.message}`, 'error');
+                }
+                
+            } catch (error) {
+                showStatsMessage(`Error syncing stats: ${error.message}`, 'error');
+            } finally {
+                // Re-enable button
+                syncButton.disabled = false;
+                syncButton.textContent = 'Sync Weekly Stats';
+            }
+        }
+
+        async function checkStatsStatus() {
+            try {
+                showStatsMessage('Checking stats sync status...', 'info');
+                
+                const response = await fetch('/api/admin/sync/stats/status');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const status = result.data;
+                    
+                    let statusMessage = 'Stats sync service is available';
+                    if (status.syncInProgress) {
+                        statusMessage = 'Stats sync is currently in progress';
+                    } else if (status.lastSyncTime) {
+                        statusMessage = `Last sync: ${new Date(status.lastSyncTime).toLocaleString()}`;
+                    }
+                    
+                    showStatsMessage(statusMessage, 'success');
+                    
+                    // Show health info
+                    if (status.health) {
+                        const healthStatus = status.health.status === 'healthy' ? '✅ Healthy' : 
+                                           status.health.status === 'unhealthy' ? '❌ Unhealthy' : '⚠️ Unknown';
+                        showStatsMessage(`${statusMessage} | Tank01 API: ${healthStatus}`, 'success');
+                    }
+                    
+                } else {
+                    showStatsMessage('Failed to get stats sync status', 'error');
+                }
+                
+            } catch (error) {
+                showStatsMessage(`Error checking stats status: ${error.message}`, 'error');
+            }
+        }
+
+        function showStatsMessage(message, type) {
+            const messagesContainer = document.getElementById('stats-sync-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+            
+            messagesContainer.innerHTML = '';
+            messagesContainer.appendChild(messageDiv);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.parentNode.removeChild(messageDiv);
+                }
+            }, 5000);
+        }
+
+        // Load current week and season for stats sync form
+        async function loadCurrentWeekForStats() {
+            try {
+                const response = await fetch('/api/league/settings');
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    const settings = result.data;
+                    
+                    // Set current week if available
+                    if (settings.current_week) {
+                        document.getElementById('stats-week').value = settings.current_week;
+                    }
+                    
+                    // Set current season if available
+                    if (settings.season_year) {
+                        document.getElementById('stats-season').value = settings.season_year;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading current week for stats:', error);
+                // If we can't load settings, default to current year
+                const currentYear = new Date().getFullYear();
+                document.getElementById('stats-season').value = currentYear;
+            }
         }
 
     </script>
