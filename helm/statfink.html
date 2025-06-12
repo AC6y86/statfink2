@@ -5,9 +5,11 @@
     <link href="statfink-styles.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body onload="read_cont()">
-    <div id="lastupdate" class="lastupdate"></div>
     <div id="controls" class="controls">
         <div id="optsmenu" class="menu">Options</div>
+        <div id="updatemsg" style="display: inline-block; margin-left: 10px; font-size: 11px; color: #333;"></div>
+    </div>
+    <div id="lastupdate" class="lastupdate"></div>
         <div id="firstmenu" class="firstmenu">
             <div id="detailsdiv" class="menuitem">Toggle Details</div>
             <div id="breakoutdiv" class="menuitem">Matchup In New Window</div>
@@ -28,21 +30,20 @@
                     <td class="fleague" id="fleague" colspan="2" nowrap="nowrap">Loading...</td>
                 </tr>
             </tbody>
-            <tfoot>
-                <tr>
-                    <td class="logocell" colspan="2"><img src="statfinklogo.png" class=""></td>
-                </tr>
-            </tfoot>
+            <tfoot></tfoot>
         </table>
         <div id="nfldiv" class="nfldiv">
             <table class="nfltable" id="nfltable" width="250">
                 <thead></thead>
                 <tbody>
-                    <tr>
-                        <td class="fleague" colspan="4">Updated 6-10-25, 11:35pm - All games are over, come back next week.</td>
-                    </tr>
                 </tbody>
-                <tfoot></tfoot>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 5px 0; background: transparent;">
+                            <img src="statfink_logo.png" alt="Statfink Fantasy Football Stat Tracker" style="width: 100%; max-width: 240px; height: auto;">
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -394,9 +395,13 @@
     function displayMatchup(data) {
         const matchup = data.matchup;
         
+        // Calculate players remaining (will be implemented later)
+        const team1Remaining = 0;
+        const team2Remaining = 0;
+        
         // Update team headers
-        document.getElementById("fteam0").innerHTML = `${matchup.team1_name} (${matchup.team1_owner})<br>${matchup.team1_points.toFixed(1)} pts`;
-        document.getElementById("fteam1").innerHTML = `${matchup.team2_name} (${matchup.team2_owner})<br>${matchup.team2_points.toFixed(1)} pts`;
+        document.getElementById("fteam0").innerHTML = `${matchup.team1_owner}(${team1Remaining})`;
+        document.getElementById("fteam1").innerHTML = `${matchup.team2_owner}(${team2Remaining})`;
         
         // Build team tables
         displayTeamRoster("team0", data.team1.starters, matchup.team1_name);
@@ -419,7 +424,7 @@
         headerRow.innerHTML = `
             <td>Pos</td>
             <td>Player</td>
-            <td align="right">Game Status</td>
+            <td align="right" nowrap>Game Status</td>
             <td align="right">Opp</td>
             <td align="right">FanPts</td>
         `;
@@ -441,20 +446,12 @@
             
             row.innerHTML = `
                 <td class="position position-${player.position}">${player.position}</td>
-                <td class="playername">${playerName} &nbsp;&nbsp;${player.team}</td>
+                <td class="playername" nowrap>${playerName} &nbsp;&nbsp;${player.team}<br>
+                    <span style="font-size: 10px; color: #000;">${formatPlayerStatsCompact(player.position, player.stats)}</span>
+                </td>
                 <td class="status" align="right">Final</td>
                 <td class="opp" align="right">@OPP</td>
                 <td class="points fanpts" align="right">${points.toFixed(2)}</td>
-            `;
-            
-            // Stats detail row
-            const detailRow = tbody.insertRow(-1);
-            detailRow.className = rowIndex % 2 ? "playerrow2" : "playerrow1";
-            detailRow.id = `t${tableId.slice(-1)}r${rowIndex}combstat`;
-            
-            const statsText = formatPlayerStatsCompact(player.position, player.stats);
-            detailRow.innerHTML = `
-                <td colspan="5" style="font-size: smaller;">${statsText}</td>
             `;
             
             rowIndex++;
@@ -514,7 +511,7 @@
 
     // Format player stats in compact form like original Statfink
     function formatPlayerStatsCompact(position, stats) {
-        if (!stats) return '<span>0 Stats</span>';
+        if (!stats) return '0 Stats';
         
         let details = [];
         
@@ -523,12 +520,10 @@
                 if (stats.completions > 0) details.push(`${stats.completions} Comp`);
                 if (stats.passing_attempts - stats.completions > 0) details.push(`${stats.passing_attempts - stats.completions} Inc`);
                 if (stats.passing_yards > 0) details.push(`${stats.passing_yards} Pyds`);
-                if (stats.rushing_attempts > 0) details.push(`${stats.rushing_attempts} Rshs`);
                 if (stats.rushing_yards > 0) details.push(`${stats.rushing_yards} Rshyds`);
                 if (stats.passing_tds + stats.rushing_tds > 0) details.push(`${stats.passing_tds + stats.rushing_tds} TDs`);
                 break;
             case 'RB':
-                if (stats.rushing_attempts > 0) details.push(`${stats.rushing_attempts} Rshs`);
                 if (stats.rushing_yards > 0) details.push(`${stats.rushing_yards} Rshyds`);
                 if (stats.receptions > 0) details.push(`${stats.receptions} Recs`);
                 if (stats.receiving_yards > 0) details.push(`${stats.receiving_yards} Recyds`);
@@ -539,35 +534,31 @@
                 if (stats.receptions > 0) details.push(`${stats.receptions} Recs`);
                 if (stats.receiving_yards > 0) details.push(`${stats.receiving_yards} Recyds`);
                 if (stats.receiving_tds > 0) details.push(`${stats.receiving_tds} TDs`);
-                if (stats.rushing_attempts > 0) details.push(`${stats.rushing_attempts} Rshs`);
-                if (stats.rushing_yards > 0) details.push(`${stats.rushing_yards} Rshyds`);
                 break;
             case 'K':
-                if (stats.field_goals_made > 0) details.push(`${stats.field_goals_made} FGG19`);
-                if (stats.extra_points_made > 0) details.push(`${stats.extra_points_made} XPG`);
-                if (stats.extra_points_missed > 0) details.push(`${stats.extra_points_missed} XPM`);
+                if (stats.field_goals_made > 0) details.push(`${stats.field_goals_made} FG`);
+                if (stats.extra_points_made > 0) details.push(`${stats.extra_points_made} XP`);
                 break;
             case 'DST':
-                if (stats.sacks > 0) details.push(`${stats.sacks} Scks`);
+                if (stats.sacks > 0) details.push(`${stats.sacks} Sck`);
                 if (stats.interceptions > 0) details.push(`${stats.interceptions} Int`);
-                if (stats.fumbles_recovered > 0) details.push(`${stats.fumbles_recovered} FR`);
-                if (stats.defensive_tds > 0) details.push(`${stats.defensive_tds} TD`);
-                if (stats.yards_allowed !== undefined) details.push(`${stats.yards_allowed} YdsAllw`);
-                if (stats.points_allowed !== undefined) details.push(`${stats.points_allowed} PtsAllw`);
+                if (stats.points_allowed !== undefined) details.push(`${stats.points_allowed} PA`);
                 break;
         }
         
         if (details.length === 0) {
-            return '<span>0 Stats</span>';
+            return '0 Stats';
         }
         
-        return details.map((detail, index) => `<span>${detail}</span>`).join(', ');
+        return details.join(', ');
     }
 
     // Update last update time
     function updateLastUpdate() {
         const now = new Date();
         document.getElementById("lastupdate").textContent = `Last Update: ${now.toLocaleTimeString()}`;
+        // Update the message next to Options
+        document.getElementById("updatemsg").textContent = "Updated 6-10-25, 11:35pm - All games are over, come back next week.";
     }
 
     // Refresh data

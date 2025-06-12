@@ -1,18 +1,18 @@
-.fteam { color: #fff; font-size: 12px; font-family: arial; font-weight: 900; background-color: #556; padding: 3px 3px 3px 4px; border-color: #343443; }
-.fleague { color: #000; font-size: 15px; font-family: arial; font-weight: 900; background-color: #ddd; padding: 3px 3px 3px 4px; border-color: #343443; }
+.fteam { color: #fff; font-size: 14px; font-family: arial; font-weight: 900; background-color: #556; padding: 5px 3px 5px 4px; border-color: #343443; }
+.fleague { color: #000; font-size: 18px; font-family: arial; font-weight: 900; background-color: #ddd; padding: 5px 3px 5px 4px; border-color: #343443; }
 .fleaguechat { color: #b83535;; font-size: 15px; font-family: arial; font-weight: 900; background-color: #ddd; padding: 3px 3px 3px 4px; border-color: #343443; cursor: pointer; }
-.pointsrow { color: #000; font-size: 11px; font-family: arial; background-color: #ddd; padding: 3px 3px 3px 4px; }
+.pointsrow { color: #000; font-size: 12px; font-family: arial; background-color: #ddd; padding: 3px 3px 3px 4px; }
 .playerscored { color: #fff; font-size: 12px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; }
 .changedpoints { font-size: 10px; color: #fff; font-family: arial; background-image: url(hlcellbg.png); padding: 0px 1px 0px 2px; vertical-align: middle; }
 .nflchangedpoints { font-size: 9px; color: #fff; font-family: arial; background-image: url(hlcellbg.png); padding: 0px 1px 0px 2px; vertical-align: middle; }
-.lastupdate { position: absolute; top: 0px; left: 325px; color: #000; font-size: 12px; font-family: arial; font-weight: 900; padding: 3px 3px 3px 4px;}
-.controls { position: absolute; top: 0px; left: 260px; z-index: 95;}
-.playerrow1 { color: #000; font-size: 12px; font-family: arial; background-image: url(cellbg2.png); padding: 3px 3px 3px 4px; }
-.playerrow2 { color: #000; font-size: 12px; font-family: arial; background-image: url(cellbg.png); padding: 3px 3px 3px 4px; }
+.lastupdate { position: absolute; top: 25px; left: 260px; color: #000; font-size: 11px; font-family: arial; font-weight: normal; padding: 3px 3px 3px 4px;}
+.controls { position: absolute; top: 0px; left: 260px; z-index: 95; display: flex; align-items: center;}
+.playerrow1 { color: #000; font-size: 13px; font-family: arial; background-image: url(cellbg2.png); padding: 5px 3px 2px 4px; }
+.playerrow2 { color: #000; font-size: 13px; font-family: arial; background-image: url(cellbg.png); padding: 5px 3px 2px 4px; }
 .benchplayerrow1 { color: #000; font-size: 12px; font-family: arial; background-image: url(benchcellbg2.png); padding: 3px 3px 3px 4px; }
 .benchplayerrow2 { color: #000; font-size: 12px; font-family: arial; background-image: url(benchcellbg.png); padding: 3px 3px 3px 4px; }
-.matchuprow1 { color: #000; font-size: 12px; font-family: arial; background-image: url(cellbg2.png); padding: 3px 3px 3px 4px; cursor: pointer; }
-.matchuprow2 { color: #000; font-size: 12px; font-family: arial; background-image: url(cellbg.png); padding: 3px 3px 3px 4px; cursor: pointer; }
+.matchuprow1 { color: #000; font-size: 13px; font-family: arial; background-image: url(cellbg2.png); padding: 3px 3px 3px 4px; cursor: pointer; }
+.matchuprow2 { color: #000; font-size: 13px; font-family: arial; background-image: url(cellbg.png); padding: 3px 3px 3px 4px; cursor: pointer; }
 .matchuprowhover { color: #fff; font-size: 12px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; cursor: pointer; }
 .buttonhover {text-align:left; color: #fff; font-size: 10px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; cursor: pointer; z-index: 100;}
 .menu { text-align: left; width: 50px; color: #000; font-size: 10px; padding: 2px; font-family: arial; background-color: #fff; padding: 3px 3px 3px 4px; cursor: pointer; border: 1px solid #556; border-top: 0px;}
@@ -25,7 +25,12 @@
 .leaguetable { border: 1px solid #556; border-top: 0px;}
 .nfldiv { padding: 5px 0px 0px 0px;}
 .nfltable { border: 1px solid #556; }
-.logocell { padding: 0px 0px 0px 0px; }
+.logocell { 
+    padding: 5px;
+    background-color: transparent;
+    text-align: center;
+    border: none;
+}
 .nfl1 { color: #000; font-size: 11px; font-family: arial; background-image: url(cellbg2.png); cursor: pointer;}
 .nfl2 { color: #000; font-size: 11px; font-family: arial; background-image: url(cellbg.png);  cursor: pointer;}
 .nfl1status { color: #000; font-size: 8px; font-family: arial; background-image: url(cellbg2.png); cursor: pointer; text-align: center;}
@@ -39,8 +44,8 @@
 .finalscore { font-family: arial; }
 .statusfuture { font-style: italic; } 
 .playernameinprogress { font-weight: bold; }
-.fanpts { font-weight: bold; } 
-.fanptsbig { font-weight: bold; } 
+.fanpts { font-weight: bold; font-size: 14px; } 
+.fanptsbig { font-weight: bold; font-size: 15px; } 
 .floatleftpad { float: left; padding-right: 5px; }
 .floatleft { float: left; border-style: solid; border-width: 1px; border-color: #556; }
 .floatright { position: relative; }
@@ -57,7 +62,7 @@ table {
 td {
     border: none;
     font-family: arial;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 /* Ensure no white gaps between cells */
@@ -77,4 +82,27 @@ body {
     font-size: 12px;
     background-image: url(statfinkbg.png);
     background-repeat: repeat;
+}
+
+/* Add spacing between player name and stats */
+.playername {
+    padding-bottom: 4px;
+}
+
+/* Stats row styling */
+td[colspan="5"] {
+    padding-top: 2px;
+    padding-bottom: 6px;
+    line-height: 1.4;
+}
+
+/* Position column styling */
+.position {
+    font-weight: bold;
+    width: 30px;
+}
+
+/* Team tables width */
+.matchuptable {
+    width: 350px;
 }
