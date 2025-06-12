@@ -127,12 +127,12 @@ app.get('/health', async (req, res) => {
 
 // Dashboard route (before static middleware)
 app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/dashboard.html'));
+    res.sendFile(path.join(__dirname, '../helm/dashboard.html'));
 });
 
 // Roster management route (before static middleware)
 app.get('/roster', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/roster.html'));
+    res.sendFile(path.join(__dirname, '../helm/roster.html'));
 });
 
 // API Routes
@@ -146,8 +146,8 @@ app.use('/api/roster-history', require('./routes/rosterHistory'));
 // Admin routes
 app.use('/api/admin', require('./routes/admin'));
 
-// Serve static files from public directory (after specific routes)
-app.use(express.static(path.join(__dirname, '../public')));
+// Serve static files from helm directory (after specific routes)
+app.use(express.static(path.join(__dirname, '../helm')));
 
 // Serve main page for any non-API routes
 app.get('*', (req, res) => {
