@@ -90,6 +90,10 @@ class StatsSyncService {
             if (playerStats.length > 0) {
                 await this.db.upsertPlayerStatsBulk(playerStats);
                 logInfo(`Updated database with ${playerStats.length} player stat entries`);
+                
+                // Automatically recalculate team scores for this week
+                await this.recalculateTeamScores(week, season);
+                logInfo(`Recalculated team scores for Week ${week}, ${season}`);
             } else {
                 logInfo('No player stats to update in database');
             }
@@ -323,6 +327,49 @@ class StatsSyncService {
                 status: 'unhealthy',
                 error: error.message
             };
+        }
+    }
+
+    // Recalculate team scores for a specific week/season after stats sync
+    async recalculateTeamScores(week, season) {
+        try {
+            logInfo(`Recalculating team scores for Week ${week}, ${season}`);
+            
+            // Get all teams
+            const teams = await this.db.all('SELECT team_id FROM teams');
+            
+            for (const team of teams) {
+                // Calculate total points for starters
+                const result = await this.db.get(`
+                    SELECT SUM(ps.fantasy_points) as total_points
+                    FROM fantasy_rosters fr
+                    JOIN player_stats ps ON fr.player_id = ps.player_id
+                    WHERE fr.team_id = ? AND ps.week = ? AND ps.season = ?
+                    AND fr.roster_position = 'starter'
+                `, [team.team_id, week, season]);
+                
+                const totalPoints = result?.total_points || 0;
+                
+                // Update matchup scores for this team as team1
+                await this.db.run(`
+                    UPDATE matchups 
+                    SET team1_points = ? 
+                    WHERE team1_id = ? AND week = ? AND season = ?
+                `, [totalPoints, team.team_id, week, season]);
+                
+                // Update matchup scores for this team as team2
+                await this.db.run(`
+                    UPDATE matchups 
+                    SET team2_points = ? 
+                    WHERE team2_id = ? AND week = ? AND season = ?
+                `, [totalPoints, team.team_id, week, season]);
+            }
+            
+            logInfo(`Team scores recalculated for ${teams.length} teams`);
+            
+        } catch (error) {
+            logError(`Error recalculating team scores for Week ${week}, ${season}:`, error);
+            throw error;
         }
     }
 }

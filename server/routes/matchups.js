@@ -198,7 +198,43 @@ router.get('/:week/:season', asyncHandler(async (req, res) => {
         throw new APIError('Invalid season year', 400);
     }
     
-    const matchups = await db.getWeekMatchups(weekNum, seasonYear);
+    let matchups = await db.getWeekMatchups(weekNum, seasonYear);
+    let actualWeek = weekNum;
+    
+    // If no matchups found for requested week, fall back to Week 1 matchups
+    if (!matchups || matchups.length === 0) {
+        matchups = await db.getWeekMatchups(1, seasonYear);
+        if (matchups && matchups.length > 0) {
+            // Update the matchups to use current week's team scores
+            const updatedMatchups = await Promise.all(matchups.map(async (matchup) => {
+                // Get team scores for the requested week
+                const team1Score = await db.get(`
+                    SELECT SUM(ps.fantasy_points) as total_points
+                    FROM fantasy_rosters fr
+                    JOIN player_stats ps ON fr.player_id = ps.player_id
+                    WHERE fr.team_id = ? AND ps.week = ? AND ps.season = ?
+                    AND fr.roster_position = 'starter'
+                `, [matchup.team1_id, weekNum, seasonYear]);
+                
+                const team2Score = await db.get(`
+                    SELECT SUM(ps.fantasy_points) as total_points
+                    FROM fantasy_rosters fr
+                    JOIN player_stats ps ON fr.player_id = ps.player_id
+                    WHERE fr.team_id = ? AND ps.week = ? AND ps.season = ?
+                    AND fr.roster_position = 'starter'
+                `, [matchup.team2_id, weekNum, seasonYear]);
+                
+                return {
+                    ...matchup,
+                    week: weekNum, // Update to requested week
+                    season: seasonYear,
+                    team1_points: team1Score?.total_points || 0,
+                    team2_points: team2Score?.total_points || 0
+                };
+            }));
+            matchups = updatedMatchups;
+        }
+    }
     
     // Add additional matchup information
     const enrichedMatchups = matchups.map(matchup => ({
@@ -215,7 +251,8 @@ router.get('/:week/:season', asyncHandler(async (req, res) => {
         data: enrichedMatchups,
         count: enrichedMatchups.length,
         week: weekNum,
-        season: seasonYear
+        season: seasonYear,
+        fallback_used: actualWeek !== weekNum
     });
 }));
 

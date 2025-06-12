@@ -18,47 +18,63 @@ class ScoringService {
     }
 
     async calculateFantasyPoints(playerStats) {
-        await this.loadScoringRules();
         let points = 0;
 
-        // Offensive scoring
-        points += (playerStats.passing_yards || 0) * (this.scoringRules.passing_yards || 0);
-        points += (playerStats.passing_tds || 0) * (this.scoringRules.passing_tds || 0);
-        points += (playerStats.interceptions || 0) * (this.scoringRules.interceptions || 0);
-        points += (playerStats.rushing_yards || 0) * (this.scoringRules.rushing_yards || 0);
-        points += (playerStats.rushing_tds || 0) * (this.scoringRules.rushing_tds || 0);
-        points += (playerStats.receiving_yards || 0) * (this.scoringRules.receiving_yards || 0);
-        points += (playerStats.receiving_tds || 0) * (this.scoringRules.receiving_tds || 0);
-        points += (playerStats.receptions || 0) * (this.scoringRules.receptions || 0);
-        points += (playerStats.fumbles || 0) * (this.scoringRules.fumbles || 0);
+        // Touchdown scoring
+        const totalTDs = (playerStats.passing_tds || 0) + (playerStats.rushing_tds || 0) + (playerStats.receiving_tds || 0);
+        points += (playerStats.passing_tds || 0) * 5; // Touchdown Pass: 5 points
+        points += ((playerStats.rushing_tds || 0) + (playerStats.receiving_tds || 0)) * 8; // Touchdown Scored: 8 points
 
-        // Defensive scoring (DST)
-        points += (playerStats.sacks || 0) * (this.scoringRules.sacks || 0);
-        points += (playerStats.def_interceptions || 0) * (this.scoringRules.def_interceptions || 0);
-        points += (playerStats.fumbles_recovered || 0) * (this.scoringRules.fumbles_recovered || 0);
-        points += (playerStats.def_touchdowns || 0) * (this.scoringRules.def_touchdowns || 0);
-        points += (playerStats.safeties || 0) * (this.scoringRules.safeties || 0);
+        // Two Point Conversions
+        points += (playerStats.two_point_conversions_pass || 0) * 2; // Two Point Conversion Pass: 2 points
+        points += (playerStats.two_point_conversions_run || 0) * 2; // Two Point Conversion Scored: 2 points
 
-        // Points allowed scoring for DST (tiered system)
-        if (playerStats.points_allowed !== undefined && playerStats.points_allowed !== null) {
-            if (playerStats.points_allowed === 0) points += 10;
-            else if (playerStats.points_allowed <= 6) points += 7;
-            else if (playerStats.points_allowed <= 13) points += 4;
-            else if (playerStats.points_allowed <= 20) points += 1;
-            else if (playerStats.points_allowed <= 27) points += 0;
-            else if (playerStats.points_allowed <= 34) points -= 1;
-            else points -= 4;
+        // Passing Yards (tiered system)
+        const passingYards = playerStats.passing_yards || 0;
+        if (passingYards >= 400) points += 15;
+        else if (passingYards >= 325) points += 12;
+        else if (passingYards >= 250) points += 9;
+        else if (passingYards >= 175) points += 6;
+
+        // Receiving Yards (tiered system) 
+        const receivingYards = playerStats.receiving_yards || 0;
+        if (receivingYards >= 200) points += 15;
+        else if (receivingYards >= 150) points += 12;
+        else if (receivingYards >= 100) points += 9;
+        else if (receivingYards >= 75) points += 6;
+
+        // Rushing Yards (tiered system)
+        const rushingYards = playerStats.rushing_yards || 0;
+        if (rushingYards >= 200) points += 15;
+        else if (rushingYards >= 150) points += 12;
+        else if (rushingYards >= 100) points += 9;
+        else if (rushingYards >= 75) points += 6;
+
+        // Kicker scoring
+        points += (playerStats.field_goals_made || 0) * 2; // Field goals: 2 points
+        points += (playerStats.extra_points_made || 0) * 0.5; // Extra points: 0.5 points
+
+        // Team Defense scoring
+        if (playerStats.position === 'DST') {
+            points += (playerStats.def_touchdowns || 0) * 8; // Touchdown scored: 8 points
+            
+            // Defensive bonuses (least points/yards allowed among 16 teams)
+            // This would need to be calculated weekly based on all team performances
+            // For now, using placeholder logic
+            if (playerStats.points_allowed !== undefined && playerStats.points_allowed <= 6) {
+                points += 5; // Least points allowed bonus
+            }
+            if (playerStats.yards_allowed !== undefined && playerStats.yards_allowed <= 250) {
+                points += 5; // Least yards allowed bonus  
+            }
         }
 
-        // Kicking scoring
-        points += (playerStats.extra_points_made || 0) * (this.scoringRules.extra_points_made || 0);
-        points += (playerStats.field_goals_0_39 || 0) * (this.scoringRules.field_goals_0_39 || 0);
-        points += (playerStats.field_goals_40_49 || 0) * (this.scoringRules.field_goals_40_49 || 0);
-        points += (playerStats.field_goals_50_plus || 0) * (this.scoringRules.field_goals_50_plus || 0);
-        
-        // Missed field goals penalty
-        const missedFGs = (playerStats.field_goals_attempted || 0) - (playerStats.field_goals_made || 0);
-        points += missedFGs * (this.scoringRules.field_goals_missed || 0);
+        // Kick/Punt Return TDs
+        points += (playerStats.return_tds || 0) * 20; // Kick or Punt returner touchdown: 20 points
+
+        // Negative points for turnovers
+        points -= (playerStats.interceptions || 0) * 2; // Interceptions thrown
+        points -= (playerStats.fumbles_lost || 0) * 2; // Fumbles lost
 
         return Math.round(points * 100) / 100; // Round to 2 decimals
     }

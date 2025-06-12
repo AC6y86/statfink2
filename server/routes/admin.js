@@ -351,4 +351,31 @@ router.post('/sync/stats', requireAdmin, asyncHandler(async (req, res) => {
     res.json(result);
 }));
 
+// Recalculate all fantasy points using current scoring system
+router.post('/recalculate/fantasy-points', requireAdmin, asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const scoringService = req.app.locals.scoringService;
+    const { recalculateAllFantasyPoints } = require('../utils/recalculateFantasyPoints');
+    
+    if (!scoringService) {
+        throw new APIError('Scoring service not available', 500);
+    }
+    
+    try {
+        const result = await recalculateAllFantasyPoints(db, scoringService);
+        
+        res.json({
+            success: true,
+            message: 'Fantasy points recalculation completed',
+            data: result
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Fantasy points recalculation failed',
+            error: error.message
+        });
+    }
+}));
+
 module.exports = router;
