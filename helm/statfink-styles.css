@@ -11,9 +11,25 @@
 .playerrow2 { color: #000; font-size: 12px; font-family: arial; background-image: url(cellbg.png); padding: 3px 3px 3px 4px; }
 .benchplayerrow1 { color: #000; font-size: 12px; font-family: arial; background-image: url(benchcellbg2.png); padding: 3px 3px 3px 4px; }
 .benchplayerrow2 { color: #000; font-size: 12px; font-family: arial; background-image: url(benchcellbg.png); padding: 3px 3px 3px 4px; }
-.matchuprow1 { color: #000; font-size: 13px; font-family: arial; background-image: url(cellbg2.png); padding: 3px 3px 3px 4px; cursor: pointer; }
-.matchuprow2 { color: #000; font-size: 13px; font-family: arial; background-image: url(cellbg.png); padding: 3px 3px 3px 4px; cursor: pointer; }
-.matchuprowhover { color: #fff; font-size: 12px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; cursor: pointer; }
+.matchuprow1 { color: #000; font-size: 13px; font-family: arial; background-image: url(cellbg2.png); padding: 8px 3px 8px 4px; cursor: pointer; }
+.matchuprow2 { color: #000; font-size: 13px; font-family: arial; background-image: url(cellbg.png); padding: 8px 3px 8px 4px; cursor: pointer; }
+
+.matchuprowhover { 
+    color: #fff !important; 
+    font-size: 13px; 
+    font-family: arial; 
+    background-color: #b83535 !important; 
+    background-image: none !important; 
+    padding: 8px 3px 8px 4px; 
+    cursor: pointer; 
+}
+
+.matchuprowhover td {
+    color: #fff !important;
+    background-color: #b83535 !important;
+    background-image: none !important;
+}
+.matchuprowselected { color: #fff; font-size: 13px; font-family: arial; background-color: #b83535 !important; padding: 3px 3px 3px 4px; cursor: pointer; }
 .buttonhover {text-align:left; color: #fff; font-size: 10px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; cursor: pointer; z-index: 100;}
 .menu { text-align: left; width: 50px; color: #000; font-size: 10px; padding: 2px; font-family: arial; background-color: #fff; padding: 3px 3px 3px 4px; cursor: pointer; border: 1px solid #556; border-top: 0px;}
 .menuhover { text-align: left; width: 50px; color: #fff; font-size: 10px; padding: 2px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; cursor: pointer; border: 1px solid #556; border-top: 0px;}

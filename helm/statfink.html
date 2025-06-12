@@ -172,7 +172,7 @@
 
     // Matchup row event handlers
     function matchupmouseover(e) {
-        const target = e.target || e.srcElement;
+        const target = e.currentTarget; // Use currentTarget to get the row, not the cell
         const rowId = target.id;
         if (!rowId) return;
         
@@ -185,7 +185,7 @@
     }
 
     function matchupmouseout(e) {
-        const target = e.target || e.srcElement;
+        const target = e.currentTarget; // Use currentTarget to get the row, not the cell
         const rowId = target.id;
         if (!rowId) return;
         
@@ -363,14 +363,6 @@
     // Select and load a specific matchup
     async function selectMatchup(matchupId) {
         currentMatchupId = matchupId;
-        
-        // Update visual selection
-        const rows = document.getElementById("leaguetable").getElementsByClassName("matchuprow");
-        for (let row of rows) {
-            row.style.backgroundColor = "";
-        }
-        event.currentTarget.style.backgroundColor = "#e0e0e0";
-        
         await loadMatchup(matchupId);
     }
 
