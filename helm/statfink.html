@@ -1,0 +1,589 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>Statfink - PFL Fantasy Football</title>
+    <link href="statfink-styles.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body onload="read_cont()">
+    <div id="lastupdate" class="lastupdate"></div>
+    <div id="controls" class="controls">
+        <div id="optsmenu" class="menu">Options</div>
+        <div id="firstmenu" class="firstmenu">
+            <div id="detailsdiv" class="menuitem">Toggle Details</div>
+            <div id="breakoutdiv" class="menuitem">Matchup In New Window</div>
+            <div id="injuriesdiv" class="menuitem">Injuries</div>
+            <div id="defensivediv" class="menuitem">Defensive TDs</div>
+            <div class="menuitem" id="safetiesdiv">Safeties</div>
+            <div id="zerodiv" class="menuitem">Zero Check</div>
+            <div id="scoresdiv" class="menuitem">Scores File</div>
+        </div>
+        <div id="configdiv" class="configdiv"></div>
+    </div>
+
+    <div id="leaguediv">
+        <table class="leaguetable" id="leaguetable" width="250">
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td class="fleague" id="fleague" colspan="2" nowrap="nowrap">Loading...</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="logocell" colspan="2"><img src="statfinklogo.png" class=""></td>
+                </tr>
+            </tfoot>
+        </table>
+        <div id="nfldiv" class="nfldiv">
+            <table class="nfltable" id="nfltable" width="250">
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="fleague" colspan="4">Updated 6-10-25, 11:35pm - All games are over, come back next week.</td>
+                    </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+    <div id="teams">
+        <div id="team0div">
+            <table class="matchuptable" id="team0" width="325px">
+                <thead></thead>
+                <tbody>
+                    <tr id="fteam0row">
+                        <td class="fteam" id="fteam0" colspan="5" nowrap="nowrap">Loading...</td>
+                    </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+        <div id="team1div">
+            <table class="matchuptable" id="team1" width="325px">
+                <thead></thead>
+                <tbody>
+                    <tr id="fteam1row">
+                        <td class="fteam" id="fteam1" colspan="5" nowrap="nowrap">Loading...</td>
+                    </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+</body>
+
+<script>
+    // Configuration
+    var bench = 0;
+    var breakout = 0;
+    var matchup = 0;
+    var view = 0;
+    var league = "pfl";
+    var weekover = 0;
+    var iterations = 0;
+    var teamchange = 1;
+    var lastupdate = 0;
+    var live = 1;
+    var nextgame = 0;
+    var currentMatchupId = null;
+    var currentWeek = null;
+    var currentSeason = null;
+    var refreshInterval = null;
+    var showDetails = false;
+    var currentMatchupData = null;
+
+    // Initialize layout
+    if (view == 0) {
+        document.getElementById("team0div").className = "floatleftpad";
+        document.getElementById("team1div").className = "floatleft";
+        document.getElementById("team0").className = "floatleft";
+    }
+    document.getElementById("teams").className = "absteams";
+    document.getElementById("leaguediv").className = "absleague";
+
+    // Menu event handlers
+    var buttondivs = document.getElementById("controls").getElementsByTagName("div");
+    for (var divnum = 0; divnum < buttondivs.length; divnum++) {
+        buttondivs[divnum].onclick = buttonclick;
+        buttondivs[divnum].onmouseover = buttonmouseover;
+        buttondivs[divnum].onmouseout = buttonmouseout;
+        if (buttondivs[divnum].id == "firstmenu") {
+            buttondivs[divnum].onmouseout = menumouseout;
+            buttondivs[divnum].onmouseover = "";
+            buttondivs[divnum].onclick = "";
+            menuvis(0);
+        }
+    }
+
+    // Menu visibility control
+    function menuvis(show) {
+        document.getElementById("firstmenu").style.display = show ? "block" : "none";
+    }
+
+    // Button event handlers
+    function buttonclick(e) {
+        var target = e.target || e.srcElement;
+        switch(target.id) {
+            case "optsmenu":
+                menuvis(document.getElementById("firstmenu").style.display === "none");
+                break;
+            case "detailsdiv":
+                toggleDetails();
+                break;
+            case "breakoutdiv":
+                openMatchupWindow();
+                break;
+            case "injuriesdiv":
+                showInjuries();
+                break;
+            case "defensivediv":
+                showDefensiveTDs();
+                break;
+            case "safetiesdiv":
+                showSafeties();
+                break;
+            case "zerodiv":
+                checkZeroScores();
+                break;
+            case "scoresdiv":
+                showScoresFile();
+                break;
+        }
+    }
+
+    function buttonmouseover(e) {
+        var target = e.target || e.srcElement;
+        if (target.className === "menuitem") {
+            target.style.backgroundColor = "#f0f0f0";
+        }
+    }
+
+    function buttonmouseout(e) {
+        var target = e.target || e.srcElement;
+        if (target.className === "menuitem") {
+            target.style.backgroundColor = "";
+        }
+    }
+
+    function menumouseout() {
+        // Implement menu mouseout if needed
+    }
+
+    // Matchup row event handlers
+    function matchupmouseover(e) {
+        const target = e.target || e.srcElement;
+        const rowId = target.id;
+        if (!rowId) return;
+        
+        const matchIndex = rowId.substring(2, 3);
+        const row1 = document.getElementById(`lm${matchIndex}r0`);
+        const row2 = document.getElementById(`lm${matchIndex}r1`);
+        
+        if (row1) row1.className = "matchuprowhover";
+        if (row2) row2.className = "matchuprowhover";
+    }
+
+    function matchupmouseout(e) {
+        const target = e.target || e.srcElement;
+        const rowId = target.id;
+        if (!rowId) return;
+        
+        const matchIndex = rowId.substring(2, 3);
+        const originalClass = matchIndex % 2 ? "matchuprow2" : "matchuprow1";
+        const row1 = document.getElementById(`lm${matchIndex}r0`);
+        const row2 = document.getElementById(`lm${matchIndex}r1`);
+        
+        if (row1) row1.className = originalClass;
+        if (row2) row2.className = originalClass;
+    }
+
+    // Toggle details view
+    function toggleDetails() {
+        showDetails = !showDetails;
+        if (currentMatchupData) {
+            displayMatchup(currentMatchupData);
+        }
+    }
+
+    // Open matchup in new window
+    function openMatchupWindow() {
+        if (currentMatchupId) {
+            window.open(`statfink.html?matchup=${currentMatchupId}&week=${currentWeek}&season=${currentSeason}`, '_blank');
+        }
+    }
+
+    // Show injuries (placeholder)
+    function showInjuries() {
+        alert("Injuries feature coming soon!");
+    }
+
+    // Show defensive TDs (placeholder)
+    function showDefensiveTDs() {
+        alert("Defensive TDs feature coming soon!");
+    }
+
+    // Show safeties (placeholder)
+    function showSafeties() {
+        alert("Safeties feature coming soon!");
+    }
+
+    // Check for zero scores
+    function checkZeroScores() {
+        if (!currentMatchupData) return;
+        
+        let zeroPlayers = [];
+        currentMatchupData.team1.starters.forEach(player => {
+            if (player.stats.fantasy_points === 0) {
+                zeroPlayers.push(`${currentMatchupData.matchup.team1_name}: ${player.name}`);
+            }
+        });
+        currentMatchupData.team2.starters.forEach(player => {
+            if (player.stats.fantasy_points === 0) {
+                zeroPlayers.push(`${currentMatchupData.matchup.team2_name}: ${player.name}`);
+            }
+        });
+        
+        if (zeroPlayers.length > 0) {
+            alert("Players with zero points:\n" + zeroPlayers.join("\n"));
+        } else {
+            alert("No players with zero points!");
+        }
+    }
+
+    // Show scores file (placeholder)
+    function showScoresFile() {
+        alert("Scores file feature coming soon!");
+    }
+
+    // Main initialization
+    async function read_cont() {
+        try {
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const matchupParam = urlParams.get('matchup');
+            const weekParam = urlParams.get('week');
+            const seasonParam = urlParams.get('season');
+
+            // Load league settings
+            const settingsResponse = await fetch('/api/league/settings');
+            const settings = await settingsResponse.json();
+            
+            if (settings.success) {
+                currentWeek = weekParam || settings.data.current_week;
+                currentSeason = seasonParam || settings.data.season_year;
+                document.getElementById("fleague").innerHTML = `${settings.data.league_name || 'PFL'}<br>Week ${currentWeek}`;
+            }
+
+            // Load matchups for current week
+            await loadWeekMatchups();
+            
+            // If specific matchup requested, load it
+            if (matchupParam) {
+                currentMatchupId = parseInt(matchupParam);
+                await loadMatchup(currentMatchupId);
+            } else if (matchup === 0 && document.getElementById("leaguetable").rows.length > 1) {
+                // Load first matchup by default
+                document.getElementById("leaguetable").rows[1].click();
+            }
+
+            // Start refresh interval (30 seconds)
+            refreshInterval = setInterval(refreshData, 30000);
+            
+        } catch (error) {
+            console.error('Error initializing:', error);
+            document.getElementById("fleague").textContent = "Error loading league data";
+        }
+    }
+
+    // Load all matchups for the week
+    async function loadWeekMatchups() {
+        try {
+            const response = await fetch(`/api/matchups/${currentWeek}/${currentSeason}`);
+            const data = await response.json();
+            
+            if (data.success) {
+                const tbody = document.getElementById("leaguetable").getElementsByTagName("tbody")[0];
+                
+                // Keep the header row
+                while (tbody.rows.length > 1) {
+                    tbody.deleteRow(1);
+                }
+                
+                // Add matchup rows in original format
+                data.data.forEach((matchup, index) => {
+                    // Team 1 row
+                    const row1 = tbody.insertRow(-1);
+                    row1.className = index % 2 ? "matchuprow2" : "matchuprow1";
+                    row1.id = `lm${index}r0`;
+                    row1.onclick = () => selectMatchup(matchup.matchup_id);
+                    row1.onmouseover = matchupmouseover;
+                    row1.onmouseout = matchupmouseout;
+                    
+                    const team1Cell = row1.insertCell(0);
+                    team1Cell.textContent = `${matchup.team1_owner} (0)`;
+                    team1Cell.nowrap = true;
+                    
+                    const score1Cell = row1.insertCell(1);
+                    score1Cell.textContent = matchup.team1_points.toFixed(2);
+                    score1Cell.align = "right";
+                    score1Cell.className = "fanpts";
+                    score1Cell.nowrap = true;
+                    
+                    // Team 2 row
+                    const row2 = tbody.insertRow(-1);
+                    row2.className = index % 2 ? "matchuprow2" : "matchuprow1";
+                    row2.id = `lm${index}r1`;
+                    row2.onclick = () => selectMatchup(matchup.matchup_id);
+                    row2.onmouseover = matchupmouseover;
+                    row2.onmouseout = matchupmouseout;
+                    
+                    const team2Cell = row2.insertCell(0);
+                    team2Cell.textContent = `${matchup.team2_owner} (0)`;
+                    team2Cell.nowrap = true;
+                    
+                    const score2Cell = row2.insertCell(1);
+                    score2Cell.textContent = matchup.team2_points.toFixed(2);
+                    score2Cell.align = "right";
+                    score2Cell.className = "fanpts";
+                    score2Cell.nowrap = true;
+                    
+                    if (index === 0) {
+                        currentMatchupId = matchup.matchup_id;
+                    }
+                });
+                
+                updateLastUpdate();
+            }
+        } catch (error) {
+            console.error('Error loading matchups:', error);
+        }
+    }
+
+    // Select and load a specific matchup
+    async function selectMatchup(matchupId) {
+        currentMatchupId = matchupId;
+        
+        // Update visual selection
+        const rows = document.getElementById("leaguetable").getElementsByClassName("matchuprow");
+        for (let row of rows) {
+            row.style.backgroundColor = "";
+        }
+        event.currentTarget.style.backgroundColor = "#e0e0e0";
+        
+        await loadMatchup(matchupId);
+    }
+
+
+    // Load matchup details
+    async function loadMatchup(matchupId) {
+        try {
+            const response = await fetch(`/api/matchups/game/${matchupId}`);
+            const data = await response.json();
+            
+            if (data.success) {
+                currentMatchupData = data.data;
+                displayMatchup(data.data);
+                updateLastUpdate();
+            }
+        } catch (error) {
+            console.error('Error loading matchup:', error);
+        }
+    }
+
+    // Display matchup data
+    function displayMatchup(data) {
+        const matchup = data.matchup;
+        
+        // Update team headers
+        document.getElementById("fteam0").innerHTML = `${matchup.team1_name} (${matchup.team1_owner})<br>${matchup.team1_points.toFixed(1)} pts`;
+        document.getElementById("fteam1").innerHTML = `${matchup.team2_name} (${matchup.team2_owner})<br>${matchup.team2_points.toFixed(1)} pts`;
+        
+        // Build team tables
+        displayTeamRoster("team0", data.team1.starters, matchup.team1_name);
+        displayTeamRoster("team1", data.team2.starters, matchup.team2_name);
+    }
+
+    // Display team roster
+    function displayTeamRoster(tableId, starters, teamName) {
+        const table = document.getElementById(tableId);
+        const tbody = table.getElementsByTagName("tbody")[0];
+        
+        // Clear existing rows except header
+        while (tbody.rows.length > 1) {
+            tbody.deleteRow(1);
+        }
+        
+        // Add header row
+        const headerRow = tbody.insertRow(-1);
+        headerRow.className = "pointsrow";
+        headerRow.innerHTML = `
+            <td>Pos</td>
+            <td>Player</td>
+            <td align="right">Game Status</td>
+            <td align="right">Opp</td>
+            <td align="right">FanPts</td>
+        `;
+        
+        let totalPoints = 0;
+        let rowIndex = 0;
+        
+        starters.forEach(player => {
+            const points = player.stats ? player.stats.fantasy_points : 0;
+            totalPoints += points;
+            
+            // Player row
+            const row = tbody.insertRow(-1);
+            row.className = rowIndex % 2 ? "playerrow2" : "playerrow1";
+            row.id = `t${tableId.slice(-1)}r${rowIndex}`;
+            
+            const isStarter = points > 0 || player.roster_position === 'starter';
+            const playerName = isStarter ? `*${player.name}` : player.name;
+            
+            row.innerHTML = `
+                <td class="position position-${player.position}">${player.position}</td>
+                <td class="playername">${playerName} &nbsp;&nbsp;${player.team}</td>
+                <td class="status" align="right">Final</td>
+                <td class="opp" align="right">@OPP</td>
+                <td class="points fanpts" align="right">${points.toFixed(2)}</td>
+            `;
+            
+            // Stats detail row
+            const detailRow = tbody.insertRow(-1);
+            detailRow.className = rowIndex % 2 ? "playerrow2" : "playerrow1";
+            detailRow.id = `t${tableId.slice(-1)}r${rowIndex}combstat`;
+            
+            const statsText = formatPlayerStatsCompact(player.position, player.stats);
+            detailRow.innerHTML = `
+                <td colspan="5" style="font-size: smaller;">${statsText}</td>
+            `;
+            
+            rowIndex++;
+        });
+        
+        // Add total row
+        const totalRow = tbody.insertRow(-1);
+        totalRow.className = "totalsrow";
+        totalRow.innerHTML = `
+            <td colspan="4" class="fanptsbig">Net Points</td>
+            <td class="fanptsbig" align="right">${totalPoints.toFixed(2)}</td>
+        `;
+    }
+
+    // Format player stats based on position
+    function formatPlayerStats(position, stats) {
+        if (!stats) return 'No stats available';
+        
+        let details = [];
+        
+        switch(position) {
+            case 'QB':
+                if (stats.passing_yards > 0) details.push(`${stats.passing_yards} pass yds`);
+                if (stats.passing_tds > 0) details.push(`${stats.passing_tds} pass TD`);
+                if (stats.rushing_yards > 0) details.push(`${stats.rushing_yards} rush yds`);
+                if (stats.rushing_tds > 0) details.push(`${stats.rushing_tds} rush TD`);
+                if (stats.interceptions > 0) details.push(`${stats.interceptions} INT`);
+                break;
+            case 'RB':
+                if (stats.rushing_yards > 0) details.push(`${stats.rushing_yards} rush yds`);
+                if (stats.rushing_tds > 0) details.push(`${stats.rushing_tds} rush TD`);
+                if (stats.receptions > 0) details.push(`${stats.receptions} rec`);
+                if (stats.receiving_yards > 0) details.push(`${stats.receiving_yards} rec yds`);
+                if (stats.receiving_tds > 0) details.push(`${stats.receiving_tds} rec TD`);
+                break;
+            case 'WR':
+            case 'TE':
+                if (stats.receptions > 0) details.push(`${stats.receptions} rec`);
+                if (stats.receiving_yards > 0) details.push(`${stats.receiving_yards} rec yds`);
+                if (stats.receiving_tds > 0) details.push(`${stats.receiving_tds} rec TD`);
+                break;
+            case 'K':
+                if (stats.field_goals_made > 0) details.push(`${stats.field_goals_made}/${stats.field_goals_attempted} FG`);
+                if (stats.extra_points_made > 0) details.push(`${stats.extra_points_made}/${stats.extra_points_attempted} XP`);
+                break;
+            case 'DST':
+                if (stats.sacks > 0) details.push(`${stats.sacks} sacks`);
+                if (stats.interceptions > 0) details.push(`${stats.interceptions} INT`);
+                if (stats.fumbles_recovered > 0) details.push(`${stats.fumbles_recovered} FR`);
+                if (stats.defensive_tds > 0) details.push(`${stats.defensive_tds} TD`);
+                if (stats.points_allowed !== undefined) details.push(`${stats.points_allowed} PA`);
+                break;
+        }
+        
+        return details.join(', ') || 'No stats';
+    }
+
+    // Format player stats in compact form like original Statfink
+    function formatPlayerStatsCompact(position, stats) {
+        if (!stats) return '<span>0 Stats</span>';
+        
+        let details = [];
+        
+        switch(position) {
+            case 'QB':
+                if (stats.completions > 0) details.push(`${stats.completions} Comp`);
+                if (stats.passing_attempts - stats.completions > 0) details.push(`${stats.passing_attempts - stats.completions} Inc`);
+                if (stats.passing_yards > 0) details.push(`${stats.passing_yards} Pyds`);
+                if (stats.rushing_attempts > 0) details.push(`${stats.rushing_attempts} Rshs`);
+                if (stats.rushing_yards > 0) details.push(`${stats.rushing_yards} Rshyds`);
+                if (stats.passing_tds + stats.rushing_tds > 0) details.push(`${stats.passing_tds + stats.rushing_tds} TDs`);
+                break;
+            case 'RB':
+                if (stats.rushing_attempts > 0) details.push(`${stats.rushing_attempts} Rshs`);
+                if (stats.rushing_yards > 0) details.push(`${stats.rushing_yards} Rshyds`);
+                if (stats.receptions > 0) details.push(`${stats.receptions} Recs`);
+                if (stats.receiving_yards > 0) details.push(`${stats.receiving_yards} Recyds`);
+                if (stats.rushing_tds + stats.receiving_tds > 0) details.push(`${stats.rushing_tds + stats.receiving_tds} TDs`);
+                break;
+            case 'WR':
+            case 'TE':
+                if (stats.receptions > 0) details.push(`${stats.receptions} Recs`);
+                if (stats.receiving_yards > 0) details.push(`${stats.receiving_yards} Recyds`);
+                if (stats.receiving_tds > 0) details.push(`${stats.receiving_tds} TDs`);
+                if (stats.rushing_attempts > 0) details.push(`${stats.rushing_attempts} Rshs`);
+                if (stats.rushing_yards > 0) details.push(`${stats.rushing_yards} Rshyds`);
+                break;
+            case 'K':
+                if (stats.field_goals_made > 0) details.push(`${stats.field_goals_made} FGG19`);
+                if (stats.extra_points_made > 0) details.push(`${stats.extra_points_made} XPG`);
+                if (stats.extra_points_missed > 0) details.push(`${stats.extra_points_missed} XPM`);
+                break;
+            case 'DST':
+                if (stats.sacks > 0) details.push(`${stats.sacks} Scks`);
+                if (stats.interceptions > 0) details.push(`${stats.interceptions} Int`);
+                if (stats.fumbles_recovered > 0) details.push(`${stats.fumbles_recovered} FR`);
+                if (stats.defensive_tds > 0) details.push(`${stats.defensive_tds} TD`);
+                if (stats.yards_allowed !== undefined) details.push(`${stats.yards_allowed} YdsAllw`);
+                if (stats.points_allowed !== undefined) details.push(`${stats.points_allowed} PtsAllw`);
+                break;
+        }
+        
+        if (details.length === 0) {
+            return '<span>0 Stats</span>';
+        }
+        
+        return details.map((detail, index) => `<span>${detail}</span>`).join(', ');
+    }
+
+    // Update last update time
+    function updateLastUpdate() {
+        const now = new Date();
+        document.getElementById("lastupdate").textContent = `Last Update: ${now.toLocaleTimeString()}`;
+    }
+
+    // Refresh data
+    async function refreshData() {
+        if (currentMatchupId) {
+            await loadMatchup(currentMatchupId);
+        }
+        await loadWeekMatchups();
+    }
+
+    // Clean up on unload
+    window.onbeforeunload = function() {
+        if (refreshInterval) {
+            clearInterval(refreshInterval);
+        }
+    };
+</script>
+</body>
+</html>

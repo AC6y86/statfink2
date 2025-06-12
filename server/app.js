@@ -135,6 +135,11 @@ app.get('/roster', (req, res) => {
     res.sendFile(path.join(__dirname, '../helm/roster.html'));
 });
 
+// Statfink matchup viewer route
+app.get('/statfink', (req, res) => {
+    res.sendFile(path.join(__dirname, '../helm/statfink.html'));
+});
+
 // API Routes
 app.use('/api/teams', require('./routes/teams'));
 app.use('/api/players', require('./routes/players'));
@@ -216,6 +221,10 @@ app.get('*', (req, res) => {
                     
                     <div class="dashboard-link">
                         <a href="/dashboard">📊 View Database Dashboard</a>
+                    </div>
+                    
+                    <div class="dashboard-link" style="background: linear-gradient(135deg, #4169e1 0%, #1e3a8a 100%);">
+                        <a href="/statfink">🏈 View Live Matchups (Statfink)</a>
                     </div>
                     
                     <div class="status">
