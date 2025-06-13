@@ -2,7 +2,9 @@ const axios = require('axios');
 
 const BASE_URL = 'http://localhost:3000';
 
-describe('Roster Management Integration', () => {
+// DISABLED: Test makes API calls to running server which uses production database
+// Roster operations perform database writes and modifications
+describe.skip('Roster Management Integration', () => {
   let serverRunning = false;
   let testTeamId = 1;
   let testPlayerId = null;

@@ -6,7 +6,9 @@
 const axios = require('axios');
 const BASE_URL = process.env.TEST_BASE_URL || 'http://localhost:3000';
 
-describe('Comprehensive Route Testing', () => {
+// DISABLED: Test makes API calls to running server which uses production database
+// Routes may perform database writes and modifications
+describe.skip('Comprehensive Route Testing', () => {
   beforeAll(async () => {
     try {
       await axios.get(`${BASE_URL}/health`, { timeout: 10000 });

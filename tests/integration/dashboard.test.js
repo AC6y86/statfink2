@@ -2,7 +2,9 @@ const axios = require('axios');
 
 const BASE_URL = 'http://localhost:3000';
 
-describe('Database Dashboard Integration', () => {
+// DISABLED: Test makes API calls to running server which uses production database
+// Dashboard endpoints may read from or interact with the production database
+describe.skip('Database Dashboard Integration', () => {
   let serverRunning = false;
 
   beforeAll(async () => {

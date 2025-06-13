@@ -12,7 +12,9 @@ const TIMEOUT = 10000;
 const TEST_TEAM_ID = 1;
 const TEST_PLAYER_ID = 1;
 
-describe('API Smoke Tests - Critical Endpoints', () => {
+// DISABLED: Test makes API calls to running server which uses production database
+// API endpoints read from and may modify the production database
+describe.skip('API Smoke Tests - Critical Endpoints', () => {
   let server;
   
   beforeAll(async () => {

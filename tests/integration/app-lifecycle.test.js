@@ -12,7 +12,9 @@ const APP_PATH = path.join(__dirname, '../../server/app.js');
 const STARTUP_TIMEOUT = 15000;
 const SHUTDOWN_TIMEOUT = 5000;
 
-describe('Application Lifecycle Tests', () => {
+// DISABLED: Test starts the actual server which connects to production database
+// Server startup initializes database connection and may perform writes
+describe.skip('Application Lifecycle Tests', () => {
   let serverProcess;
   let serverRunning = false;
 

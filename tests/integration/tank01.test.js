@@ -4,7 +4,9 @@ const axios = require('axios');
 const BASE_URL = 'http://localhost:3000';
 const TANK01_API_KEY = process.env.TANK01_API_KEY;
 
-describe('Tank01 API Integration', () => {
+// DISABLED: Test makes API calls to running server which uses production database
+// Sync operations and API calls may read from/write to the production database
+describe.skip('Tank01 API Integration', () => {
   let serverRunning = false;
 
   beforeAll(async () => {

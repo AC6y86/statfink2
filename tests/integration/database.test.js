@@ -1,7 +1,9 @@
 const DatabaseManager = require('../../server/database/database');
 const { samplePlayers, sampleStats, sampleTeams } = require('../fixtures/sampleData');
 
-describe('Database Integration', () => {
+// DISABLED: Test directly uses DatabaseManager() without :memory: configuration
+// This will connect to and modify the production database
+describe.skip('Database Integration', () => {
   let db;
 
   beforeAll(async () => {
