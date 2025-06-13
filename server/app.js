@@ -140,6 +140,16 @@ app.get('/statfink', (req, res) => {
     res.sendFile(path.join(__dirname, '../helm/statfink.html'));
 });
 
+// 2024 Season navigation route
+app.get('/2024-season', (req, res) => {
+    res.sendFile(path.join(__dirname, '../helm/2024-season.html'));
+});
+
+// Database browser route
+app.get('/database-browser', (req, res) => {
+    res.sendFile(path.join(__dirname, '../helm/database-browser.html'));
+});
+
 // API Routes
 app.use('/api/teams', require('./routes/teams'));
 app.use('/api/players', require('./routes/players'));
@@ -147,6 +157,7 @@ app.use('/api/stats', require('./routes/stats'));
 app.use('/api/matchups', require('./routes/matchups'));
 app.use('/api/league', require('./routes/league'));
 app.use('/api/roster-history', require('./routes/rosterHistory'));
+app.use('/api/database', require('./routes/databaseBrowser'));
 
 // Admin routes
 app.use('/api/admin', require('./routes/admin'));

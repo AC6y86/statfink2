@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Database Browser - StatFink</title>
+    <link href="statfink-styles.css" rel="stylesheet" type="text/css" media="all" />
+    <style>
+        body {
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .browser-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .browser-header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .browser-nav {
+            background: #34495e;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .nav-section {
+            display: inline-block;
+            margin-right: 30px;
+            vertical-align: top;
+        }
+        
+        .nav-section label {
+            color: white;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .nav-section select, .nav-section input, .nav-section button {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .nav-section button {
+            background: #3498db;
+            color: white;
+            border: 1px solid #2980b9;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        
+        .nav-section button:hover {
+            background: #2980b9;
+        }
+        
+        .browser-content {
+            padding: 20px;
+        }
+        
+        .table-info {
+            background: #ecf0f1;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .table-info h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        
+        .columns-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .column-item {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #bdc3c7;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .column-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .column-type {
+            color: #7f8c8d;
+            font-size: 11px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .data-table th {
+            background: #34495e;
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 12px;
+            border: 1px solid #2c3e50;
+        }
+        
+        .data-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            font-size: 12px;
+            vertical-align: top;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .data-table tr:hover {
+            background: #e3f2fd;
+        }
+        
+        .pagination {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .pagination button {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            background: #3498db;
+            color: white;
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .pagination .current-page {
+            background: #3498db;
+            color: white;
+        }
+        
+        .sql-query {
+            margin: 20px 0;
+        }
+        
+        .sql-query textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            resize: vertical;
+        }
+        
+        .query-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 4px solid #dc3545;
+            margin: 10px 0;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+        
+        .null-value {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        
+        .search-section {
+            margin-bottom: 15px;
+        }
+        
+        .search-section input[type="text"] {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="browser-container">
+        <div class="browser-header">
+            <h1>StatFink Database Browser</h1>
+            <p>Explore your fantasy football database tables and data</p>
+        </div>
+        
+        <div class="browser-nav">
+            <div class="nav-section">
+                <label>Table:</label>
+                <select id="tableSelect">
+                    <option value="">Select a table...</option>
+                </select>
+            </div>
+            
+            <div class="nav-section search-section">
+                <label>Search in Column:</label>
+                <select id="columnSelect">
+                    <option value="">Select column...</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="Search value...">
+                <button onclick="searchTable()">Search</button>
+                <button onclick="clearSearch()">Clear</button>
+            </div>
+            
+            <div class="nav-section">
+                <label>Rows per page:</label>
+                <select id="limitSelect">
+                    <option value="25">25</option>
+                    <option value="50" selected>50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="browser-content">
+            <div id="tableInfo" class="table-info" style="display: none;">
+                <h3 id="tableTitle">Table Information</h3>
+                <div id="tableStats"></div>
+                <div id="columnsInfo" class="columns-list"></div>
+            </div>
+            
+            <div class="sql-query">
+                <label><strong>Custom SQL Query (SELECT only):</strong></label>
+                <textarea id="sqlQuery" placeholder="Enter your SELECT query here..."></textarea>
+                <button onclick="executeQuery()">Execute Query</button>
+                <button onclick="clearQuery()">Clear</button>
+            </div>
+            
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            
+            <div id="queryResult" class="query-result" style="display: none;"></div>
+            
+            <div id="loading" class="loading" style="display: none;">
+                Loading data...
+            </div>
+            
+            <div id="pagination" class="pagination" style="display: none;"></div>
+            
+            <div id="dataContainer">
+                <table id="dataTable" class="data-table" style="display: none;">
+                    <thead id="tableHeader"></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTable = '';
+        let currentPage = 1;
+        let totalPages = 1;
+        let currentColumns = [];
+        
+        // Initialize the browser
+        async function init() {
+            await loadTables();
+        }
+        
+        // Load all database tables
+        async function loadTables() {
+            try {
+                showLoading(true);
+                const response = await fetch('/api/database/tables');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const tableSelect = document.getElementById('tableSelect');
+                    tableSelect.innerHTML = '<option value="">Select a table...</option>';
+                    
+                    Object.keys(data.data).sort().forEach(tableName => {
+                        const option = document.createElement('option');
+                        option.value = tableName;
+                        option.textContent = `${tableName} (${data.data[tableName].rowCount} rows)`;
+                        tableSelect.appendChild(option);
+                    });
+                    
+                    // Store table info for later use
+                    window.tableInfo = data.data;
+                } else {
+                    showError('Failed to load tables: ' + data.error);
+                }
+            } catch (error) {
+                showError('Error loading tables: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // Handle table selection
+        document.getElementById('tableSelect').addEventListener('change', function() {
+            const tableName = this.value;
+            if (tableName) {
+                currentTable = tableName;
+                currentPage = 1;
+                showTableInfo(tableName);
+                loadTableData(tableName, 1);
+                populateColumnSelect(tableName);
+            } else {
+                hideTableInfo();
+                hideDataTable();
+            }
+        });
+        
+        // Handle limit change
+        document.getElementById('limitSelect').addEventListener('change', function() {
+            if (currentTable) {
+                currentPage = 1;
+                loadTableData(currentTable, 1);
+            }
+        });
+        
+        // Show table information
+        function showTableInfo(tableName) {
+            const info = window.tableInfo[tableName];
+            document.getElementById('tableTitle').textContent = `Table: ${tableName}`;
+            document.getElementById('tableStats').innerHTML = `
+                <strong>Total Rows:</strong> ${info.rowCount.toLocaleString()}
+            `;
+            
+            const columnsContainer = document.getElementById('columnsInfo');
+            columnsContainer.innerHTML = '';
+            
+            info.columns.forEach(column => {
+                const columnDiv = document.createElement('div');
+                columnDiv.className = 'column-item';
+                columnDiv.innerHTML = `
+                    <div class="column-name">${column.name}</div>
+                    <div class="column-type">${column.type}${column.pk ? ' (Primary Key)' : ''}</div>
+                `;
+                columnsContainer.appendChild(columnDiv);
+            });
+            
+            currentColumns = info.columns;
+            document.getElementById('tableInfo').style.display = 'block';
+        }
+        
+        // Populate column select for search
+        function populateColumnSelect(tableName) {
+            const info = window.tableInfo[tableName];
+            const columnSelect = document.getElementById('columnSelect');
+            columnSelect.innerHTML = '<option value="">Select column...</option>';
+            
+            info.columns.forEach(column => {
+                const option = document.createElement('option');
+                option.value = column.name;
+                option.textContent = column.name;
+                columnSelect.appendChild(option);
+            });
+        }
+        
+        // Hide table information
+        function hideTableInfo() {
+            document.getElementById('tableInfo').style.display = 'none';
+        }
+        
+        // Load table data
+        async function loadTableData(tableName, page = 1) {
+            try {
+                showLoading(true);
+                hideError();
+                
+                const limit = document.getElementById('limitSelect').value;
+                const search = document.getElementById('searchInput').value;
+                const column = document.getElementById('columnSelect').value;
+                
+                let url = `/api/database/table/${tableName}?page=${page}&limit=${limit}`;
+                if (search && column) {
+                    url += `&search=${encodeURIComponent(search)}&column=${encodeURIComponent(column)}`;
+                }
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayTableData(data.data);
+                    updatePagination(data.data);
+                } else {
+                    showError('Failed to load table data: ' + data.error);
+                }
+            } catch (error) {
+                showError('Error loading table data: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // Display table data
+        function displayTableData(data) {
+            const table = document.getElementById('dataTable');
+            const header = document.getElementById('tableHeader');
+            const body = document.getElementById('tableBody');
+            
+            if (data.rows.length === 0) {
+                header.innerHTML = '<tr><th>No Data</th></tr>';
+                body.innerHTML = '<tr><td>No rows found</td></tr>';
+                table.style.display = 'table';
+                return;
+            }
+            
+            // Create header
+            const headerRow = document.createElement('tr');
+            Object.keys(data.rows[0]).forEach(column => {
+                const th = document.createElement('th');
+                th.textContent = column;
+                headerRow.appendChild(th);
+            });
+            header.innerHTML = '';
+            header.appendChild(headerRow);
+            
+            // Create body rows
+            body.innerHTML = '';
+            data.rows.forEach(row => {
+                const tr = document.createElement('tr');
+                Object.values(row).forEach(value => {
+                    const td = document.createElement('td');
+                    if (value === null || value === undefined) {
+                        td.innerHTML = '<span class="null-value">NULL</span>';
+                    } else if (typeof value === 'string' && value.length > 100) {
+                        td.textContent = value.substring(0, 100) + '...';
+                        td.title = value;
+                    } else {
+                        td.textContent = value;
+                    }
+                    tr.appendChild(td);
+                });
+                body.appendChild(tr);
+            });
+            
+            table.style.display = 'table';
+        }
+        
+        // Update pagination
+        function updatePagination(data) {
+            totalPages = data.totalPages;
+            currentPage = data.page;
+            
+            const pagination = document.getElementById('pagination');
+            if (totalPages <= 1) {
+                pagination.style.display = 'none';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // Previous button
+            paginationHTML += `<button onclick="changePage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled' : ''}>Previous</button>`;
+            
+            // Page numbers
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+            
+            if (startPage > 1) {
+                paginationHTML += `<button onclick="changePage(1)">1</button>`;
+                if (startPage > 2) paginationHTML += '<span>...</span>';
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `<button onclick="changePage(${i})" ${i === currentPage ? 'class="current-page"' : ''}>${i}</button>`;
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) paginationHTML += '<span>...</span>';
+                paginationHTML += `<button onclick="changePage(${totalPages})">${totalPages}</button>`;
+            }
+            
+            // Next button
+            paginationHTML += `<button onclick="changePage(${currentPage + 1})" ${currentPage >= totalPages ? 'disabled' : ''}>Next</button>`;
+            
+            // Info
+            paginationHTML += `<span style="margin-left: 20px;">Page ${currentPage} of ${totalPages} (${data.total.toLocaleString()} total rows)</span>`;
+            
+            pagination.innerHTML = paginationHTML;
+            pagination.style.display = 'block';
+        }
+        
+        // Change page
+        function changePage(page) {
+            if (page >= 1 && page <= totalPages && page !== currentPage) {
+                loadTableData(currentTable, page);
+            }
+        }
+        
+        // Search table
+        function searchTable() {
+            if (currentTable) {
+                currentPage = 1;
+                loadTableData(currentTable, 1);
+            }
+        }
+        
+        // Clear search
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('columnSelect').value = '';
+            if (currentTable) {
+                currentPage = 1;
+                loadTableData(currentTable, 1);
+            }
+        }
+        
+        // Execute custom SQL query
+        async function executeQuery() {
+            const sql = document.getElementById('sqlQuery').value.trim();
+            if (!sql) {
+                showError('Please enter a SQL query');
+                return;
+            }
+            
+            try {
+                showLoading(true);
+                hideError();
+                
+                const response = await fetch('/api/database/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ sql })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showQueryResult(data.data);
+                    hideDataTable();
+                } else {
+                    showError('Query failed: ' + data.error);
+                }
+            } catch (error) {
+                showError('Error executing query: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // Show query result
+        function showQueryResult(data) {
+            const resultDiv = document.getElementById('queryResult');
+            
+            if (data.rows.length === 0) {
+                resultDiv.innerHTML = '<strong>Query executed successfully.</strong><br>No rows returned.';
+            } else {
+                let html = `<strong>Query executed successfully.</strong><br>Returned ${data.rowCount} rows.<br><br>`;
+                
+                // Create a simple table for results
+                html += '<table class="data-table" style="margin-top: 10px;">';
+                
+                // Header
+                html += '<thead><tr>';
+                Object.keys(data.rows[0]).forEach(column => {
+                    html += `<th>${column}</th>`;
+                });
+                html += '</tr></thead>';
+                
+                // Body (limit to first 100 rows for display)
+                html += '<tbody>';
+                data.rows.slice(0, 100).forEach(row => {
+                    html += '<tr>';
+                    Object.values(row).forEach(value => {
+                        if (value === null || value === undefined) {
+                            html += '<td><span class="null-value">NULL</span></td>';
+                        } else {
+                            html += `<td>${String(value).substring(0, 200)}</td>`;
+                        }
+                    });
+                    html += '</tr>';
+                });
+                html += '</tbody></table>';
+                
+                if (data.rowCount > 100) {
+                    html += `<p><em>Showing first 100 rows of ${data.rowCount} total results.</em></p>`;
+                }
+            }
+            
+            resultDiv.innerHTML = html;
+            resultDiv.style.display = 'block';
+        }
+        
+        // Clear query
+        function clearQuery() {
+            document.getElementById('sqlQuery').value = '';
+            document.getElementById('queryResult').style.display = 'none';
+        }
+        
+        // Hide data table
+        function hideDataTable() {
+            document.getElementById('dataTable').style.display = 'none';
+            document.getElementById('pagination').style.display = 'none';
+        }
+        
+        // Show loading
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+        
+        // Show error
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        // Hide error
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', init);
+        
+        // Handle Enter key in search input
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchTable();
+            }
+        });
+        
+        // Handle Ctrl+Enter in SQL query textarea
+        document.getElementById('sqlQuery').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                executeQuery();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>2024 Season - Statfink Fantasy Football</title>
+    <link href="statfink-styles.css" rel="stylesheet" type="text/css" media="all" />
+    <style>
+        .season-header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        .season-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .season-header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .weeks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .week-card {
+            background: white;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .week-card:hover {
+            border-color: #b83535;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(184,53,53,0.2);
+        }
+        .week-card.current {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        }
+        .week-card.current:hover {
+            border-color: #28a745;
+            box-shadow: 0 4px 16px rgba(40,167,69,0.3);
+        }
+        .week-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .week-card.current .week-number {
+            color: #155724;
+        }
+        .week-status {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+        .week-card.current .week-status {
+            color: #155724;
+            font-weight: 600;
+        }
+        .week-stats {
+            font-size: 0.8rem;
+            color: #6c757d;
+            line-height: 1.4;
+        }
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #b83535;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            background: #a02e2e;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <a href="/statfink" class="back-link">← Back to Current</a>
+    
+    <div class="season-header">
+        <h1>🏈 2024 NFL Season</h1>
+        <p>Choose any week to view matchups, rosters, and scores</p>
+    </div>
+
+    <div id="loading" class="loading">
+        <h3>Loading 2024 season data...</h3>
+    </div>
+
+    <div id="weeks-container" class="weeks-grid" style="display: none;"></div>
+
+    <script>
+        let currentWeek = 17; // Default current week
+        
+        async function loadSeasonData() {
+            try {
+                // Get current league settings
+                const settingsResponse = await fetch('/api/league/settings');
+                const settings = await settingsResponse.json();
+                
+                if (settings.success) {
+                    currentWeek = settings.data.current_week;
+                }
+                
+                // Create week cards for weeks 1-17
+                const weeksContainer = document.getElementById('weeks-container');
+                weeksContainer.innerHTML = '';
+                
+                for (let week = 1; week <= 17; week++) {
+                    const weekCard = await createWeekCard(week);
+                    weeksContainer.appendChild(weekCard);
+                }
+                
+                // Hide loading and show content
+                document.getElementById('loading').style.display = 'none';
+                weeksContainer.style.display = 'grid';
+                
+            } catch (error) {
+                console.error('Error loading season data:', error);
+                document.getElementById('loading').innerHTML = 
+                    '<h3>Error loading season data</h3><p>Please try refreshing the page.</p>';
+            }
+        }
+        
+        async function createWeekCard(week) {
+            const card = document.createElement('div');
+            card.className = 'week-card';
+            if (week === currentWeek) {
+                card.classList.add('current');
+            }
+            
+            // Add click handler to navigate to week
+            card.onclick = () => {
+                window.location.href = `/statfink?week=${week}&season=2024`;
+            };
+            
+            // Start with basic content
+            card.innerHTML = `
+                <div class="week-number">Week ${week}</div>
+                <div class="week-status">${week === currentWeek ? 'Current Week' : 'View Week'}</div>
+                <div class="week-stats">Loading...</div>
+            `;
+            
+            // Load week stats asynchronously
+            loadWeekStats(week, card);
+            
+            return card;
+        }
+        
+        async function loadWeekStats(week, card) {
+            try {
+                // Get matchups for this week to show basic stats
+                const response = await fetch(`/api/matchups/${week}/2024`);
+                const data = await response.json();
+                
+                if (data.success && data.data.length > 0) {
+                    const matchups = data.data;
+                    const totalGames = matchups.length;
+                    const totalPoints = matchups.reduce((sum, m) => sum + m.team1_points + m.team2_points, 0);
+                    const avgPoints = (totalPoints / (totalGames * 2)).toFixed(1);
+                    
+                    // Find highest scoring matchup
+                    let highestScore = 0;
+                    matchups.forEach(m => {
+                        const score1 = m.team1_points;
+                        const score2 = m.team2_points;
+                        if (score1 > highestScore) highestScore = score1;
+                        if (score2 > highestScore) highestScore = score2;
+                    });
+                    
+                    const statsDiv = card.querySelector('.week-stats');
+                    statsDiv.innerHTML = `
+                        ${totalGames} matchups<br>
+                        Avg: ${avgPoints} pts<br>
+                        High: ${highestScore.toFixed(1)} pts
+                    `;
+                } else {
+                    const statsDiv = card.querySelector('.week-stats');
+                    statsDiv.innerHTML = 'No data available';
+                }
+            } catch (error) {
+                console.error(`Error loading stats for week ${week}:`, error);
+                const statsDiv = card.querySelector('.week-stats');
+                statsDiv.innerHTML = 'Stats unavailable';
+            }
+        }
+        
+        // Load season data when page loads
+        document.addEventListener('DOMContentLoaded', loadSeasonData);
+    </script>
+</body>
+</html>

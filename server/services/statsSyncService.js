@@ -6,6 +6,7 @@ class StatsSyncService {
         this.tank01Service = tank01Service;
         this.scoringService = scoringService;
         this.syncInProgress = false;
+        this.lastSyncTime = null;
     }
 
     // Main sync function for weekly stats
@@ -100,6 +101,7 @@ class StatsSyncService {
             
             const duration = Date.now() - startTime;
             this.syncInProgress = false;
+            this.lastSyncTime = new Date().toISOString();
             
             logInfo(`Stats sync completed in ${duration}ms`);
             

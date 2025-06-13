@@ -7,6 +7,7 @@
 <body onload="read_cont()">
     <div id="controls" class="controls">
         <div id="optsmenu" class="menu">Options</div>
+        <div id="weeknav" class="menu" style="margin-left: 10px;">Week Nav</div>
         <div id="updatemsg" style="display: inline-block; margin-left: 10px; font-size: 11px; color: #333;"></div>
     </div>
     <div id="lastupdate" class="lastupdate"></div>
@@ -18,6 +19,12 @@
             <div class="menuitem" id="safetiesdiv">Safeties</div>
             <div id="zerodiv" class="menuitem">Zero Check</div>
             <div id="scoresdiv" class="menuitem">Scores File</div>
+        </div>
+        <div id="weekmenu" class="firstmenu" style="display: none;">
+            <div id="seasonview" class="menuitem">View All Weeks</div>
+            <div id="prevweek" class="menuitem">← Previous Week</div>
+            <div id="nextweek" class="menuitem">Next Week →</div>
+            <div id="currentweek" class="menuitem">Current Week</div>
         </div>
         <div id="configdiv" class="configdiv"></div>
     </div>
@@ -120,13 +127,23 @@
     function menuvis(show) {
         document.getElementById("firstmenu").style.display = show ? "block" : "none";
     }
+    
+    // Week menu visibility control
+    function weekMenuVis(show) {
+        document.getElementById("weekmenu").style.display = show ? "block" : "none";
+    }
 
     // Button event handlers
     function buttonclick(e) {
         var target = e.target || e.srcElement;
         switch(target.id) {
             case "optsmenu":
+                weekMenuVis(false);
                 menuvis(document.getElementById("firstmenu").style.display === "none");
+                break;
+            case "weeknav":
+                menuvis(false);
+                weekMenuVis(document.getElementById("weekmenu").style.display === "none");
                 break;
             case "detailsdiv":
                 toggleDetails();
@@ -148,6 +165,18 @@
                 break;
             case "scoresdiv":
                 showScoresFile();
+                break;
+            case "seasonview":
+                viewAllWeeks();
+                break;
+            case "prevweek":
+                navigateWeek(-1);
+                break;
+            case "nextweek":
+                navigateWeek(1);
+                break;
+            case "currentweek":
+                goToCurrentWeek();
                 break;
         }
     }
@@ -254,6 +283,32 @@
     // Show scores file (placeholder)
     function showScoresFile() {
         alert("Scores file feature coming soon!");
+    }
+    
+    // Week navigation functions
+    function viewAllWeeks() {
+        window.location.href = "/2024-season.html";
+    }
+    
+    function navigateWeek(direction) {
+        const newWeek = currentWeek + direction;
+        if (newWeek >= 1 && newWeek <= 17) {
+            window.location.href = `/statfink?week=${newWeek}&season=${currentSeason}`;
+        }
+    }
+    
+    async function goToCurrentWeek() {
+        try {
+            const response = await fetch('/api/league/settings');
+            const data = await response.json();
+            if (data.success) {
+                const actualCurrentWeek = data.data.current_week;
+                const season = data.data.season_year;
+                window.location.href = `/statfink?week=${actualCurrentWeek}&season=${season}`;
+            }
+        } catch (error) {
+            console.error('Error getting current week:', error);
+        }
     }
 
     // Main initialization
@@ -433,8 +488,9 @@
             row.className = rowIndex % 2 ? "playerrow2" : "playerrow1";
             row.id = `t${tableId.slice(-1)}r${rowIndex}`;
             
-            const isStarter = points > 0 || player.roster_position === 'starter';
-            const playerName = isStarter ? `*${player.name}` : player.name;
+            const isStarter = player.roster_position === 'starter';
+            const hasPoints = points > 0;
+            const playerName = (isStarter && hasPoints) ? `*${player.name}` : player.name;
             
             row.innerHTML = `
                 <td class="position position-${player.position}">${player.position}</td>
@@ -546,9 +602,24 @@
     }
 
     // Update last update time
-    function updateLastUpdate() {
-        const now = new Date();
-        document.getElementById("lastupdate").textContent = `Last Update: ${now.toLocaleTimeString()}`;
+    async function updateLastUpdate() {
+        try {
+            const response = await fetch('/api/league/sync-status');
+            const data = await response.json();
+            
+            if (data.success && data.data.last_sync_time) {
+                const syncTime = new Date(data.data.last_sync_time);
+                document.getElementById("lastupdate").textContent = `Last Tank01 Sync: ${syncTime.toLocaleString()}`;
+            } else {
+                const now = new Date();
+                document.getElementById("lastupdate").textContent = `Last Update: ${now.toLocaleTimeString()}`;
+            }
+        } catch (error) {
+            console.error('Error fetching sync status:', error);
+            const now = new Date();
+            document.getElementById("lastupdate").textContent = `Last Update: ${now.toLocaleTimeString()}`;
+        }
+        
         // Update the message next to Options
         document.getElementById("updatemsg").textContent = "Updated 6-10-25, 11:35pm - All games are over, come back next week.";
     }

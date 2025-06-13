@@ -194,4 +194,24 @@ router.put('/settings', asyncHandler(async (req, res) => {
     });
 }));
 
+// Get sync status
+router.get('/sync-status', asyncHandler(async (req, res) => {
+    const statsSyncService = req.app.locals.statsSyncService;
+    
+    if (!statsSyncService) {
+        throw new APIError('Stats sync service not available', 503);
+    }
+    
+    const syncStatus = statsSyncService.getSyncStatus();
+    
+    res.json({
+        success: true,
+        data: {
+            sync_in_progress: syncStatus.syncInProgress,
+            last_sync_time: syncStatus.lastSyncTime,
+            service_name: syncStatus.serviceName
+        }
+    });
+}));
+
 module.exports = router;

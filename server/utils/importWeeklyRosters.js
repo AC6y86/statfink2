@@ -66,7 +66,7 @@ import json
 import sys
 
 wb = openpyxl.load_workbook('/Users/joepaley/Downloads/PFL 2024.xlsx')
-sheet_name = 'Week ${weekNum} Stats'
+sheet_name = 'Week ${weekNum}'
 
 if sheet_name not in wb.sheetnames:
     print(json.dumps({"error": f"Sheet {sheet_name} not found"}))
@@ -90,8 +90,15 @@ for row_num, row in enumerate(ws.iter_rows(min_row=2, values_only=True), 2):
         continue
         
     # Check if this is a position header row
-    if row[0] and str(row[0]).strip() in ['QB', 'RB', 'WR', 'TE', 'K', 'DST', 'D/ST']:
+    if row[0] and str(row[0]).strip() in ['QB', 'RB', 'WR', 'TE', 'K', 'DST', 'D/ST', 'DEF']:
         current_position = str(row[0]).strip()
+        if current_position == 'DEF':
+            current_position = 'DST'  # Normalize DEF to DST
+        continue
+    
+    # Skip header rows and non-player data
+    first_cell = str(row[0] if row[0] else '').strip()
+    if first_cell in ['Texans', 'Giants', 'Cowboys', 'Jets', 'Cardinals', 'Falcons', 'Bears', 'Lions', 'Ravens', 'Bills', 'Chiefs', 'Patriots', 'Dolphins', 'Seahawks', 'Steelers', 'Panthers', 'Bengals', 'Colts', 'Saints', 'Jaguars', 'Browns', 'Broncos', '49ers', 'Eagles', 'Week', 'Record', 'Loss', 'Win', 'PTS']:
         continue
     
     if not current_position:
@@ -107,12 +114,34 @@ for row_num, row in enumerate(ws.iter_rows(min_row=2, values_only=True), 2):
             
         if col_idx < len(row) and row[col_idx]:
             player_text = str(row[col_idx])
-            if player_text and player_text.strip():
-                rosters[team_name].append({
-                    "position": current_position,
-                    "player_text": player_text,
-                    "is_starter": player_text.startswith('*')
-                })
+            # Special handling for DST - team names without parentheses
+            if current_position == 'DST':
+                clean_text = player_text.replace('*', '').strip()
+                # Only import valid NFL team names for DST
+                valid_teams = ['Texans', 'Giants', 'Cowboys', 'Jets', 'Cardinals', 'Falcons', 'Bears', 'Lions', 'Ravens', 'Bills', 'Chiefs', 'Patriots', 'Dolphins', 'Seahawks', 'Steelers', 'Panthers', 'Bengals', 'Colts', 'Saints', 'Jaguars', 'Browns', 'Broncos', '49ers', 'Eagles', 'Rams', 'Chargers', 'Raiders', 'Vikings', 'Packers', 'Titans', 'Buccaneers', 'Commanders']
+                if (clean_text in valid_teams and 
+                    not clean_text.replace('.', '').replace('X', '').isdigit() and
+                    not player_text.startswith('=')):
+                    # For DST, wrap team name in parentheses format
+                    formatted_text = f"{clean_text}(DST)"
+                    if player_text.startswith('*'):
+                        formatted_text = '*' + formatted_text
+                    rosters[team_name].append({
+                        "position": current_position,
+                        "player_text": formatted_text,
+                        "is_starter": player_text.startswith('*')
+                    })
+            else:
+                # Regular player handling (must have parentheses)
+                if (player_text and player_text.strip() and 
+                    '(' in player_text and ')' in player_text and
+                    not player_text.replace('*', '').replace('.', '').replace('X', '').isdigit() and
+                    not player_text.startswith('=')):
+                    rosters[team_name].append({
+                        "position": current_position,
+                        "player_text": player_text,
+                        "is_starter": player_text.startswith('*')
+                    })
 
 print(json.dumps(rosters, indent=2))
 `;
@@ -263,7 +292,7 @@ async function main() {
     console.log('Starting weekly roster import...');
     
     // Import weeks 1-17
-    for (let week = 1; week <= 17; week++) {
+    for (let week = 1; week <= 1; week++) {  // Test with just week 1
         await importWeekRosters(week);
     }
     
