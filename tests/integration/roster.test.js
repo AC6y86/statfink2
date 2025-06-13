@@ -10,7 +10,7 @@ describe('Roster Management Integration', () => {
   beforeAll(async () => {
     // Check if server is running
     try {
-      await axios.get(`${BASE_URL}/health`, { timeout: 5000 });
+      await axios.get(`${BASE_URL}/health`, { timeout: 10000 });
       serverRunning = true;
       
       // Get a test player from available players
@@ -19,7 +19,7 @@ describe('Roster Management Integration', () => {
         testPlayerId = playersResponse.data.data[0].player_id;
       }
     } catch (error) {
-      console.warn('Server not running - Roster management tests will be skipped');
+      console.warn('Server not running - Roster management tests will be skipped', error.message);
       serverRunning = false;
     }
   }, 10000);
@@ -33,13 +33,13 @@ describe('Roster Management Integration', () => {
 
       const response = await axios.post(`${BASE_URL}/api/teams/${testTeamId}/roster/add`, {
         playerId: testPlayerId,
-        rosterPosition: 'bench'
+        rosterPosition: 'active'
       });
       
       expect(response.status).toBe(200);
       expect(response.data.success).toBe(true);
       expect(response.data.data.player.id).toBe(testPlayerId);
-      expect(response.data.data.rosterPosition).toBe('bench');
+      expect(response.data.data.rosterPosition).toBe('active');
       expect(response.data.message).toContain('added to');
     });
 
@@ -88,7 +88,7 @@ describe('Roster Management Integration', () => {
       try {
         await axios.post(`${BASE_URL}/api/teams/999/roster/add`, {
           playerId: testPlayerId,
-          rosterPosition: 'bench'
+          rosterPosition: 'active'
         });
         fail('Should have thrown an error');
       } catch (error) {
@@ -99,7 +99,7 @@ describe('Roster Management Integration', () => {
   });
 
   describe('Move Player Between Positions', () => {
-    test('should move player from bench to starter', async () => {
+    test('should move player from active to starter', async () => {
       if (!serverRunning || !testPlayerId) {
         console.log('Skipping test - server not running or no test player on roster');
         return;
@@ -113,7 +113,7 @@ describe('Roster Management Integration', () => {
       expect(response.status).toBe(200);
       expect(response.data.success).toBe(true);
       expect(response.data.data.newPosition).toBe('starter');
-      expect(response.data.data.oldPosition).toBe('bench');
+      expect(response.data.data.oldPosition).toBe('active');
       expect(response.data.message).toContain('moved to starter');
     });
 
@@ -279,7 +279,7 @@ describe('Roster Management Integration', () => {
       // Add player
       await axios.post(`${BASE_URL}/api/teams/${testTeamId}/roster/add`, {
         playerId: newPlayerId,
-        rosterPosition: 'bench'
+        rosterPosition: 'active'
       });
 
       // Verify roster size increased
@@ -290,7 +290,7 @@ describe('Roster Management Integration', () => {
       // Verify player is in roster
       const addedPlayer = updatedRosterResponse.data.data.roster.find(p => p.player_id === newPlayerId);
       expect(addedPlayer).toBeDefined();
-      expect(addedPlayer.roster_position).toBe('bench');
+      expect(addedPlayer.roster_position).toBe('active');
 
       // Clean up - remove the player
       await axios.delete(`${BASE_URL}/api/teams/${testTeamId}/roster/remove`, {
@@ -322,7 +322,7 @@ describe('Roster Management Integration', () => {
       // Add player
       const addResponse = await axios.post(`${BASE_URL}/api/teams/${testTeamId}/roster/add`, {
         playerId: playerId,
-        rosterPosition: 'bench'
+        rosterPosition: 'active'
       });
 
       expect(addResponse.data.data.player.name).toBe(playerName);
@@ -355,7 +355,7 @@ describe('Roster Management Integration', () => {
       try {
         await axios.post(`${BASE_URL}/api/teams/${testTeamId}/roster/add`, {
           playerId: 'nonexistent',
-          rosterPosition: 'bench'
+          rosterPosition: 'active'
         });
         fail('Should have thrown an error');
       } catch (error) {
@@ -388,7 +388,7 @@ describe('Roster Management Integration', () => {
       try {
         await axios.post(`${BASE_URL}/api/teams/invalid/roster/add`, {
           playerId: 'test',
-          rosterPosition: 'bench'
+          rosterPosition: 'active'
         });
         fail('Should have thrown an error');
       } catch (error) {
