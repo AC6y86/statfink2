@@ -788,36 +788,6 @@
 
                 <div id="admin-messages"></div>
 
-                <!-- Roster Management Section -->
-                <div class="section">
-                    <h3>🏈 Roster Management</h3>
-                    
-                    <div class="roster-controls">
-                        <div class="form-group">
-                            <label for="team-select">Select Team:</label>
-                            <select id="team-select" onchange="loadTeamRoster()">
-                                <option value="">Choose a team...</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="player-select">Add Player:</label>
-                            <select id="player-select">
-                                <option value="">Choose a player...</option>
-                            </select>
-                            <select id="position-select">
-                                <option value="starter">Starter</option>
-                                <option value="injured_reserve">Injured Reserve</option>
-                            </select>
-                            <button class="btn btn-small" onclick="addPlayerToRoster()">Add to Roster</button>
-                        </div>
-                    </div>
-
-                    <div id="current-roster" class="roster-display">
-                        <h4>Current Roster</h4>
-                        <div id="roster-content">Select a team to view roster</div>
-                    </div>
-                </div>
 
                 <!-- Stats Sync Section -->
                 <div class="section">
@@ -884,6 +854,15 @@
         <div id="settings-tab" class="tab-content">
             <div class="section">
                 <h2>⚙️ League Settings</h2>
+
+                <!-- Current Settings Display -->
+                <div class="section">
+                    <h3>📊 Current Settings</h3>
+                    <div id="current-settings" class="settings-display">
+                        <div class="loading">Loading current settings...</div>
+                    </div>
+                </div>
+                
                 <p>Adjust league settings for debugging and testing purposes</p>
                 
                 <div class="settings-form">
@@ -899,12 +878,6 @@
                         <span class="form-help">Set the fantasy season year</span>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="league-name">League Name:</label>
-                        <input type="text" id="league-name" placeholder="Enter league name">
-                        <span class="form-help">Set the fantasy league name</span>
-                    </div>
-                    
                     <div class="form-actions">
                         <button class="btn" onclick="updateSettings()">Update Settings</button>
                         <button class="btn btn-secondary" onclick="loadCurrentSettings()">Reset to Current</button>
@@ -913,34 +886,6 @@
                 
                 <div id="settings-messages" class="messages"></div>
                 
-                <!-- Current Settings Display -->
-                <div class="section">
-                    <h3>📊 Current Settings</h3>
-                    <div id="current-settings" class="settings-display">
-                        <div class="loading">Loading current settings...</div>
-                    </div>
-                </div>
-                
-                <!-- Roster Snapshot Controls -->
-                <div class="section">
-                    <h3>📋 Roster Snapshots</h3>
-                    <p>Capture and manage weekly roster snapshots for tracking changes</p>
-                    
-                    <div class="snapshot-controls">
-                        <div class="form-group">
-                            <label for="snapshot-week">Week to Capture:</label>
-                            <input type="number" id="snapshot-week" min="1" max="18" placeholder="Week number">
-                            <button class="btn" onclick="captureSnapshot()">Capture Snapshot</button>
-                        </div>
-                        
-                        <div class="form-group">
-                            <button class="btn btn-secondary" onclick="showAvailableSnapshots()">Show Available Snapshots</button>
-                        </div>
-                    </div>
-                    
-                    <div id="snapshot-messages" class="messages"></div>
-                    <div id="available-snapshots" class="snapshots-display"></div>
-                </div>
             </div>
         </div>
     </div>
@@ -991,6 +936,8 @@
                 refreshRosterInfo();
             } else if (tabName === 'stats') {
                 loadDatabaseStats();
+            } else if (tabName === 'settings') {
+                loadCurrentSettings();
             } else if (tabName === 'admin') {
                 console.time('Admin Tab Load');
                 console.log('🔄 Loading Admin tab...');
@@ -1713,7 +1660,6 @@
                     // Update form fields
                     document.getElementById('current-week').value = settings.current_week || '';
                     document.getElementById('season-year').value = settings.season_year || '';
-                    document.getElementById('league-name').value = settings.league_name || '';
                     
                     // Update current settings display
                     const settingsDisplay = document.getElementById('current-settings');
@@ -1750,7 +1696,6 @@
         async function updateSettings() {
             const currentWeek = document.getElementById('current-week').value;
             const seasonYear = document.getElementById('season-year').value;
-            const leagueName = document.getElementById('league-name').value;
             
             // Validate inputs
             if (currentWeek && (currentWeek < 1 || currentWeek > 18)) {
@@ -1767,7 +1712,6 @@
             const updates = {};
             if (currentWeek) updates.current_week = parseInt(currentWeek);
             if (seasonYear) updates.season_year = parseInt(seasonYear);
-            if (leagueName) updates.league_name = leagueName;
             
             if (Object.keys(updates).length === 0) {
                 showSettingsMessage('Please enter at least one value to update', 'error');
