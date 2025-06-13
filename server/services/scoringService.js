@@ -18,6 +18,10 @@ class ScoringService {
     }
 
     async calculateFantasyPoints(playerStats) {
+        if (!playerStats) {
+            return 0;
+        }
+        
         let points = 0;
 
         // Touchdown scoring

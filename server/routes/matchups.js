@@ -2,6 +2,139 @@ const express = require('express');
 const { asyncHandler, APIError } = require('../utils/errorHandler');
 const router = express.Router();
 
+// Mock API endpoints for testing (must be first to avoid conflicts)
+// Mock matchups for a specific week/season
+router.get('/mock/:week/:season', asyncHandler(async (req, res) => {
+    const { week, season } = req.params;
+    
+    // Generate mock matchup data
+    const mockMatchups = [
+        {
+            matchup_id: 1,
+            week: parseInt(week),
+            season: parseInt(season),
+            team1_id: 1,
+            team2_id: 2,
+            team1_name: "Team Alpha",
+            team1_owner: "Test Owner 1",
+            team1_points: 125.50,
+            team2_name: "Team Beta", 
+            team2_owner: "Test Owner 2",
+            team2_points: 118.75,
+            is_complete: 1
+        },
+        {
+            matchup_id: 2,
+            week: parseInt(week),
+            season: parseInt(season),
+            team1_id: 3,
+            team2_id: 4,
+            team1_name: "Team Gamma",
+            team1_owner: "Test Owner 3",
+            team1_points: 142.25,
+            team2_name: "Team Delta",
+            team2_owner: "Test Owner 4", 
+            team2_points: 139.80,
+            is_complete: 1
+        }
+    ];
+    
+    res.json({
+        success: true,
+        data: mockMatchups,
+        count: mockMatchups.length,
+        week: parseInt(week),
+        season: parseInt(season),
+        mock: true
+    });
+}));
+
+// Mock specific matchup details
+router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
+    const { matchupId } = req.params;
+    
+    const mockMatchupData = {
+        matchup: {
+            matchup_id: parseInt(matchupId),
+            week: 1,
+            season: 2024,
+            team1_id: 1,
+            team2_id: 2,
+            team1_name: "Team Alpha",
+            team1_owner: "Test Owner 1",
+            team1_points: 125.50,
+            team2_name: "Team Beta",
+            team2_owner: "Test Owner 2", 
+            team2_points: 118.75,
+            is_complete: 1
+        },
+        team1: {
+            starters: [
+                {
+                    player_id: "QB123",
+                    name: "Mock QB (Test)",
+                    position: "QB",
+                    team: "TST",
+                    stats: {
+                        fantasy_points: 24.5,
+                        passing_yards: 285,
+                        passing_tds: 2,
+                        interceptions: 1
+                    }
+                },
+                {
+                    player_id: "RB456", 
+                    name: "Mock RB (Test)",
+                    position: "RB",
+                    team: "TST",
+                    stats: {
+                        fantasy_points: 18.7,
+                        rushing_yards: 87,
+                        rushing_tds: 1,
+                        receiving_yards: 25,
+                        receptions: 3
+                    }
+                }
+            ]
+        },
+        team2: {
+            starters: [
+                {
+                    player_id: "QB789",
+                    name: "Mock QB2 (Test)",
+                    position: "QB", 
+                    team: "TST",
+                    stats: {
+                        fantasy_points: 22.1,
+                        passing_yards: 245,
+                        passing_tds: 2,
+                        interceptions: 0
+                    }
+                },
+                {
+                    player_id: "RB101",
+                    name: "Mock RB2 (Test)",
+                    position: "RB",
+                    team: "TST", 
+                    stats: {
+                        fantasy_points: 15.3,
+                        rushing_yards: 73,
+                        rushing_tds: 0,
+                        receiving_yards: 35,
+                        receptions: 4
+                    }
+                }
+            ]
+        }
+    };
+    
+    res.json({
+        success: true,
+        data: mockMatchupData,
+        mock: true
+    });
+}));
+
 // Get current week matchups
 router.get('/current', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
@@ -58,28 +191,36 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
         throw new APIError('Matchup not found', 404);
     }
     
-    // Get rosters for both teams
+    // Get weekly rosters for both teams for this specific week
     const [team1Roster, team2Roster] = await Promise.all([
-        db.getTeamRoster(matchup.team1_id),
-        db.getTeamRoster(matchup.team2_id)
+        db.getTeamWeeklyRoster(matchup.team1_id, matchup.week, matchup.season),
+        db.getTeamWeeklyRoster(matchup.team2_id, matchup.week, matchup.season)
     ]);
     
     // Get player stats for this week if available
     const team1Stats = await Promise.all(
-        team1Roster.filter(p => p.roster_position === 'starter' && p.roster_position !== 'injured_reserve').map(async player => {
+        team1Roster.filter(p => p.roster_position === 'active').map(async player => {
             const stats = await db.getPlayerStats(player.player_id, matchup.week, matchup.season);
             return {
-                ...player,
+                player_id: player.player_id,
+                name: player.player_name,
+                position: player.player_position,
+                team: player.player_team,
+                roster_position: player.roster_position,
                 stats: stats || { fantasy_points: 0 }
             };
         })
     );
     
     const team2Stats = await Promise.all(
-        team2Roster.filter(p => p.roster_position === 'starter' && p.roster_position !== 'injured_reserve').map(async player => {
+        team2Roster.filter(p => p.roster_position === 'active').map(async player => {
             const stats = await db.getPlayerStats(player.player_id, matchup.week, matchup.season);
             return {
-                ...player,
+                player_id: player.player_id,
+                name: player.player_name,
+                position: player.player_position,
+                team: player.player_team,
+                roster_position: player.roster_position,
                 stats: stats || { fantasy_points: 0 }
             };
         })
@@ -182,79 +323,7 @@ router.get('/h2h/:team1Id/:team2Id', asyncHandler(async (req, res) => {
     });
 }));
 
-// Get matchups for specific week
-router.get('/:week/:season', asyncHandler(async (req, res) => {
-    const db = req.app.locals.db;
-    const { week, season } = req.params;
-    
-    const weekNum = parseInt(week);
-    const seasonYear = parseInt(season);
-    
-    if (isNaN(weekNum) || weekNum < 1 || weekNum > 18) {
-        throw new APIError('Week must be between 1 and 18', 400);
-    }
-    
-    if (isNaN(seasonYear) || seasonYear < 2020 || seasonYear > 2030) {
-        throw new APIError('Invalid season year', 400);
-    }
-    
-    let matchups = await db.getWeekMatchups(weekNum, seasonYear);
-    let actualWeek = weekNum;
-    
-    // If no matchups found for requested week, fall back to Week 1 matchups
-    if (!matchups || matchups.length === 0) {
-        matchups = await db.getWeekMatchups(1, seasonYear);
-        if (matchups && matchups.length > 0) {
-            // Update the matchups to use current week's team scores
-            const updatedMatchups = await Promise.all(matchups.map(async (matchup) => {
-                // Get team scores for the requested week
-                const team1Score = await db.get(`
-                    SELECT SUM(ps.fantasy_points) as total_points
-                    FROM fantasy_rosters fr
-                    JOIN player_stats ps ON fr.player_id = ps.player_id
-                    WHERE fr.team_id = ? AND ps.week = ? AND ps.season = ?
-                    AND fr.roster_position = 'starter'
-                `, [matchup.team1_id, weekNum, seasonYear]);
-                
-                const team2Score = await db.get(`
-                    SELECT SUM(ps.fantasy_points) as total_points
-                    FROM fantasy_rosters fr
-                    JOIN player_stats ps ON fr.player_id = ps.player_id
-                    WHERE fr.team_id = ? AND ps.week = ? AND ps.season = ?
-                    AND fr.roster_position = 'starter'
-                `, [matchup.team2_id, weekNum, seasonYear]);
-                
-                return {
-                    ...matchup,
-                    week: weekNum, // Update to requested week
-                    season: seasonYear,
-                    team1_points: team1Score?.total_points || 0,
-                    team2_points: team2Score?.total_points || 0
-                };
-            }));
-            matchups = updatedMatchups;
-        }
-    }
-    
-    // Add additional matchup information
-    const enrichedMatchups = matchups.map(matchup => ({
-        ...matchup,
-        margin: Math.abs(matchup.team1_points - matchup.team2_points),
-        winner: matchup.team1_points > matchup.team2_points ? 'team1' : 
-                matchup.team2_points > matchup.team1_points ? 'team2' : 'tie',
-        total_points: matchup.team1_points + matchup.team2_points,
-        is_close_game: Math.abs(matchup.team1_points - matchup.team2_points) < 10
-    }));
-    
-    res.json({
-        success: true,
-        data: enrichedMatchups,
-        count: enrichedMatchups.length,
-        week: weekNum,
-        season: seasonYear,
-        fallback_used: actualWeek !== weekNum
-    });
-}));
+// This route moved to end of file to avoid conflicts with mock routes
 
 // Get head-to-head record between two teams
 router.get('/h2h/:team1Id/:team2Id', asyncHandler(async (req, res) => {
@@ -328,6 +397,80 @@ router.get('/h2h/:team1Id/:team2Id', asyncHandler(async (req, res) => {
             },
             recent_matchups: matchups.slice(0, 5) // Last 5 matchups
         }
+    });
+}));
+
+// Get matchups for specific week (MUST be last due to generic parameter matching)
+router.get('/:week/:season', asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const { week, season } = req.params;
+    
+    const weekNum = parseInt(week);
+    const seasonYear = parseInt(season);
+    
+    if (isNaN(weekNum) || weekNum < 1 || weekNum > 18) {
+        throw new APIError('Week must be between 1 and 18', 400);
+    }
+    
+    if (isNaN(seasonYear) || seasonYear < 2020 || seasonYear > 2030) {
+        throw new APIError('Invalid season year', 400);
+    }
+    
+    let matchups = await db.getWeekMatchups(weekNum, seasonYear);
+    let actualWeek = weekNum;
+    
+    // If no matchups found for requested week, fall back to Week 1 matchups
+    if (!matchups || matchups.length === 0) {
+        matchups = await db.getWeekMatchups(1, seasonYear);
+        if (matchups && matchups.length > 0) {
+            // Update the matchups to use current week's team scores
+            const updatedMatchups = await Promise.all(matchups.map(async (matchup) => {
+                // Get team scores for the requested week
+                const team1Score = await db.get(`
+                    SELECT SUM(ps.fantasy_points) as total_points
+                    FROM fantasy_rosters fr
+                    JOIN player_stats ps ON fr.player_id = ps.player_id
+                    WHERE fr.team_id = ? AND ps.week = ? AND ps.season = ?
+                    AND fr.roster_position = 'starter'
+                `, [matchup.team1_id, weekNum, seasonYear]);
+                
+                const team2Score = await db.get(`
+                    SELECT SUM(ps.fantasy_points) as total_points
+                    FROM fantasy_rosters fr
+                    JOIN player_stats ps ON fr.player_id = ps.player_id
+                    WHERE fr.team_id = ? AND ps.week = ? AND ps.season = ?
+                    AND fr.roster_position = 'starter'
+                `, [matchup.team2_id, weekNum, seasonYear]);
+                
+                return {
+                    ...matchup,
+                    week: weekNum, // Update to requested week
+                    season: seasonYear,
+                    team1_points: team1Score?.total_points || 0,
+                    team2_points: team2Score?.total_points || 0
+                };
+            }));
+            matchups = updatedMatchups;
+        }
+    }
+    
+    // Add additional matchup information
+    const enrichedMatchups = matchups.map(matchup => ({
+        ...matchup,
+        margin: Math.abs(matchup.team1_points - matchup.team2_points),
+        winner: matchup.team1_points > matchup.team2_points ? 'team1' : 
+                matchup.team2_points > matchup.team1_points ? 'team2' : 'tie',
+        total_points: matchup.team1_points + matchup.team2_points,
+        is_close_game: Math.abs(matchup.team1_points - matchup.team2_points) < 10
+    }));
+    
+    res.json({
+        success: true,
+        data: enrichedMatchups,
+        count: enrichedMatchups.length,
+        week: weekNum,
+        season: seasonYear,
+        fallback_used: actualWeek !== weekNum
     });
 }));
 

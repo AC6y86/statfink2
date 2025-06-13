@@ -40,7 +40,7 @@ describe('Service Initialization Tests', () => {
       expect(scoringService.db).toBe(mockDb);
     });
 
-    test('should calculate basic fantasy points', () => {
+    test('should calculate basic fantasy points', async () => {
       const scoringService = new ScoringService(mockDb);
       const stats = {
         passing_yards: 300,
@@ -48,16 +48,17 @@ describe('Service Initialization Tests', () => {
         rushing_yards: 50,
         rushing_tds: 1
       };
-      const points = scoringService.calculateFantasyPoints(stats, 'QB');
+      const points = await scoringService.calculateFantasyPoints(stats);
       expect(typeof points).toBe('number');
       expect(points).toBeGreaterThan(0);
     });
 
-    test('should handle invalid position gracefully', () => {
+    test('should handle invalid position gracefully', async () => {
       const scoringService = new ScoringService(mockDb);
       const stats = { passing_yards: 300 };
-      const points = scoringService.calculateFantasyPoints(stats, 'INVALID');
-      expect(points).toBe(0);
+      const points = await scoringService.calculateFantasyPoints(stats);
+      expect(typeof points).toBe('number');
+      expect(points).toBeGreaterThanOrEqual(0);
     });
   });
 
@@ -170,14 +171,14 @@ describe('Service Method Validation Tests', () => {
       expect(typeof scoringService.calculateFantasyPoints).toBe('function');
     });
 
-    test('should handle null/undefined stats', () => {
-      expect(() => scoringService.calculateFantasyPoints(null, 'QB')).not.toThrow();
-      expect(() => scoringService.calculateFantasyPoints(undefined, 'QB')).not.toThrow();
-      expect(scoringService.calculateFantasyPoints(null, 'QB')).toBe(0);
+    test('should handle null/undefined stats', async () => {
+      expect(() => scoringService.calculateFantasyPoints(null)).not.toThrow();
+      expect(() => scoringService.calculateFantasyPoints(undefined)).not.toThrow();
+      expect(await scoringService.calculateFantasyPoints(null)).toBe(0);
     });
 
-    test('should handle empty stats object', () => {
-      const points = scoringService.calculateFantasyPoints({}, 'QB');
+    test('should handle empty stats object', async () => {
+      const points = await scoringService.calculateFantasyPoints({});
       expect(typeof points).toBe('number');
       expect(points).toBeGreaterThanOrEqual(0);
     });

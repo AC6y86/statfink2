@@ -264,7 +264,7 @@ async function importWeekRosters(weekNum) {
                             teamId, 
                             playerId, 
                             weekNum, 
-                            isStarterFlag ? 'starter' : 'active',
+                            'active',
                             playerInfo.name,
                             position,
                             playerInfo.team
@@ -274,7 +274,7 @@ async function importWeekRosters(weekNum) {
                         });
                     });
                     
-                    console.log(`    Added: ${playerInfo.name} (${position}) - ${isStarterFlag ? 'Starter' : 'Active'}`);
+                    console.log(`    Added: ${playerInfo.name} (${position}) - Active`);
                 } catch (error) {
                     console.error(`    Error adding ${playerInfo.name}:`, error.message);
                 }

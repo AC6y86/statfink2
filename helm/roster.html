@@ -357,7 +357,7 @@
                 <div class="form-group">
                     <label for="position-select">Roster Position:</label>
                     <select id="position-select">
-                        <option value="starter">Starter</option>
+                        <option value="active">Active</option>
                         <option value="injured_reserve">Injured Reserve</option>
                     </select>
                 </div>
@@ -477,27 +477,27 @@
 
         // Display roster sections
         function displayRoster(data) {
-            const starters = data.starters || [];
-            const injuredReserve = data.injuredReserve || [];
+            const active = data.active || [];
+            const injuredReserve = data.injured_reserve || [];
             
             let html = '<div class="roster-sections">';
             
-            // Starters section
+            // Active roster section
             html += `
                 <div class="roster-section">
                     <div class="section-header starters">
-                        <span>Starters</span>
-                        <span>${starters.length} players</span>
+                        <span>Active Roster</span>
+                        <span>${active.length} players</span>
                     </div>
                     <div class="section-body">
             `;
             
-            if (starters.length > 0) {
-                starters.forEach(player => {
-                    html += createPlayerCard(player, 'starter');
+            if (active.length > 0) {
+                active.forEach(player => {
+                    html += createPlayerCard(player, 'active');
                 });
             } else {
-                html += '<div class="empty-section">No starters on roster</div>';
+                html += '<div class="empty-section">No active players on roster</div>';
             }
             
             html += '</div></div>';
@@ -528,8 +528,8 @@
 
         // Create player card HTML
         function createPlayerCard(player, currentPosition) {
-            const otherPosition = currentPosition === 'starter' ? 'injured_reserve' : 'starter';
-            const otherPositionLabel = currentPosition === 'starter' ? 'IR' : 'Starter';
+            const otherPosition = currentPosition === 'active' ? 'injured_reserve' : 'active';
+            const otherPositionLabel = currentPosition === 'active' ? 'IR' : 'Active';
             
             return `
                 <div class="player-card">

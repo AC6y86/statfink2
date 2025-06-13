@@ -58,8 +58,7 @@ router.get('/team/:teamId/week/:week/:season?', async (req, res) => {
         
         // Group roster by position
         const groupedRoster = {
-            starters: roster.filter(p => p.roster_position === 'starter'),
-            bench: roster.filter(p => p.roster_position === 'bench'),
+            active: roster.filter(p => p.roster_position === 'active'),
             injured_reserve: roster.filter(p => p.roster_position === 'injured_reserve')
         };
         
@@ -123,8 +122,7 @@ router.get('/week/:week/:season?', async (req, res) => {
                     team_name: player.team_name,
                     owner_name: player.owner_name,
                     players: {
-                        starters: [],
-                        bench: [],
+                        active: [],
                         injured_reserve: []
                     }
                 };

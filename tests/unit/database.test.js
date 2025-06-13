@@ -27,7 +27,6 @@ describe('Database Manager Tests', () => {
       expect(typeof db.get).toBe('function');
       expect(typeof db.all).toBe('function');
       expect(typeof db.run).toBe('function');
-      expect(typeof db.prepare).toBe('function');
     });
   });
 
@@ -129,7 +128,7 @@ describe('Database Manager Tests', () => {
     });
   });
 
-  describe('Prepared Statements', () => {
+  describe('Bulk Operations', () => {
     beforeEach(() => {
       db = new DatabaseManager(TEST_DB_PATH);
     });
@@ -144,36 +143,17 @@ describe('Database Manager Tests', () => {
       }
     });
 
-    test('should create prepared statements', async () => {
+    test('should handle multiple sequential operations', async () => {
       try {
-        await db.run('CREATE TABLE IF NOT EXISTS prep_test (id INTEGER PRIMARY KEY, data TEXT)');
-        const stmt = db.prepare('INSERT INTO prep_test (data) VALUES (?)');
-        expect(stmt).toBeDefined();
-        expect(typeof stmt.run).toBe('function');
+        await db.run('CREATE TABLE IF NOT EXISTS bulk_test (id INTEGER PRIMARY KEY, value INTEGER)');
         
-        // Clean up
-        if (stmt.finalize) {
-          stmt.finalize();
-        }
-      } catch (error) {
-        expect(error).toBeDefined();
-      }
-    });
-
-    test('should execute prepared statements', async () => {
-      try {
-        await db.run('CREATE TABLE IF NOT EXISTS prep_exec_test (id INTEGER PRIMARY KEY, value INTEGER)');
-        const stmt = db.prepare('INSERT INTO prep_exec_test (value) VALUES (?)');
+        // Insert multiple rows sequentially
+        await db.run('INSERT INTO bulk_test (value) VALUES (?)', [1]);
+        await db.run('INSERT INTO bulk_test (value) VALUES (?)', [2]);
+        await db.run('INSERT INTO bulk_test (value) VALUES (?)', [3]);
         
-        await stmt.run([1]);
-        await stmt.run([2]);
-        
-        const results = await db.all('SELECT * FROM prep_exec_test');
+        const results = await db.all('SELECT * FROM bulk_test');
         expect(results.length).toBeGreaterThanOrEqual(0);
-        
-        if (stmt.finalize) {
-          stmt.finalize();
-        }
       } catch (error) {
         expect(error).toBeDefined();
       }

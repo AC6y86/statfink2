@@ -135,8 +135,41 @@ app.get('/roster', (req, res) => {
     res.sendFile(path.join(__dirname, '../helm/roster.html'));
 });
 
-// Statfink matchup viewer route
-app.get('/statfink', (req, res) => {
+// Statfink matchup viewer routes
+// Redirect /statfink to current year/week
+app.get('/statfink', async (req, res) => {
+    try {
+        const db = req.app.locals.db;
+        const settings = await db.getLeagueSettings();
+        res.redirect(`/statfink/${settings.season_year}/${settings.current_week}`);
+    } catch (error) {
+        logError('Failed to get league settings for statfink redirect', error);
+        // Fallback to default if settings can't be retrieved
+        res.redirect('/statfink/2024/1');
+    }
+});
+
+// Mock/test interface for integration tests
+app.get('/statfink/mock', (req, res) => {
+    res.sendFile(path.join(__dirname, '../helm/statfink.html'));
+});
+
+// Serve statfink for specific year/week
+app.get('/statfink/:year/:week', (req, res) => {
+    const { year, week } = req.params;
+    
+    // Basic validation
+    const yearNum = parseInt(year);
+    const weekNum = parseInt(week);
+    
+    if (isNaN(yearNum) || yearNum < 2020 || yearNum > 2030) {
+        return res.status(400).send('Invalid year. Must be between 2020 and 2030.');
+    }
+    
+    if (isNaN(weekNum) || weekNum < 1 || weekNum > 18) {
+        return res.status(400).send('Invalid week. Must be between 1 and 18.');
+    }
+    
     res.sendFile(path.join(__dirname, '../helm/statfink.html'));
 });
 
@@ -236,6 +269,10 @@ app.get('*', (req, res) => {
                     
                     <div class="dashboard-link" style="background: linear-gradient(135deg, #4169e1 0%, #1e3a8a 100%);">
                         <a href="/statfink">🏈 View Live Matchups (Statfink)</a>
+                    </div>
+                    
+                    <div class="dashboard-link" style="background: linear-gradient(135deg, #ff8c00 0%, #ff4500 100%);">
+                        <a href="/statfink/mock">🧪 Mock Matchups (Testing)</a>
                     </div>
                     
                     <div class="status">

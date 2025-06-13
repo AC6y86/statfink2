@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Statfink - PFL Fantasy Football</title>
-    <link href="statfink-styles.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/statfink-styles.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body onload="read_cont()">
     <div id="controls" class="controls">
@@ -47,7 +47,7 @@
                 <tfoot>
                     <tr>
                         <td colspan="4" style="text-align: center; padding: 5px 0; background: transparent;">
-                            <img src="statfink_logo.png" alt="Statfink Fantasy Football Stat Tracker" style="width: 100%; max-width: 240px; height: auto;">
+                            <img src="/statfink_logo.png" alt="Statfink Fantasy Football Stat Tracker" style="width: 100%; max-width: 240px; height: auto;">
                         </td>
                     </tr>
                 </tfoot>
@@ -238,7 +238,7 @@
     // Open matchup in new window
     function openMatchupWindow() {
         if (currentMatchupId) {
-            window.open(`statfink.html?matchup=${currentMatchupId}&week=${currentWeek}&season=${currentSeason}`, '_blank');
+            window.open(`/statfink/${currentSeason}/${currentWeek}?matchup=${currentMatchupId}`, '_blank');
         }
     }
 
@@ -293,7 +293,7 @@
     function navigateWeek(direction) {
         const newWeek = currentWeek + direction;
         if (newWeek >= 1 && newWeek <= 17) {
-            window.location.href = `/statfink?week=${newWeek}&season=${currentSeason}`;
+            window.location.href = `/statfink/${currentSeason}/${newWeek}`;
         }
     }
     
@@ -304,46 +304,94 @@
             if (data.success) {
                 const actualCurrentWeek = data.data.current_week;
                 const season = data.data.season_year;
-                window.location.href = `/statfink?week=${actualCurrentWeek}&season=${season}`;
+                window.location.href = `/statfink/${season}/${actualCurrentWeek}`;
             }
         } catch (error) {
             console.error('Error getting current week:', error);
         }
     }
 
+    // Parse URL to get year, week, and mode
+    function parseUrl() {
+        const path = window.location.pathname;
+        const urlParams = new URLSearchParams(window.location.search);
+        const matchupParam = urlParams.get('matchup');
+        
+        // Check if this is mock mode
+        if (path.includes('/statfink/mock')) {
+            return {
+                isMock: true,
+                matchup: matchupParam
+            };
+        }
+        
+        // Parse /statfink/year/week format
+        const pathParts = path.split('/');
+        if (pathParts.length >= 4 && pathParts[1] === 'statfink') {
+            const year = parseInt(pathParts[2]);
+            const week = parseInt(pathParts[3]);
+            
+            if (!isNaN(year) && !isNaN(week)) {
+                return {
+                    year: year,
+                    week: week,
+                    matchup: matchupParam,
+                    isMock: false
+                };
+            }
+        }
+        
+        // Fallback to query parameters for backwards compatibility
+        return {
+            year: urlParams.get('season'),
+            week: urlParams.get('week'),
+            matchup: matchupParam,
+            isMock: false
+        };
+    }
+
     // Main initialization
     async function read_cont() {
         try {
-            // Get URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const matchupParam = urlParams.get('matchup');
-            const weekParam = urlParams.get('week');
-            const seasonParam = urlParams.get('season');
-
+            // Parse URL for year/week/mode
+            const urlData = parseUrl();
+            
             // Load league settings
             const settingsResponse = await fetch('/api/league/settings');
             const settings = await settingsResponse.json();
             
             if (settings.success) {
-                currentWeek = weekParam || settings.data.current_week;
-                currentSeason = seasonParam || settings.data.season_year;
-                document.getElementById("fleague").innerHTML = `${settings.data.league_name || 'PFL'}<br>Week ${currentWeek}`;
+                // Use URL parameters if available, otherwise use current settings
+                currentWeek = parseInt(urlData.week) || settings.data.current_week;
+                currentSeason = parseInt(urlData.year) || settings.data.season_year;
+                
+                // Check for mock mode
+                if (urlData.isMock) {
+                    document.getElementById("fleague").innerHTML = `${settings.data.league_name || 'PFL'}<br>Mock Mode - Week ${currentWeek}`;
+                    document.getElementById("updatemsg").innerHTML = "MOCK DATA - Testing Mode";
+                    document.getElementById("updatemsg").style.color = "#ff6600";
+                    document.getElementById("updatemsg").style.fontWeight = "bold";
+                } else {
+                    document.getElementById("fleague").innerHTML = `${settings.data.league_name || 'PFL'}<br>Week ${currentWeek}`;
+                }
             }
 
             // Load matchups for current week
             await loadWeekMatchups();
             
             // If specific matchup requested, load it
-            if (matchupParam) {
-                currentMatchupId = parseInt(matchupParam);
+            if (urlData.matchup) {
+                currentMatchupId = parseInt(urlData.matchup);
                 await loadMatchup(currentMatchupId);
             } else if (matchup === 0 && document.getElementById("leaguetable").rows.length > 1) {
                 // Load first matchup by default
                 document.getElementById("leaguetable").rows[1].click();
             }
 
-            // Start refresh interval (30 seconds)
-            refreshInterval = setInterval(refreshData, 30000);
+            // Start refresh interval (30 seconds) - but not in mock mode to avoid API calls
+            if (!urlData.isMock) {
+                refreshInterval = setInterval(refreshData, 30000);
+            }
             
         } catch (error) {
             console.error('Error initializing:', error);
@@ -354,7 +402,13 @@
     // Load all matchups for the week
     async function loadWeekMatchups() {
         try {
-            const response = await fetch(`/api/matchups/${currentWeek}/${currentSeason}`);
+            // Check if we're in mock mode
+            const isMockMode = window.location.pathname.includes('/statfink/mock');
+            const apiUrl = isMockMode 
+                ? `/api/matchups/mock/${currentWeek}/${currentSeason}`
+                : `/api/matchups/${currentWeek}/${currentSeason}`;
+            
+            const response = await fetch(apiUrl);
             const data = await response.json();
             
             if (data.success) {
@@ -425,7 +479,13 @@
     // Load matchup details
     async function loadMatchup(matchupId) {
         try {
-            const response = await fetch(`/api/matchups/game/${matchupId}`);
+            // Check if we're in mock mode
+            const isMockMode = window.location.pathname.includes('/statfink/mock');
+            const apiUrl = isMockMode 
+                ? `/api/matchups/mock-game/${matchupId}`
+                : `/api/matchups/game/${matchupId}`;
+            
+            const response = await fetch(apiUrl);
             const data = await response.json();
             
             if (data.success) {

@@ -19,7 +19,7 @@ async function validateRosterConstraints(db, teamId, position, action) {
         SELECT p.position, COUNT(*) as count
         FROM fantasy_rosters r
         JOIN nfl_players p ON r.player_id = p.player_id
-        WHERE r.team_id = ? AND r.roster_position = 'starter'
+        WHERE r.team_id = ? AND r.roster_position = 'active'
         GROUP BY p.position
     `, [teamId]);
     
@@ -120,8 +120,8 @@ router.get('/:teamId/roster', asyncHandler(async (req, res) => {
         data: {
             roster,
             groupedByPosition: groupedRoster,
-            starters: roster.filter(p => p.roster_position === 'starter'),
-            injuredReserve: roster.filter(p => p.roster_position === 'injured_reserve')
+            active: roster.filter(p => p.roster_position === 'active'),
+            injured_reserve: roster.filter(p => p.roster_position === 'injured_reserve')
         }
     });
 }));
@@ -156,7 +156,7 @@ router.put('/:teamId/stats', asyncHandler(async (req, res) => {
 router.post('/:teamId/roster/add', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const { teamId } = req.params;
-    const { playerId, rosterPosition = 'starter' } = req.body;
+    const { playerId, rosterPosition = 'active' } = req.body;
     
     if (!teamId || isNaN(teamId)) {
         throw new APIError('Invalid team ID', 400);
@@ -166,8 +166,8 @@ router.post('/:teamId/roster/add', asyncHandler(async (req, res) => {
         throw new APIError('Player ID is required', 400);
     }
     
-    if (!['starter', 'injured_reserve'].includes(rosterPosition)) {
-        throw new APIError('Invalid roster position. Must be: starter or injured_reserve', 400);
+    if (!['active', 'injured_reserve'].includes(rosterPosition)) {
+        throw new APIError('Invalid roster position. Must be: active or injured_reserve', 400);
     }
     
     // Validate team exists
@@ -192,8 +192,8 @@ router.post('/:teamId/roster/add', asyncHandler(async (req, res) => {
         throw new APIError('Player is already on a roster', 400);
     }
 
-    // Validate roster constraints for starters (not IR)
-    if (rosterPosition === 'starter') {
+    // Validate roster constraints for active players (not IR)
+    if (rosterPosition === 'active') {
         await validateRosterConstraints(db, parseInt(teamId), player.position, 'add');
     }
     
@@ -253,8 +253,8 @@ router.delete('/:teamId/roster/remove', asyncHandler(async (req, res) => {
         throw new APIError('Player is not on this team\'s roster', 400);
     }
     
-    // Validate roster constraints for starters (not IR)
-    if (rosterEntry.roster_position === 'starter') {
+    // Validate roster constraints for active players (not IR)
+    if (rosterEntry.roster_position === 'active') {
         await validateRosterConstraints(db, parseInt(teamId), player.position, 'remove');
     }
     
@@ -289,8 +289,8 @@ router.put('/:teamId/roster/move', asyncHandler(async (req, res) => {
         throw new APIError('Player ID and roster position are required', 400);
     }
     
-    if (!['starter', 'injured_reserve'].includes(rosterPosition)) {
-        throw new APIError('Invalid roster position. Must be: starter or injured_reserve', 400);
+    if (!['active', 'injured_reserve'].includes(rosterPosition)) {
+        throw new APIError('Invalid roster position. Must be: active or injured_reserve', 400);
     }
     
     // Validate team and player exist
