@@ -168,7 +168,7 @@ class DatabaseManager {
                     WHEN 'WR' THEN 3 
                     WHEN 'TE' THEN 4 
                     WHEN 'K' THEN 5
-                    WHEN 'DST' THEN 6
+                    WHEN 'Defense' THEN 6
                     ELSE 7 
                 END,
                 r.roster_position DESC,
@@ -451,7 +451,7 @@ class DatabaseManager {
                     WHEN 'WR' THEN 3 
                     WHEN 'TE' THEN 4 
                     WHEN 'K' THEN 5
-                    WHEN 'DST' THEN 6
+                    WHEN 'Defense' THEN 6
                     ELSE 7 
                 END
         `, [week, season, teamId]);
@@ -546,7 +546,18 @@ class DatabaseManager {
             FROM weekly_rosters wr
             JOIN teams t ON wr.team_id = t.team_id
             WHERE wr.team_id = ? AND wr.week = ? AND wr.season = ?
-            ORDER BY wr.player_name
+            ORDER BY 
+                CASE wr.player_position 
+                    WHEN 'QB' THEN 1 
+                    WHEN 'RB' THEN 2 
+                    WHEN 'WR' THEN 3 
+                    WHEN 'TE' THEN 4 
+                    WHEN 'K' THEN 5
+                    WHEN 'Defense' THEN 6
+                    ELSE 7 
+                END,
+                wr.roster_position DESC,
+                wr.player_name
         `, [teamId, week, season]);
     }
     
@@ -566,7 +577,7 @@ class DatabaseManager {
                     WHEN 'WR' THEN 3 
                     WHEN 'TE' THEN 4 
                     WHEN 'K' THEN 5
-                    WHEN 'DST' THEN 6
+                    WHEN 'Defense' THEN 6
                     ELSE 7 
                 END,
                 wr.roster_position DESC,

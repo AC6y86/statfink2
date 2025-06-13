@@ -9,7 +9,7 @@ const ROSTER_CONSTRAINTS = {
     WR: { min: 6, max: null }, // 6 WRs and/or TEs combined
     TE: { min: 6, max: null }, // 6 WRs and/or TEs combined (shared with WR)
     K: { min: 2, max: null },  // Minimum 2 Kickers
-    DST: { min: 2, max: null } // Minimum 2 Defenses
+    Defense: { min: 2, max: null } // Minimum 2 Defenses
 };
 
 // Validate roster constraints for PFL rules

@@ -39,7 +39,7 @@ const samplePlayers = [
   {
     player_id: 'SF_DST',
     name: 'San Francisco Defense',
-    position: 'DST',
+    position: 'Defense',
     team: 'SF',
     bye_week: 9
   }

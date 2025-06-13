@@ -20,7 +20,7 @@ class Validator {
             errors.push('name is required and must be a non-empty string');
         }
         
-        const validPositions = ['QB', 'RB', 'WR', 'TE', 'K', 'DST'];
+        const validPositions = ['QB', 'RB', 'WR', 'TE', 'K', 'Defense'];
         if (!player.position || !validPositions.includes(player.position)) {
             errors.push(`position must be one of: ${validPositions.join(', ')}`);
         }

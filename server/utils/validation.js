@@ -20,7 +20,7 @@ class Validator {
             errors.push('Player name is required and must be at least 2 characters');
         }
         
-        const validPositions = ['QB', 'RB', 'WR', 'TE', 'K', 'DST'];
+        const validPositions = ['QB', 'RB', 'WR', 'TE', 'K', 'Defense'];
         if (!player.position || !validPositions.includes(player.position)) {
             errors.push(`Position must be one of: ${validPositions.join(', ')}`);
         }

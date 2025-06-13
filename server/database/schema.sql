@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS player_stats (
     receiving_tds INTEGER DEFAULT 0,
     receptions INTEGER DEFAULT 0,
     fumbles INTEGER DEFAULT 0,
-    -- Defensive stats (for DST)
+    -- Defensive stats (for Defense)
     sacks INTEGER DEFAULT 0,
     def_interceptions INTEGER DEFAULT 0,
     fumbles_recovered INTEGER DEFAULT 0,
