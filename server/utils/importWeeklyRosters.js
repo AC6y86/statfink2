@@ -94,7 +94,8 @@ for row_num, row in enumerate(ws.iter_rows(min_row=2, values_only=True), 2):
         current_position = str(row[0]).strip()
         if current_position == 'DEF':
             current_position = 'DST'  # Normalize DEF to DST
-        continue
+        # Don't continue - also process players in the same row as position header
+        # This will catch the first row of Kickers and DSTs
     
     # Skip header rows and non-player data
     first_cell = str(row[0] if row[0] else '').strip()
@@ -263,7 +264,7 @@ async function importWeekRosters(weekNum) {
                             teamId, 
                             playerId, 
                             weekNum, 
-                            isStarterFlag ? 'starter' : 'bench',
+                            isStarterFlag ? 'starter' : 'active',
                             playerInfo.name,
                             position,
                             playerInfo.team
@@ -273,7 +274,7 @@ async function importWeekRosters(weekNum) {
                         });
                     });
                     
-                    console.log(`    Added: ${playerInfo.name} (${position}) - ${isStarterFlag ? 'Starter' : 'Bench'}`);
+                    console.log(`    Added: ${playerInfo.name} (${position}) - ${isStarterFlag ? 'Starter' : 'Active'}`);
                 } catch (error) {
                     console.error(`    Error adding ${playerInfo.name}:`, error.message);
                 }
@@ -292,7 +293,7 @@ async function main() {
     console.log('Starting weekly roster import...');
     
     // Import weeks 1-17
-    for (let week = 1; week <= 1; week++) {  // Test with just week 1
+    for (let week = 1; week <= 17; week++) {
         await importWeekRosters(week);
     }
     

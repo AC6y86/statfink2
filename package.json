@@ -12,7 +12,10 @@
     "test:integration": "jest tests/integration/ --maxWorkers=1 --verbose",
     "test:watch": "jest --watch --maxWorkers=2",
     "test:coverage": "jest --coverage --maxWorkers=2",
-    "test:fast": "jest tests/unit/ --silent"
+    "test:fast": "jest tests/unit/ --silent",
+    "test:all": "node tests/test-all.js",
+    "test:smoke": "jest tests/integration/api-smoke.test.js",
+    "test:contracts": "jest tests/integration/contracts.test.js"
   },
   "repository": {
     "type": "git",

@@ -26,6 +26,9 @@ npm start
 
 ### Access Points
 - **Main Dashboard**: http://localhost:3000/dashboard
+- **Database Browser**: http://localhost:3000/database-browser
+- **Statfink UI**: http://localhost:3000/statfink
+- **2024 Season**: http://localhost:3000/2024-season
 - **Roster Management**: http://localhost:3000/roster
 - **API Base URL**: http://localhost:3000/api
 - **Health Check**: http://localhost:3000/health
@@ -37,13 +40,26 @@ npm start
 ### Main Interface
 Navigate to `http://localhost:3000/dashboard` for the comprehensive web interface.
 
-#### **Available Tabs:**
-- **Overview** - Database statistics and system status
-- **Players** - Browse and search all NFL players (1,792+ players)
-- **Teams** - View fantasy teams and standings
-- **Rosters** - Team roster details with starters/bench/IR
-- **Stats** - Database statistics and analytics
-- **Admin** - Player sync and roster management
+#### **Available Interfaces:**
+- **Main Dashboard** (`/dashboard`) - Database management and system status
+  - **Overview** - Database statistics and system status
+  - **Players** - Browse and search all NFL players (1,792+ players)
+  - **Teams** - View fantasy teams and standings
+  - **Rosters** - Team roster details with starters/bench/IR
+  - **Stats** - Database statistics and analytics
+  - **Admin** - Player sync and roster management
+- **Database Browser** (`/database-browser`) - Advanced database exploration
+  - **Table Explorer** - Browse all database tables with pagination
+  - **SQL Console** - Execute custom SQL queries
+  - **Schema Viewer** - View table structures and relationships
+- **Statfink UI** (`/statfink`) - Authentic classic interface
+  - **Season Navigation** - Week-by-week roster viewing
+  - **Team Rosters** - Starter designations and team organization
+  - **Authentic Styling** - Classic Statfink branding and layout
+- **2024 Season** (`/2024-season`) - Complete season overview
+  - **Weekly Rosters** - Historical roster data for all 17 weeks
+  - **Team Navigation** - Switch between teams and weeks
+  - **Season Statistics** - Complete 2024 season tracking
 
 #### **Player Management:**
 - **Search Players** - Real-time search by name
