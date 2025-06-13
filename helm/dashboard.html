@@ -1540,7 +1540,7 @@
                 let html = '<option value="">Choose a player...</option>';
                 
                 // Group by position for easier selection
-                const positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DST'];
+                const positions = ['QB', 'RB', 'WR', 'TE', 'K', 'Defense'];
                 positions.forEach(position => {
                     const positionPlayers = data.data.filter(p => p.position === position);
                     if (positionPlayers.length > 0) {
