@@ -183,7 +183,7 @@ describe('Database Dashboard Integration', () => {
           expect(player.position).toBeDefined();
           expect(player.team).toBeDefined();
           expect(player.roster_position).toBeDefined();
-          expect(['starter', 'bench', 'ir']).toContain(player.roster_position);
+          expect(['active', 'injured_reserve']).toContain(player.roster_position);
         }
       }
     });

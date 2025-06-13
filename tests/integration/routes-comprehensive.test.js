@@ -304,7 +304,7 @@ describe('Comprehensive Route Testing', () => {
       try {
         await axios.post(`${BASE_URL}/api/teams/1/roster/add`, {
           playerId: 999999,
-          rosterPosition: 'bench'
+          rosterPosition: 'active'
         }, {
           headers: { 'Content-Type': 'application/json' }
         });
