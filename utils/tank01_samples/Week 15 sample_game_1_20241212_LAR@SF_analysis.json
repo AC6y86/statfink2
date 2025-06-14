@@ -1,0 +1,136 @@
+{
+  "gameID": "20241212_LAR@SF",
+  "timestamp": "2025-06-14T15:33:12.691Z",
+  "playerStatsStructure": {
+    "topLevelKeys": [
+      "gameStatus",
+      "DST",
+      "teamStats",
+      "gameDate",
+      "scoringPlays",
+      "allPlayByPlay",
+      "network",
+      "teamIDHome",
+      "homeResult",
+      "away",
+      "gameWeek",
+      "attendance",
+      "lineScore",
+      "currentPeriod",
+      "gameLocation",
+      "home",
+      "playerStats",
+      "arenaCapacity",
+      "arena",
+      "homePts"
+    ],
+    "hasPlayerStats": true,
+    "playerStatsKeys": 89
+  },
+  "twoPointConversions": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "defensiveStats": {
+    "found": true,
+    "fieldNames": [
+      "Defense.totalTackles",
+      "Defense.soloTackles",
+      "Defense.passDeflections"
+    ],
+    "examples": [
+      {
+        "player": "Tashaun Gipson Sr.",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "3"
+      },
+      {
+        "player": "Tashaun Gipson Sr.",
+        "position": "Unknown",
+        "field": "Defense.soloTackles",
+        "value": "2"
+      },
+      {
+        "player": "Tashaun Gipson Sr.",
+        "position": "Unknown",
+        "field": "Defense.passDeflections",
+        "value": "1"
+      },
+      {
+        "player": "Eric Saubert",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "1"
+      }
+    ]
+  },
+  "returnTouchdowns": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "teamDefenseStats": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "samplePlayers": [
+    {
+      "playerId": "12483",
+      "name": "Matthew Stafford",
+      "position": "Unknown",
+      "team": "LAR",
+      "allFields": [
+        "gameID",
+        "Rushing",
+        "Passing",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    },
+    {
+      "playerId": "15235",
+      "name": "Tashaun Gipson Sr.",
+      "position": "Unknown",
+      "team": "SF",
+      "allFields": [
+        "gameID",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "Defense",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    },
+    {
+      "playerId": "16002",
+      "name": "Kyle Juszczyk",
+      "position": "Unknown",
+      "team": "SF",
+      "allFields": [
+        "gameID",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    }
+  ],
+  "interestingFindings": []
+}

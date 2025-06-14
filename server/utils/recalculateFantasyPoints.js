@@ -37,6 +37,10 @@ async function recalculateAllFantasyPoints(db, scoringService) {
                 ps.field_goals_0_39,
                 ps.field_goals_40_49,
                 ps.field_goals_50_plus,
+                ps.two_point_conversions_pass,
+                ps.two_point_conversions_run,
+                ps.two_point_conversions_rec,
+                ps.return_tds,
                 np.position,
                 ps.fantasy_points as old_fantasy_points
             FROM player_stats ps

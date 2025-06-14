@@ -1,0 +1,228 @@
+{
+  "gameID": "20241110_ATL@NO",
+  "timestamp": "2025-06-14T15:33:06.113Z",
+  "playerStatsStructure": {
+    "topLevelKeys": [
+      "gameStatus",
+      "DST",
+      "teamStats",
+      "gameDate",
+      "scoringPlays",
+      "allPlayByPlay",
+      "network",
+      "teamIDHome",
+      "homeResult",
+      "away",
+      "gameWeek",
+      "attendance",
+      "lineScore",
+      "currentPeriod",
+      "gameLocation",
+      "home",
+      "playerStats",
+      "arenaCapacity",
+      "arena",
+      "homePts"
+    ],
+    "hasPlayerStats": true,
+    "playerStatsKeys": 93
+  },
+  "twoPointConversions": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "defensiveStats": {
+    "found": true,
+    "fieldNames": [
+      "Defense.totalTackles",
+      "Defense.soloTackles",
+      "Defense.tfl",
+      "Defense.qbHits",
+      "Defense.sacks",
+      "Defense.fumbles",
+      "Defense.passDeflections",
+      "Defense.defensiveInterceptions",
+      "Defense.defensiveInterceptionsYards",
+      "Defense.fumblesRecovered"
+    ],
+    "examples": [
+      {
+        "player": "Cameron Jordan",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "3"
+      },
+      {
+        "player": "Cameron Jordan",
+        "position": "Unknown",
+        "field": "Defense.soloTackles",
+        "value": "2"
+      },
+      {
+        "player": "Cameron Jordan",
+        "position": "Unknown",
+        "field": "Defense.tfl",
+        "value": "1"
+      },
+      {
+        "player": "Cameron Jordan",
+        "position": "Unknown",
+        "field": "Defense.qbHits",
+        "value": "1"
+      },
+      {
+        "player": "Cameron Jordan",
+        "position": "Unknown",
+        "field": "Defense.sacks",
+        "value": "1"
+      },
+      {
+        "player": "Kirk Cousins",
+        "position": "Unknown",
+        "field": "Defense.fumbles",
+        "value": "2"
+      },
+      {
+        "player": "Demario Davis",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "10"
+      },
+      {
+        "player": "Demario Davis",
+        "position": "Unknown",
+        "field": "Defense.soloTackles",
+        "value": "2"
+      },
+      {
+        "player": "Demario Davis",
+        "position": "Unknown",
+        "field": "Defense.passDeflections",
+        "value": "1"
+      },
+      {
+        "player": "Tyrann Mathieu",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "3"
+      },
+      {
+        "player": "Tyrann Mathieu",
+        "position": "Unknown",
+        "field": "Defense.soloTackles",
+        "value": "3"
+      },
+      {
+        "player": "Tyrann Mathieu",
+        "position": "Unknown",
+        "field": "Defense.defensiveInterceptions",
+        "value": "1"
+      },
+      {
+        "player": "Tyrann Mathieu",
+        "position": "Unknown",
+        "field": "Defense.defensiveInterceptionsYards",
+        "value": "6"
+      },
+      {
+        "player": "Tyrann Mathieu",
+        "position": "Unknown",
+        "field": "Defense.passDeflections",
+        "value": "3"
+      },
+      {
+        "player": "Jake Matthews",
+        "position": "Unknown",
+        "field": "Defense.fumblesRecovered",
+        "value": "1"
+      },
+      {
+        "player": "Derek Carr",
+        "position": "Unknown",
+        "field": "Defense.fumbles",
+        "value": "1"
+      },
+      {
+        "player": "Derek Carr",
+        "position": "Unknown",
+        "field": "Defense.fumblesRecovered",
+        "value": "1"
+      },
+      {
+        "player": "Grady Jarrett",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "5"
+      }
+    ]
+  },
+  "returnTouchdowns": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "teamDefenseStats": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "samplePlayers": [
+    {
+      "playerId": "13971",
+      "name": "Cameron Jordan",
+      "position": "Unknown",
+      "team": "NO",
+      "allFields": [
+        "gameID",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "Defense",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    },
+    {
+      "playerId": "14880",
+      "name": "Kirk Cousins",
+      "position": "Unknown",
+      "team": "ATL",
+      "allFields": [
+        "gameID",
+        "Passing",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "Defense",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    },
+    {
+      "playerId": "14958",
+      "name": "Demario Davis",
+      "position": "Unknown",
+      "team": "NO",
+      "allFields": [
+        "gameID",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "Defense",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    }
+  ],
+  "interestingFindings": []
+}

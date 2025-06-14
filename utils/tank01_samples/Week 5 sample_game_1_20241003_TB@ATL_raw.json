@@ -1,0 +1,6658 @@
+{
+  "gameStatus": "Completed",
+  "DST": {
+    "away": {
+      "teamAbv": "TB",
+      "teamID": "30",
+      "defTD": "0",
+      "defensiveInterceptions": "1",
+      "sacks": "4",
+      "ydsAllowed": "550",
+      "fumblesRecovered": "0",
+      "ptsAllowed": "36",
+      "safeties": "0"
+    },
+    "home": {
+      "teamAbv": "ATL",
+      "teamID": "2",
+      "defTD": "0",
+      "defensiveInterceptions": "0",
+      "sacks": "1",
+      "ydsAllowed": "333",
+      "fumblesRecovered": "1",
+      "ptsAllowed": "30",
+      "safeties": "0"
+    }
+  },
+  "teamStats": {
+    "away": {
+      "totalYards": "333",
+      "rushingAttempts": "26",
+      "rushingYards": "160",
+      "fumblesLost": "1",
+      "penalties": "5-47",
+      "totalPlays": "51",
+      "possession": "27:38",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "19-24",
+      "passingFirstDowns": "12",
+      "interceptionsThrown": "0",
+      "sacksAndYardsLost": "1-7",
+      "thirdDownEfficiency": "6-11",
+      "blockedPunt": "0",
+      "yardsPerPlay": "6.5",
+      "redZoneScoredAndAttempted": "2-3",
+      "teamID": "30",
+      "defensiveInterceptions": "1",
+      "defensiveOrSpecialTeamsTds": "0",
+      "totalDrives": "10",
+      "rushingFirstDowns": "8",
+      "blockedFG": "1",
+      "rushTD": "0",
+      "twoPointConversions": "0",
+      "firstDowns": "21",
+      "passTD": "3",
+      "team": "TB",
+      "blockedXP": "0",
+      "teamAbv": "TB",
+      "firstDownsFromPenalties": "1",
+      "fourthDownEfficiency": "0-0",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "173",
+      "yardsPerRush": "6.2",
+      "snapCounts": {
+        "totalSpecialTeams": "32",
+        "totalOffensive": "53",
+        "totalDefensive": "87"
+      },
+      "turnovers": "1",
+      "yardsPerPass": "6.9"
+    },
+    "home": {
+      "totalYards": "550",
+      "rushingAttempts": "18",
+      "rushingYards": "73",
+      "fumblesLost": "0",
+      "penalties": "8-74",
+      "totalPlays": "81",
+      "possession": "33:37",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "42-59",
+      "passingFirstDowns": "24",
+      "interceptionsThrown": "1",
+      "sacksAndYardsLost": "4-32",
+      "thirdDownEfficiency": "6-14",
+      "blockedPunt": "0",
+      "yardsPerPlay": "6.8",
+      "redZoneScoredAndAttempted": "2-4",
+      "teamID": "2",
+      "defensiveInterceptions": "0",
+      "defensiveOrSpecialTeamsTds": "0",
+      "totalDrives": "11",
+      "rushingFirstDowns": "2",
+      "blockedFG": "0",
+      "rushTD": "0",
+      "twoPointConversions": "0",
+      "firstDowns": "28",
+      "passTD": "4",
+      "team": "ATL",
+      "blockedXP": "0",
+      "teamAbv": "ATL",
+      "firstDownsFromPenalties": "2",
+      "fourthDownEfficiency": "2-3",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "477",
+      "yardsPerRush": "4.1",
+      "snapCounts": {
+        "totalSpecialTeams": "32",
+        "totalOffensive": "87",
+        "totalDefensive": "53"
+      },
+      "turnovers": "1",
+      "yardsPerPass": "7.6"
+    }
+  },
+  "gameDate": "20241003",
+  "scoringPlays": [
+    {
+      "score": "Drake London 18 Yd pass from Kirk Cousins (Younghoe Koo Kick)",
+      "scorePeriod": "Q1",
+      "homeScore": "7",
+      "awayScore": "0",
+      "teamID": "2",
+      "scoreDetails": "7 plays, 70 yards, 3:06",
+      "scoreType": "TD",
+      "scoreTime": "11:54",
+      "team": "ATL",
+      "playerIDs": [
+        "14880",
+        "4426502",
+        "3049899"
+      ]
+    },
+    {
+      "score": "Mike Evans 2 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+      "scorePeriod": "Q1",
+      "homeScore": "7",
+      "awayScore": "7",
+      "teamID": "30",
+      "scoreDetails": "9 plays, 63 yards, 4:18",
+      "scoreType": "TD",
+      "scoreTime": "7:36",
+      "team": "TB",
+      "playerIDs": [
+        "3052587",
+        "16737",
+        "3150744"
+      ]
+    },
+    {
+      "score": "Chase McLaughlin 53 Yd Field Goal  ",
+      "scorePeriod": "Q1",
+      "homeScore": "7",
+      "awayScore": "10",
+      "teamID": "30",
+      "scoreDetails": "6 plays, 34 yards, 2:08",
+      "scoreType": "FG",
+      "scoreTime": "1:22",
+      "team": "TB",
+      "playerIDs": [
+        "3150744"
+      ]
+    },
+    {
+      "score": "Darnell Mooney 24 Yd pass from Kirk Cousins (Younghoe Koo Kick)",
+      "scorePeriod": "Q2",
+      "homeScore": "14",
+      "awayScore": "10",
+      "teamID": "2",
+      "scoreDetails": "9 plays, 70 yards, 4:24",
+      "scoreType": "TD",
+      "scoreTime": "11:58",
+      "team": "ATL",
+      "playerIDs": [
+        "14880",
+        "4040655",
+        "3049899"
+      ]
+    },
+    {
+      "score": "Mike Evans 23 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+      "scorePeriod": "Q2",
+      "homeScore": "14",
+      "awayScore": "17",
+      "teamID": "30",
+      "scoreDetails": "3 plays, 44 yards, 1:41",
+      "scoreType": "TD",
+      "scoreTime": "10:17",
+      "team": "TB",
+      "playerIDs": [
+        "3052587",
+        "16737",
+        "3150744"
+      ]
+    },
+    {
+      "score": "Younghoe Koo 54 Yd Field Goal  ",
+      "scorePeriod": "Q2",
+      "homeScore": "17",
+      "awayScore": "17",
+      "teamID": "2",
+      "scoreDetails": "8 plays, 34 yards, 4:00",
+      "scoreType": "FG",
+      "scoreTime": "6:17",
+      "team": "ATL",
+      "playerIDs": [
+        "3049899"
+      ]
+    },
+    {
+      "score": "Sterling Shepard 4 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+      "scorePeriod": "Q2",
+      "homeScore": "17",
+      "awayScore": "24",
+      "teamID": "30",
+      "scoreDetails": "7 plays, 82 yards, 4:21",
+      "scoreType": "TD",
+      "scoreTime": "1:56",
+      "team": "TB",
+      "playerIDs": [
+        "3052587",
+        "2976592",
+        "3150744"
+      ]
+    },
+    {
+      "score": "Younghoe Koo 48 Yd Field Goal  ",
+      "scorePeriod": "Q3",
+      "homeScore": "20",
+      "awayScore": "24",
+      "teamID": "2",
+      "scoreDetails": "12 plays, 50 yards, 5:49",
+      "scoreType": "FG",
+      "scoreTime": "6:21",
+      "team": "ATL",
+      "playerIDs": [
+        "3049899"
+      ]
+    },
+    {
+      "score": "Chase McLaughlin 32 Yd Field Goal  ",
+      "scorePeriod": "Q3",
+      "homeScore": "20",
+      "awayScore": "27",
+      "teamID": "30",
+      "scoreDetails": "9 plays, 56 yards, 5:04",
+      "scoreType": "FG",
+      "scoreTime": "1:17",
+      "team": "TB",
+      "playerIDs": [
+        "3150744"
+      ]
+    },
+    {
+      "score": "Darnell Mooney 12 Yd pass from Kirk Cousins (Younghoe Koo Kick)",
+      "scorePeriod": "Q4",
+      "homeScore": "27",
+      "awayScore": "27",
+      "teamID": "2",
+      "scoreDetails": "8 plays, 70 yards, 2:59",
+      "scoreType": "TD",
+      "scoreTime": "13:18",
+      "team": "ATL",
+      "playerIDs": [
+        "14880",
+        "4040655",
+        "3049899"
+      ]
+    },
+    {
+      "score": "Chase McLaughlin 53 Yd Field Goal  ",
+      "scorePeriod": "Q4",
+      "homeScore": "27",
+      "awayScore": "30",
+      "teamID": "30",
+      "scoreDetails": "6 plays, 35 yards, 2:55",
+      "scoreType": "FG",
+      "scoreTime": "10:23",
+      "team": "TB",
+      "playerIDs": [
+        "3150744"
+      ]
+    },
+    {
+      "score": "Younghoe Koo 52 Yd Field Goal  ",
+      "scorePeriod": "Q4",
+      "homeScore": "30",
+      "awayScore": "30",
+      "teamID": "2",
+      "scoreDetails": "9 plays, 46 yards, 1:14",
+      "scoreType": "FG",
+      "scoreTime": "0:00",
+      "team": "ATL",
+      "playerIDs": [
+        "3049899"
+      ]
+    },
+    {
+      "score": "KhaDarel Hodge 45 Yd pass from Kirk Cousins  ",
+      "scorePeriod": "OT",
+      "homeScore": "36",
+      "awayScore": "30",
+      "teamID": "2",
+      "scoreDetails": "4 plays, 70 yards, 1:15",
+      "scoreType": "TD",
+      "scoreTime": "8:45",
+      "team": "ATL",
+      "playerIDs": [
+        "14880",
+        "3047876"
+      ]
+    }
+  ],
+  "allPlayByPlay": [
+    {
+      "play": "T.Gill kicks 65 yards from TB 35 to end zone, Touchback to the ATL 30.",
+      "playPeriod": "Q1",
+      "playClock": "15:00",
+      "playerStats": {
+        "4240128": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "2"
+    },
+    {
+      "play": "B.Robinson right tackle to ATL 32 for 2 yards (T.Smith, L.David).",
+      "playPeriod": "Q1",
+      "playClock": "15:00",
+      "playerStats": {
+        "4430807": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 30",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass deep right to K.Pitts to TB 36 for 32 yards (Z.McCollum).",
+      "playPeriod": "Q1",
+      "playClock": "14:32",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "32",
+            "passCompletions": "1"
+          }
+        },
+        "4360248": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "32"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 8 at ATL 32",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Robinson left end pushed ob at TB 33 for 3 yards (C.Izien).",
+      "playPeriod": "Q1",
+      "playClock": "14:03",
+      "playerStats": {
+        "4430807": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 36",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete short left to D.Mooney.",
+      "playPeriod": "Q1",
+      "playClock": "13:21",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at TB 33",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short middle to D.London to TB 18 for 15 yards (L.David).",
+      "playPeriod": "Q1",
+      "playClock": "13:16",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "15",
+            "passCompletions": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "15"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 7 at TB 33",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Robinson right end to TB 18 for no gain (T.Smith).",
+      "playPeriod": "Q1",
+      "playClock": "12:39",
+      "playerStats": {
+        "4430807": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 18",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to D.London for 18 yards, TOUCHDOWN.Y.Koo extra point is GOOD, Center-L.McCullough, Holder-B.Pinion.",
+      "playPeriod": "Q1",
+      "playClock": "11:54",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passTD": "1",
+            "passYds": "18",
+            "passCompletions": "1"
+          }
+        },
+        "3049899": {
+          "Kicking": {
+            "xpMade": "1",
+            "xpAttempts": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recTD": "1",
+            "recYds": "18"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at TB 18",
+      "teamID": "2"
+    },
+    {
+      "play": "Timeout at 11:54.",
+      "playPeriod": "Q1",
+      "playClock": "11:54",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ATL 35",
+      "teamID": "2"
+    },
+    {
+      "play": "Y.Koo kicks 61 yards from ATL 35 to TB 4. S.Tucker pushed ob at TB 37 for 33 yards (R.Grant).",
+      "playPeriod": "Q1",
+      "playClock": "11:54",
+      "playerStats": {
+        "3049899": {
+          "Kicking": {
+            "kickYards": "61"
+          }
+        }
+      },
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short right to M.Evans to ATL 48 for 15 yards (A.Terrell).",
+      "playPeriod": "Q1",
+      "playClock": "11:48",
+      "playerStats": {
+        "16737": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "15"
+          }
+        },
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "15",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 37",
+      "teamID": "30"
+    },
+    {
+      "play": "R.White right tackle to ATL 43 for 5 yards (K.Elliss).",
+      "playPeriod": "Q1",
+      "playClock": "11:12",
+      "playerStats": {
+        "4697815": {
+          "Rushing": {
+            "rushYds": "5",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 48",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass incomplete short left to M.Evans.",
+      "playPeriod": "Q1",
+      "playClock": "10:36",
+      "playerStats": {
+        "16737": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 5 at ATL 43",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short middle to M.Evans to ATL 34 for 9 yards (D.Alford, J.Bates).",
+      "playPeriod": "Q1",
+      "playClock": "10:32",
+      "playerStats": {
+        "16737": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "9"
+          }
+        },
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "9",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 5 at ATL 43",
+      "teamID": "30"
+    },
+    {
+      "play": "R.White right tackle to ATL 33 for 1 yard (R.Orhorhoro, J.Smith-Williams). TB-K.Johnson was injured during the play.",
+      "playPeriod": "Q1",
+      "playClock": "9:50",
+      "playerStats": {
+        "4697815": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 34",
+      "teamID": "30"
+    },
+    {
+      "play": "Timeout at 09:37.",
+      "playPeriod": "Q1",
+      "playClock": "9:37",
+      "playerStats": {},
+      "downAndDistance": "2nd & 9 at ATL 33",
+      "teamID": "30"
+    },
+    {
+      "play": "R.White right tackle to ATL 33 for no gain (J.Smith-Williams, D.Alford).",
+      "playPeriod": "Q1",
+      "playClock": "9:29",
+      "playerStats": {
+        "4697815": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 9 at ATL 33",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short right to C.Otton to ATL 18 for 15 yards (J.Bertrand).",
+      "playPeriod": "Q1",
+      "playClock": "8:51",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "15",
+            "passCompletions": "1"
+          }
+        },
+        "4243331": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "15"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 9 at ATL 33",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short middle to C.Godwin to ATL 2 for 16 yards (D.Alford). ATL-D.Alford was injured during the play.",
+      "playPeriod": "Q1",
+      "playClock": "8:13",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "16",
+            "passCompletions": "1"
+          }
+        },
+        "3116165": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "16"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 18",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short middle to M.Evans for 2 yards, TOUCHDOWN.C.McLaughlin extra point is GOOD, Center-Z.Triner, Holder-T.Gill.",
+      "playPeriod": "Q1",
+      "playClock": "7:36",
+      "playerStats": {
+        "16737": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recTD": "1",
+            "recYds": "2"
+          }
+        },
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passTD": "1",
+            "passYds": "2",
+            "passCompletions": "1"
+          }
+        },
+        "3150744": {
+          "Kicking": {
+            "xpMade": "1",
+            "xpAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & Goal at ATL 2",
+      "teamID": "30"
+    },
+    {
+      "play": "Timeout at 07:36.",
+      "playPeriod": "Q1",
+      "playClock": "7:36",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at TB 35",
+      "teamID": "30"
+    },
+    {
+      "play": "T.Gill kicks 65 yards from TB 35 to end zone, Touchback to the ATL 30.",
+      "playPeriod": "Q1",
+      "playClock": "7:36",
+      "playerStats": {
+        "4240128": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass deep left to D.Mooney pushed ob at 50 for 20 yards (J.Dean).",
+      "playPeriod": "Q1",
+      "playClock": "7:36",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "20",
+            "passCompletions": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "20"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 30",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to T.Allgeier to TB 47 for 3 yards (Y.Diaby).",
+      "playPeriod": "Q1",
+      "playClock": "7:06",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "3",
+            "passCompletions": "1"
+          }
+        },
+        "4373626": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "3"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at 50",
+      "teamID": "2"
+    },
+    {
+      "play": "T.Allgeier right tackle to TB 39 for 8 yards (K.Britt; J.Whitehead).",
+      "playPeriod": "Q1",
+      "playClock": "6:30",
+      "playerStats": {
+        "4373626": {
+          "Rushing": {
+            "rushYds": "8",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at TB 47",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to R.McCloud pushed ob at TB 24 for 15 yards (T.Smith).",
+      "playPeriod": "Q1",
+      "playClock": "5:49",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "15",
+            "passCompletions": "1"
+          }
+        },
+        "3728262": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "15"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 39",
+      "teamID": "2"
+    },
+    {
+      "play": "D.Mooney pass incomplete deep right [J.Whitehead].",
+      "playPeriod": "Q1",
+      "playClock": "5:14",
+      "playerStats": {
+        "4040655": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 24",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to D.London to TB 19 for 5 yards (T.Smith).",
+      "playPeriod": "Q1",
+      "playClock": "5:07",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "5",
+            "passCompletions": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "5"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at TB 24",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins sacked at TB 28 for -9 yards (V.Vea).",
+      "playPeriod": "Q1",
+      "playClock": "4:27",
+      "playerStats": {},
+      "downAndDistance": "3rd & 5 at TB 19",
+      "teamID": "2"
+    },
+    {
+      "play": "Y.Koo 46 yard field goal is No Good, Wide Left, Center-L.McCullough, Holder-B.Pinion. PENALTY on TB-J.Hayes, Defensive Offside, 5 yards, enforced at TB 28 - No Play.",
+      "playPeriod": "Q1",
+      "playClock": "3:39",
+      "playerStats": {},
+      "downAndDistance": "4th & 14 at TB 28",
+      "teamID": "2"
+    },
+    {
+      "play": "Y.Koo 41 yard field goal is No Good, Wide Left, Center-L.McCullough, Holder-B.Pinion.",
+      "playPeriod": "Q1",
+      "playClock": "3:34",
+      "playerStats": {
+        "3049899": {
+          "Kicking": {
+            "fgAttempts": "1",
+            "fgYds": "41"
+          }
+        }
+      },
+      "downAndDistance": "4th & 9 at TB 23",
+      "teamID": "2"
+    },
+    {
+      "play": "Timeout at 03:30.",
+      "playPeriod": "Q1",
+      "playClock": "3:30",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at TB 31",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Mayfield pass short left to C.Godwin to TB 42 for 11 yards (A.Terrell; L.Carter).",
+      "playPeriod": "Q1",
+      "playClock": "3:30",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "11",
+            "passCompletions": "1"
+          }
+        },
+        "3116165": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "11"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 31",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Irving left end to ATL 42 for 16 yards (J.Simmons).",
+      "playPeriod": "Q1",
+      "playClock": "2:55",
+      "playerStats": {
+        "4596448": {
+          "Rushing": {
+            "rushYds": "16",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 42",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass incomplete deep middle to S.Shepard.",
+      "playPeriod": "Q1",
+      "playClock": "2:14",
+      "playerStats": {
+        "2976592": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 42",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short left to C.Godwin pushed ob at ATL 35 for 7 yards (J.Simmons).",
+      "playPeriod": "Q1",
+      "playClock": "2:09",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "3116165": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at ATL 42",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass incomplete short left to C.Godwin.",
+      "playPeriod": "Q1",
+      "playClock": "1:30",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "3116165": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 3 at ATL 35",
+      "teamID": "30"
+    },
+    {
+      "play": "C.McLaughlin 53 yard field goal is GOOD, Center-Z.Triner, Holder-T.Gill.",
+      "playPeriod": "Q1",
+      "playClock": "1:22",
+      "playerStats": {
+        "3150744": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "53"
+          }
+        }
+      },
+      "downAndDistance": "4th & 3 at ATL 35",
+      "teamID": "30"
+    },
+    {
+      "play": "Timeout at 01:22.",
+      "playPeriod": "Q1",
+      "playClock": "1:22",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at TB 35",
+      "teamID": "30"
+    },
+    {
+      "play": "T.Gill kicks 65 yards from TB 35 to end zone, Touchback to the ATL 30.",
+      "playPeriod": "Q1",
+      "playClock": "1:22",
+      "playerStats": {
+        "4240128": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "2"
+    },
+    {
+      "play": "B.Robinson left end to ATL 36 for 6 yards (T.Smith).",
+      "playPeriod": "Q1",
+      "playClock": "1:22",
+      "playerStats": {
+        "4430807": {
+          "Rushing": {
+            "rushYds": "6",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 30",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Robinson right tackle to ATL 37 for 1 yard (J.Tryon; Y.Diaby).",
+      "playPeriod": "Q1",
+      "playClock": "0:46",
+      "playerStats": {
+        "4430807": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 4 at ATL 36",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to D.Mooney to ATL 44 for 7 yards (K.Britt).",
+      "playPeriod": "Q1",
+      "playClock": "0:22",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 3 at ATL 37",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete short left [L.Hall].",
+      "playPeriod": "Q2",
+      "playClock": "15:00",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 44",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete short middle to D.London (J.Dean). PENALTY on TB-K.Britt, Unnecessary Roughness, 15 yards, enforced at ATL 44 - No Play.",
+      "playPeriod": "Q2",
+      "playClock": "14:54",
+      "playerStats": {},
+      "downAndDistance": "2nd & 10 at ATL 44",
+      "teamID": "2"
+    },
+    {
+      "play": "T.Allgeier right end to TB 34 for 7 yards (Z.McCollum). PENALTY on ATL-R.Neuzil, Offensive Holding, 10 yards, enforced at TB 41 - No Play.",
+      "playPeriod": "Q2",
+      "playClock": "14:50",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at TB 41",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to R.McCloud to TB 43 for 8 yards (K.Britt).",
+      "playPeriod": "Q2",
+      "playClock": "14:25",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "8",
+            "passCompletions": "1"
+          }
+        },
+        "3728262": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "8"
+          }
+        }
+      },
+      "downAndDistance": "1st & 20 at ATL 49",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass deep middle to K.Hodge to TB 21 for 22 yards (C.Izien).",
+      "playPeriod": "Q2",
+      "playClock": "13:44",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "22",
+            "passCompletions": "1"
+          }
+        },
+        "3047876": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "22"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 12 at TB 43",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to B.Robinson to TB 23 for -2 yards (A.Nelson). PENALTY on ATL-K.Pitts, Offensive Holding, 10 yards, enforced at TB 21 - No Play.",
+      "playPeriod": "Q2",
+      "playClock": "13:02",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at TB 21",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to D.Mooney to TB 24 for 7 yards (Z.McCollum).",
+      "playPeriod": "Q2",
+      "playClock": "12:35",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "1st & 20 at TB 31",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete short right to K.Pitts (L.David).",
+      "playPeriod": "Q2",
+      "playClock": "12:10",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4360248": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 13 at TB 24",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass deep middle to D.Mooney for 24 yards, TOUCHDOWN.Y.Koo extra point is GOOD, Center-L.McCullough, Holder-B.Pinion.",
+      "playPeriod": "Q2",
+      "playClock": "11:58",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passTD": "1",
+            "passYds": "24",
+            "passCompletions": "1"
+          }
+        },
+        "3049899": {
+          "Kicking": {
+            "xpMade": "1",
+            "xpAttempts": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recTD": "1",
+            "recYds": "24"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 13 at TB 24",
+      "teamID": "2"
+    },
+    {
+      "play": "Timeout at 11:58.",
+      "playPeriod": "Q2",
+      "playClock": "11:58",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ATL 35",
+      "teamID": "2"
+    },
+    {
+      "play": "Y.Koo kicks 62 yards from ATL 35 to TB 3. S.Tucker to ATL 44 for 53 yards (M.Abernathy; K.King).",
+      "playPeriod": "Q2",
+      "playClock": "11:58",
+      "playerStats": {
+        "3049899": {
+          "Kicking": {
+            "kickYards": "62"
+          }
+        }
+      },
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short right to C.Otton pushed ob at ATL 22 for 22 yards (K.Elliss).",
+      "playPeriod": "Q2",
+      "playClock": "11:46",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "22",
+            "passCompletions": "1"
+          }
+        },
+        "4243331": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "22"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 44",
+      "teamID": "30"
+    },
+    {
+      "play": "R.White right end to ATL 23 for -1 yards (K.Elliss, Z.Harrison).",
+      "playPeriod": "Q2",
+      "playClock": "11:05",
+      "playerStats": {
+        "4697815": {
+          "Rushing": {
+            "rushYds": "-1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 22",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass deep left to M.Evans for 23 yards, TOUCHDOWN.C.McLaughlin extra point is GOOD, Center-Z.Triner, Holder-T.Gill.",
+      "playPeriod": "Q2",
+      "playClock": "10:17",
+      "playerStats": {
+        "16737": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recTD": "1",
+            "recYds": "23"
+          }
+        },
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passTD": "1",
+            "passYds": "23",
+            "passCompletions": "1"
+          }
+        },
+        "3150744": {
+          "Kicking": {
+            "xpMade": "1",
+            "xpAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 11 at ATL 23",
+      "teamID": "30"
+    },
+    {
+      "play": "Timeout at 10:17.",
+      "playPeriod": "Q2",
+      "playClock": "10:17",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at TB 35",
+      "teamID": "30"
+    },
+    {
+      "play": "T.Gill kicks 65 yards from TB 35 to end zone, Touchback to the ATL 30.",
+      "playPeriod": "Q2",
+      "playClock": "10:17",
+      "playerStats": {
+        "4240128": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "2"
+    },
+    {
+      "play": "B.Robinson left end to ATL 30 for no gain (L.David).",
+      "playPeriod": "Q2",
+      "playClock": "10:17",
+      "playerStats": {
+        "4430807": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 30",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to K.Pitts to ATL 48 for 18 yards (J.Whitehead).",
+      "playPeriod": "Q2",
+      "playClock": "9:31",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "18",
+            "passCompletions": "1"
+          }
+        },
+        "4360248": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "18"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at ATL 30",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Robinson right tackle to TB 46 for 6 yards (Z.McCollum, T.Smith).",
+      "playPeriod": "Q2",
+      "playClock": "8:52",
+      "playerStats": {
+        "4430807": {
+          "Rushing": {
+            "rushYds": "6",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 48",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to K.Pitts to TB 38 for 8 yards (L.David).",
+      "playPeriod": "Q2",
+      "playClock": "8:22",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "8",
+            "passCompletions": "1"
+          }
+        },
+        "4360248": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "8"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 4 at TB 46",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete short middle [L.Hall]. PENALTY on ATL-K.Cousins, Intentional Grounding, 10 yards, enforced at TB 38. Tampa Bay challenged the forward pass ruling, and the play was Upheld. The ruling on the field stands. (Timeout #1.)",
+      "playPeriod": "Q2",
+      "playClock": "7:38",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 38",
+      "teamID": "2"
+    },
+    {
+      "play": "Timeout at 07:35.",
+      "playPeriod": "Q2",
+      "playClock": "7:35",
+      "playerStats": {},
+      "downAndDistance": "2nd & 20 at TB 48",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to B.Robinson to TB 42 for 6 yards (J.Tryon). TB-T.Smith was injured during the play.",
+      "playPeriod": "Q2",
+      "playClock": "7:35",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "6",
+            "passCompletions": "1"
+          }
+        },
+        "4430807": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "6"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 20 at TB 48",
+      "teamID": "2"
+    },
+    {
+      "play": "Timeout at 07:22.",
+      "playPeriod": "Q2",
+      "playClock": "7:22",
+      "playerStats": {},
+      "downAndDistance": "3rd & 14 at TB 42",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to T.Allgeier pushed ob at TB 36 for 6 yards (L.David).",
+      "playPeriod": "Q2",
+      "playClock": "7:06",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "6",
+            "passCompletions": "1"
+          }
+        },
+        "4373626": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "6"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 14 at TB 42",
+      "teamID": "2"
+    },
+    {
+      "play": "Y.Koo 54 yard field goal is GOOD, Center-L.McCullough, Holder-B.Pinion.",
+      "playPeriod": "Q2",
+      "playClock": "6:17",
+      "playerStats": {
+        "3049899": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "54"
+          }
+        }
+      },
+      "downAndDistance": "4th & 8 at TB 36",
+      "teamID": "2"
+    },
+    {
+      "play": "Y.Koo kicks 68 yards from ATL 35 to TB -3. C.Thompson to TB 18 for 21 yards (R.Grant).",
+      "playPeriod": "Q2",
+      "playClock": "6:17",
+      "playerStats": {
+        "3049899": {
+          "Kicking": {
+            "kickYards": "68"
+          }
+        }
+      },
+      "teamID": "30"
+    },
+    {
+      "play": "B.Irving left tackle to TB 29 for 11 yards (K.Elliss; R.Orhorhoro).",
+      "playPeriod": "Q2",
+      "playClock": "6:10",
+      "playerStats": {
+        "4596448": {
+          "Rushing": {
+            "rushYds": "11",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 18",
+      "teamID": "30"
+    },
+    {
+      "play": "R.White right guard pushed ob at ATL 15 for 56 yards (A.Terrell).",
+      "playPeriod": "Q2",
+      "playClock": "5:28",
+      "playerStats": {
+        "4697815": {
+          "Rushing": {
+            "rushYds": "56",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 29",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short right to B.Irving to ATL 6 for 9 yards (J.Smith-Williams; J.Bates).",
+      "playPeriod": "Q2",
+      "playClock": "4:47",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "9",
+            "passCompletions": "1"
+          }
+        },
+        "4596448": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "9"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 15",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Irving right tackle to ATL 2 for 4 yards (J.Bertrand, J.Bates).",
+      "playPeriod": "Q2",
+      "playClock": "4:03",
+      "playerStats": {
+        "4596448": {
+          "Rushing": {
+            "rushYds": "4",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 1 at ATL 6",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Irving right guard to ATL 2 for no gain (R.Orhorhoro; G.Jarrett).",
+      "playPeriod": "Q2",
+      "playClock": "3:19",
+      "playerStats": {
+        "4596448": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & Goal at ATL 2",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short left to R.White to ATL 4 for -2 yards (C.Phillips).",
+      "playPeriod": "Q2",
+      "playClock": "2:35",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "-2",
+            "passCompletions": "1"
+          }
+        },
+        "4697815": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "-2"
+          }
+        }
+      },
+      "downAndDistance": "2nd & Goal at ATL 2",
+      "teamID": "30"
+    },
+    {
+      "play": "Two-Minute Warning",
+      "playPeriod": "Q2",
+      "playClock": "2:00",
+      "playerStats": {},
+      "downAndDistance": "3rd & Goal at ATL 4",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short right to S.Shepard for 4 yards, TOUCHDOWN.C.McLaughlin extra point is GOOD, Center-Z.Triner, Holder-T.Gill.",
+      "playPeriod": "Q2",
+      "playClock": "1:56",
+      "playerStats": {
+        "2976592": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recTD": "1",
+            "recYds": "4"
+          }
+        },
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passTD": "1",
+            "passYds": "4",
+            "passCompletions": "1"
+          }
+        },
+        "3150744": {
+          "Kicking": {
+            "xpMade": "1",
+            "xpAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & Goal at ATL 4",
+      "teamID": "30"
+    },
+    {
+      "play": "T.Gill kicks 65 yards from TB 35 to end zone, Touchback to the ATL 30.",
+      "playPeriod": "Q2",
+      "playClock": "1:56",
+      "playerStats": {
+        "4240128": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete short middle to R.McCloud (J.Tryon). ** Injury Update: TB-T.Smith has returned to the game.",
+      "playPeriod": "Q2",
+      "playClock": "1:55",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "3728262": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 30",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to D.London to ATL 41 for 11 yards (Z.McCollum; K.Britt). The Replay Official reviewed the runner was not down by contact ruling, and the play was Upheld. The ruling on the field stands.",
+      "playPeriod": "Q2",
+      "playClock": "1:51",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "11",
+            "passCompletions": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "11"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at ATL 30",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to D.London to ATL 48 for 7 yards (T.Smith).",
+      "playPeriod": "Q2",
+      "playClock": "1:27",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 41",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to B.Robinson pushed ob at TB 47 for 5 yards (J.Dean).",
+      "playPeriod": "Q2",
+      "playClock": "1:08",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "5",
+            "passCompletions": "1"
+          }
+        },
+        "4430807": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "5"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 3 at ATL 48",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to R.McCloud to TB 39 for 8 yards (K.Britt, L.David).",
+      "playPeriod": "Q2",
+      "playClock": "1:00",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "8",
+            "passCompletions": "1"
+          }
+        },
+        "3728262": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "8"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 47",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to D.London pushed ob at TB 31 for 8 yards (Z.McCollum).",
+      "playPeriod": "Q2",
+      "playClock": "0:39",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "8",
+            "passCompletions": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "8"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 2 at TB 39",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete short middle to D.London (J.Whitehead).",
+      "playPeriod": "Q2",
+      "playClock": "0:34",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 31",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins sacked at TB 39 for -8 yards (L.Hall). TB-Y.Diaby was injured during the play.",
+      "playPeriod": "Q2",
+      "playClock": "0:30",
+      "playerStats": {},
+      "downAndDistance": "2nd & 10 at TB 31",
+      "teamID": "2"
+    },
+    {
+      "play": "Timeout #1 by ATL at 00:24.",
+      "playPeriod": "Q2",
+      "playClock": "0:24",
+      "playerStats": {},
+      "downAndDistance": "3rd & 18 at TB 39",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete short right to D.Mooney.",
+      "playPeriod": "Q2",
+      "playClock": "0:24",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 18 at TB 39",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Pinion punts 35 yards to TB 4, Center-L.McCullough, fair catch by K.Johnson. ** Injury Update: TB-K.Johnson has returned to the game. ** Injury Update: TB-Y.Diaby has returned to the game.",
+      "playPeriod": "Q2",
+      "playClock": "0:19",
+      "playerStats": {
+        "2977680": {
+          "Kicking": {
+            "puntYds": "35",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 18 at TB 39",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Mayfield kneels to TB 3 for -1 yards.",
+      "playPeriod": "Q2",
+      "playClock": "0:12",
+      "playerStats": {
+        "3052587": {
+          "Rushing": {
+            "rushYds": "-1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 4",
+      "teamID": "30"
+    },
+    {
+      "play": "END QUARTER 2",
+      "playPeriod": "Q2",
+      "playClock": "0:00",
+      "playerStats": {},
+      "teamID": "30"
+    },
+    {
+      "play": "Y.Koo kicks 67 yards from ATL 35 to TB -2. B.Irving to TB 37 for 39 yards (Y.Koo; K.Hodge).",
+      "playPeriod": "Q3",
+      "playClock": "15:00",
+      "playerStats": {
+        "3049899": {
+          "Kicking": {
+            "kickYards": "67"
+          }
+        }
+      },
+      "teamID": "30"
+    },
+    {
+      "play": "R.White left tackle to TB 39 for 2 yards (G.Jarrett).",
+      "playPeriod": "Q3",
+      "playClock": "14:53",
+      "playerStats": {
+        "4697815": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 37",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short middle to C.Godwin to TB 46 for 7 yards (A.Hamilton). PENALTY on TB-J.Skule, Offensive Holding, 10 yards, enforced at TB 39 - No Play.",
+      "playPeriod": "Q3",
+      "playClock": "13:52",
+      "playerStats": {},
+      "downAndDistance": "2nd & 8 at TB 39",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short left to R.White to TB 27 for -2 yards (D.Onyemata).",
+      "playPeriod": "Q3",
+      "playClock": "13:34",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "-2",
+            "passCompletions": "1"
+          }
+        },
+        "4697815": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "-2"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 18 at TB 29",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield scrambles right end pushed ob at TB 35 for 8 yards (A.Hamilton).",
+      "playPeriod": "Q3",
+      "playClock": "12:53",
+      "playerStats": {
+        "3052587": {
+          "Rushing": {
+            "rushYds": "8",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 20 at TB 27",
+      "teamID": "30"
+    },
+    {
+      "play": "T.Gill punts 45 yards to ATL 20, Center-Z.Triner, fair catch by A.Williams.",
+      "playPeriod": "Q3",
+      "playClock": "12:16",
+      "playerStats": {
+        "4240128": {
+          "Kicking": {
+            "puntYds": "45",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 12 at TB 35",
+      "teamID": "30"
+    },
+    {
+      "play": "Timeout at 12:10.",
+      "playPeriod": "Q3",
+      "playClock": "12:10",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ATL 21",
+      "teamID": "30"
+    },
+    {
+      "play": "K.Cousins pass incomplete deep left to D.Mooney (J.Dean).",
+      "playPeriod": "Q3",
+      "playClock": "12:10",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 20",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass deep right to D.London to TB 49 for 31 yards (J.Whitehead).",
+      "playPeriod": "Q3",
+      "playClock": "12:04",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "31",
+            "passCompletions": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "31"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at ATL 20",
+      "teamID": "2"
+    },
+    {
+      "play": "T.Allgeier left end to TB 44 for 5 yards (V.Vea; K.Britt). TB-L.David was injured during the play.",
+      "playPeriod": "Q3",
+      "playClock": "11:28",
+      "playerStats": {
+        "4373626": {
+          "Rushing": {
+            "rushYds": "5",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 49",
+      "teamID": "2"
+    },
+    {
+      "play": "PENALTY on ATL-M.Bergeron, False Start, 5 yards, enforced at TB 44 - No Play.",
+      "playPeriod": "Q3",
+      "playClock": "10:59",
+      "playerStats": {},
+      "downAndDistance": "2nd & 5 at TB 44",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete short right to D.Mooney (Z.McCollum).",
+      "playPeriod": "Q3",
+      "playClock": "10:36",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at TB 49",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short middle to K.Pitts to TB 42 for 7 yards (T.Smith). ** Injury Update: TB-L.David has returned to the game.",
+      "playPeriod": "Q3",
+      "playClock": "10:30",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "4360248": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 10 at TB 49",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to D.Mooney pushed ob at TB 28 for 14 yards (J.Dean).",
+      "playPeriod": "Q3",
+      "playClock": "10:07",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "14",
+            "passCompletions": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "14"
+          }
+        }
+      },
+      "downAndDistance": "4th & 3 at TB 42",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to D.Mooney to TB 26 for 2 yards (J.Whitehead).",
+      "playPeriod": "Q3",
+      "playClock": "9:24",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "2",
+            "passCompletions": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "2"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 28",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to K.Pitts pushed ob at TB 18 for 8 yards (C.Braswell).",
+      "playPeriod": "Q3",
+      "playClock": "8:43",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "8",
+            "passCompletions": "1"
+          }
+        },
+        "4360248": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "8"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 8 at TB 26",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to R.McCloud to TB 16 for 2 yards (C.Izien). PENALTY on ATL-K.Hodge, Offensive Pass Interference, 10 yards, enforced at TB 18 - No Play. Penalty on ATL-Ja.Matthews, Ineligible Downfield Pass, declined.",
+      "playPeriod": "Q3",
+      "playClock": "8:13",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at TB 18",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Robinson right guard to TB 22 for 6 yards (J.Whitehead).",
+      "playPeriod": "Q3",
+      "playClock": "7:52",
+      "playerStats": {
+        "4430807": {
+          "Rushing": {
+            "rushYds": "6",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 20 at TB 28",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins sacked at TB 30 for -8 yards (A.Nelson).",
+      "playPeriod": "Q3",
+      "playClock": "7:14",
+      "playerStats": {},
+      "downAndDistance": "2nd & 14 at TB 22",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete deep right to D.Mooney.",
+      "playPeriod": "Q3",
+      "playClock": "6:31",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 22 at TB 30",
+      "teamID": "2"
+    },
+    {
+      "play": "Y.Koo 48 yard field goal is GOOD, Center-L.McCullough, Holder-B.Pinion.",
+      "playPeriod": "Q3",
+      "playClock": "6:21",
+      "playerStats": {
+        "3049899": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "48"
+          }
+        }
+      },
+      "downAndDistance": "4th & 22 at TB 30",
+      "teamID": "2"
+    },
+    {
+      "play": "Timeout at 06:21.",
+      "playPeriod": "Q3",
+      "playClock": "6:21",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ATL 35",
+      "teamID": "2"
+    },
+    {
+      "play": "Y.Koo kicks 65 yards from ATL 35 to end zone, Touchback to the TB 30.",
+      "playPeriod": "Q3",
+      "playClock": "6:21",
+      "playerStats": {
+        "3049899": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short left to C.Godwin to 50 for 20 yards (J.Bates). FUMBLES (J.Bates), recovered by TB-M.Evans at ATL 49.",
+      "playPeriod": "Q3",
+      "playClock": "6:21",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "20",
+            "passCompletions": "1"
+          }
+        },
+        "3116165": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "20"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 30",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short right to C.Godwin pushed ob at ATL 39 for 10 yards (M.Hughes).",
+      "playPeriod": "Q3",
+      "playClock": "5:35",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "10",
+            "passCompletions": "1"
+          }
+        },
+        "3116165": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "10"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 49",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Irving left guard to ATL 39 for no gain (A.Hamilton).",
+      "playPeriod": "Q3",
+      "playClock": "5:04",
+      "playerStats": {
+        "4596448": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 39",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield scrambles left end to ATL 30 for 9 yards (K.Elliss).",
+      "playPeriod": "Q3",
+      "playClock": "4:28",
+      "playerStats": {
+        "3052587": {
+          "Rushing": {
+            "rushYds": "9",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at ATL 39",
+      "teamID": "30"
+    },
+    {
+      "play": "C.Godwin left end pushed ob at ATL 28 for 2 yards (A.Terrell). PENALTY on ATL-J.Bertrand, Unnecessary Roughness, 14 yards, enforced at ATL 28.",
+      "playPeriod": "Q3",
+      "playClock": "4:28",
+      "playerStats": {
+        "3116165": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 1 at ATL 30",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Irving left tackle to ATL 14 for no gain (G.Jarrett).",
+      "playPeriod": "Q3",
+      "playClock": "3:29",
+      "playerStats": {
+        "4596448": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 14",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short middle to C.Otton to ATL 7 for 7 yards (J.Bertrand).",
+      "playPeriod": "Q3",
+      "playClock": "2:49",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "4243331": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at ATL 14",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield sacked at ATL 14 for -7 yards (D.Onyemata).",
+      "playPeriod": "Q3",
+      "playClock": "2:05",
+      "playerStats": {},
+      "downAndDistance": "3rd & 3 at ATL 7",
+      "teamID": "30"
+    },
+    {
+      "play": "C.McLaughlin 32 yard field goal is GOOD, Center-Z.Triner, Holder-T.Gill.",
+      "playPeriod": "Q3",
+      "playClock": "1:17",
+      "playerStats": {
+        "3150744": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "32"
+          }
+        }
+      },
+      "downAndDistance": "4th & 10 at ATL 14",
+      "teamID": "30"
+    },
+    {
+      "play": "Timeout at 01:17.",
+      "playPeriod": "Q3",
+      "playClock": "1:17",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at TB 35",
+      "teamID": "30"
+    },
+    {
+      "play": "T.Gill kicks 65 yards from TB 35 to end zone, Touchback to the ATL 30.",
+      "playPeriod": "Q3",
+      "playClock": "1:17",
+      "playerStats": {
+        "4240128": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to D.Mooney to ATL 32 for 2 yards (J.Dean).",
+      "playPeriod": "Q3",
+      "playClock": "1:17",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "2",
+            "passCompletions": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "2"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 30",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete short middle to R.McCloud (T.Smith).",
+      "playPeriod": "Q3",
+      "playClock": "0:45",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "3728262": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 8 at ATL 32",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short middle to R.McCloud to TB 46 for 22 yards (C.Izien) [Y.Diaby].",
+      "playPeriod": "Q3",
+      "playClock": "0:40",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "22",
+            "passCompletions": "1"
+          }
+        },
+        "3728262": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "22"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 8 at ATL 32",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Robinson left end to TB 18 for 28 yards (J.Dean).",
+      "playPeriod": "Q3",
+      "playClock": "0:02",
+      "playerStats": {
+        "4430807": {
+          "Rushing": {
+            "rushYds": "28",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 46",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Robinson left end to TB 12 for 6 yards (L.David, T.Smith).",
+      "playPeriod": "Q4",
+      "playClock": "15:00",
+      "playerStats": {
+        "4430807": {
+          "Rushing": {
+            "rushYds": "6",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 18",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Robinson left end to TB 10 for 2 yards (K.Britt). TB-J.Whitehead was injured during the play.",
+      "playPeriod": "Q4",
+      "playClock": "14:21",
+      "playerStats": {
+        "4430807": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 4 at TB 12",
+      "teamID": "2"
+    },
+    {
+      "play": "T.Allgeier right tackle to TB 12 for -2 yards (C.Izien, Z.McCollum).",
+      "playPeriod": "Q4",
+      "playClock": "13:49",
+      "playerStats": {
+        "4373626": {
+          "Rushing": {
+            "rushYds": "-2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 2 at TB 10",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to D.Mooney for 12 yards, TOUCHDOWN.Y.Koo extra point is GOOD, Center-L.McCullough, Holder-B.Pinion.",
+      "playPeriod": "Q4",
+      "playClock": "13:18",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passTD": "1",
+            "passYds": "12",
+            "passCompletions": "1"
+          }
+        },
+        "3049899": {
+          "Kicking": {
+            "xpMade": "1",
+            "xpAttempts": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recTD": "1",
+            "recYds": "12"
+          }
+        }
+      },
+      "downAndDistance": "4th & 4 at TB 12",
+      "teamID": "2"
+    },
+    {
+      "play": "Timeout at 13:18.",
+      "playPeriod": "Q4",
+      "playClock": "13:18",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ATL 35",
+      "teamID": "2"
+    },
+    {
+      "play": "Y.Koo kicks 65 yards from ATL 35 to end zone, Touchback to the TB 30.",
+      "playPeriod": "Q4",
+      "playClock": "13:18",
+      "playerStats": {
+        "3049899": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short middle to M.Evans to TB 43 for 13 yards (J.Bates).",
+      "playPeriod": "Q4",
+      "playClock": "13:18",
+      "playerStats": {
+        "16737": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "13"
+          }
+        },
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "13",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 30",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield scrambles right end ran ob at ATL 39 for 18 yards (M.Hughes).",
+      "playPeriod": "Q4",
+      "playClock": "12:37",
+      "playerStats": {
+        "3052587": {
+          "Rushing": {
+            "rushYds": "18",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 43",
+      "teamID": "30"
+    },
+    {
+      "play": "R.White right tackle to ATL 38 for 1 yard (J.Bertrand; K.Elliss).",
+      "playPeriod": "Q4",
+      "playClock": "11:56",
+      "playerStats": {
+        "4697815": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 39",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass incomplete short right to C.Otton.",
+      "playPeriod": "Q4",
+      "playClock": "11:16",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4243331": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 9 at ATL 38",
+      "teamID": "30"
+    },
+    {
+      "play": "Timeout #1 by TB at 11:13.",
+      "playPeriod": "Q4",
+      "playClock": "11:13",
+      "playerStats": {},
+      "downAndDistance": "3rd & 9 at ATL 38",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield scrambles left tackle to ATL 35 for 3 yards (L.Carter).",
+      "playPeriod": "Q4",
+      "playClock": "11:13",
+      "playerStats": {
+        "3052587": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 9 at ATL 38",
+      "teamID": "30"
+    },
+    {
+      "play": "C.McLaughlin 53 yard field goal is GOOD, Center-Z.Triner, Holder-T.Gill.",
+      "playPeriod": "Q4",
+      "playClock": "10:23",
+      "playerStats": {
+        "3150744": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "53"
+          }
+        }
+      },
+      "downAndDistance": "4th & 6 at ATL 35",
+      "teamID": "30"
+    },
+    {
+      "play": "Timeout at 10:23.",
+      "playPeriod": "Q4",
+      "playClock": "10:23",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at TB 35",
+      "teamID": "30"
+    },
+    {
+      "play": "T.Gill kicks 65 yards from TB 35 to end zone, Touchback to the ATL 30.",
+      "playPeriod": "Q4",
+      "playClock": "10:23",
+      "playerStats": {
+        "4240128": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to B.Robinson to ATL 35 for 5 yards (C.Izien; K.Britt).",
+      "playPeriod": "Q4",
+      "playClock": "10:23",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "5",
+            "passCompletions": "1"
+          }
+        },
+        "4430807": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "5"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 30",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Robinson left end to ATL 36 for 1 yard (Y.Diaby, C.Izien). TB-Y.Diaby was injured during the play.",
+      "playPeriod": "Q4",
+      "playClock": "9:46",
+      "playerStats": {
+        "4430807": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 5 at ATL 35",
+      "teamID": "2"
+    },
+    {
+      "play": "Timeout at 09:32.",
+      "playPeriod": "Q4",
+      "playClock": "9:32",
+      "playerStats": {},
+      "downAndDistance": "3rd & 4 at ATL 36",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete short middle to D.Mooney. PENALTY on TB-L.David, Defensive Pass Interference, 7 yards, enforced at ATL 36 - No Play.",
+      "playPeriod": "Q4",
+      "playClock": "9:23",
+      "playerStats": {},
+      "downAndDistance": "3rd & 4 at ATL 36",
+      "teamID": "2"
+    },
+    {
+      "play": "T.Allgeier right tackle to ATL 45 for 2 yards (L.David).",
+      "playPeriod": "Q4",
+      "playClock": "9:19",
+      "playerStats": {
+        "4373626": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 43",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short middle to D.London to TB 40 for 15 yards (K.Britt).",
+      "playPeriod": "Q4",
+      "playClock": "8:40",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "15",
+            "passCompletions": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "15"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 8 at ATL 45",
+      "teamID": "2"
+    },
+    {
+      "play": "T.Allgeier left end to TB 40 for no gain (A.Nelson, C.Izien). PENALTY on ATL-C.Lindstrom, Offensive Holding, 10 yards, enforced at TB 40 - No Play.",
+      "playPeriod": "Q4",
+      "playClock": "8:15",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at TB 40",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to R.McCloud to TB 46 for 4 yards (J.Dean).",
+      "playPeriod": "Q4",
+      "playClock": "7:51",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "4",
+            "passCompletions": "1"
+          }
+        },
+        "3728262": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "4"
+          }
+        }
+      },
+      "downAndDistance": "1st & 20 at 50",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to K.Pitts to TB 36 for 10 yards (J.Dean). ** Injury Update: TB-Y.Diaby has returned to the game.",
+      "playPeriod": "Q4",
+      "playClock": "7:16",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "10",
+            "passCompletions": "1"
+          }
+        },
+        "4360248": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "10"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 16 at TB 46",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete deep left to D.Mooney [Y.Diaby].",
+      "playPeriod": "Q4",
+      "playClock": "6:42",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 6 at TB 36",
+      "teamID": "2"
+    },
+    {
+      "play": "Y.Koo 54 yard field goal is BLOCKED (T.Thomas), Center-L.McCullough, Holder-B.Pinion.",
+      "playPeriod": "Q4",
+      "playClock": "6:37",
+      "playerStats": {
+        "3049899": {
+          "Kicking": {
+            "fgAttempts": "1",
+            "fgYds": "54"
+          }
+        }
+      },
+      "downAndDistance": "4th & 6 at TB 36",
+      "teamID": "2"
+    },
+    {
+      "play": "Timeout at 06:29.",
+      "playPeriod": "Q4",
+      "playClock": "6:29",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at TB 44",
+      "teamID": "2"
+    },
+    {
+      "play": "B.Mayfield pass incomplete short right to M.Evans (M.Judon).",
+      "playPeriod": "Q4",
+      "playClock": "6:29",
+      "playerStats": {
+        "16737": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 44",
+      "teamID": "30"
+    },
+    {
+      "play": "R.White left guard to ATL 48 for 8 yards (M.Judon).",
+      "playPeriod": "Q4",
+      "playClock": "6:26",
+      "playerStats": {
+        "4697815": {
+          "Rushing": {
+            "rushYds": "8",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at TB 44",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield scrambles right tackle to ATL 43 for 5 yards (J.Bertrand).",
+      "playPeriod": "Q4",
+      "playClock": "5:45",
+      "playerStats": {
+        "3052587": {
+          "Rushing": {
+            "rushYds": "5",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 2 at ATL 48",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Irving left guard to ATL 38 for 5 yards (J.Smith-Williams; J.Bates).",
+      "playPeriod": "Q4",
+      "playClock": "5:04",
+      "playerStats": {
+        "4596448": {
+          "Rushing": {
+            "rushYds": "5",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 43",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short left to B.Irving to ATL 35 for 3 yards (G.Jarrett; J.Bates).",
+      "playPeriod": "Q4",
+      "playClock": "4:25",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "3",
+            "passCompletions": "1"
+          }
+        },
+        "4596448": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "3"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 5 at ATL 38",
+      "teamID": "30"
+    },
+    {
+      "play": "R.White left guard to ATL 32 for 3 yards (G.Jarrett).",
+      "playPeriod": "Q4",
+      "playClock": "3:39",
+      "playerStats": {
+        "4697815": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 2 at ATL 35",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Irving left tackle to ATL 25 for 7 yards (J.Bates). FUMBLES (J.Bates), RECOVERED by ATL-K.Elliss at ATL 25.",
+      "playPeriod": "Q4",
+      "playClock": "2:55",
+      "playerStats": {
+        "4596448": {
+          "Rushing": {
+            "rushYds": "7",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 32",
+      "teamID": "30"
+    },
+    {
+      "play": "T.Allgeier left guard to ATL 23 for -2 yards (Y.Diaby).",
+      "playPeriod": "Q4",
+      "playClock": "2:50",
+      "playerStats": {
+        "4373626": {
+          "Rushing": {
+            "rushYds": "-2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 25",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins sacked at ATL 16 for -7 yards (L.Hall).",
+      "playPeriod": "Q4",
+      "playClock": "2:27",
+      "playerStats": {},
+      "downAndDistance": "2nd & 12 at ATL 23",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to T.Allgeier to ATL 20 for 4 yards (Z.McCollum) [J.Tryon].",
+      "playPeriod": "Q4",
+      "playClock": "2:03",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "4",
+            "passCompletions": "1"
+          }
+        },
+        "4373626": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "4"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 19 at ATL 16",
+      "teamID": "2"
+    },
+    {
+      "play": "Two-Minute Warning",
+      "playPeriod": "Q4",
+      "playClock": "1:52",
+      "playerStats": {},
+      "downAndDistance": "4th & 15 at ATL 20",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right intended for D.Mooney INTERCEPTED by L.David at ATL 35. L.David to ATL 28 for 7 yards (T.Allgeier).",
+      "playClock": "1:52",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "int": "1"
+          }
+        },
+        "14985": {
+          "Defense": {
+            "defensiveInterceptions": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "teamID": "2",
+      "playPeriod": "Q4",
+      "downAndDistance": "4th & 15 at ATL 20",
+      "teamStats": {
+        "away": {
+          "defensiveInterceptions": "1"
+        }
+      }
+    },
+    {
+      "play": "R.White left end to ATL 31 for -3 yards (J.Smith-Williams).",
+      "playPeriod": "Q4",
+      "playClock": "1:44",
+      "playerStats": {
+        "4697815": {
+          "Rushing": {
+            "rushYds": "-3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 28",
+      "teamID": "30"
+    },
+    {
+      "play": "Timeout #1 by ATL at 01:39.",
+      "playPeriod": "Q4",
+      "playClock": "1:39",
+      "playerStats": {},
+      "downAndDistance": "2nd & 13 at ATL 31",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Irving left tackle to ATL 24 for 7 yards (K.Elliss). PENALTY on TB-G.Barton, Offensive Holding, 10 yards, enforced at ATL 31 - No Play.",
+      "playPeriod": "Q4",
+      "playClock": "1:39",
+      "playerStats": {},
+      "downAndDistance": "2nd & 13 at ATL 31",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Mayfield pass short left to R.White to ATL 43 for -2 yards (J.Simmons, K.Elliss).",
+      "playPeriod": "Q4",
+      "playClock": "1:33",
+      "playerStats": {
+        "3052587": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "-2",
+            "passCompletions": "1"
+          }
+        },
+        "4697815": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "-2"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 23 at ATL 41",
+      "teamID": "30"
+    },
+    {
+      "play": "Timeout #2 by ATL at 01:26.",
+      "playPeriod": "Q4",
+      "playClock": "1:26",
+      "playerStats": {},
+      "downAndDistance": "3rd & 25 at ATL 43",
+      "teamID": "30"
+    },
+    {
+      "play": "B.Irving left tackle to ATL 42 for 1 yard (M.Judon).",
+      "playPeriod": "Q4",
+      "playClock": "1:26",
+      "playerStats": {
+        "4596448": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 25 at ATL 43",
+      "teamID": "30"
+    },
+    {
+      "play": "Timeout #3 by ATL at 01:21.",
+      "playPeriod": "Q4",
+      "playClock": "1:21",
+      "playerStats": {},
+      "downAndDistance": "4th & 25 at ATL 43",
+      "teamID": "30"
+    },
+    {
+      "play": "T.Gill punts 42 yards to end zone, Center-Z.Triner, Touchback.",
+      "playPeriod": "Q4",
+      "playClock": "1:20",
+      "playerStats": {
+        "4240128": {
+          "Kicking": {
+            "puntYds": "42",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 24 at ATL 42",
+      "teamID": "30"
+    },
+    {
+      "play": "K.Cousins pass short right to K.Pitts pushed ob at ATL 25 for 5 yards (Z.McCollum).",
+      "playPeriod": "Q4",
+      "playClock": "1:14",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "5",
+            "passCompletions": "1"
+          }
+        },
+        "4360248": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "5"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 20",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass deep middle to D.Mooney to ATL 42 for 17 yards (T.Smith).",
+      "playPeriod": "Q4",
+      "playClock": "1:08",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "17",
+            "passCompletions": "1"
+          }
+        },
+        "4040655": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "17"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 5 at ATL 25",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to R.McCloud to TB 45 for 13 yards (T.Smith) [L.Hall]. FUMBLES (T.Smith), ball out of bounds at TB 49.",
+      "playPeriod": "Q4",
+      "playClock": "0:44",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "13",
+            "passCompletions": "1"
+          }
+        },
+        "3728262": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "13"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 45",
+      "teamID": "2"
+    },
+    {
+      "play": "(No Huddle) K.Cousins spiked the ball to stop the clock.",
+      "playPeriod": "Q4",
+      "playClock": "0:22",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 1 at TB 49",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short left to D.London pushed ob at TB 43 for 6 yards (J.Dean).",
+      "playPeriod": "Q4",
+      "playClock": "0:21",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "6",
+            "passCompletions": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "6"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 1 at TB 49",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass incomplete short middle to R.McCloud (Z.McCollum). TB-M.Watts was injured during the play.",
+      "playPeriod": "Q4",
+      "playClock": "0:17",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "3728262": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 43",
+      "teamID": "2"
+    },
+    {
+      "play": "Timeout #2 by TB at 00:12.",
+      "playPeriod": "Q4",
+      "playClock": "0:12",
+      "playerStats": {},
+      "downAndDistance": "2nd & 10 at TB 43",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short middle to D.London to TB 29 for 14 yards (J.Dean).",
+      "playPeriod": "Q4",
+      "playClock": "0:12",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "14",
+            "passCompletions": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "14"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at TB 43",
+      "teamID": "2"
+    },
+    {
+      "play": "(No Huddle) K.Cousins spiked the ball to stop the clock.",
+      "playPeriod": "Q4",
+      "playClock": "0:02",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 29",
+      "teamID": "2"
+    },
+    {
+      "play": "(Field Goal formation) PENALTY on ATL, Delay of Game, 5 yards, enforced at TB 29 - No Play.",
+      "playPeriod": "Q4",
+      "playClock": "0:01",
+      "playerStats": {},
+      "downAndDistance": "2nd & 10 at TB 29",
+      "teamID": "2"
+    },
+    {
+      "play": "Timeout #3 by TB at 00:01.",
+      "playPeriod": "Q4",
+      "playClock": "0:01",
+      "playerStats": {},
+      "downAndDistance": "2nd & 15 at TB 34",
+      "teamID": "2"
+    },
+    {
+      "play": "Y.Koo 52 yard field goal is GOOD, Center-L.McCullough, Holder-B.Pinion.",
+      "playPeriod": "Q4",
+      "playClock": "0:00",
+      "playerStats": {
+        "3049899": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "52"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 15 at TB 34",
+      "teamID": "2"
+    },
+    {
+      "play": "END QUARTER 4",
+      "playPeriod": "Q4",
+      "playClock": "0:00",
+      "playerStats": {},
+      "teamID": "2"
+    },
+    {
+      "play": "T.Gill kicks 65 yards from TB 35 to end zone, Touchback to the ATL 30.",
+      "playPeriod": "OT1",
+      "playClock": "10:00",
+      "playerStats": {
+        "4240128": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "2"
+    },
+    {
+      "play": "T.Allgeier right tackle to ATL 31 for 1 yard (Y.Diaby).",
+      "playPeriod": "OT1",
+      "playClock": "10:00",
+      "playerStats": {
+        "4373626": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ATL 30",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to D.London to ATL 37 for 6 yards (Z.McCollum).",
+      "playPeriod": "OT1",
+      "playClock": "9:37",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "6",
+            "passCompletions": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "6"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 9 at ATL 31",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to D.London to TB 45 for 18 yards (C.Izien, Z.McCollum). ATL-D.London was injured during the play.",
+      "playPeriod": "OT1",
+      "playClock": "9:14",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "18",
+            "passCompletions": "1"
+          }
+        },
+        "4426502": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "18"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 3 at ATL 37",
+      "teamID": "2"
+    },
+    {
+      "play": "K.Cousins pass short right to K.Hodge for 45 yards, TOUCHDOWN.",
+      "playPeriod": "OT1",
+      "playClock": "8:45",
+      "playerStats": {
+        "14880": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "45",
+            "passCompletions": "1"
+          }
+        },
+        "3047876": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "45"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at TB 45",
+      "teamID": "2"
+    },
+    {
+      "play": "END GAME",
+      "playPeriod": "OT1",
+      "playClock": "0:00",
+      "playerStats": {},
+      "teamID": "2"
+    }
+  ],
+  "network": "Prime Video",
+  "teamIDHome": "2",
+  "homeResult": "W",
+  "away": "TB",
+  "gameWeek": "Week 5",
+  "attendance": "70,016",
+  "lineScore": {
+    "period": "Final/OT",
+    "gameClock": "",
+    "away": {
+      "Q1": "10",
+      "Q2": "14",
+      "Q3": "3",
+      "Q4": "3",
+      "OT": "0",
+      "teamID": "30",
+      "currentlyInPossession": "False",
+      "totalPts": "30",
+      "teamAbv": "TB"
+    },
+    "home": {
+      "Q1": "7",
+      "Q2": "10",
+      "Q3": "3",
+      "Q4": "10",
+      "OT": "6",
+      "teamID": "2",
+      "currentlyInPossession": "False",
+      "totalPts": "36",
+      "teamAbv": "ATL"
+    }
+  },
+  "currentPeriod": "Final/OT",
+  "gameLocation": "Atlanta, GA",
+  "home": "ATL",
+  "playerStats": {
+    "14880": {
+      "gameID": "20241003_TB@ATL",
+      "Passing": {
+        "qbr": "80.3",
+        "rtg": "114.8",
+        "sacked": "4-32",
+        "passAttempts": "58",
+        "passAvg": "8.8",
+        "passTD": "4",
+        "passYds": "509",
+        "int": "1",
+        "passCompletions": "42"
+      },
+      "scoringPlays": [
+        {
+          "score": "Drake London 18 Yd pass from Kirk Cousins (Younghoe Koo Kick)",
+          "scorePeriod": "Q1",
+          "homeScore": "7",
+          "awayScore": "0",
+          "teamID": "2",
+          "scoreDetails": "7 plays, 70 yards, 3:06",
+          "scoreType": "TD",
+          "scoreTime": "11:54",
+          "team": "ATL",
+          "playerIDs": [
+            "14880",
+            "4426502",
+            "3049899"
+          ]
+        },
+        {
+          "score": "Darnell Mooney 24 Yd pass from Kirk Cousins (Younghoe Koo Kick)",
+          "scorePeriod": "Q2",
+          "homeScore": "14",
+          "awayScore": "10",
+          "teamID": "2",
+          "scoreDetails": "9 plays, 70 yards, 4:24",
+          "scoreType": "TD",
+          "scoreTime": "11:58",
+          "team": "ATL",
+          "playerIDs": [
+            "14880",
+            "4040655",
+            "3049899"
+          ]
+        },
+        {
+          "score": "Darnell Mooney 12 Yd pass from Kirk Cousins (Younghoe Koo Kick)",
+          "scorePeriod": "Q4",
+          "homeScore": "27",
+          "awayScore": "27",
+          "teamID": "2",
+          "scoreDetails": "8 plays, 70 yards, 2:59",
+          "scoreType": "TD",
+          "scoreTime": "13:18",
+          "team": "ATL",
+          "playerIDs": [
+            "14880",
+            "4040655",
+            "3049899"
+          ]
+        },
+        {
+          "score": "KhaDarel Hodge 45 Yd pass from Kirk Cousins  ",
+          "scorePeriod": "OT",
+          "homeScore": "36",
+          "awayScore": "30",
+          "teamID": "2",
+          "scoreDetails": "4 plays, 70 yards, 1:15",
+          "scoreType": "TD",
+          "scoreTime": "8:45",
+          "team": "ATL",
+          "playerIDs": [
+            "14880",
+            "3047876"
+          ]
+        }
+      ],
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "87",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "14880",
+      "longName": "Kirk Cousins",
+      "fantasyPoints": "34.36",
+      "fantasyPointsDefault": {
+        "standard": "35.36",
+        "PPR": "35.36",
+        "halfPPR": "35.36"
+      }
+    },
+    "14985": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "86",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.99"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "8",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "6",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "1",
+        "defensiveInterceptionsYards": "7",
+        "interceptionTDs": "0",
+        "sacks": "0",
+        "passDeflections": "2"
+      },
+      "playerID": "14985",
+      "longName": "Lavonte David",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "16019": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "16",
+        "stSnap": "10",
+        "stSnapPct": "0.31",
+        "offSnap": "0",
+        "defSnapPct": "0.18"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "16019",
+      "longName": "William Gholston",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "16713": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "9",
+        "stSnapPct": "0.28",
+        "offSnap": "87",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "16713",
+      "longName": "Jake Matthews",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "16737": {
+      "gameID": "20241003_TB@ATL",
+      "Receiving": {
+        "receptions": "5",
+        "recTD": "2",
+        "longRec": "23",
+        "targets": "7",
+        "recYds": "62",
+        "recAvg": "12.4"
+      },
+      "scoringPlays": [
+        {
+          "score": "Mike Evans 2 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+          "scorePeriod": "Q1",
+          "homeScore": "7",
+          "awayScore": "7",
+          "teamID": "30",
+          "scoreDetails": "9 plays, 63 yards, 4:18",
+          "scoreType": "TD",
+          "scoreTime": "7:36",
+          "team": "TB",
+          "playerIDs": [
+            "3052587",
+            "16737",
+            "3150744"
+          ]
+        },
+        {
+          "score": "Mike Evans 23 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+          "scorePeriod": "Q2",
+          "homeScore": "14",
+          "awayScore": "17",
+          "teamID": "30",
+          "scoreDetails": "3 plays, 44 yards, 1:41",
+          "scoreType": "TD",
+          "scoreTime": "10:17",
+          "team": "TB",
+          "playerIDs": [
+            "3052587",
+            "16737",
+            "3150744"
+          ]
+        }
+      ],
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.87",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "46",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "fumblesLost": "0",
+        "defensiveInterceptions": "0",
+        "forcedFumbles": "0",
+        "fumbles": "0",
+        "fumblesRecovered": "1"
+      },
+      "playerID": "16737",
+      "longName": "Mike Evans",
+      "fantasyPoints": "20.7",
+      "fantasyPointsDefault": {
+        "standard": "18.2",
+        "PPR": "23.2",
+        "halfPPR": "20.7"
+      }
+    },
+    "2576492": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "39",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.74"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "5",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "2576492",
+      "longName": "Grady Jarrett",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2969860": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "53",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "1",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "2969860",
+      "longName": "Justin Simmons",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2969924": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "8",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.15"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "2969924",
+      "longName": "Eddie Goldman",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2973014": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "9",
+        "stSnapPct": "0.28",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "2973014",
+      "longName": "Storm Norton",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2976592": {
+      "gameID": "20241003_TB@ATL",
+      "Receiving": {
+        "receptions": "1",
+        "recTD": "1",
+        "longRec": "4",
+        "targets": "2",
+        "recYds": "4",
+        "recAvg": "4.0"
+      },
+      "scoringPlays": [
+        {
+          "score": "Sterling Shepard 4 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+          "scorePeriod": "Q2",
+          "homeScore": "17",
+          "awayScore": "24",
+          "teamID": "30",
+          "scoreDetails": "7 plays, 82 yards, 4:21",
+          "scoreType": "TD",
+          "scoreTime": "1:56",
+          "team": "TB",
+          "playerIDs": [
+            "3052587",
+            "2976592",
+            "3150744"
+          ]
+        }
+      ],
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.68",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "36",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "2976592",
+      "longName": "Sterling Shepard",
+      "fantasyPoints": "6.9",
+      "fantasyPointsDefault": {
+        "standard": "6.4",
+        "PPR": "7.4",
+        "halfPPR": "6.9"
+      }
+    },
+    "2977680": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "10",
+        "stSnapPct": "0.31",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Punting": {
+        "puntYds": "35",
+        "punts": "1",
+        "puntAvg": "35.0",
+        "puntsin20": "1",
+        "puntTouchBacks": "0",
+        "puntLong": "35"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "2977680",
+      "longName": "Bradley Pinion",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3047876": {
+      "gameID": "20241003_TB@ATL",
+      "Receiving": {
+        "receptions": "2",
+        "recTD": "1",
+        "longRec": "45",
+        "targets": "2",
+        "recYds": "67",
+        "recAvg": "33.5"
+      },
+      "scoringPlays": [
+        {
+          "score": "KhaDarel Hodge 45 Yd pass from Kirk Cousins  ",
+          "scorePeriod": "OT",
+          "homeScore": "36",
+          "awayScore": "30",
+          "teamID": "2",
+          "scoreDetails": "4 plays, 70 yards, 1:15",
+          "scoreType": "TD",
+          "scoreTime": "8:45",
+          "team": "ATL",
+          "playerIDs": [
+            "14880",
+            "3047876"
+          ]
+        }
+      ],
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.18",
+        "defSnap": "0",
+        "stSnap": "15",
+        "stSnapPct": "0.47",
+        "offSnap": "16",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3047876",
+      "longName": "KhaDarel Hodge",
+      "fantasyPoints": "13.7",
+      "fantasyPointsDefault": {
+        "standard": "12.7",
+        "PPR": "14.7",
+        "halfPPR": "13.7"
+      }
+    },
+    "3049899": {
+      "gameID": "20241003_TB@ATL",
+      "scoringPlays": [
+        {
+          "score": "Drake London 18 Yd pass from Kirk Cousins (Younghoe Koo Kick)",
+          "scorePeriod": "Q1",
+          "homeScore": "7",
+          "awayScore": "0",
+          "teamID": "2",
+          "scoreDetails": "7 plays, 70 yards, 3:06",
+          "scoreType": "TD",
+          "scoreTime": "11:54",
+          "team": "ATL",
+          "playerIDs": [
+            "14880",
+            "4426502",
+            "3049899"
+          ]
+        },
+        {
+          "score": "Darnell Mooney 24 Yd pass from Kirk Cousins (Younghoe Koo Kick)",
+          "scorePeriod": "Q2",
+          "homeScore": "14",
+          "awayScore": "10",
+          "teamID": "2",
+          "scoreDetails": "9 plays, 70 yards, 4:24",
+          "scoreType": "TD",
+          "scoreTime": "11:58",
+          "team": "ATL",
+          "playerIDs": [
+            "14880",
+            "4040655",
+            "3049899"
+          ]
+        },
+        {
+          "score": "Younghoe Koo 54 Yd Field Goal  ",
+          "scorePeriod": "Q2",
+          "homeScore": "17",
+          "awayScore": "17",
+          "teamID": "2",
+          "scoreDetails": "8 plays, 34 yards, 4:00",
+          "scoreType": "FG",
+          "scoreTime": "6:17",
+          "team": "ATL",
+          "playerIDs": [
+            "3049899"
+          ]
+        },
+        {
+          "score": "Younghoe Koo 48 Yd Field Goal  ",
+          "scorePeriod": "Q3",
+          "homeScore": "20",
+          "awayScore": "24",
+          "teamID": "2",
+          "scoreDetails": "12 plays, 50 yards, 5:49",
+          "scoreType": "FG",
+          "scoreTime": "6:21",
+          "team": "ATL",
+          "playerIDs": [
+            "3049899"
+          ]
+        },
+        {
+          "score": "Darnell Mooney 12 Yd pass from Kirk Cousins (Younghoe Koo Kick)",
+          "scorePeriod": "Q4",
+          "homeScore": "27",
+          "awayScore": "27",
+          "teamID": "2",
+          "scoreDetails": "8 plays, 70 yards, 2:59",
+          "scoreType": "TD",
+          "scoreTime": "13:18",
+          "team": "ATL",
+          "playerIDs": [
+            "14880",
+            "4040655",
+            "3049899"
+          ]
+        },
+        {
+          "score": "Younghoe Koo 52 Yd Field Goal  ",
+          "scorePeriod": "Q4",
+          "homeScore": "30",
+          "awayScore": "30",
+          "teamID": "2",
+          "scoreDetails": "9 plays, 46 yards, 1:14",
+          "scoreType": "FG",
+          "scoreTime": "0:00",
+          "team": "ATL",
+          "playerIDs": [
+            "3049899"
+          ]
+        }
+      ],
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "15",
+        "stSnapPct": "0.47",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "fgLong": "54",
+        "fgMade": "3",
+        "fgAttempts": "5",
+        "xpMade": "3",
+        "fgPct": "60.0",
+        "kickingPts": "12",
+        "xpAttempts": "3",
+        "fgMissed": "2",
+        "xpMissed": "0"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3049899",
+      "longName": "Younghoe Koo",
+      "fantasyPoints": "6.0",
+      "fantasyPointsDefault": {
+        "standard": "10.0",
+        "PPR": "10.0",
+        "halfPPR": "10.0"
+      }
+    },
+    "3052170": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "1",
+        "stSnap": "9",
+        "stSnapPct": "0.28",
+        "offSnap": "0",
+        "defSnapPct": "0.02"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3052170",
+      "longName": "Kevin King",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3052587": {
+      "gameID": "20241003_TB@ATL",
+      "Rushing": {
+        "rushAvg": "7.0",
+        "rushYds": "42",
+        "carries": "6",
+        "longRush": "18",
+        "rushTD": "0"
+      },
+      "Passing": {
+        "qbr": "81.7",
+        "rtg": "137.5",
+        "sacked": "1-7",
+        "passAttempts": "24",
+        "passAvg": "7.5",
+        "passTD": "3",
+        "passYds": "180",
+        "int": "0",
+        "passCompletions": "19"
+      },
+      "scoringPlays": [
+        {
+          "score": "Mike Evans 2 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+          "scorePeriod": "Q1",
+          "homeScore": "7",
+          "awayScore": "7",
+          "teamID": "30",
+          "scoreDetails": "9 plays, 63 yards, 4:18",
+          "scoreType": "TD",
+          "scoreTime": "7:36",
+          "team": "TB",
+          "playerIDs": [
+            "3052587",
+            "16737",
+            "3150744"
+          ]
+        },
+        {
+          "score": "Mike Evans 23 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+          "scorePeriod": "Q2",
+          "homeScore": "14",
+          "awayScore": "17",
+          "teamID": "30",
+          "scoreDetails": "3 plays, 44 yards, 1:41",
+          "scoreType": "TD",
+          "scoreTime": "10:17",
+          "team": "TB",
+          "playerIDs": [
+            "3052587",
+            "16737",
+            "3150744"
+          ]
+        },
+        {
+          "score": "Sterling Shepard 4 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+          "scorePeriod": "Q2",
+          "homeScore": "17",
+          "awayScore": "24",
+          "teamID": "30",
+          "scoreDetails": "7 plays, 82 yards, 4:21",
+          "scoreType": "TD",
+          "scoreTime": "1:56",
+          "team": "TB",
+          "playerIDs": [
+            "3052587",
+            "2976592",
+            "3150744"
+          ]
+        }
+      ],
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "53",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "3052587",
+      "longName": "Baker Mayfield",
+      "fantasyPoints": "24.6",
+      "fantasyPointsDefault": {
+        "standard": "23.4",
+        "PPR": "23.4",
+        "halfPPR": "23.4"
+      }
+    },
+    "3056354": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "39",
+        "stSnap": "13",
+        "stSnapPct": "0.41",
+        "offSnap": "0",
+        "defSnapPct": "0.74"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3056354",
+      "longName": "Antonio Hamilton Sr.",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3065813": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "8",
+        "stSnapPct": "0.25",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "3065813",
+      "longName": "Zach Triner",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3116165": {
+      "gameID": "20241003_TB@ATL",
+      "Rushing": {
+        "rushAvg": "2.0",
+        "rushYds": "2",
+        "carries": "1",
+        "longRush": "2",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "5",
+        "recTD": "0",
+        "longRec": "20",
+        "targets": "6",
+        "recYds": "64",
+        "recAvg": "12.8"
+      },
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.98",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "52",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "fumblesLost": "0",
+        "defensiveInterceptions": "0",
+        "forcedFumbles": "0",
+        "fumbles": "1",
+        "fumblesRecovered": "0"
+      },
+      "playerID": "3116165",
+      "longName": "Chris Godwin",
+      "fantasyPoints": "9.3",
+      "fantasyPointsDefault": {
+        "standard": "6.6",
+        "PPR": "11.6",
+        "halfPPR": "9.1"
+      }
+    },
+    "3120303": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "14",
+        "stSnapPct": "0.44",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "3120303",
+      "longName": "Ross Dwelley",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3124890": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "53",
+        "stSnap": "1",
+        "stSnapPct": "0.03",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "7",
+        "fumblesLost": "0",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "fumbles": "0",
+        "fumblesRecovered": "1",
+        "soloTackles": "4",
+        "tfl": "1",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3124890",
+      "longName": "Kaden Elliss",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3126115": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.06",
+        "defSnap": "0",
+        "stSnap": "3",
+        "stSnapPct": "0.09",
+        "offSnap": "3",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "kickReturns": "1",
+        "kickReturnTD": "0",
+        "kickReturnYds": "21",
+        "kickReturnAvg": "21.0",
+        "kickReturnLong": "21"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "3126115",
+      "longName": "Cody Thompson",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3127294": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "33",
+        "stSnap": "1",
+        "stSnapPct": "0.03",
+        "offSnap": "0",
+        "defSnapPct": "0.38"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "3127294",
+      "longName": "Greg Gaines",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3127304": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "9",
+        "stSnapPct": "0.28",
+        "offSnap": "87",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "3127304",
+      "longName": "Kaleb McGary",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3128303": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "16",
+        "stSnapPct": "0.50",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "3128303",
+      "longName": "Josh Woods",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3128715": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "33",
+        "stSnap": "7",
+        "stSnapPct": "0.22",
+        "offSnap": "0",
+        "defSnapPct": "0.62"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3128715",
+      "longName": "Lorenzo Carter",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3134362": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "54",
+        "stSnap": "9",
+        "stSnapPct": "0.28",
+        "offSnap": "0",
+        "defSnapPct": "0.62"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "1",
+        "qbHits": "1",
+        "defensiveInterceptions": "0",
+        "sacks": "1",
+        "passDeflections": "0"
+      },
+      "playerID": "3134362",
+      "longName": "Vita Vea",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3150744": {
+      "gameID": "20241003_TB@ATL",
+      "scoringPlays": [
+        {
+          "score": "Mike Evans 2 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+          "scorePeriod": "Q1",
+          "homeScore": "7",
+          "awayScore": "7",
+          "teamID": "30",
+          "scoreDetails": "9 plays, 63 yards, 4:18",
+          "scoreType": "TD",
+          "scoreTime": "7:36",
+          "team": "TB",
+          "playerIDs": [
+            "3052587",
+            "16737",
+            "3150744"
+          ]
+        },
+        {
+          "score": "Chase McLaughlin 53 Yd Field Goal  ",
+          "scorePeriod": "Q1",
+          "homeScore": "7",
+          "awayScore": "10",
+          "teamID": "30",
+          "scoreDetails": "6 plays, 34 yards, 2:08",
+          "scoreType": "FG",
+          "scoreTime": "1:22",
+          "team": "TB",
+          "playerIDs": [
+            "3150744"
+          ]
+        },
+        {
+          "score": "Mike Evans 23 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+          "scorePeriod": "Q2",
+          "homeScore": "14",
+          "awayScore": "17",
+          "teamID": "30",
+          "scoreDetails": "3 plays, 44 yards, 1:41",
+          "scoreType": "TD",
+          "scoreTime": "10:17",
+          "team": "TB",
+          "playerIDs": [
+            "3052587",
+            "16737",
+            "3150744"
+          ]
+        },
+        {
+          "score": "Sterling Shepard 4 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+          "scorePeriod": "Q2",
+          "homeScore": "17",
+          "awayScore": "24",
+          "teamID": "30",
+          "scoreDetails": "7 plays, 82 yards, 4:21",
+          "scoreType": "TD",
+          "scoreTime": "1:56",
+          "team": "TB",
+          "playerIDs": [
+            "3052587",
+            "2976592",
+            "3150744"
+          ]
+        },
+        {
+          "score": "Chase McLaughlin 32 Yd Field Goal  ",
+          "scorePeriod": "Q3",
+          "homeScore": "20",
+          "awayScore": "27",
+          "teamID": "30",
+          "scoreDetails": "9 plays, 56 yards, 5:04",
+          "scoreType": "FG",
+          "scoreTime": "1:17",
+          "team": "TB",
+          "playerIDs": [
+            "3150744"
+          ]
+        },
+        {
+          "score": "Chase McLaughlin 53 Yd Field Goal  ",
+          "scorePeriod": "Q4",
+          "homeScore": "27",
+          "awayScore": "30",
+          "teamID": "30",
+          "scoreDetails": "6 plays, 35 yards, 2:55",
+          "scoreType": "FG",
+          "scoreTime": "10:23",
+          "team": "TB",
+          "playerIDs": [
+            "3150744"
+          ]
+        }
+      ],
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "fgLong": "53",
+        "fgMade": "3",
+        "fgAttempts": "3",
+        "xpMade": "3",
+        "fgPct": "100.0",
+        "kickingPts": "12",
+        "xpAttempts": "3",
+        "fgMissed": "0",
+        "xpMissed": "0"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "3150744",
+      "longName": "Chase McLaughlin",
+      "fantasyPoints": "12.0",
+      "fantasyPointsDefault": {
+        "standard": "12.0",
+        "PPR": "12.0",
+        "halfPPR": "12.0"
+      }
+    },
+    "3672833": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "9",
+        "stSnapPct": "0.28",
+        "offSnap": "87",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "3672833",
+      "longName": "Chris Lindstrom",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3686690": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "25",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.47"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "5",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "1",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3686690",
+      "longName": "James Smith-Williams",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3728262": {
+      "gameID": "20241003_TB@ATL",
+      "Receiving": {
+        "receptions": "6",
+        "recTD": "0",
+        "longRec": "22",
+        "targets": "9",
+        "recYds": "66",
+        "recAvg": "11.0"
+      },
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.98",
+        "defSnap": "0",
+        "stSnap": "8",
+        "stSnapPct": "0.25",
+        "offSnap": "85",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "fumblesLost": "0",
+        "defensiveInterceptions": "0",
+        "forcedFumbles": "0",
+        "fumbles": "1",
+        "fumblesRecovered": "0"
+      },
+      "playerID": "3728262",
+      "longName": "Ray-Ray McCloud III",
+      "fantasyPoints": "9.6",
+      "fantasyPointsDefault": {
+        "standard": "6.6",
+        "PPR": "12.6",
+        "halfPPR": "9.6"
+      }
+    },
+    "3873935": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "87",
+        "stSnap": "1",
+        "stSnapPct": "0.03",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "9",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "9",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "3873935",
+      "longName": "Jamel Dean",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3894856": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "43",
+        "stSnap": "32",
+        "stSnapPct": "1.00",
+        "offSnap": "0",
+        "defSnapPct": "0.49"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "1",
+        "qbHits": "1",
+        "defensiveInterceptions": "0",
+        "sacks": "1",
+        "passDeflections": "0"
+      },
+      "playerID": "3894856",
+      "longName": "Anthony Nelson",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3895798": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "60",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.69"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "5",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "4",
+        "tfl": "0",
+        "qbHits": "1",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "3895798",
+      "longName": "Jordan Whitehead",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3895841": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "43",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "0",
+        "defSnapPct": "0.81"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3895841",
+      "longName": "Mike Hughes",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3915373": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "23",
+        "stSnapPct": "0.72",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3915373",
+      "longName": "Micah Abernathy",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3915528": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "10",
+        "stSnapPct": "0.31",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "3915528",
+      "longName": "Liam McCullough",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3915777": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "53",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "3915777",
+      "longName": "Justin Skule",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3919512": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "53",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "8",
+        "defTD": "0",
+        "forcedFumbles": "2",
+        "soloTackles": "3",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3919512",
+      "longName": "Jessie Bates III",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3961466": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "33",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.62"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "3961466",
+      "longName": "Matthew Judon",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4002046": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "34",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "0",
+        "defSnapPct": "0.64"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "2",
+        "qbHits": "1",
+        "defensiveInterceptions": "0",
+        "sacks": "1",
+        "passDeflections": "0"
+      },
+      "playerID": "4002046",
+      "longName": "David Onyemata",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4034779": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.04",
+        "defSnap": "0",
+        "stSnap": "16",
+        "stSnapPct": "0.50",
+        "offSnap": "2",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4034779",
+      "longName": "Ko Kieft",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4035020": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.15",
+        "defSnap": "0",
+        "stSnap": "18",
+        "stSnapPct": "0.56",
+        "offSnap": "13",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4035020",
+      "longName": "Charlie Woerner",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4036444": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "9",
+        "stSnapPct": "0.28",
+        "offSnap": "87",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4036444",
+      "longName": "Ryan Neuzil",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4040655": {
+      "gameID": "20241003_TB@ATL",
+      "Passing": {
+        "qbr": "4.3",
+        "rtg": "39.6",
+        "sacked": "0-0",
+        "passAttempts": "1",
+        "passAvg": "0.0",
+        "passTD": "0",
+        "passYds": "0",
+        "int": "0",
+        "passCompletions": "0"
+      },
+      "Receiving": {
+        "receptions": "9",
+        "recTD": "2",
+        "longRec": "24",
+        "targets": "16",
+        "recYds": "105",
+        "recAvg": "11.7"
+      },
+      "scoringPlays": [
+        {
+          "score": "Darnell Mooney 24 Yd pass from Kirk Cousins (Younghoe Koo Kick)",
+          "scorePeriod": "Q2",
+          "homeScore": "14",
+          "awayScore": "10",
+          "teamID": "2",
+          "scoreDetails": "9 plays, 70 yards, 4:24",
+          "scoreType": "TD",
+          "scoreTime": "11:58",
+          "team": "ATL",
+          "playerIDs": [
+            "14880",
+            "4040655",
+            "3049899"
+          ]
+        },
+        {
+          "score": "Darnell Mooney 12 Yd pass from Kirk Cousins (Younghoe Koo Kick)",
+          "scorePeriod": "Q4",
+          "homeScore": "27",
+          "awayScore": "27",
+          "teamID": "2",
+          "scoreDetails": "8 plays, 70 yards, 2:59",
+          "scoreType": "TD",
+          "scoreTime": "13:18",
+          "team": "ATL",
+          "playerIDs": [
+            "14880",
+            "4040655",
+            "3049899"
+          ]
+        }
+      ],
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.98",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "85",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4040655",
+      "longName": "Darnell Mooney",
+      "fantasyPoints": "27.0",
+      "fantasyPointsDefault": {
+        "standard": "22.5",
+        "PPR": "31.5",
+        "halfPPR": "27.0"
+      }
+    },
+    "4042119": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "23",
+        "stSnapPct": "0.72",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4042119",
+      "longName": "Richie Grant",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4046551": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "53",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4046551",
+      "longName": "Ben Bredeson",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4048259": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "23",
+        "stSnapPct": "0.72",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4048259",
+      "longName": "Avery Williams",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4052017": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "14",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.16"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4052017",
+      "longName": "C.J. Brewer",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4239995": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "53",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "4",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4239995",
+      "longName": "A.J. Terrell",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4240128": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "16",
+        "stSnapPct": "0.50",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Punting": {
+        "puntYds": "87",
+        "punts": "2",
+        "puntAvg": "43.5",
+        "puntsin20": "0",
+        "puntTouchBacks": "1",
+        "puntLong": "45"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4240128",
+      "longName": "Trenton Gill",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4240589": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "53",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4240589",
+      "longName": "Tristan Wirfs",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4242391": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4242391",
+      "longName": "Robert Hainsey",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4242521": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "81",
+        "stSnap": "10",
+        "stSnapPct": "0.31",
+        "offSnap": "0",
+        "defSnapPct": "0.93"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "9",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "5",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4242521",
+      "longName": "K.J. Britt",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4243331": {
+      "gameID": "20241003_TB@ATL",
+      "Receiving": {
+        "receptions": "3",
+        "recTD": "0",
+        "longRec": "22",
+        "targets": "4",
+        "recYds": "44",
+        "recAvg": "14.7"
+      },
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "53",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4243331",
+      "longName": "Cade Otton",
+      "fantasyPoints": "5.9",
+      "fantasyPointsDefault": {
+        "standard": "4.4",
+        "PPR": "7.4",
+        "halfPPR": "5.9"
+      }
+    },
+    "4243333": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "50",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.57"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "1",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "4243333",
+      "longName": "Joe Tryon-Shoyinka",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4243366": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "1",
+        "stSnap": "24",
+        "stSnapPct": "0.75",
+        "offSnap": "0",
+        "defSnapPct": "0.01"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4243366",
+      "longName": "J.J. Russell",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4243457": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "23",
+        "stSnapPct": "0.72",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4243457",
+      "longName": "DeAngelo Malone",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4248533": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "19",
+        "stSnapPct": "0.60",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4248533",
+      "longName": "Josh Hayes",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4248545": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "53",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4248545",
+      "longName": "Cody Mauch",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4250392": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "87",
+        "stSnap": "11",
+        "stSnapPct": "0.34",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "10",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "7",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "2"
+      },
+      "playerID": "4250392",
+      "longName": "Zyon McCollum",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4257591": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "15",
+        "stSnap": "8",
+        "stSnapPct": "0.25",
+        "offSnap": "0",
+        "defSnapPct": "0.28"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4257591",
+      "longName": "Arnold Ebiketie",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4262197": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "19",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "0",
+        "defSnapPct": "0.36"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4262197",
+      "longName": "Ta'Quon Graham",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4334405": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "1",
+        "stSnap": "26",
+        "stSnapPct": "0.81",
+        "offSnap": "0",
+        "defSnapPct": "0.01"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4334405",
+      "longName": "Tavierre Thomas",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4360189": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "58",
+        "stSnap": "10",
+        "stSnapPct": "0.31",
+        "offSnap": "0",
+        "defSnapPct": "0.67"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "2",
+        "qbHits": "5",
+        "defensiveInterceptions": "0",
+        "sacks": "2",
+        "passDeflections": "0"
+      },
+      "playerID": "4360189",
+      "longName": "Logan Hall",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4360248": {
+      "gameID": "20241003_TB@ATL",
+      "Receiving": {
+        "receptions": "7",
+        "recTD": "0",
+        "longRec": "32",
+        "targets": "8",
+        "recYds": "88",
+        "recAvg": "12.6"
+      },
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.85",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "74",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4360248",
+      "longName": "Kyle Pitts",
+      "fantasyPoints": "12.3",
+      "fantasyPointsDefault": {
+        "standard": "8.8",
+        "PPR": "15.8",
+        "halfPPR": "12.3"
+      }
+    },
+    "4360502": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "27",
+        "stSnap": "24",
+        "stSnapPct": "0.75",
+        "offSnap": "0",
+        "defSnapPct": "0.31"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4360502",
+      "longName": "Kaevon Merriweather",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4360864": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "16",
+        "stSnapPct": "0.50",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4360864",
+      "longName": "Antonio Grier Jr.",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4362066": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4362066",
+      "longName": "Elijah Klein",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4372459": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "86",
+        "stSnap": "8",
+        "stSnapPct": "0.25",
+        "offSnap": "0",
+        "defSnapPct": "0.99"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "7",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "5",
+        "tfl": "1",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4372459",
+      "longName": "Christian Izien",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4372505": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.23",
+        "defSnap": "0",
+        "stSnap": "7",
+        "stSnapPct": "0.22",
+        "offSnap": "12",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4372505",
+      "longName": "Payne Durham",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4373626": {
+      "gameID": "20241003_TB@ATL",
+      "Rushing": {
+        "rushAvg": "2.0",
+        "rushYds": "12",
+        "carries": "6",
+        "longRush": "8",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "3",
+        "recTD": "0",
+        "longRec": "6",
+        "targets": "3",
+        "recYds": "13",
+        "recAvg": "4.3"
+      },
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.36",
+        "defSnap": "0",
+        "stSnap": "1",
+        "stSnapPct": "0.03",
+        "offSnap": "31",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4373626",
+      "longName": "Tyler Allgeier",
+      "fantasyPoints": "5.2",
+      "fantasyPointsDefault": {
+        "standard": "2.5",
+        "PPR": "5.5",
+        "halfPPR": "4.0"
+      }
+    },
+    "4373706": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "2",
+        "stSnap": "13",
+        "stSnapPct": "0.41",
+        "offSnap": "0",
+        "defSnapPct": "0.02"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4373706",
+      "longName": "Markees Watts",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4401823": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "8",
+        "stSnap": "1",
+        "stSnapPct": "0.03",
+        "offSnap": "0",
+        "defSnapPct": "0.15"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4401823",
+      "longName": "Dee Alford",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4426412": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "14",
+        "stSnap": "8",
+        "stSnapPct": "0.25",
+        "offSnap": "0",
+        "defSnapPct": "0.26"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4426412",
+      "longName": "Zach Harrison",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4426502": {
+      "gameID": "20241003_TB@ATL",
+      "Receiving": {
+        "receptions": "12",
+        "recTD": "1",
+        "longRec": "31",
+        "targets": "13",
+        "recYds": "154",
+        "recAvg": "12.8"
+      },
+      "scoringPlays": [
+        {
+          "score": "Drake London 18 Yd pass from Kirk Cousins (Younghoe Koo Kick)",
+          "scorePeriod": "Q1",
+          "homeScore": "7",
+          "awayScore": "0",
+          "teamID": "2",
+          "scoreDetails": "7 plays, 70 yards, 3:06",
+          "scoreType": "TD",
+          "scoreTime": "11:54",
+          "team": "ATL",
+          "playerIDs": [
+            "14880",
+            "4426502",
+            "3049899"
+          ]
+        }
+      ],
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.84",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "73",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4426502",
+      "longName": "Drake London",
+      "fantasyPoints": "27.4",
+      "fantasyPointsDefault": {
+        "standard": "21.4",
+        "PPR": "33.4",
+        "halfPPR": "27.4"
+      }
+    },
+    "4428522": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "86",
+        "stSnap": "2",
+        "stSnapPct": "0.06",
+        "offSnap": "0",
+        "defSnapPct": "0.99"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "11",
+        "defTD": "0",
+        "forcedFumbles": "1",
+        "soloTackles": "9",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "4428522",
+      "longName": "Tykee Smith",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4428796": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4428796",
+      "longName": "Casey Washington",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4428872": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "38",
+        "stSnap": "8",
+        "stSnapPct": "0.25",
+        "offSnap": "0",
+        "defSnapPct": "0.72"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "5",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "4",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4428872",
+      "longName": "JD Bertrand",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4428989": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "36",
+        "stSnap": "14",
+        "stSnapPct": "0.44",
+        "offSnap": "0",
+        "defSnapPct": "0.41"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4428989",
+      "longName": "Chris Braswell",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4429067": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "10",
+        "stSnap": "5",
+        "stSnapPct": "0.16",
+        "offSnap": "0",
+        "defSnapPct": "0.19"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "1",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4429067",
+      "longName": "Clark Phillips III",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4429251": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "53",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4429251",
+      "longName": "Graham Barton",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4430271": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "12",
+        "stSnap": "6",
+        "stSnapPct": "0.19",
+        "offSnap": "0",
+        "defSnapPct": "0.23"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4430271",
+      "longName": "Ruke Orhorhoro",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4430807": {
+      "gameID": "20241003_TB@ATL",
+      "Rushing": {
+        "rushAvg": "5.1",
+        "rushYds": "61",
+        "carries": "12",
+        "longRush": "28",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "3",
+        "recTD": "0",
+        "longRec": "6",
+        "targets": "3",
+        "recYds": "16",
+        "recAvg": "5.3"
+      },
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.67",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "58",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4430807",
+      "longName": "Bijan Robinson",
+      "fantasyPoints": "11.6",
+      "fantasyPointsDefault": {
+        "standard": "7.7",
+        "PPR": "10.7",
+        "halfPPR": "9.2"
+      }
+    },
+    "4430871": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "8",
+        "stSnapPct": "0.25",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "kickReturns": "2",
+        "kickReturnTD": "0",
+        "kickReturnYds": "86",
+        "kickReturnAvg": "43.0",
+        "kickReturnLong": "53"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4430871",
+      "longName": "Sean Tucker",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4568510": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "9",
+        "stSnapPct": "0.28",
+        "offSnap": "87",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4568510",
+      "longName": "Matthew Bergeron",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4569068": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "1",
+        "stSnapPct": "0.03",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4569068",
+      "longName": "Jose Ramirez",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4596448": {
+      "gameID": "20241003_TB@ATL",
+      "Rushing": {
+        "rushAvg": "4.9",
+        "rushYds": "44",
+        "carries": "9",
+        "longRush": "16",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "2",
+        "recTD": "0",
+        "longRec": "9",
+        "targets": "2",
+        "recYds": "12",
+        "recAvg": "6.0"
+      },
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.43",
+        "defSnap": "0",
+        "stSnap": "3",
+        "stSnapPct": "0.09",
+        "offSnap": "23",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "kickReturns": "1",
+        "kickReturnTD": "0",
+        "kickReturnYds": "39",
+        "kickReturnAvg": "39.0",
+        "kickReturnLong": "39"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "fumblesLost": "1",
+        "defensiveInterceptions": "0",
+        "forcedFumbles": "0",
+        "fumbles": "1",
+        "fumblesRecovered": "0"
+      },
+      "playerID": "4596448",
+      "longName": "Bucky Irving",
+      "fantasyPoints": "6.4",
+      "fantasyPointsDefault": {
+        "standard": "4.6",
+        "PPR": "6.6",
+        "halfPPR": "5.6"
+      }
+    },
+    "4682831": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "2",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "9",
+        "stSnapPct": "0.28",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ATL",
+      "teamAbv": "ATL",
+      "playerID": "4682831",
+      "longName": "Kyle Hinton",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4686334": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "49",
+        "stSnap": "10",
+        "stSnapPct": "0.31",
+        "offSnap": "0",
+        "defSnapPct": "0.56"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "Defense": {
+        "totalTackles": "5",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "4",
+        "tfl": "1",
+        "qbHits": "2",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4686334",
+      "longName": "Yaya Diaby",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4697815": {
+      "gameID": "20241003_TB@ATL",
+      "Rushing": {
+        "rushAvg": "7.2",
+        "rushYds": "72",
+        "carries": "10",
+        "longRush": "56",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "3",
+        "recTD": "0",
+        "longRec": "-2",
+        "targets": "3",
+        "recYds": "-6",
+        "recAvg": "-2.0"
+      },
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.64",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "34",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "4697815",
+      "longName": "Rachaad White",
+      "fantasyPoints": "10.1",
+      "fantasyPointsDefault": {
+        "standard": "6.6",
+        "PPR": "9.6",
+        "halfPPR": "8.1"
+      }
+    },
+    "5097554": {
+      "gameID": "20241003_TB@ATL",
+      "teamID": "30",
+      "snapCounts": {
+        "offSnapPct": "0.08",
+        "defSnap": "0",
+        "stSnap": "1",
+        "stSnapPct": "0.03",
+        "offSnap": "4",
+        "defSnapPct": "0.00"
+      },
+      "team": "TB",
+      "teamAbv": "TB",
+      "playerID": "5097554",
+      "longName": "Kameron Johnson",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    }
+  },
+  "arenaCapacity": "75,000",
+  "arena": "Mercedes-Benz Stadium",
+  "homePts": "36",
+  "awayResult": "L",
+  "teamIDAway": "30",
+  "Referees": "Barry Anderson, Ronald Torbert, Keith Washington, Ryan Dickson, Tony Josselyn, Brian Bolinger, Frank LeBlanc",
+  "gameClock": "",
+  "awayPts": "30",
+  "gameID": "20241003_TB@ATL",
+  "seasonType": "Regular Season",
+  "gameStatusCode": "2"
+}

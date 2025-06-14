@@ -1,0 +1,148 @@
+{
+  "gameID": "20240905_BAL@KC",
+  "timestamp": "2025-06-14T15:32:45.396Z",
+  "playerStatsStructure": {
+    "topLevelKeys": [
+      "gameStatus",
+      "DST",
+      "teamStats",
+      "gameDate",
+      "scoringPlays",
+      "allPlayByPlay",
+      "network",
+      "teamIDHome",
+      "homeResult",
+      "away",
+      "gameWeek",
+      "attendance",
+      "lineScore",
+      "currentPeriod",
+      "gameLocation",
+      "home",
+      "playerStats",
+      "arenaCapacity",
+      "arena",
+      "homePts"
+    ],
+    "hasPlayerStats": true,
+    "playerStatsKeys": 92
+  },
+  "twoPointConversions": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "defensiveStats": {
+    "found": true,
+    "fieldNames": [
+      "Defense.totalTackles",
+      "Defense.soloTackles",
+      "Defense.qbHits"
+    ],
+    "examples": [
+      {
+        "player": "Kyle Van Noy",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "1"
+      },
+      {
+        "player": "Kyle Van Noy",
+        "position": "Unknown",
+        "field": "Defense.soloTackles",
+        "value": "1"
+      },
+      {
+        "player": "Kyle Van Noy",
+        "position": "Unknown",
+        "field": "Defense.qbHits",
+        "value": "1"
+      },
+      {
+        "player": "Mike Pennel Jr.",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "2"
+      },
+      {
+        "player": "Michael Pierce",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "4"
+      },
+      {
+        "player": "Michael Pierce",
+        "position": "Unknown",
+        "field": "Defense.soloTackles",
+        "value": "2"
+      }
+    ]
+  },
+  "returnTouchdowns": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "teamDefenseStats": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "samplePlayers": [
+    {
+      "playerId": "15683",
+      "name": "Justin Tucker",
+      "position": "Unknown",
+      "team": "BAL",
+      "allFields": [
+        "gameID",
+        "scoringPlays",
+        "teamID",
+        "snapCounts",
+        "Kicking",
+        "team",
+        "teamAbv",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    },
+    {
+      "playerId": "15847",
+      "name": "Travis Kelce",
+      "position": "Unknown",
+      "team": "KC",
+      "allFields": [
+        "gameID",
+        "Receiving",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    },
+    {
+      "playerId": "16665",
+      "name": "James Winchester",
+      "position": "Unknown",
+      "team": "KC",
+      "allFields": [
+        "gameID",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    }
+  ],
+  "interestingFindings": []
+}

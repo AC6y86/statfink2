@@ -1,0 +1,113 @@
+{
+  "gameID": "20241006_ARI@SF",
+  "timestamp": "2025-06-14T15:32:56.996Z",
+  "playerStatsStructure": {
+    "topLevelKeys": [
+      "gameStatus",
+      "DST",
+      "teamStats",
+      "gameDate",
+      "scoringPlays",
+      "allPlayByPlay",
+      "network",
+      "teamIDHome",
+      "homeResult",
+      "away",
+      "gameWeek",
+      "attendance",
+      "lineScore",
+      "currentPeriod",
+      "gameLocation",
+      "home",
+      "playerStats",
+      "arenaCapacity",
+      "arena",
+      "homePts"
+    ],
+    "hasPlayerStats": true,
+    "playerStatsKeys": 93
+  },
+  "twoPointConversions": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "defensiveStats": {
+    "found": true,
+    "fieldNames": [
+      "Defense.totalTackles"
+    ],
+    "examples": [
+      {
+        "player": "T.Y. McGill",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "1"
+      }
+    ]
+  },
+  "returnTouchdowns": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "teamDefenseStats": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "samplePlayers": [
+    {
+      "playerId": "13241",
+      "name": "Trent Williams",
+      "position": "Unknown",
+      "team": "SF",
+      "allFields": [
+        "gameID",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    },
+    {
+      "playerId": "15035",
+      "name": "Kelvin Beachum",
+      "position": "Unknown",
+      "team": "ARI",
+      "allFields": [
+        "gameID",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    },
+    {
+      "playerId": "15241",
+      "name": "Aaron Brewer",
+      "position": "Unknown",
+      "team": "ARI",
+      "allFields": [
+        "gameID",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    }
+  ],
+  "interestingFindings": []
+}

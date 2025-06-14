@@ -91,7 +91,8 @@ class Backfill2024Stats {
             { column: 'created_at', type: 'DATETIME' },
             { column: 'two_point_conversions_pass', type: 'INTEGER DEFAULT 0' },
             { column: 'two_point_conversions_run', type: 'INTEGER DEFAULT 0' },
-            { column: 'two_point_conversions_rec', type: 'INTEGER DEFAULT 0' }
+            { column: 'two_point_conversions_rec', type: 'INTEGER DEFAULT 0' },
+            { column: 'return_tds', type: 'INTEGER DEFAULT 0' }
         ];
 
         for (const { column, type } of columnsToAdd) {
@@ -202,11 +203,112 @@ class Backfill2024Stats {
                 }
             }
 
+            // Process DST (team defense) stats
+            const dstStatsImported = await this.extractDSTStats(boxScoreData, week, season, gameID);
+            statsImported += dstStatsImported;
+
         } catch (error) {
             console.error(`      ❌ Error extracting player stats for game ${gameID}:`, error.message);
         }
 
         return statsImported;
+    }
+
+    async extractDSTStats(boxScoreData, week, season, gameID) {
+        let dstStatsImported = 0;
+
+        try {
+            const dstData = boxScoreData.DST || {};
+            
+            if (!dstData.away && !dstData.home) {
+                console.log(`      ⚠️  No DST data found for game ${gameID}`);
+                return 0;
+            }
+
+            // Process away team DST
+            if (dstData.away) {
+                const imported = await this.importDSTStat(dstData.away, 'away', week, season, gameID);
+                if (imported) dstStatsImported++;
+            }
+
+            // Process home team DST
+            if (dstData.home) {
+                const imported = await this.importDSTStat(dstData.home, 'home', week, season, gameID);
+                if (imported) dstStatsImported++;
+            }
+
+            if (dstStatsImported > 0) {
+                console.log(`      🛡️  Imported ${dstStatsImported} DST records for game ${gameID}`);
+            }
+
+        } catch (error) {
+            console.error(`      ❌ Error extracting DST stats for game ${gameID}:`, error.message);
+        }
+
+        return dstStatsImported;
+    }
+
+    async importDSTStat(dstData, homeAway, week, season, gameID) {
+        try {
+            // Create DST player record
+            const teamAbv = dstData.teamAbv || 'UNK';
+            const teamId = dstData.teamID || '0';
+            
+            // Use teamID as playerID for DST, with prefix to avoid conflicts
+            const dstPlayerId = `DST_${teamId}`;
+            const playerName = `${teamAbv} Defense`;
+            
+            // Extract DST stats
+            const defTouchdowns = parseInt(dstData.defTD || 0);
+            const defInterceptions = parseInt(dstData.defensiveInterceptions || 0);
+            const sacks = parseInt(dstData.sacks || 0);
+            const fumblesRecovered = parseInt(dstData.fumblesRecovered || 0);
+            const safeties = parseInt(dstData.safeties || 0);
+            const pointsAllowed = parseInt(dstData.ptsAllowed || 0);
+            const yardsAllowed = parseInt(dstData.ydsAllowed || 0);
+
+            // Skip if no meaningful defensive stats
+            if (defTouchdowns === 0 && defInterceptions === 0 && sacks === 0 && 
+                fumblesRecovered === 0 && safeties === 0) {
+                // Still import for points/yards allowed tracking
+                console.log(`      📊 DST ${teamAbv}: No defensive stats, but importing for points/yards allowed`);
+            }
+
+            // Insert DST stats into database
+            return new Promise((resolve, reject) => {
+                this.db.run(`
+                    INSERT OR REPLACE INTO player_stats 
+                    (player_id, week, season, passing_yards, passing_tds, interceptions,
+                     rushing_yards, rushing_tds, receiving_yards, receiving_tds, receptions,
+                     fumbles, sacks, def_interceptions, fumbles_recovered, def_touchdowns, 
+                     safeties, points_allowed, yards_allowed, field_goals_made, field_goals_attempted, 
+                     extra_points_made, extra_points_attempted, two_point_conversions_pass, 
+                     two_point_conversions_run, two_point_conversions_rec, return_tds,
+                     player_name, team, position, game_id, raw_stats, created_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                `, [
+                    dstPlayerId, week, season, 0, 0, 0, // No offensive stats for DST
+                    0, 0, 0, 0, 0, // No offensive stats for DST
+                    0, sacks, defInterceptions, fumblesRecovered, defTouchdowns, // Defensive stats
+                    safeties, pointsAllowed, yardsAllowed, 0, 0, // Defense/kicking stats
+                    0, 0, 0, 0, 0, 0, // No 2pt conversions or return TDs for team DST
+                    playerName, teamAbv, 'DEF', // Position is 'DEF' for StatFink display
+                    gameID, JSON.stringify(dstData), new Date().toISOString()
+                ], (err) => {
+                    if (err) {
+                        console.error(`        ❌ Error inserting DST ${teamAbv}: ${err.message}`);
+                        reject(err);
+                    } else {
+                        console.log(`        ✅ Successfully inserted DST ${teamAbv}`);
+                        resolve(true);
+                    }
+                });
+            });
+
+        } catch (error) {
+            console.error(`        ❌ Error importing DST stat for ${homeAway}:`, error.message);
+            return false;
+        }
     }
 
     async importPlayerStat(playerId, playerData, week, season, gameID) {
@@ -223,6 +325,8 @@ class Backfill2024Stats {
             const kickingStats = playerData.Kicking || {};
             const fumbleStats = playerData.Fumbles || {};
             const twoPointStats = playerData.TwoPoint || playerData.twoPoint || {};
+            const defenseStats = playerData.Defense || {}; // NEW: Individual defensive stats
+            const returnsStats = playerData.Returns || {}; // NEW: Return stats (if available)
             
             // Extract individual stats from their respective sections
             const passingYards = parseInt(passingStats.passYds || 0);
@@ -253,11 +357,27 @@ class Backfill2024Stats {
                                                   rushingStats.twoPointRush || playerData.twoPointRush || 0);
             const twoPointConversionsRec = parseInt(twoPointStats.rec || twoPointStats.receiving || 
                                                   receivingStats.twoPointRec || playerData.twoPointRec || 0);
+            
+            // Extract individual defensive stats (based on Tank01 findings)
+            const individualSacks = parseInt(defenseStats.sacks || 0);
+            const totalTackles = parseInt(defenseStats.totalTackles || 0);
+            const soloTackles = parseInt(defenseStats.soloTackles || 0);
+            const qbHits = parseInt(defenseStats.qbHits || 0);
+            const defInterceptions = parseInt(defenseStats.interceptions || defenseStats.int || 0);
+            const defFumblesRecovered = parseInt(defenseStats.fumblesRecovered || defenseStats.fumRec || 0);
+            const defTouchdowns = parseInt(defenseStats.defTD || defenseStats.touchdowns || 0);
+            
+            // Extract return touchdown stats (try multiple field names)
+            const returnTds = parseInt(returnsStats.kickReturnTDs || returnsStats.puntReturnTDs || 
+                                     returnsStats.returnTDs || playerData.returnTDs || 
+                                     playerData.kickReturnTDs || playerData.puntReturnTDs || 0);
 
-            // Skip players with no meaningful stats
+            // Skip players with no meaningful stats (include defensive stats in check)
             if (passingYards === 0 && rushingYards === 0 && 
                 receivingYards === 0 && receptions === 0 && fieldGoalsMade === 0 && 
-                passingTds === 0 && rushingTds === 0 && receivingTds === 0) {
+                passingTds === 0 && rushingTds === 0 && receivingTds === 0 &&
+                individualSacks === 0 && defInterceptions === 0 && defFumblesRecovered === 0 && 
+                defTouchdowns === 0 && returnTds === 0 && totalTackles === 0) {
                 // console.log(`Skipping ${playerName} - no stats`);
                 return false;
             }
@@ -269,17 +389,19 @@ class Backfill2024Stats {
                     INSERT OR REPLACE INTO player_stats 
                     (player_id, week, season, passing_yards, passing_tds, interceptions,
                      rushing_yards, rushing_tds, receiving_yards, receiving_tds, receptions,
-                     fumbles, field_goals_made, field_goals_attempted, extra_points_made, 
+                     fumbles, sacks, def_interceptions, fumbles_recovered, def_touchdowns,
+                     field_goals_made, field_goals_attempted, extra_points_made, 
                      extra_points_attempted, two_point_conversions_pass, two_point_conversions_run, 
-                     two_point_conversions_rec, player_name, team, position, 
+                     two_point_conversions_rec, return_tds, player_name, team, position, 
                      game_id, raw_stats, created_at) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 `, [
                     playerId, week, season, passingYards, passingTds, interceptions,
                     rushingYards, rushingTds, receivingYards, receivingTds, receptions,
-                    fumbles, fieldGoalsMade, fieldGoalsAttempted, extraPointsMade, 
+                    fumbles, individualSacks, defInterceptions, defFumblesRecovered, defTouchdowns,
+                    fieldGoalsMade, fieldGoalsAttempted, extraPointsMade, 
                     extraPointsAttempted, twoPointConversionsPass, twoPointConversionsRun, 
-                    twoPointConversionsRec, playerName, team, position,
+                    twoPointConversionsRec, returnTds, playerName, team, position,
                     gameID, JSON.stringify(playerData), new Date().toISOString()
                 ], (err) => {
                     if (err) {

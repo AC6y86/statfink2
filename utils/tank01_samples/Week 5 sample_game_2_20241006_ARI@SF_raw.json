@@ -1,0 +1,6044 @@
+{
+  "gameStatus": "Completed",
+  "DST": {
+    "away": {
+      "teamAbv": "ARI",
+      "teamID": "1",
+      "defTD": "0",
+      "defensiveInterceptions": "2",
+      "sacks": "2",
+      "ydsAllowed": "384",
+      "fumblesRecovered": "1",
+      "ptsAllowed": "17",
+      "safeties": "0"
+    },
+    "home": {
+      "teamAbv": "SF",
+      "teamID": "28",
+      "defTD": "1",
+      "defensiveInterceptions": "1",
+      "sacks": "1",
+      "ydsAllowed": "358",
+      "fumblesRecovered": "0",
+      "ptsAllowed": "24",
+      "safeties": "0"
+    }
+  },
+  "teamStats": {
+    "away": {
+      "totalYards": "358",
+      "rushingAttempts": "26",
+      "rushingYards": "169",
+      "fumblesLost": "0",
+      "penalties": "1-5",
+      "totalPlays": "57",
+      "possession": "27:02",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "19-30",
+      "passingFirstDowns": "10",
+      "interceptionsThrown": "1",
+      "sacksAndYardsLost": "1-6",
+      "thirdDownEfficiency": "3-10",
+      "blockedPunt": "0",
+      "yardsPerPlay": "6.3",
+      "redZoneScoredAndAttempted": "1-3",
+      "teamID": "1",
+      "defensiveInterceptions": "2",
+      "defensiveOrSpecialTeamsTds": "0",
+      "totalDrives": "10",
+      "rushingFirstDowns": "9",
+      "blockedFG": "0",
+      "rushTD": "1",
+      "twoPointConversions": "1",
+      "firstDowns": "19",
+      "passTD": "1",
+      "team": "ARI",
+      "blockedXP": "0",
+      "teamAbv": "ARI",
+      "firstDownsFromPenalties": "0",
+      "fourthDownEfficiency": "1-1",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "189",
+      "yardsPerRush": "6.5",
+      "snapCounts": {
+        "totalSpecialTeams": "24",
+        "totalOffensive": "58",
+        "totalDefensive": "64"
+      },
+      "turnovers": "1",
+      "yardsPerPass": "6.1"
+    },
+    "home": {
+      "totalYards": "384",
+      "rushingAttempts": "26",
+      "rushingYards": "153",
+      "fumblesLost": "1",
+      "penalties": "4-21",
+      "totalPlays": "63",
+      "possession": "32:58",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "19-35",
+      "passingFirstDowns": "13",
+      "interceptionsThrown": "2",
+      "sacksAndYardsLost": "2-13",
+      "thirdDownEfficiency": "6-11",
+      "blockedPunt": "0",
+      "yardsPerPlay": "6.1",
+      "redZoneScoredAndAttempted": "1-6",
+      "teamID": "28",
+      "defensiveInterceptions": "1",
+      "defensiveOrSpecialTeamsTds": "1",
+      "totalDrives": "9",
+      "rushingFirstDowns": "9",
+      "blockedFG": "1",
+      "rushTD": "0",
+      "twoPointConversions": "0",
+      "firstDowns": "22",
+      "passTD": "1",
+      "team": "SF",
+      "blockedXP": "0",
+      "teamAbv": "SF",
+      "firstDownsFromPenalties": "0",
+      "fourthDownEfficiency": "0-1",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "231",
+      "yardsPerRush": "5.9",
+      "snapCounts": {
+        "totalSpecialTeams": "24",
+        "totalOffensive": "64",
+        "totalDefensive": "58"
+      },
+      "turnovers": "3",
+      "yardsPerPass": "6.2"
+    }
+  },
+  "gameDate": "20241006",
+  "scoringPlays": [
+    {
+      "score": "Kyler Murray 50 Yd Run (Chad Ryland Kick)",
+      "scorePeriod": "Q1",
+      "homeScore": "0",
+      "awayScore": "7",
+      "teamID": "1",
+      "scoreDetails": "2 plays, 72 yards, 0:47",
+      "scoreType": "TD",
+      "scoreTime": "13:12",
+      "team": "ARI",
+      "playerIDs": [
+        "3917315",
+        "4363538"
+      ]
+    },
+    {
+      "score": "Jake Moody 28 Yd Field Goal  ",
+      "scorePeriod": "Q1",
+      "homeScore": "3",
+      "awayScore": "7",
+      "teamID": "28",
+      "scoreDetails": "6 plays, 60 yards, 2:47",
+      "scoreType": "FG",
+      "scoreTime": "10:25",
+      "team": "SF",
+      "playerIDs": [
+        "4372066"
+      ]
+    },
+    {
+      "score": "George Kittle 4 Yd pass from Brock Purdy (Jake Moody Kick)",
+      "scorePeriod": "Q1",
+      "homeScore": "10",
+      "awayScore": "7",
+      "teamID": "28",
+      "scoreDetails": "13 plays, 76 yards, 7:11",
+      "scoreType": "TD",
+      "scoreTime": "2:20",
+      "team": "SF",
+      "playerIDs": [
+        "4361741",
+        "3040151",
+        "4372066"
+      ]
+    },
+    {
+      "score": "Chad Ryland 30 Yd Field Goal  ",
+      "scorePeriod": "Q2",
+      "homeScore": "10",
+      "awayScore": "10",
+      "teamID": "1",
+      "scoreDetails": "10 plays, 58 yards, 4:37",
+      "scoreType": "FG",
+      "scoreTime": "12:43",
+      "team": "ARI",
+      "playerIDs": [
+        "4363538"
+      ]
+    },
+    {
+      "score": "Jake Moody 20 Yd Field Goal  ",
+      "scorePeriod": "Q2",
+      "homeScore": "13",
+      "awayScore": "10",
+      "teamID": "28",
+      "scoreDetails": "11 plays, 68 yards, 5:44",
+      "scoreType": "FG",
+      "scoreTime": "6:59",
+      "team": "SF",
+      "playerIDs": [
+        "4372066"
+      ]
+    },
+    {
+      "score": "Deommodore Lenoir 61 Yd Return of Blocked Field Goal (Jake Moody Kick)",
+      "scorePeriod": "Q2",
+      "homeScore": "20",
+      "awayScore": "10",
+      "teamID": "28",
+      "scoreDetails": "5 plays, 43 yards, 2:00",
+      "scoreType": "TD",
+      "scoreTime": "4:59",
+      "team": "SF",
+      "playerIDs": [
+        "4242488",
+        "4372066"
+      ]
+    },
+    {
+      "score": "Mitch Wishnowsky 26 Yd Field Goal  ",
+      "scorePeriod": "Q2",
+      "homeScore": "23",
+      "awayScore": "10",
+      "teamID": "28",
+      "scoreDetails": "8 plays, 33 yards, 1:50",
+      "scoreType": "FG",
+      "scoreTime": "0:00",
+      "team": "SF",
+      "playerIDs": [
+        "4035685"
+      ]
+    },
+    {
+      "score": "Chad Ryland 42 Yd Field Goal  ",
+      "scorePeriod": "Q3",
+      "homeScore": "23",
+      "awayScore": "13",
+      "teamID": "1",
+      "scoreDetails": "4 plays, 1 yard, 1:53",
+      "scoreType": "FG",
+      "scoreTime": "9:59",
+      "team": "ARI",
+      "playerIDs": [
+        "4363538"
+      ]
+    },
+    {
+      "score": "Elijah Higgins 2 Yd pass from Kyler Murray (James Conner Run for Two-Point Conversion)",
+      "scorePeriod": "Q4",
+      "homeScore": "23",
+      "awayScore": "21",
+      "teamID": "1",
+      "scoreDetails": "12 plays, 73 yards, 6:27",
+      "scoreType": "TD",
+      "scoreTime": "11:25",
+      "team": "ARI",
+      "playerIDs": [
+        "3917315",
+        "3045147",
+        "4426844"
+      ]
+    },
+    {
+      "score": "Chad Ryland 35 Yd Field Goal  ",
+      "scorePeriod": "Q4",
+      "homeScore": "23",
+      "awayScore": "24",
+      "teamID": "1",
+      "scoreDetails": "14 plays, 75 yards, 4:34",
+      "scoreType": "FG",
+      "scoreTime": "1:37",
+      "team": "ARI",
+      "playerIDs": [
+        "4363538"
+      ]
+    }
+  ],
+  "allPlayByPlay": [
+    {
+      "play": "C.Ryland kicks 65 yards from ARZ 35 to end zone, Touchback to the SF 30.",
+      "playPeriod": "Q1",
+      "playClock": "15:00",
+      "playerStats": {
+        "4363538": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete deep right to D.Samuel.",
+      "playPeriod": "Q1",
+      "playClock": "15:00",
+      "playerStats": {
+        "3126486": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 30",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy scrambles left end ran ob at SF 32 for 2 yards (B.Nichols). SF-J.Jennings was injured during the play.",
+      "playPeriod": "Q1",
+      "playClock": "14:56",
+      "playerStats": {
+        "4361741": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at SF 30",
+      "teamID": "28"
+    },
+    {
+      "play": "Timeout at 14:21.",
+      "playPeriod": "Q1",
+      "playClock": "14:21",
+      "playerStats": {},
+      "downAndDistance": "3rd & 8 at SF 32",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete deep right to B.Aiyuk.",
+      "playPeriod": "Q1",
+      "playClock": "14:15",
+      "playerStats": {
+        "4360438": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 8 at SF 32",
+      "teamID": "28"
+    },
+    {
+      "play": "M.Wishnowsky punts 41 yards to ARZ 27, Center-T.Pepper. G.Dortch to ARZ 28 for 1 yard (G.Odum).",
+      "playPeriod": "Q1",
+      "playClock": "14:11",
+      "playerStats": {
+        "4035685": {
+          "Kicking": {
+            "puntYds": "41",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 8 at SF 32",
+      "teamID": "28"
+    },
+    {
+      "play": "K.Murray pass short left to T.McBride pushed ob at 50 for 22 yards (D.Campbell).",
+      "playPeriod": "Q1",
+      "playClock": "13:59",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "22",
+            "passCompletions": "1"
+          }
+        },
+        "4361307": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "22"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 28",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray right tackle for 50 yards, TOUCHDOWN.C.Ryland extra point is GOOD, Center-A.Brewer, Holder-B.Gillikin.",
+      "playPeriod": "Q1",
+      "playClock": "13:12",
+      "playerStats": {
+        "3917315": {
+          "Rushing": {
+            "rushYds": "50",
+            "carries": "1",
+            "rushTD": "1"
+          }
+        },
+        "4363538": {
+          "Kicking": {
+            "xpMade": "1",
+            "xpAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at 50",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout at 13:12.",
+      "playPeriod": "Q1",
+      "playClock": "13:12",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ARI 35",
+      "teamID": "1"
+    },
+    {
+      "play": "C.Ryland kicks 65 yards from ARZ 35 to end zone, Touchback to the SF 30.",
+      "playPeriod": "Q1",
+      "playClock": "13:12",
+      "playerStats": {
+        "4363538": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass deep left to B.Aiyuk ran ob at ARZ 17 for 53 yards (S.Murphy-Bunting). ARZ-B.Nichols was injured during the play.",
+      "playPeriod": "Q1",
+      "playClock": "13:11",
+      "playerStats": {
+        "4360438": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "53"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "53",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 30",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short right to D.Samuel to ARZ 6 for 11 yards (D.Stills; B.Baker).",
+      "playPeriod": "Q1",
+      "playClock": "12:44",
+      "playerStats": {
+        "3126486": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "11"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "11",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 17",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason up the middle to ARZ 6 for no gain (Ma.Wilson). ** Injury Update: SF-J.Jennings has returned to the game.",
+      "playPeriod": "Q1",
+      "playClock": "11:56",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & Goal at ARI 6",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short right to G.Kittle (J.Thompson).",
+      "playPeriod": "Q1",
+      "playClock": "11:17",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 6 at ARI 6",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy sacked at ARZ 10 for -4 yards (K.Barnes).",
+      "playPeriod": "Q1",
+      "playClock": "11:12",
+      "playerStats": {},
+      "downAndDistance": "3rd & Goal at ARI 6",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Moody 28 yard field goal is GOOD, Center-T.Pepper, Holder-M.Wishnowsky.",
+      "playPeriod": "Q1",
+      "playClock": "10:25",
+      "playerStats": {
+        "4372066": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "28"
+          }
+        }
+      },
+      "downAndDistance": "4th & Goal at ARI 10",
+      "teamID": "28"
+    },
+    {
+      "play": "Timeout at 10:25.",
+      "playPeriod": "Q1",
+      "playClock": "10:25",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 35",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Moody kicks 65 yards from SF 35 to end zone, Touchback to the ARZ 30.",
+      "playPeriod": "Q1",
+      "playClock": "10:25",
+      "playerStats": {
+        "4372066": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass incomplete deep right to M.Harrison (D.Winters).",
+      "playPeriod": "Q1",
+      "playClock": "10:25",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4432708": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 30",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass incomplete short left to M.Harrison.",
+      "playPeriod": "Q1",
+      "playClock": "10:19",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4432708": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at ARI 30",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short right to E.Demercado to ARZ 30 for no gain (D.Lenoir).",
+      "playPeriod": "Q1",
+      "playClock": "10:16",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "0",
+            "passCompletions": "1"
+          }
+        },
+        "4362478": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "0"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 10 at ARI 30",
+      "teamID": "1"
+    },
+    {
+      "play": "B.Gillikin punts 46 yards to SF 24, Center-A.Brewer, out of bounds. Penalty on SF-R.Beal, Running Into the Kicker, declined.",
+      "playPeriod": "Q1",
+      "playClock": "9:31",
+      "playerStats": {
+        "4045180": {
+          "Kicking": {
+            "puntYds": "46",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 10 at ARI 30",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout at 09:31.",
+      "playPeriod": "Q1",
+      "playClock": "9:31",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 24",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Mason up the middle to SF 26 for 2 yards (D.Stills; N.Jones).",
+      "playPeriod": "Q1",
+      "playClock": "9:30",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 24",
+      "teamID": "28"
+    },
+    {
+      "play": "D.Samuel right tackle to SF 28 for 2 yards (D.Stills).",
+      "playPeriod": "Q1",
+      "playClock": "8:50",
+      "playerStats": {
+        "3126486": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 8 at SF 26",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass deep middle to B.Aiyuk to SF 44 for 16 yards (J.Thompson) [K.White].",
+      "playPeriod": "Q1",
+      "playClock": "8:06",
+      "playerStats": {
+        "4360438": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "16"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "16",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 6 at SF 28",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short left to B.Aiyuk to ARZ 47 for 9 yards (M.Melton).",
+      "playPeriod": "Q1",
+      "playClock": "7:23",
+      "playerStats": {
+        "4360438": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "9"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "9",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 44",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason left guard to ARZ 45 for 2 yards (Ma.Wilson, K.White).",
+      "playPeriod": "Q1",
+      "playClock": "6:42",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 1 at ARI 47",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason left tackle to ARZ 43 for 2 yards (D.Stills; K.White).",
+      "playPeriod": "Q1",
+      "playClock": "6:06",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 45",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy scrambles left tackle to ARZ 35 for 8 yards (Ma.Wilson). ARZ-J.Thompson was injured during the play.",
+      "playPeriod": "Q1",
+      "playClock": "5:24",
+      "playerStats": {
+        "4361741": {
+          "Rushing": {
+            "rushYds": "8",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 8 at ARI 43",
+      "teamID": "28"
+    },
+    {
+      "play": "Timeout at 04:59.",
+      "playPeriod": "Q1",
+      "playClock": "4:59",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ARI 35",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short middle to D.Samuel (D.Taylor-Demerson).",
+      "playPeriod": "Q1",
+      "playClock": "4:45",
+      "playerStats": {
+        "3126486": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 35",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo right tackle to ARZ 30 for 5 yards (R.Lopez; D.Stills). ** Injury Update: ARZ-J.Thompson has returned to the game.",
+      "playPeriod": "Q1",
+      "playClock": "4:40",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "5",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at ARI 35",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short left to J.Jennings to ARZ 17 for 13 yards (M.Melton; B.Baker).",
+      "playPeriod": "Q1",
+      "playClock": "3:59",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "13"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "13",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 5 at ARI 30",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short right.",
+      "playPeriod": "Q1",
+      "playClock": "3:13",
+      "playerStats": {
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 17",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short middle to B.Aiyuk to ARZ 4 for 13 yards (B.Baker).",
+      "playPeriod": "Q1",
+      "playClock": "3:04",
+      "playerStats": {
+        "4360438": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "13"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "13",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at ARI 17",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short middle to G.Kittle for 4 yards, TOUCHDOWN.J.Moody extra point is GOOD, Center-T.Pepper, Holder-M.Wishnowsky.",
+      "playPeriod": "Q1",
+      "playClock": "2:20",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recTD": "1",
+            "recYds": "4"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passTD": "1",
+            "passYds": "4",
+            "passCompletions": "1"
+          }
+        },
+        "4372066": {
+          "Kicking": {
+            "xpMade": "1",
+            "xpAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & Goal at ARI 4",
+      "teamID": "28"
+    },
+    {
+      "play": "Timeout at 02:20.",
+      "playPeriod": "Q1",
+      "playClock": "2:20",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 35",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Moody kicks 65 yards from SF 35 to end zone, Touchback to the ARZ 30.",
+      "playPeriod": "Q1",
+      "playClock": "2:20",
+      "playerStats": {
+        "4372066": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner left guard to ARZ 30 for no gain (K.Givens).",
+      "playPeriod": "Q1",
+      "playClock": "2:20",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 30",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner left tackle to ARZ 37 for 7 yards (F.Warner).",
+      "playPeriod": "Q1",
+      "playClock": "1:44",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "7",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at ARI 30",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout #1 by ARZ at 00:57.",
+      "playPeriod": "Q1",
+      "playClock": "0:57",
+      "playerStats": {},
+      "downAndDistance": "3rd & 4 at ARI 36",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass deep right to M.Harrison to SF 41 for 22 yards (C.Ward).",
+      "playPeriod": "Q1",
+      "playClock": "0:57",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "22",
+            "passCompletions": "1"
+          }
+        },
+        "4432708": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "22"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 3 at ARI 37",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short middle to T.McBride to SF 30 for 11 yards (T.Hufanga, D.Winters).",
+      "playPeriod": "Q1",
+      "playClock": "0:14",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "11",
+            "passCompletions": "1"
+          }
+        },
+        "4361307": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "11"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 41",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner up the middle to SF 30 for no gain (M.Collins; D.Campbell).",
+      "playPeriod": "Q2",
+      "playClock": "15:00",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 30",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short left to J.Conner pushed ob at SF 15 for 15 yards (J.Brown).",
+      "playPeriod": "Q2",
+      "playClock": "14:19",
+      "playerStats": {
+        "3045147": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "15"
+          }
+        },
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "15",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at SF 30",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray scrambles left end to SF 12 for 3 yards (I.Yiadom). FUMBLES (I.Yiadom), ball out of bounds at SF 12.",
+      "playPeriod": "Q2",
+      "playClock": "13:38",
+      "playerStats": {
+        "3917315": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 12",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass incomplete short left to T.McBride (M.Mustapha).",
+      "playPeriod": "Q2",
+      "playClock": "12:55",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4361307": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at SF 12",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass incomplete short left to T.McBride.",
+      "playPeriod": "Q2",
+      "playClock": "12:50",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4361307": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 7 at SF 12",
+      "teamID": "1"
+    },
+    {
+      "play": "C.Ryland 30 yard field goal is GOOD, Center-A.Brewer, Holder-B.Gillikin.",
+      "playPeriod": "Q2",
+      "playClock": "12:43",
+      "playerStats": {
+        "4363538": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "30"
+          }
+        }
+      },
+      "downAndDistance": "4th & 7 at SF 12",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout at 12:43.",
+      "playPeriod": "Q2",
+      "playClock": "12:43",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ARI 35",
+      "teamID": "1"
+    },
+    {
+      "play": "C.Ryland kicks 65 yards from ARZ 35 to end zone, Touchback to the SF 30.",
+      "playPeriod": "Q2",
+      "playClock": "12:43",
+      "playerStats": {
+        "4363538": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short right to G.Kittle. ** Injury Update: ARZ-B.Nichols has returned to the game.",
+      "playPeriod": "Q2",
+      "playClock": "12:43",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 30",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason right end pushed ob at ARZ 36 for 34 yards (J.Thompson).",
+      "playPeriod": "Q2",
+      "playClock": "12:39",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "34",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at SF 30",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason up the middle to ARZ 34 for 2 yards (Z.Collins).",
+      "playPeriod": "Q2",
+      "playClock": "11:57",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 36",
+      "teamID": "28"
+    },
+    {
+      "play": "D.Samuel left tackle to ARZ 27 for 7 yards (D.Taylor-Demerson).",
+      "playPeriod": "Q2",
+      "playClock": "11:20",
+      "playerStats": {
+        "3126486": {
+          "Rushing": {
+            "rushYds": "7",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 8 at ARI 34",
+      "teamID": "28"
+    },
+    {
+      "play": "Timeout #1 by SF at 10:39.",
+      "playPeriod": "Q2",
+      "playClock": "10:39",
+      "playerStats": {},
+      "downAndDistance": "3rd & 1 at ARI 27",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason left tackle to ARZ 28 for -1 yards (B.Baker, J.Okwara). PENALTY on SF-J.Brendel, Offensive Holding, 10 yards, enforced at ARZ 27 - No Play.",
+      "playPeriod": "Q2",
+      "playClock": "10:39",
+      "playerStats": {},
+      "downAndDistance": "3rd & 1 at ARI 27",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short left to B.Aiyuk to ARZ 20 for 17 yards (S.Murphy-Bunting).",
+      "playPeriod": "Q2",
+      "playClock": "10:11",
+      "playerStats": {
+        "4360438": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "17"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "17",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 11 at ARI 37",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short right to G.Kittle to ARZ 15 for 5 yards (J.Thompson).",
+      "playPeriod": "Q2",
+      "playClock": "9:27",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "5"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "5",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 20",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason left tackle to ARZ 8 for 7 yards (B.Baker).",
+      "playPeriod": "Q2",
+      "playClock": "8:46",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "7",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 5 at ARI 15",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo up the middle to ARZ 5 for 3 yards (Ma.Wilson; Z.Collins).",
+      "playPeriod": "Q2",
+      "playClock": "8:28",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & Goal at ARI 8",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short left to G.Kittle ran ob at ARZ 2 for 3 yards.",
+      "playPeriod": "Q2",
+      "playClock": "7:49",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "3"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "3",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & Goal at ARI 5",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short right.",
+      "playPeriod": "Q2",
+      "playClock": "7:11",
+      "playerStats": {
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 2 at ARI 2",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Moody 20 yard field goal is GOOD, Center-T.Pepper, Holder-M.Wishnowsky.",
+      "playPeriod": "Q2",
+      "playClock": "6:59",
+      "playerStats": {
+        "4372066": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "20"
+          }
+        }
+      },
+      "downAndDistance": "4th & Goal at ARI 2",
+      "teamID": "28"
+    },
+    {
+      "play": "Timeout at 06:59.",
+      "playPeriod": "Q2",
+      "playClock": "6:59",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 35",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Moody kicks 65 yards from SF 35 to end zone, Touchback to the ARZ 30.",
+      "playPeriod": "Q2",
+      "playClock": "6:59",
+      "playerStats": {
+        "4372066": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "1"
+    },
+    {
+      "play": "PENALTY on SF-J.Elliott, Encroachment, 5 yards, enforced at ARZ 30 - No Play.",
+      "playPeriod": "Q2",
+      "playClock": "6:59",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ARI 30",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass deep left to Mi.Wilson pushed ob at SF 31 for 34 yards (F.Warner). Penalty on SF-J.Brown, Defensive Holding, declined.",
+      "playPeriod": "Q2",
+      "playClock": "6:59",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "34",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 5 at ARI 35",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner right end to SF 34 for -3 yards (N.Bosa).",
+      "playPeriod": "Q2",
+      "playClock": "6:33",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "-3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 31",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short left to T.McBride to SF 27 for 7 yards (D.Lenoir, D.Winters).",
+      "playPeriod": "Q2",
+      "playClock": "5:55",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "4361307": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 13 at SF 34",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass incomplete deep left to M.Harrison (I.Yiadom).",
+      "playPeriod": "Q2",
+      "playClock": "5:13",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4432708": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 6 at SF 27",
+      "teamID": "1"
+    },
+    {
+      "play": "Blocked Field Goal Recovered by Deommodore Lenoir (SF) returned 61 yards J.Moody extra point is GOOD, Center-T.Pepper, Holder-M.Wishnowsky.",
+      "playPeriod": "Q2",
+      "playClock": "4:59",
+      "playerStats": {},
+      "downAndDistance": "4th & 6 at SF 27",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout at 04:59.",
+      "playPeriod": "Q2",
+      "playClock": "4:59",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 35",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Moody kicks 66 yards from SF 35 to ARZ -1. D.Dallas pushed ob at ARZ 38 for 39 yards (G.Odum). SF-J.Moody was injured during the play.",
+      "playPeriod": "Q2",
+      "playClock": "4:59",
+      "playerStats": {
+        "4372066": {
+          "Kicking": {
+            "kickYards": "66"
+          }
+        }
+      },
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout at 04:51.",
+      "playPeriod": "Q2",
+      "playClock": "4:51",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ARI 38",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass deep right to Mi.Wilson to SF 42 for 20 yards (J.Brown).",
+      "playPeriod": "Q2",
+      "playClock": "4:51",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "20",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 38",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner up the middle to SF 41 for 1 yard (J.Brown).",
+      "playPeriod": "Q2",
+      "playClock": "4:15",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 42",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass incomplete short middle to M.Harrison (M.Mustapha).",
+      "playPeriod": "Q2",
+      "playClock": "3:36",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4432708": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 9 at SF 41",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray scrambles left end to SF 28 for 13 yards (F.Warner; D.Lenoir).",
+      "playPeriod": "Q2",
+      "playClock": "3:31",
+      "playerStats": {
+        "3917315": {
+          "Rushing": {
+            "rushYds": "13",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 9 at SF 41",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner left guard to SF 24 for 4 yards (L.Floyd).",
+      "playPeriod": "Q2",
+      "playClock": "2:45",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "4",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 28",
+      "teamID": "1"
+    },
+    {
+      "play": "Two-Minute Warning",
+      "playPeriod": "Q2",
+      "playClock": "2:00",
+      "playerStats": {},
+      "downAndDistance": "2nd & 6 at SF 24",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short right intended for J.Conner INTERCEPTED by N.Bosa at SF 30. N.Bosa to ARZ 40 for 30 yards (E.Brown; J.Conner).",
+      "playClock": "1:59",
+      "playerStats": {
+        "3045147": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "int": "1"
+          }
+        },
+        "4040605": {
+          "Defense": {
+            "defensiveInterceptions": "1"
+          }
+        }
+      },
+      "teamID": "1",
+      "playPeriod": "Q2",
+      "downAndDistance": "2nd & 6 at SF 24",
+      "teamStats": {
+        "home": {
+          "defensiveInterceptions": "1"
+        }
+      }
+    },
+    {
+      "play": "B.Purdy scrambles up the middle to ARZ 28 for 12 yards (B.Baker).",
+      "playPeriod": "Q2",
+      "playClock": "1:49",
+      "playerStats": {
+        "4361741": {
+          "Rushing": {
+            "rushYds": "12",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 40",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short right to B.Aiyuk to ARZ 21 for 7 yards (B.Baker).",
+      "playPeriod": "Q2",
+      "playClock": "1:09",
+      "playerStats": {
+        "4360438": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 28",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete deep right to J.Jennings (J.Thompson).",
+      "playPeriod": "Q2",
+      "playClock": "0:29",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 3 at ARI 21",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short middle to G.Kittle to ARZ 7 for 14 yards (K.Clark; K.Barnes) [R.Lopez].",
+      "playPeriod": "Q2",
+      "playClock": "0:23",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "14"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "14",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 3 at ARI 21",
+      "teamID": "28"
+    },
+    {
+      "play": "Timeout #2 by SF at 00:16.",
+      "playPeriod": "Q2",
+      "playClock": "0:16",
+      "playerStats": {},
+      "downAndDistance": "1st & Goal at ARI 8",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short left.",
+      "playPeriod": "Q2",
+      "playClock": "0:16",
+      "playerStats": {
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 7 at ARI 7",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short right to J.Jennings (S.Murphy-Bunting).",
+      "playPeriod": "Q2",
+      "playClock": "0:10",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at ARI 7",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short left to J.Jennings.",
+      "playPeriod": "Q2",
+      "playClock": "0:05",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 7 at ARI 7",
+      "teamID": "28"
+    },
+    {
+      "play": "M.Wishnowsky 26 yard field goal is GOOD, Center-T.Pepper, Holder-K.Juszczyk.",
+      "playPeriod": "Q2",
+      "playClock": "0:00",
+      "playerStats": {
+        "4035685": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "26"
+          }
+        }
+      },
+      "downAndDistance": "4th & Goal at ARI 7",
+      "teamID": "28"
+    },
+    {
+      "play": "END QUARTER 2",
+      "playPeriod": "Q2",
+      "playClock": "0:00",
+      "playerStats": {},
+      "teamID": "28"
+    },
+    {
+      "play": "M.Wishnowsky kicks 66 yards from SF 35 to ARZ -1. G.Dortch to ARZ 26 for 27 yards (P.Taylor).",
+      "playPeriod": "Q3",
+      "playClock": "15:00",
+      "playerStats": {
+        "4035685": {
+          "Kicking": {
+            "kickYards": "66"
+          }
+        }
+      },
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray sacked at ARZ 20 for -6 yards (L.Floyd).",
+      "playPeriod": "Q3",
+      "playClock": "14:55",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ARI 26",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass incomplete short left to M.Harrison (D.Lenoir).",
+      "playPeriod": "Q3",
+      "playClock": "14:17",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4432708": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 16 at ARI 20",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short right to T.McBride to ARZ 27 for 7 yards (F.Warner, D.Lenoir). ** Injury Update: SF-J.Brown has returned to the game.",
+      "playPeriod": "Q3",
+      "playClock": "14:13",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "4361307": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 16 at ARI 20",
+      "teamID": "1"
+    },
+    {
+      "play": "B.Gillikin punts 60 yards to SF 13, Center-A.Brewer, fair catch by T.Taylor.",
+      "playPeriod": "Q3",
+      "playClock": "13:29",
+      "playerStats": {
+        "4045180": {
+          "Kicking": {
+            "puntYds": "60",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 9 at ARI 27",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout at 13:29.",
+      "playPeriod": "Q3",
+      "playClock": "13:29",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 12",
+      "teamID": "1"
+    },
+    {
+      "play": "B.Purdy pass incomplete short left to B.Aiyuk.",
+      "playPeriod": "Q3",
+      "playClock": "13:29",
+      "playerStats": {
+        "4360438": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 13",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason up the middle to SF 12 for -1 yards (Z.Collins).",
+      "playPeriod": "Q3",
+      "playClock": "13:23",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "-1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at SF 13",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short right to B.Aiyuk to SF 24 for 12 yards (Z.Collins).",
+      "playPeriod": "Q3",
+      "playClock": "12:43",
+      "playerStats": {
+        "4360438": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "12"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "12",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 11 at SF 12",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short right intended for G.Kittle INTERCEPTED by Ma.Wilson (R.Lopez) at SF 25. Ma.Wilson to SF 25 for no gain (G.Kittle).",
+      "playClock": "12:00",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "int": "1"
+          }
+        }
+      },
+      "teamID": "28",
+      "playPeriod": "Q3",
+      "downAndDistance": "1st & 10 at SF 24",
+      "teamStats": {
+        "away": {
+          "defensiveInterceptions": "1"
+        }
+      }
+    },
+    {
+      "play": "J.Conner up the middle to SF 20 for 5 yards (M.Mustapha; D.Campbell).",
+      "playPeriod": "Q3",
+      "playClock": "11:52",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "5",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 25",
+      "teamID": "1"
+    },
+    {
+      "play": "PENALTY on ARZ-Mi.Wilson, False Start, 5 yards, enforced at SF 20 - No Play.",
+      "playPeriod": "Q3",
+      "playClock": "11:12",
+      "playerStats": {},
+      "downAndDistance": "2nd & 5 at SF 20",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short middle to T.McBride to SF 24 for 1 yard (N.Bosa).",
+      "playPeriod": "Q3",
+      "playClock": "10:48",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "1",
+            "passCompletions": "1"
+          }
+        },
+        "4361307": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at SF 25",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass incomplete deep left to T.McBride.",
+      "playPeriod": "Q3",
+      "playClock": "10:07",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4361307": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 9 at SF 24",
+      "teamID": "1"
+    },
+    {
+      "play": "C.Ryland 42 yard field goal is GOOD, Center-A.Brewer, Holder-B.Gillikin.",
+      "playPeriod": "Q3",
+      "playClock": "9:59",
+      "playerStats": {
+        "4363538": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "42"
+          }
+        }
+      },
+      "downAndDistance": "4th & 9 at SF 24",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout at 09:59.",
+      "playPeriod": "Q3",
+      "playClock": "9:59",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ARI 35",
+      "teamID": "1"
+    },
+    {
+      "play": "C.Ryland kicks 65 yards from ARZ 35 to end zone, Touchback to the SF 30.",
+      "playPeriod": "Q3",
+      "playClock": "9:59",
+      "playerStats": {
+        "4363538": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason left tackle to SF 37 for 7 yards (N.Jones).",
+      "playPeriod": "Q3",
+      "playClock": "9:59",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "7",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 30",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason up the middle to 50 for 13 yards (J.Thompson; D.Taylor-Demerson).",
+      "playPeriod": "Q3",
+      "playClock": "9:23",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "13",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 3 at SF 37",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short middle to G.Kittle to ARZ 39 for 11 yards (B.Baker).",
+      "playPeriod": "Q3",
+      "playClock": "8:41",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "11"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "11",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at 50",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo left end to ARZ 35 for 4 yards (S.Thomas).",
+      "playPeriod": "Q3",
+      "playClock": "7:58",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "4",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 39",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy scrambles right end pushed ob at ARZ 24 for 11 yards (Z.Collins).",
+      "playPeriod": "Q3",
+      "playClock": "7:15",
+      "playerStats": {
+        "4361741": {
+          "Rushing": {
+            "rushYds": "11",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 6 at ARI 35",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo left end to ARZ 19 for 5 yards (Ma.Wilson).",
+      "playPeriod": "Q3",
+      "playClock": "6:30",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "5",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 24",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo up the middle to ARZ 14 for 5 yards (R.Lopez; B.Baker).",
+      "playPeriod": "Q3",
+      "playClock": "5:43",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "5",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 5 at ARI 19",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason left guard to ARZ 13 for 1 yard (K.Tonga).",
+      "playPeriod": "Q3",
+      "playClock": "5:03",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 14",
+      "teamID": "28"
+    },
+    {
+      "play": "PENALTY on SF-J.Jennings, False Start, 5 yards, enforced at ARZ 13 - No Play.",
+      "playPeriod": "Q3",
+      "playClock": "4:20",
+      "playerStats": {},
+      "downAndDistance": "2nd & 9 at ARI 13",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy sacked at ARZ 27 for -9 yards (N.Jones).",
+      "playPeriod": "Q3",
+      "playClock": "3:53",
+      "playerStats": {},
+      "downAndDistance": "2nd & 14 at ARI 18",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short right to B.Aiyuk (D.Gardeck).",
+      "playPeriod": "Q3",
+      "playClock": "3:02",
+      "playerStats": {
+        "4360438": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 23 at ARI 27",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short middle to G.Kittle (D.Taylor-Demerson).",
+      "playPeriod": "Q3",
+      "playClock": "2:57",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 23 at ARI 27",
+      "teamID": "28"
+    },
+    {
+      "play": "Timeout at 02:52.",
+      "playPeriod": "Q3",
+      "playClock": "2:52",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ARI 27",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Conner right guard to ARZ 30 for 3 yards (F.Warner; S.Okuayinonu).",
+      "playPeriod": "Q3",
+      "playClock": "2:52",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 27",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner right guard to ARZ 38 for 8 yards (M.Mustapha).",
+      "playPeriod": "Q3",
+      "playClock": "2:14",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "8",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at ARI 30",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short right to G.Dortch pushed ob at ARZ 45 for 7 yards (F.Warner; D.Campbell).",
+      "playPeriod": "Q3",
+      "playClock": "1:33",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "4037235": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 38",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner up the middle to SF 45 for 10 yards (J.Elliott).",
+      "playPeriod": "Q3",
+      "playClock": "1:12",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "10",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 3 at ARI 45",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short middle to J.Conner to SF 46 for -1 yards (F.Warner, T.McGill).",
+      "playPeriod": "Q3",
+      "playClock": "0:31",
+      "playerStats": {
+        "3045147": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "-1"
+          }
+        },
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "-1",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 45",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short right to T.Reiman to SF 41 for 5 yards (F.Warner, D.Campbell).",
+      "playPeriod": "Q4",
+      "playClock": "15:00",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "5",
+            "passCompletions": "1"
+          }
+        },
+        "4696700": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "5"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 11 at SF 46",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short right to Mi.Wilson to SF 31 for 10 yards (D.Campbell).",
+      "playPeriod": "Q4",
+      "playClock": "14:18",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "10",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 6 at SF 41",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner left guard to SF 30 for 1 yard (L.Floyd, D.Lenoir).",
+      "playPeriod": "Q4",
+      "playClock": "13:40",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 31",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short right to Mi.Wilson to SF 19 for 11 yards (C.Ward, D.Campbell). Penalty on SF-N.Bosa, Defensive Offside, declined.",
+      "playPeriod": "Q4",
+      "playClock": "13:03",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "11",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 9 at SF 30",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short left to Mi.Wilson to SF 16 for 3 yards (J.Brown).",
+      "playPeriod": "Q4",
+      "playClock": "12:34",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "3",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 19",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner up the middle to SF 2 for 14 yards (J.Brown, D.Lenoir). ARZ-W.Hernandez was injured during the play.",
+      "playPeriod": "Q4",
+      "playClock": "11:55",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "14",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at SF 16",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout at 11:42.",
+      "playPeriod": "Q4",
+      "playClock": "11:42",
+      "playerStats": {},
+      "downAndDistance": "1st & Goal at SF 2",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short left to E.Higgins for 2 yards, TOUCHDOWN. PENALTY on SF-S.Okuayinonu, Roughing the Passer, 1 yard, enforced between downs.TWO-POINT CONVERSION ATTEMPT. J.Conner rushes up the middle. ATTEMPT SUCCEEDS.",
+      "playPeriod": "Q4",
+      "playClock": "11:25",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passTD": "1",
+            "passYds": "2",
+            "passCompletions": "1"
+          }
+        },
+        "4426844": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recTD": "1",
+            "recYds": "2"
+          }
+        }
+      },
+      "downAndDistance": "1st & Goal at SF 2",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout at 11:25.",
+      "playPeriod": "Q4",
+      "playClock": "11:25",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ARI 35",
+      "teamID": "1"
+    },
+    {
+      "play": "C.Ryland kicks 65 yards from ARZ 35 to end zone, Touchback to the SF 30.",
+      "playPeriod": "Q4",
+      "playClock": "11:25",
+      "playerStats": {
+        "4363538": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short middle to J.Mason to SF 39 for 9 yards (B.Baker; K.White).",
+      "playPeriod": "Q4",
+      "playClock": "11:25",
+      "playerStats": {
+        "4360569": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "9"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "9",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 30",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason up the middle to ARZ 41 for 20 yards (B.Baker).",
+      "playPeriod": "Q4",
+      "playClock": "10:44",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "20",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 1 at SF 39",
+      "teamID": "28"
+    },
+    {
+      "play": "D.Samuel right end pushed ob at ARZ 41 for no gain (B.Baker).",
+      "playPeriod": "Q4",
+      "playClock": "9:59",
+      "playerStats": {
+        "3126486": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 41",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass deep left to B.Aiyuk to ARZ 21 for 20 yards (S.Murphy-Bunting).",
+      "playPeriod": "Q4",
+      "playClock": "9:24",
+      "playerStats": {
+        "4360438": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "20"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "20",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at ARI 41",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason right guard to ARZ 20 for 1 yard (Ma.Wilson, K.Tonga).",
+      "playPeriod": "Q4",
+      "playClock": "8:39",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 21",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short right to G.Kittle to ARZ 17 for 3 yards (D.Taylor-Demerson).",
+      "playPeriod": "Q4",
+      "playClock": "7:55",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "3"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "3",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 9 at ARI 20",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short middle to G.Kittle to ARZ 8 for 9 yards (K.Barnes).",
+      "playPeriod": "Q4",
+      "playClock": "7:07",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "9"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "9",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 6 at ARI 17",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Mason left end to ARZ 12 for -4 yards (K.White, J.Luketa). FUMBLES (J.Luketa), RECOVERED by ARZ-Ma.Wilson at ARZ 9.",
+      "playPeriod": "Q4",
+      "playClock": "6:20",
+      "playerStats": {
+        "4360569": {
+          "Rushing": {
+            "rushYds": "-4",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & Goal at ARI 8",
+      "teamID": "28"
+    },
+    {
+      "play": "Timeout at 06:11.",
+      "playPeriod": "Q4",
+      "playClock": "6:11",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at ARI 9",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Conner up the middle to ARZ 18 for 9 yards (F.Warner).",
+      "playPeriod": "Q4",
+      "playClock": "6:11",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "9",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 9",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner left tackle to ARZ 24 for 6 yards (D.Lenoir).",
+      "playPeriod": "Q4",
+      "playClock": "5:37",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "6",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 1 at ARI 18",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner left guard to ARZ 27 for 3 yards (F.Warner; L.Floyd).",
+      "playPeriod": "Q4",
+      "playClock": "4:58",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 24",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner up the middle to ARZ 35 for 8 yards (D.Lenoir; D.Campbell).",
+      "playPeriod": "Q4",
+      "playClock": "4:22",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "8",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at ARI 27",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short right to T.McBride to ARZ 40 for 5 yards (F.Warner).",
+      "playPeriod": "Q4",
+      "playClock": "3:39",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "5",
+            "passCompletions": "1"
+          }
+        },
+        "4361307": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "5"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at ARI 35",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass incomplete deep right to Mi.Wilson.",
+      "playPeriod": "Q4",
+      "playClock": "2:58",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 5 at ARI 40",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass incomplete short right to G.Dortch (D.Campbell).",
+      "playPeriod": "Q4",
+      "playClock": "2:52",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4037235": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 5 at ARI 40",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray pass short left to M.Harrison to SF 46 for 14 yards (I.Yiadom) [L.Floyd].",
+      "playPeriod": "Q4",
+      "playClock": "2:49",
+      "playerStats": {
+        "3917315": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "14",
+            "passCompletions": "1"
+          }
+        },
+        "4432708": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "14"
+          }
+        }
+      },
+      "downAndDistance": "4th & 5 at ARI 40",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray right tackle ran ob at SF 33 for 13 yards (F.Warner; C.Ward).",
+      "playPeriod": "Q4",
+      "playClock": "2:08",
+      "playerStats": {
+        "3917315": {
+          "Rushing": {
+            "rushYds": "13",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 46",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner up the middle to SF 23 for 10 yards (C.Ward, L.Floyd).",
+      "playPeriod": "Q4",
+      "playClock": "2:02",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "10",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 33",
+      "teamID": "1"
+    },
+    {
+      "play": "Two-Minute Warning",
+      "playPeriod": "Q4",
+      "playClock": "1:56",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 23",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner up the middle to SF 24 for -1 yards (N.Bosa, M.Collins).",
+      "playPeriod": "Q4",
+      "playClock": "1:56",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "-1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 23",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout #1 by SF at 01:50.",
+      "playPeriod": "Q4",
+      "playClock": "1:50",
+      "playerStats": {},
+      "downAndDistance": "2nd & 11 at SF 24",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout at 01:50.",
+      "playPeriod": "Q4",
+      "playClock": "1:50",
+      "playerStats": {},
+      "downAndDistance": "2nd & 11 at SF 24",
+      "teamID": "1"
+    },
+    {
+      "play": "J.Conner up the middle to SF 23 for 1 yard (D.Campbell; M.Collins).",
+      "playPeriod": "Q4",
+      "playClock": "1:50",
+      "playerStats": {
+        "3045147": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 11 at SF 24",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout #2 by SF at 01:46.",
+      "playPeriod": "Q4",
+      "playClock": "1:46",
+      "playerStats": {},
+      "downAndDistance": "3rd & 10 at SF 23",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray right end to SF 16 for 7 yards (N.Bosa).",
+      "playPeriod": "Q4",
+      "playClock": "1:40",
+      "playerStats": {
+        "3917315": {
+          "Rushing": {
+            "rushYds": "7",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 10 at SF 23",
+      "teamID": "1"
+    },
+    {
+      "play": "Timeout #3 by SF at 01:40.",
+      "playPeriod": "Q4",
+      "playClock": "1:40",
+      "playerStats": {},
+      "downAndDistance": "4th & 4 at SF 17",
+      "teamID": "1"
+    },
+    {
+      "play": "C.Ryland 35 yard field goal is GOOD, Center-A.Brewer, Holder-B.Gillikin.",
+      "playPeriod": "Q4",
+      "playClock": "1:37",
+      "playerStats": {
+        "4363538": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "35"
+          }
+        }
+      },
+      "downAndDistance": "4th & 3 at SF 16",
+      "teamID": "1"
+    },
+    {
+      "play": "C.Ryland kicks 70 yards from ARZ 35 to SF -5. I.Guerendo to SF 27 for 32 yards (J.Blount).",
+      "playPeriod": "Q4",
+      "playClock": "1:37",
+      "playerStats": {
+        "4363538": {
+          "Kicking": {
+            "kickYards": "70"
+          }
+        }
+      },
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short middle to G.Kittle to SF 42 for 15 yards (B.Baker).",
+      "playPeriod": "Q4",
+      "playClock": "1:32",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "15"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "15",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 27",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short left intended for B.Aiyuk INTERCEPTED by K.White [J.Thompson] at 50. K.White to 50 for no gain (G.Kittle).",
+      "playClock": "1:32",
+      "playerStats": {
+        "4039254": {
+          "Defense": {
+            "defensiveInterceptions": "1"
+          }
+        },
+        "4360438": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "int": "1"
+          }
+        }
+      },
+      "teamID": "28",
+      "playPeriod": "Q4",
+      "downAndDistance": "1st & 10 at SF 42",
+      "teamStats": {
+        "away": {
+          "defensiveInterceptions": "1"
+        }
+      }
+    },
+    {
+      "play": "K.Murray kneels to ARZ 49 for -1 yards.",
+      "playPeriod": "Q4",
+      "playClock": "1:09",
+      "playerStats": {
+        "3917315": {
+          "Rushing": {
+            "rushYds": "-1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at 50",
+      "teamID": "1"
+    },
+    {
+      "play": "K.Murray kneels to ARZ 47 for -2 yards.",
+      "playPeriod": "Q4",
+      "playClock": "0:28",
+      "playerStats": {
+        "3917315": {
+          "Rushing": {
+            "rushYds": "-2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 11 at ARI 49",
+      "teamID": "1"
+    },
+    {
+      "play": "END GAME",
+      "playPeriod": "Q4",
+      "playClock": "0:00",
+      "playerStats": {},
+      "teamID": "1"
+    }
+  ],
+  "network": "FOX",
+  "teamIDHome": "28",
+  "homeResult": "L",
+  "away": "ARI",
+  "gameWeek": "Week 5",
+  "attendance": "71,310",
+  "lineScore": {
+    "period": "Final",
+    "gameClock": "",
+    "away": {
+      "Q1": "7",
+      "Q2": "3",
+      "Q3": "3",
+      "Q4": "11",
+      "teamID": "1",
+      "currentlyInPossession": "False",
+      "totalPts": "24",
+      "teamAbv": "ARI"
+    },
+    "home": {
+      "Q1": "10",
+      "Q2": "13",
+      "Q3": "0",
+      "Q4": "0",
+      "teamID": "28",
+      "currentlyInPossession": "False",
+      "totalPts": "23",
+      "teamAbv": "SF"
+    }
+  },
+  "currentPeriod": "Final",
+  "gameLocation": "Santa Clara, CA",
+  "home": "SF",
+  "playerStats": {
+    "13241": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "64",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "13241",
+      "longName": "Trent Williams",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "15035": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "1",
+        "stSnapPct": "0.04",
+        "offSnap": "58",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "15035",
+      "longName": "Kelvin Beachum",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "15241": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "7",
+        "stSnapPct": "0.29",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "15241",
+      "longName": "Aaron Brewer",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "16002": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.63",
+        "defSnap": "0",
+        "stSnap": "1",
+        "stSnapPct": "0.04",
+        "offSnap": "40",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "16002",
+      "longName": "Kyle Juszczyk",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2576581": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.14",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "8",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "2576581",
+      "longName": "Chris Moore",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2577185": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "64",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "2577185",
+      "longName": "Jake Brendel",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2577757": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "11",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.19"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "2577757",
+      "longName": "T.Y. McGill",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2975863": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.20",
+        "defSnap": "0",
+        "stSnap": "19",
+        "stSnapPct": "0.79",
+        "offSnap": "13",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "2975863",
+      "longName": "Eric Saubert",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2978109": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.17",
+        "defSnap": "0",
+        "stSnap": "14",
+        "stSnapPct": "0.59",
+        "offSnap": "10",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "2978109",
+      "longName": "Zach Pascal",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2979553": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.25",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "2979553",
+      "longName": "Taybor Pepper",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3040151": {
+      "gameID": "20241006_ARI@SF",
+      "Receiving": {
+        "receptions": "8",
+        "recTD": "1",
+        "longRec": "15",
+        "targets": "12",
+        "recYds": "64",
+        "recAvg": "8.0"
+      },
+      "scoringPlays": [
+        {
+          "score": "George Kittle 4 Yd pass from Brock Purdy (Jake Moody Kick)",
+          "scorePeriod": "Q1",
+          "homeScore": "10",
+          "awayScore": "7",
+          "teamID": "28",
+          "scoreDetails": "13 plays, 76 yards, 7:11",
+          "scoreType": "TD",
+          "scoreTime": "2:20",
+          "team": "SF",
+          "playerIDs": [
+            "4361741",
+            "3040151",
+            "4372066"
+          ]
+        }
+      ],
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.91",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "58",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3040151",
+      "longName": "George Kittle",
+      "fantasyPoints": "16.4",
+      "fantasyPointsDefault": {
+        "standard": "12.4",
+        "PPR": "20.4",
+        "halfPPR": "16.4"
+      }
+    },
+    "3040180": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "58",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "9",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "3040180",
+      "longName": "De'Vondre Campbell",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3040471": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "38",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.66"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3040471",
+      "longName": "Maliek Collins",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3040569": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.03",
+        "defSnap": "0",
+        "stSnap": "2",
+        "stSnapPct": "0.08",
+        "offSnap": "2",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "3040569",
+      "longName": "Trent Taylor",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3042516": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.71",
+        "defSnap": "0",
+        "stSnap": "4",
+        "stSnapPct": "0.17",
+        "offSnap": "41",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "3042516",
+      "longName": "Will Hernandez",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3043136": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "36",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.62"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "5",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "1",
+        "qbHits": "2",
+        "defensiveInterceptions": "0",
+        "sacks": "1",
+        "passDeflections": "0"
+      },
+      "playerID": "3043136",
+      "longName": "Leonard Floyd",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3045147": {
+      "gameID": "20241006_ARI@SF",
+      "Rushing": {
+        "rushAvg": "4.5",
+        "rushYds": "86",
+        "rushingTwoPointConversion": "1",
+        "carries": "19",
+        "longRush": "14",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "2",
+        "recTD": "0",
+        "longRec": "15",
+        "targets": "3",
+        "recYds": "14",
+        "recAvg": "7.0"
+      },
+      "scoringPlays": [
+        {
+          "score": "Elijah Higgins 2 Yd pass from Kyler Murray (James Conner Run for Two-Point Conversion)",
+          "scorePeriod": "Q4",
+          "homeScore": "23",
+          "awayScore": "21",
+          "teamID": "1",
+          "scoreDetails": "12 plays, 73 yards, 6:27",
+          "scoreType": "TD",
+          "scoreTime": "11:25",
+          "team": "ARI",
+          "playerIDs": [
+            "3917315",
+            "3045147",
+            "4426844"
+          ]
+        }
+      ],
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.79",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "46",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3045147",
+      "longName": "James Conner",
+      "fantasyPoints": "16.8",
+      "fantasyPointsDefault": {
+        "standard": "12.0",
+        "PPR": "14.0",
+        "halfPPR": "13.0"
+      }
+    },
+    "3050199": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "4",
+        "stSnap": "18",
+        "stSnapPct": "0.75",
+        "offSnap": "0",
+        "defSnapPct": "0.07"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3050199",
+      "longName": "George Odum",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3116449": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "38",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.59"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "3116449",
+      "longName": "L.J. Collier",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3117922": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "28",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.44"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3117922",
+      "longName": "Bilal Nichols",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3122797": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "27",
+        "stSnap": "13",
+        "stSnapPct": "0.54",
+        "offSnap": "0",
+        "defSnapPct": "0.47"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "1",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "3122797",
+      "longName": "Isaac Yiadom",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3126486": {
+      "gameID": "20241006_ARI@SF",
+      "Rushing": {
+        "rushAvg": "3.0",
+        "rushYds": "9",
+        "carries": "3",
+        "longRush": "7",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "1",
+        "recTD": "0",
+        "longRec": "11",
+        "targets": "3",
+        "recYds": "11",
+        "recAvg": "11.0"
+      },
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.81",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "52",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "3126486",
+      "longName": "Deebo Samuel Sr.",
+      "fantasyPoints": "3.1",
+      "fantasyPointsDefault": {
+        "standard": "2.0",
+        "PPR": "3.0",
+        "halfPPR": "2.5"
+      }
+    },
+    "3127287": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "64",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "12",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "8",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3127287",
+      "longName": "Budda Baker",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3128412": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.95",
+        "defSnap": "0",
+        "stSnap": "4",
+        "stSnapPct": "0.17",
+        "offSnap": "55",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3128412",
+      "longName": "Evan Brown",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3138826": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "58",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "12",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "7",
+        "tfl": "1",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3138826",
+      "longName": "Fred Warner",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3886598": {
+      "gameID": "20241006_ARI@SF",
+      "Receiving": {
+        "receptions": "1",
+        "recTD": "0",
+        "longRec": "13",
+        "targets": "4",
+        "recYds": "13",
+        "recAvg": "13.0"
+      },
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.56",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "36",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "3886598",
+      "longName": "Jauan Jennings",
+      "fantasyPoints": "1.8",
+      "fantasyPointsDefault": {
+        "standard": "1.3",
+        "PPR": "2.3",
+        "halfPPR": "1.8"
+      }
+    },
+    "3886633": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "58",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "3886633",
+      "longName": "Hjalte Froholdt",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3895840": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.03",
+        "defSnap": "0",
+        "stSnap": "4",
+        "stSnapPct": "0.17",
+        "offSnap": "2",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "3895840",
+      "longName": "Charlie Heck",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3910229": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "9",
+        "stSnapPct": "0.38",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "3910229",
+      "longName": "Rock Ya-Sin",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3916075": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "64",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "3916075",
+      "longName": "Colton McKivitz",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3917315": {
+      "gameID": "20241006_ARI@SF",
+      "Rushing": {
+        "rushAvg": "11.9",
+        "rushYds": "83",
+        "carries": "7",
+        "longRush": "50",
+        "rushTD": "1"
+      },
+      "Passing": {
+        "qbr": "60.3",
+        "rtg": "79.2",
+        "sacked": "1-6",
+        "passAttempts": "30",
+        "passAvg": "6.5",
+        "passTD": "1",
+        "passYds": "195",
+        "int": "1",
+        "passCompletions": "19"
+      },
+      "scoringPlays": [
+        {
+          "score": "Kyler Murray 50 Yd Run (Chad Ryland Kick)",
+          "scorePeriod": "Q1",
+          "homeScore": "0",
+          "awayScore": "7",
+          "teamID": "1",
+          "scoreDetails": "2 plays, 72 yards, 0:47",
+          "scoreType": "TD",
+          "scoreTime": "13:12",
+          "team": "ARI",
+          "playerIDs": [
+            "3917315",
+            "4363538"
+          ]
+        },
+        {
+          "score": "Elijah Higgins 2 Yd pass from Kyler Murray (James Conner Run for Two-Point Conversion)",
+          "scorePeriod": "Q4",
+          "homeScore": "23",
+          "awayScore": "21",
+          "teamID": "1",
+          "scoreDetails": "12 plays, 73 yards, 6:27",
+          "scoreType": "TD",
+          "scoreTime": "11:25",
+          "team": "ARI",
+          "playerIDs": [
+            "3917315",
+            "3045147",
+            "4426844"
+          ]
+        }
+      ],
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "58",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "fumblesLost": "0",
+        "defensiveInterceptions": "0",
+        "forcedFumbles": "0",
+        "fumbles": "1",
+        "fumblesRecovered": "0"
+      },
+      "playerID": "3917315",
+      "longName": "Kyler Murray",
+      "fantasyPoints": "25.5",
+      "fantasyPointsDefault": {
+        "standard": "25.1",
+        "PPR": "25.1",
+        "halfPPR": "25.1"
+      }
+    },
+    "3929641": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "25",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.43"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3929641",
+      "longName": "Kevin Givens",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3932886": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "63",
+        "stSnap": "4",
+        "stSnapPct": "0.17",
+        "offSnap": "0",
+        "defSnapPct": "0.98"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "3932886",
+      "longName": "Sean Murphy-Bunting",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4035112": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.34",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "20",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4035112",
+      "longName": "Trystan Colon",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4035685": {
+      "gameID": "20241006_ARI@SF",
+      "scoringPlays": [
+        {
+          "score": "Mitch Wishnowsky 26 Yd Field Goal  ",
+          "scorePeriod": "Q2",
+          "homeScore": "23",
+          "awayScore": "10",
+          "teamID": "28",
+          "scoreDetails": "8 plays, 33 yards, 1:50",
+          "scoreType": "FG",
+          "scoreTime": "0:00",
+          "team": "SF",
+          "playerIDs": [
+            "4035685"
+          ]
+        }
+      ],
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "7",
+        "stSnapPct": "0.29",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "fgLong": "26",
+        "fgMade": "1",
+        "fgAttempts": "1",
+        "xpMade": "0",
+        "fgPct": "100.0",
+        "kickingPts": "3",
+        "xpAttempts": "0",
+        "fgMissed": "0",
+        "xpMissed": "0"
+      },
+      "Punting": {
+        "puntYds": "41",
+        "punts": "1",
+        "puntAvg": "41.0",
+        "puntsin20": "0",
+        "puntTouchBacks": "0",
+        "puntLong": "41"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4035685",
+      "longName": "Mitch Wishnowsky",
+      "fantasyPoints": "3.0",
+      "fantasyPointsDefault": {
+        "standard": "3.0",
+        "PPR": "3.0",
+        "halfPPR": "3.0"
+      }
+    },
+    "4035817": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "12",
+        "stSnap": "19",
+        "stSnapPct": "0.79",
+        "offSnap": "0",
+        "defSnapPct": "0.19"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "1",
+        "qbHits": "1",
+        "defensiveInterceptions": "0",
+        "sacks": "1",
+        "passDeflections": "0"
+      },
+      "playerID": "4035817",
+      "longName": "Krys Barnes",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4037235": {
+      "gameID": "20241006_ARI@SF",
+      "Receiving": {
+        "receptions": "1",
+        "recTD": "0",
+        "longRec": "7",
+        "targets": "2",
+        "recYds": "7",
+        "recAvg": "7.0"
+      },
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.41",
+        "defSnap": "0",
+        "stSnap": "2",
+        "stSnapPct": "0.08",
+        "offSnap": "24",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "kickReturns": "1",
+        "kickReturnTD": "0",
+        "kickReturnYds": "27",
+        "kickReturnAvg": "27.0",
+        "kickReturnLong": "27"
+      },
+      "Punting": {
+        "puntReturns": "1",
+        "puntReturnYds": "1",
+        "puntReturnAvg": "1.0",
+        "puntReturnLong": "1",
+        "puntReturnTD": "0"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4037235",
+      "longName": "Greg Dortch",
+      "fantasyPoints": "1.2",
+      "fantasyPointsDefault": {
+        "standard": "0.7",
+        "PPR": "1.7",
+        "halfPPR": "1.2"
+      }
+    },
+    "4037361": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "55",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.95"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "4",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4037361",
+      "longName": "Charvarius Ward",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4039052": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "28",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.48"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4039052",
+      "longName": "Jordan Elliott",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4039254": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "64",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "4",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "1",
+        "qbHits": "1",
+        "defensiveInterceptions": "1",
+        "defensiveInterceptionsYards": "0",
+        "interceptionTDs": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "4039254",
+      "longName": "Kyzir White",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4039358": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "12",
+        "stSnapPct": "0.50",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4039358",
+      "longName": "Patrick Taylor Jr.",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4040605": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "45",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.78"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "4",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "4",
+        "tfl": "2",
+        "qbHits": "0",
+        "defensiveInterceptions": "1",
+        "defensiveInterceptionsYards": "30",
+        "interceptionTDs": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "4040605",
+      "longName": "Nick Bosa",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4040805": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "36",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.56"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "1",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "4040805",
+      "longName": "Roy Lopez",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4040983": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "54",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.84"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "fumblesLost": "0",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "fumbles": "0",
+        "fumblesRecovered": "1",
+        "soloTackles": "5",
+        "qbHits": "0",
+        "interceptionTDs": "0",
+        "passDeflections": "1",
+        "totalTackles": "6",
+        "tfl": "0",
+        "defensiveInterceptions": "1",
+        "defensiveInterceptionsYards": "0",
+        "sacks": "0"
+      },
+      "playerID": "4040983",
+      "longName": "Mack Wilson Sr.",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4043041": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4043041",
+      "longName": "Jaylon Moore",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4043089": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "63",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.98"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "4",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "0",
+        "qbHits": "1",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "2"
+      },
+      "playerID": "4043089",
+      "longName": "Jalen Thompson",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4045180": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "7",
+        "stSnapPct": "0.29",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Punting": {
+        "puntYds": "106",
+        "punts": "2",
+        "puntAvg": "53.0",
+        "puntsin20": "1",
+        "puntTouchBacks": "0",
+        "puntLong": "60"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4045180",
+      "longName": "Blake Gillikin",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4046690": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "25",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.39"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4046690",
+      "longName": "Julian Okwara",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4046716": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "19",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.30"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "1",
+        "qbHits": "1",
+        "defensiveInterceptions": "0",
+        "sacks": "1",
+        "passDeflections": "0"
+      },
+      "playerID": "4046716",
+      "longName": "Naquan Jones",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4240631": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "14",
+        "stSnapPct": "0.59",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "kickReturns": "1",
+        "kickReturnTD": "0",
+        "kickReturnYds": "39",
+        "kickReturnAvg": "39.0",
+        "kickReturnLong": "39"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4240631",
+      "longName": "DeeJay Dallas",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4240824": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "19",
+        "stSnapPct": "0.79",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4240824",
+      "longName": "Joey Blount",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4242390": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "64",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4242390",
+      "longName": "Aaron Banks",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4242488": {
+      "gameID": "20241006_ARI@SF",
+      "scoringPlays": [
+        {
+          "score": "Deommodore Lenoir 61 Yd Return of Blocked Field Goal (Jake Moody Kick)",
+          "scorePeriod": "Q2",
+          "homeScore": "20",
+          "awayScore": "10",
+          "teamID": "28",
+          "scoreDetails": "5 plays, 43 yards, 2:00",
+          "scoreType": "TD",
+          "scoreTime": "4:59",
+          "team": "SF",
+          "playerIDs": [
+            "4242488",
+            "4372066"
+          ]
+        }
+      ],
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "56",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.97"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "8",
+        "defTD": "1",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "4242488",
+      "longName": "Deommodore Lenoir",
+      "fantasyPoints": "6.0",
+      "fantasyPointsDefault": {
+        "standard": "6.0",
+        "PPR": "6.0",
+        "halfPPR": "6.0"
+      }
+    },
+    "4243541": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "19",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.33"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4243541",
+      "longName": "Kalia Davis",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4244606": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "32",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.50"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "5",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "4",
+        "tfl": "1",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4244606",
+      "longName": "Zaven Collins",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4247590": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4247590",
+      "longName": "Nick Zakelj",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4256074": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "19",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.30"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4256074",
+      "longName": "Khyiris Tonga",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4259147": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "12",
+        "stSnapPct": "0.50",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4259147",
+      "longName": "Jake Tonges",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4259558": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "13",
+        "stSnap": "18",
+        "stSnapPct": "0.75",
+        "offSnap": "0",
+        "defSnapPct": "0.22"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4259558",
+      "longName": "Robert Beal Jr.",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4261606": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4261606",
+      "longName": "Darren Hall",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4334300": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "30",
+        "stSnap": "7",
+        "stSnapPct": "0.29",
+        "offSnap": "0",
+        "defSnapPct": "0.47"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "0",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "4334300",
+      "longName": "Dennis Gardeck",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4360438": {
+      "gameID": "20241006_ARI@SF",
+      "Receiving": {
+        "receptions": "8",
+        "recTD": "0",
+        "longRec": "53",
+        "targets": "12",
+        "recYds": "147",
+        "recAvg": "18.4"
+      },
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.92",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "59",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4360438",
+      "longName": "Brandon Aiyuk",
+      "fantasyPoints": "18.7",
+      "fantasyPointsDefault": {
+        "standard": "14.7",
+        "PPR": "22.7",
+        "halfPPR": "18.7"
+      }
+    },
+    "4360569": {
+      "gameID": "20241006_ARI@SF",
+      "Rushing": {
+        "rushAvg": "6.4",
+        "rushYds": "89",
+        "carries": "14",
+        "longRush": "34",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "1",
+        "recTD": "0",
+        "longRec": "9",
+        "targets": "1",
+        "recYds": "9",
+        "recAvg": "9.0"
+      },
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.64",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "41",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "fumblesLost": "1",
+        "defensiveInterceptions": "0",
+        "forcedFumbles": "0",
+        "fumbles": "1",
+        "fumblesRecovered": "0"
+      },
+      "playerID": "4360569",
+      "longName": "Jordan Mason",
+      "fantasyPoints": "11.1",
+      "fantasyPointsDefault": {
+        "standard": "8.8",
+        "PPR": "9.8",
+        "halfPPR": "9.3"
+      }
+    },
+    "4360761": {
+      "gameID": "20241006_ARI@SF",
+      "Receiving": {
+        "receptions": "5",
+        "recTD": "0",
+        "longRec": "34",
+        "targets": "6",
+        "recYds": "78",
+        "recAvg": "15.6"
+      },
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.72",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "42",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4360761",
+      "longName": "Michael Wilson",
+      "fantasyPoints": "10.3",
+      "fantasyPointsDefault": {
+        "standard": "7.8",
+        "PPR": "12.8",
+        "halfPPR": "10.3"
+      }
+    },
+    "4360853": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "11",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.19"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4360853",
+      "longName": "Talanoa Hufanga",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4361307": {
+      "gameID": "20241006_ARI@SF",
+      "Receiving": {
+        "receptions": "6",
+        "recTD": "0",
+        "longRec": "22",
+        "targets": "9",
+        "recYds": "53",
+        "recAvg": "8.8"
+      },
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.88",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "51",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4361307",
+      "longName": "Trey McBride",
+      "fantasyPoints": "8.3",
+      "fantasyPointsDefault": {
+        "standard": "5.3",
+        "PPR": "11.3",
+        "halfPPR": "8.3"
+      }
+    },
+    "4361419": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "22",
+        "stSnap": "14",
+        "stSnapPct": "0.59",
+        "offSnap": "0",
+        "defSnapPct": "0.34"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "1",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4361419",
+      "longName": "Jesse Luketa",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4361741": {
+      "gameID": "20241006_ARI@SF",
+      "Rushing": {
+        "rushAvg": "8.3",
+        "rushYds": "33",
+        "carries": "4",
+        "longRush": "12",
+        "rushTD": "0"
+      },
+      "Passing": {
+        "qbr": "27.2",
+        "rtg": "62.1",
+        "sacked": "2-13",
+        "passAttempts": "35",
+        "passAvg": "7.0",
+        "passTD": "1",
+        "passYds": "244",
+        "int": "2",
+        "passCompletions": "19"
+      },
+      "scoringPlays": [
+        {
+          "score": "George Kittle 4 Yd pass from Brock Purdy (Jake Moody Kick)",
+          "scorePeriod": "Q1",
+          "homeScore": "10",
+          "awayScore": "7",
+          "teamID": "28",
+          "scoreDetails": "13 plays, 76 yards, 7:11",
+          "scoreType": "TD",
+          "scoreTime": "2:20",
+          "team": "SF",
+          "playerIDs": [
+            "4361741",
+            "3040151",
+            "4372066"
+          ]
+        }
+      ],
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "64",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4361741",
+      "longName": "Brock Purdy",
+      "fantasyPoints": "13.86",
+      "fantasyPointsDefault": {
+        "standard": "15.06",
+        "PPR": "15.06",
+        "halfPPR": "15.06"
+      }
+    },
+    "4362225": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "27",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.42"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "5",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4362225",
+      "longName": "Dante Stills",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4362478": {
+      "gameID": "20241006_ARI@SF",
+      "Receiving": {
+        "receptions": "1",
+        "recTD": "0",
+        "longRec": "0",
+        "targets": "1",
+        "recYds": "0",
+        "recAvg": "0.0"
+      },
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.22",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "13",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4362478",
+      "longName": "Emari Demercado",
+      "fantasyPoints": "0.5",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "1.0",
+        "halfPPR": "0.5"
+      }
+    },
+    "4362999": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4362999",
+      "longName": "Spencer Burford",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4363408": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "33",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.52"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4363408",
+      "longName": "Starling Thomas V",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4363538": {
+      "gameID": "20241006_ARI@SF",
+      "scoringPlays": [
+        {
+          "score": "Kyler Murray 50 Yd Run (Chad Ryland Kick)",
+          "scorePeriod": "Q1",
+          "homeScore": "0",
+          "awayScore": "7",
+          "teamID": "1",
+          "scoreDetails": "2 plays, 72 yards, 0:47",
+          "scoreType": "TD",
+          "scoreTime": "13:12",
+          "team": "ARI",
+          "playerIDs": [
+            "3917315",
+            "4363538"
+          ]
+        },
+        {
+          "score": "Chad Ryland 30 Yd Field Goal  ",
+          "scorePeriod": "Q2",
+          "homeScore": "10",
+          "awayScore": "10",
+          "teamID": "1",
+          "scoreDetails": "10 plays, 58 yards, 4:37",
+          "scoreType": "FG",
+          "scoreTime": "12:43",
+          "team": "ARI",
+          "playerIDs": [
+            "4363538"
+          ]
+        },
+        {
+          "score": "Chad Ryland 42 Yd Field Goal  ",
+          "scorePeriod": "Q3",
+          "homeScore": "23",
+          "awayScore": "13",
+          "teamID": "1",
+          "scoreDetails": "4 plays, 1 yard, 1:53",
+          "scoreType": "FG",
+          "scoreTime": "9:59",
+          "team": "ARI",
+          "playerIDs": [
+            "4363538"
+          ]
+        },
+        {
+          "score": "Chad Ryland 35 Yd Field Goal  ",
+          "scorePeriod": "Q4",
+          "homeScore": "23",
+          "awayScore": "24",
+          "teamID": "1",
+          "scoreDetails": "14 plays, 75 yards, 4:34",
+          "scoreType": "FG",
+          "scoreTime": "1:37",
+          "team": "ARI",
+          "playerIDs": [
+            "4363538"
+          ]
+        }
+      ],
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "11",
+        "stSnapPct": "0.46",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "fgLong": "42",
+        "fgMade": "3",
+        "fgAttempts": "4",
+        "xpMade": "1",
+        "fgPct": "75.0",
+        "kickingPts": "10",
+        "xpAttempts": "1",
+        "fgMissed": "1",
+        "xpMissed": "0"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4363538",
+      "longName": "Chad Ryland",
+      "fantasyPoints": "7.0",
+      "fantasyPointsDefault": {
+        "standard": "9.0",
+        "PPR": "9.0",
+        "halfPPR": "9.0"
+      }
+    },
+    "4367199": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "2",
+        "stSnapPct": "0.08",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4367199",
+      "longName": "Jon Gaines II",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4372063": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.16",
+        "defSnap": "0",
+        "stSnap": "1",
+        "stSnapPct": "0.04",
+        "offSnap": "10",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4372063",
+      "longName": "Ronnie Bell",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4372066": {
+      "gameID": "20241006_ARI@SF",
+      "scoringPlays": [
+        {
+          "score": "Jake Moody 28 Yd Field Goal  ",
+          "scorePeriod": "Q1",
+          "homeScore": "3",
+          "awayScore": "7",
+          "teamID": "28",
+          "scoreDetails": "6 plays, 60 yards, 2:47",
+          "scoreType": "FG",
+          "scoreTime": "10:25",
+          "team": "SF",
+          "playerIDs": [
+            "4372066"
+          ]
+        },
+        {
+          "score": "George Kittle 4 Yd pass from Brock Purdy (Jake Moody Kick)",
+          "scorePeriod": "Q1",
+          "homeScore": "10",
+          "awayScore": "7",
+          "teamID": "28",
+          "scoreDetails": "13 plays, 76 yards, 7:11",
+          "scoreType": "TD",
+          "scoreTime": "2:20",
+          "team": "SF",
+          "playerIDs": [
+            "4361741",
+            "3040151",
+            "4372066"
+          ]
+        },
+        {
+          "score": "Jake Moody 20 Yd Field Goal  ",
+          "scorePeriod": "Q2",
+          "homeScore": "13",
+          "awayScore": "10",
+          "teamID": "28",
+          "scoreDetails": "11 plays, 68 yards, 5:44",
+          "scoreType": "FG",
+          "scoreTime": "6:59",
+          "team": "SF",
+          "playerIDs": [
+            "4372066"
+          ]
+        },
+        {
+          "score": "Deommodore Lenoir 61 Yd Return of Blocked Field Goal (Jake Moody Kick)",
+          "scorePeriod": "Q2",
+          "homeScore": "20",
+          "awayScore": "10",
+          "teamID": "28",
+          "scoreDetails": "5 plays, 43 yards, 2:00",
+          "scoreType": "TD",
+          "scoreTime": "4:59",
+          "team": "SF",
+          "playerIDs": [
+            "4242488",
+            "4372066"
+          ]
+        }
+      ],
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "8",
+        "stSnapPct": "0.33",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "fgLong": "28",
+        "fgMade": "2",
+        "fgAttempts": "2",
+        "xpMade": "2",
+        "fgPct": "100.0",
+        "kickingPts": "8",
+        "xpAttempts": "2",
+        "fgMissed": "0",
+        "xpMissed": "0"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4372066",
+      "longName": "Jake Moody",
+      "fantasyPoints": "8.0",
+      "fantasyPointsDefault": {
+        "standard": "8.0",
+        "PPR": "8.0",
+        "halfPPR": "8.0"
+      }
+    },
+    "4372561": {
+      "gameID": "20241006_ARI@SF",
+      "Rushing": {
+        "rushAvg": "4.4",
+        "rushYds": "22",
+        "carries": "5",
+        "longRush": "5",
+        "rushTD": "0"
+      },
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.14",
+        "defSnap": "0",
+        "stSnap": "14",
+        "stSnapPct": "0.58",
+        "offSnap": "9",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "kickReturns": "1",
+        "kickReturnTD": "0",
+        "kickReturnYds": "32",
+        "kickReturnAvg": "32.0",
+        "kickReturnLong": "32"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4372561",
+      "longName": "Isaac Guerendo",
+      "fantasyPoints": "3.2",
+      "fantasyPointsDefault": {
+        "standard": "2.2",
+        "PPR": "2.2",
+        "halfPPR": "2.2"
+      }
+    },
+    "4426698": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "14",
+        "stSnapPct": "0.58",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4426698",
+      "longName": "Tatum Bethune",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4426844": {
+      "gameID": "20241006_ARI@SF",
+      "Receiving": {
+        "receptions": "1",
+        "recTD": "1",
+        "longRec": "2",
+        "targets": "1",
+        "recYds": "2",
+        "recAvg": "2.0"
+      },
+      "scoringPlays": [
+        {
+          "score": "Elijah Higgins 2 Yd pass from Kyler Murray (James Conner Run for Two-Point Conversion)",
+          "scorePeriod": "Q4",
+          "homeScore": "23",
+          "awayScore": "21",
+          "teamID": "1",
+          "scoreDetails": "12 plays, 73 yards, 6:27",
+          "scoreType": "TD",
+          "scoreTime": "11:25",
+          "team": "ARI",
+          "playerIDs": [
+            "3917315",
+            "3045147",
+            "4426844"
+          ]
+        }
+      ],
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.41",
+        "defSnap": "0",
+        "stSnap": "13",
+        "stSnapPct": "0.54",
+        "offSnap": "24",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4426844",
+      "longName": "Elijah Higgins",
+      "fantasyPoints": "6.7",
+      "fantasyPointsDefault": {
+        "standard": "6.2",
+        "PPR": "7.2",
+        "halfPPR": "6.7"
+      }
+    },
+    "4426923": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "21",
+        "stSnap": "7",
+        "stSnapPct": "0.29",
+        "offSnap": "0",
+        "defSnapPct": "0.33"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4426923",
+      "longName": "Kei'Trel Clark",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4427325": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "1",
+        "stSnap": "8",
+        "stSnapPct": "0.33",
+        "offSnap": "0",
+        "defSnapPct": "0.02"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4427325",
+      "longName": "Renardo Green",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4428633": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "22",
+        "stSnap": "16",
+        "stSnapPct": "0.67",
+        "offSnap": "0",
+        "defSnapPct": "0.34"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "2"
+      },
+      "playerID": "4428633",
+      "longName": "Dadrion Taylor-Demerson",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4428914": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "26",
+        "stSnap": "7",
+        "stSnapPct": "0.29",
+        "offSnap": "0",
+        "defSnapPct": "0.45"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "4428914",
+      "longName": "Dee Winters",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4428991": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "58",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4428991",
+      "longName": "Paris Johnson Jr.",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4432708": {
+      "gameID": "20241006_ARI@SF",
+      "Receiving": {
+        "receptions": "2",
+        "recTD": "0",
+        "longRec": "22",
+        "targets": "7",
+        "recYds": "36",
+        "recAvg": "18.0"
+      },
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.76",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "44",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4432708",
+      "longName": "Marvin Harrison Jr.",
+      "fantasyPoints": "4.6",
+      "fantasyPointsDefault": {
+        "standard": "3.6",
+        "PPR": "5.6",
+        "halfPPR": "4.6"
+      }
+    },
+    "4567219": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "19",
+        "stSnapPct": "0.79",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4567219",
+      "longName": "Owen Pappoe",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4569497": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "24",
+        "stSnap": "7",
+        "stSnapPct": "0.29",
+        "offSnap": "0",
+        "defSnapPct": "0.41"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4569497",
+      "longName": "Sam Okuayinonu",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4570410": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "14",
+        "stSnapPct": "0.58",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4570410",
+      "longName": "Jalen Graham",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4693644": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "56",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "0",
+        "defSnapPct": "0.97"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "5",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "5",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4693644",
+      "longName": "Ji'Ayir Brown",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4696211": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "47",
+        "stSnap": "9",
+        "stSnapPct": "0.38",
+        "offSnap": "0",
+        "defSnapPct": "0.81"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "2"
+      },
+      "playerID": "4696211",
+      "longName": "Malik Mustapha",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4696700": {
+      "gameID": "20241006_ARI@SF",
+      "Receiving": {
+        "receptions": "1",
+        "recTD": "0",
+        "longRec": "5",
+        "targets": "1",
+        "recYds": "5",
+        "recAvg": "5.0"
+      },
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.45",
+        "defSnap": "0",
+        "stSnap": "10",
+        "stSnapPct": "0.42",
+        "offSnap": "26",
+        "defSnapPct": "0.00"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "playerID": "4696700",
+      "longName": "Tip Reiman",
+      "fantasyPoints": "1.0",
+      "fantasyPointsDefault": {
+        "standard": "0.5",
+        "PPR": "1.5",
+        "halfPPR": "1.0"
+      }
+    },
+    "4698113": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "1",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "32",
+        "stSnap": "10",
+        "stSnapPct": "0.42",
+        "offSnap": "0",
+        "defSnapPct": "0.50"
+      },
+      "team": "ARI",
+      "teamAbv": "ARI",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4698113",
+      "longName": "Max Melton",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "5092959": {
+      "gameID": "20241006_ARI@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.21",
+        "offSnap": "64",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "5092959",
+      "longName": "Dominick Puni",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    }
+  },
+  "arenaCapacity": "68,500",
+  "arena": "Levi's Stadium",
+  "homePts": "23",
+  "awayResult": "W",
+  "teamIDAway": "1",
+  "Referees": "Steve Freeman, Tom Stephan, Paul King, Jabir Walker, Land Clark, Dominique Pender, Jeff Hutcheon",
+  "gameClock": "",
+  "awayPts": "24",
+  "gameID": "20241006_ARI@SF",
+  "seasonType": "Regular Season",
+  "gameStatusCode": "2"
+}

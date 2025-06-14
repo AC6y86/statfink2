@@ -1,0 +1,5734 @@
+{
+  "gameStatus": "Completed",
+  "DST": {
+    "away": {
+      "teamAbv": "LAR",
+      "teamID": "19",
+      "defTD": "0",
+      "defensiveInterceptions": "1",
+      "sacks": "3",
+      "ydsAllowed": "191",
+      "fumblesRecovered": "0",
+      "ptsAllowed": "6",
+      "safeties": "0"
+    },
+    "home": {
+      "teamAbv": "SF",
+      "teamID": "28",
+      "defTD": "0",
+      "defensiveInterceptions": "0",
+      "sacks": "0",
+      "ydsAllowed": "302",
+      "fumblesRecovered": "0",
+      "ptsAllowed": "12",
+      "safeties": "0"
+    }
+  },
+  "teamStats": {
+    "away": {
+      "totalYards": "302",
+      "rushingAttempts": "38",
+      "rushingYards": "142",
+      "fumblesLost": "0",
+      "penalties": "4-40",
+      "totalPlays": "65",
+      "possession": "35:04",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "16-27",
+      "passingFirstDowns": "6",
+      "interceptionsThrown": "0",
+      "sacksAndYardsLost": "0-0",
+      "thirdDownEfficiency": "4-15",
+      "blockedPunt": "0",
+      "yardsPerPlay": "4.6",
+      "redZoneScoredAndAttempted": "0-3",
+      "teamID": "19",
+      "defensiveInterceptions": "1",
+      "defensiveOrSpecialTeamsTds": "0",
+      "totalDrives": "11",
+      "rushingFirstDowns": "8",
+      "blockedFG": "0",
+      "rushTD": "0",
+      "twoPointConversions": "0",
+      "firstDowns": "14",
+      "passTD": "0",
+      "team": "LAR",
+      "blockedXP": "0",
+      "teamAbv": "LAR",
+      "firstDownsFromPenalties": "0",
+      "fourthDownEfficiency": "1-1",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "160",
+      "yardsPerRush": "3.7",
+      "snapCounts": {
+        "totalSpecialTeams": "27",
+        "totalOffensive": "65",
+        "totalDefensive": "54"
+      },
+      "turnovers": "0",
+      "yardsPerPass": "5.9"
+    },
+    "home": {
+      "totalYards": "191",
+      "rushingAttempts": "19",
+      "rushingYards": "63",
+      "fumblesLost": "0",
+      "penalties": "4-25",
+      "totalPlays": "53",
+      "possession": "24:56",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "14-31",
+      "passingFirstDowns": "7",
+      "interceptionsThrown": "1",
+      "sacksAndYardsLost": "3-14",
+      "thirdDownEfficiency": "3-12",
+      "blockedPunt": "0",
+      "yardsPerPlay": "3.6",
+      "redZoneScoredAndAttempted": "0-0",
+      "teamID": "28",
+      "defensiveInterceptions": "0",
+      "defensiveOrSpecialTeamsTds": "0",
+      "totalDrives": "11",
+      "rushingFirstDowns": "4",
+      "blockedFG": "0",
+      "rushTD": "0",
+      "twoPointConversions": "0",
+      "firstDowns": "11",
+      "passTD": "0",
+      "team": "SF",
+      "blockedXP": "0",
+      "teamAbv": "SF",
+      "firstDownsFromPenalties": "0",
+      "fourthDownEfficiency": "0-0",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "128",
+      "yardsPerRush": "3.3",
+      "snapCounts": {
+        "totalSpecialTeams": "27",
+        "totalOffensive": "54",
+        "totalDefensive": "65"
+      },
+      "turnovers": "1",
+      "yardsPerPass": "3.8"
+    }
+  },
+  "gameDate": "20241212",
+  "scoringPlays": [
+    {
+      "score": "Jake Moody 53 Yd Field Goal",
+      "scorePeriod": "Q1",
+      "homeScore": "3",
+      "awayScore": "0",
+      "teamID": "28",
+      "scoreDetails": "5 plays, 39 yards, 2:47",
+      "scoreType": "FG",
+      "scoreTime": "10:01",
+      "team": "SF",
+      "playerIDs": [
+        "4372066"
+      ]
+    },
+    {
+      "score": "Joshua Karty 48 Yd Field Goal",
+      "scorePeriod": "Q2",
+      "homeScore": "3",
+      "awayScore": "3",
+      "teamID": "19",
+      "scoreDetails": "7 plays, 20 yards, 3:47",
+      "scoreType": "FG",
+      "scoreTime": "1:05",
+      "team": "LAR",
+      "playerIDs": [
+        "4566192"
+      ]
+    },
+    {
+      "score": "Jake Moody 47 Yd Field Goal",
+      "scorePeriod": "Q3",
+      "homeScore": "6",
+      "awayScore": "3",
+      "teamID": "28",
+      "scoreDetails": "10 plays, 34 yards, 4:49",
+      "scoreType": "FG",
+      "scoreTime": "8:23",
+      "team": "SF",
+      "playerIDs": [
+        "4372066"
+      ]
+    },
+    {
+      "score": "Joshua Karty 23 Yd Field Goal ",
+      "scorePeriod": "Q4",
+      "homeScore": "6",
+      "awayScore": "6",
+      "teamID": "19",
+      "scoreDetails": "17 plays, 65 yards, 9:45",
+      "scoreType": "FG",
+      "scoreTime": "13:38",
+      "team": "LAR",
+      "playerIDs": [
+        "4566192"
+      ]
+    },
+    {
+      "score": "Joshua Karty 27 Yd Field Goal ",
+      "scorePeriod": "Q4",
+      "homeScore": "6",
+      "awayScore": "9",
+      "teamID": "19",
+      "scoreDetails": "5 plays, 59 yards, 3:00",
+      "scoreType": "FG",
+      "scoreTime": "9:28",
+      "team": "LAR",
+      "playerIDs": [
+        "4566192"
+      ]
+    },
+    {
+      "score": "Joshua Karty 29 Yd Field Goal",
+      "scorePeriod": "Q4",
+      "homeScore": "6",
+      "awayScore": "12",
+      "teamID": "19",
+      "scoreDetails": "13 plays, 69 yards, 4:56",
+      "scoreType": "FG",
+      "scoreTime": "0:18",
+      "team": "LAR",
+      "playerIDs": [
+        "4566192"
+      ]
+    }
+  ],
+  "allPlayByPlay": [
+    {
+      "play": "E.Evans kicks 65 yards from LA 35 to end zone, Touchback to the SF 30.",
+      "playPeriod": "Q1",
+      "playClock": "15:00",
+      "playerStats": {
+        "5125875": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short left to D.Samuel (A.Witherspoon).",
+      "playPeriod": "Q1",
+      "playClock": "15:00",
+      "playerStats": {
+        "3126486": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 30",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo left end to SF 31 for 1 yard (C.Rozeboom).",
+      "playPeriod": "Q1",
+      "playClock": "14:58",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at SF 30",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete deep left to G.Kittle.Penalty on SF-D.Puni, Offensive Holding, declined.",
+      "playPeriod": "Q1",
+      "playClock": "14:15",
+      "playerStats": {
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 9 at SF 31",
+      "teamID": "28"
+    },
+    {
+      "play": "P.O'Donnell punts 40 yards to LA 29, Center-T.Pepper, fair catch by X.Smith.",
+      "playPeriod": "Q1",
+      "playClock": "14:10",
+      "playerStats": {
+        "16863": {
+          "Kicking": {
+            "puntYds": "40",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 9 at SF 31",
+      "teamID": "28"
+    },
+    {
+      "play": "K.Williams right guard to LA 34 for 5 yards (R.Green, D.Greenlaw).",
+      "playPeriod": "Q1",
+      "playClock": "14:03",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "5",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 29",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to LA 35 for 1 yard (L.Floyd).PENALTY on LA-A.Jackson, Offensive Holding, 10 yards, enforced at LA 35.",
+      "playPeriod": "Q1",
+      "playClock": "13:30",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 5 at LAR 34",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass incomplete short right to C.Kupp (D.Lenoir).",
+      "playPeriod": "Q1",
+      "playClock": "13:08",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "2977187": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 14 at LAR 25",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass incomplete deep left to C.Kupp (D.Lenoir).",
+      "playPeriod": "Q1",
+      "playClock": "13:03",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "2977187": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 14 at LAR 25",
+      "teamID": "19"
+    },
+    {
+      "play": "E.Evans punts 56 yards to SF 19, Center-A.Ward. J.Cowing to SF 26 for 7 yards (X.Smith).",
+      "playPeriod": "Q1",
+      "playClock": "12:59",
+      "playerStats": {
+        "5125875": {
+          "Kicking": {
+            "puntYds": "56",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 14 at LAR 25",
+      "teamID": "19"
+    },
+    {
+      "play": "Official Timeout at 12:48.",
+      "playPeriod": "Q1",
+      "playClock": "12:48",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 26",
+      "teamID": "19"
+    },
+    {
+      "play": "B.Purdy pass deep middle to G.Kittle to LA 41 for 33 yards (Q.Lake).",
+      "playPeriod": "Q1",
+      "playClock": "12:48",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "33"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "33",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 26",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo right tackle to LA 40 for 1 yard (J.Verse).",
+      "playPeriod": "Q1",
+      "playClock": "12:06",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 41",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo right tackle to LA 37 for 3 yards (C.Rozeboom; K.Turner).",
+      "playPeriod": "Q1",
+      "playClock": "11:22",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 9 at LAR 40",
+      "teamID": "28"
+    },
+    {
+      "play": "D.Samuel up the middle to LA 35 for 2 yards (K.Turner).",
+      "playPeriod": "Q1",
+      "playClock": "10:46",
+      "playerStats": {
+        "3126486": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 6 at LAR 37",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Moody 53 yard field goal is GOOD, Center-T.Pepper, Holder-P.O'Donnell.",
+      "playPeriod": "Q1",
+      "playClock": "10:01",
+      "playerStats": {
+        "4372066": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "53"
+          }
+        }
+      },
+      "downAndDistance": "4th & 4 at LAR 35",
+      "teamID": "28"
+    },
+    {
+      "play": "Official Timeout at 10:01.",
+      "playPeriod": "Q1",
+      "playClock": "10:01",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 35",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Moody kicks 61 yards from SF 35 to LA 4. J.Whittington to LA 34 for 30 yards (B.Willis; N.McCloud).",
+      "playPeriod": "Q1",
+      "playClock": "10:01",
+      "playerStats": {
+        "4372066": {
+          "Kicking": {
+            "kickYards": "61"
+          }
+        }
+      },
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass short right to P.Nacua to LA 41 for 7 yards (C.Ward).",
+      "playPeriod": "Q1",
+      "playClock": "9:54",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "4426515": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 34",
+      "teamID": "19"
+    },
+    {
+      "play": "B.Corum right guard to LA 41 for no gain (T.Hufanga; F.Warner).",
+      "playPeriod": "Q1",
+      "playClock": "9:16",
+      "playerStats": {
+        "4429096": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 3 at LAR 41",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass incomplete short middle to T.Atwell.",
+      "playPeriod": "Q1",
+      "playClock": "8:36",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4360797": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 3 at LAR 41",
+      "teamID": "19"
+    },
+    {
+      "play": "E.Evans punts 50 yards to SF 9, Center-A.Ward. J.Cowing to SF 19 for 10 yards (X.Smith; H.Long).",
+      "playPeriod": "Q1",
+      "playClock": "8:32",
+      "playerStats": {
+        "5125875": {
+          "Kicking": {
+            "puntYds": "50",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 3 at LAR 41",
+      "teamID": "19"
+    },
+    {
+      "play": "D.Samuel right guard to SF 20 for 1 yard (C.Rozeboom).",
+      "playPeriod": "Q1",
+      "playClock": "8:21",
+      "playerStats": {
+        "3126486": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 19",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short right to D.Samuel to SF 25 for 5 yards (D.Williams; O.Speights).",
+      "playPeriod": "Q1",
+      "playClock": "7:43",
+      "playerStats": {
+        "3126486": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "5"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "5",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 9 at SF 20",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short middle to G.Kittle (K.Curl).",
+      "playPeriod": "Q1",
+      "playClock": "7:05",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 4 at SF 25",
+      "teamID": "28"
+    },
+    {
+      "play": "P.O'Donnell punts 55 yards to LA 20, Center-T.Pepper, downed by SF-B.Willis.",
+      "playPeriod": "Q1",
+      "playClock": "7:01",
+      "playerStats": {
+        "16863": {
+          "Kicking": {
+            "puntYds": "55",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 4 at SF 25",
+      "teamID": "28"
+    },
+    {
+      "play": "Official Timeout at 06:47.",
+      "playPeriod": "Q1",
+      "playClock": "6:47",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at LAR 20",
+      "teamID": "28"
+    },
+    {
+      "play": "M.Stafford pass short right to K.Williams to LA 24 for 4 yards (D.Greenlaw).",
+      "playPeriod": "Q1",
+      "playClock": "6:47",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "4",
+            "passCompletions": "1"
+          }
+        },
+        "4430737": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "4"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 20",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams right guard to LA 27 for 3 yards (D.Greenlaw).",
+      "playPeriod": "Q1",
+      "playClock": "6:05",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 6 at LAR 24",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass incomplete short right to C.Kupp [N.Bosa].",
+      "playPeriod": "Q1",
+      "playClock": "5:20",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "2977187": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 3 at LAR 27",
+      "teamID": "19"
+    },
+    {
+      "play": "E.Evans punts 56 yards to SF 17, Center-A.Ward. J.Cowing to SF 22 for 5 yards (J.Whittington).",
+      "playPeriod": "Q1",
+      "playClock": "5:16",
+      "playerStats": {
+        "5125875": {
+          "Kicking": {
+            "puntYds": "56",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 3 at LAR 27",
+      "teamID": "19"
+    },
+    {
+      "play": "B.Purdy pass short left to J.Jennings pushed ob at SF 35 for 13 yards (A.Witherspoon).",
+      "playPeriod": "Q1",
+      "playClock": "5:06",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "13"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "13",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 22",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short middle to I.Guerendo to SF 40 for 5 yards (O.Speights).",
+      "playPeriod": "Q1",
+      "playClock": "4:42",
+      "playerStats": {
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "5",
+            "passCompletions": "1"
+          }
+        },
+        "4372561": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "5"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 35",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo left tackle to SF 46 for 6 yards (B.Young; K.Turner).",
+      "playPeriod": "Q1",
+      "playClock": "4:05",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "6",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 5 at SF 40",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo up the middle to 50 for 4 yards (O.Speights).",
+      "playPeriod": "Q1",
+      "playClock": "3:28",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "4",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 46",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short left to J.Jennings (A.Witherspoon).",
+      "playPeriod": "Q1",
+      "playClock": "2:50",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 6 at 50",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy sacked at SF 46 for -4 yards (K.Turner).",
+      "playPeriod": "Q1",
+      "playClock": "2:46",
+      "playerStats": {},
+      "downAndDistance": "3rd & 6 at 50",
+      "teamID": "28"
+    },
+    {
+      "play": "P.O'Donnell punts 38 yards to LA 16, Center-T.Pepper, fair catch by X.Smith.",
+      "playPeriod": "Q1",
+      "playClock": "2:07",
+      "playerStats": {
+        "16863": {
+          "Kicking": {
+            "puntYds": "38",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 10 at SF 46",
+      "teamID": "28"
+    },
+    {
+      "play": "Official Timeout at 02:00.",
+      "playPeriod": "Q1",
+      "playClock": "2:00",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at LAR 16",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Corum left tackle to LA 19 for 3 yards (R.Beal). SF-F.Warner was injured during the play.",
+      "playPeriod": "Q1",
+      "playClock": "2:00",
+      "playerStats": {
+        "4429096": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 16",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass incomplete short left to B.Corum.",
+      "playPeriod": "Q1",
+      "playClock": "1:33",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4429096": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at LAR 19",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass incomplete short right to D.Robinson [N.Bosa]. ** Injury Update: SF-F.Warner has returned to the game.",
+      "playPeriod": "Q1",
+      "playClock": "1:27",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "3043116": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 7 at LAR 19",
+      "teamID": "19"
+    },
+    {
+      "play": "E.Evans punts 68 yards to SF 13, Center-A.Ward. J.Cowing to SF 30 for 17 yards (J.Hummel; X.Smith). ** Injury Update: SF-D.Winters has returned to the game.",
+      "playPeriod": "Q1",
+      "playClock": "1:23",
+      "playerStats": {
+        "5125875": {
+          "Kicking": {
+            "puntYds": "68",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 7 at LAR 19",
+      "teamID": "19"
+    },
+    {
+      "play": "B.Purdy pass short right to I.Guerendo to SF 31 for 1 yard (M.Hoecht, B.Brown).",
+      "playPeriod": "Q1",
+      "playClock": "1:10",
+      "playerStats": {
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "1",
+            "passCompletions": "1"
+          }
+        },
+        "4372561": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 30",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short left to D.Samuel to SF 36 for 5 yards (B.Fiske).",
+      "playPeriod": "Q1",
+      "playClock": "0:36",
+      "playerStats": {
+        "3126486": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "5"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "5",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 9 at SF 31",
+      "teamID": "28"
+    },
+    {
+      "play": "PENALTY on SF-D.Samuel, False Start, 5 yards, enforced at SF 36 - No Play.",
+      "playPeriod": "Q2",
+      "playClock": "15:00",
+      "playerStats": {},
+      "downAndDistance": "3rd & 4 at SF 36",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short left to J.Jennings pushed ob at SF 49 for 18 yards (A.Witherspoon).Penalty on LA-A.Witherspoon, Defensive Holding, declined.",
+      "playPeriod": "Q2",
+      "playClock": "15:00",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "18"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "18",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 9 at SF 31",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo right guard to 50 for 1 yard (C.Rozeboom, J.Verse).",
+      "playPeriod": "Q2",
+      "playClock": "14:40",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 49",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete deep left to G.Kittle (K.Curl).",
+      "playPeriod": "Q2",
+      "playClock": "13:59",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 9 at 50",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short middle to J.Jennings.",
+      "playPeriod": "Q2",
+      "playClock": "13:52",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 9 at 50",
+      "teamID": "28"
+    },
+    {
+      "play": "P.O'Donnell punts 47 yards to LA 3, Center-T.Pepper, downed by SF-N.McCloud.",
+      "playPeriod": "Q2",
+      "playClock": "13:46",
+      "playerStats": {
+        "16863": {
+          "Kicking": {
+            "puntYds": "47",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 9 at 50",
+      "teamID": "28"
+    },
+    {
+      "play": "K.Williams up the middle to LA 5 for 2 yards (D.Greenlaw; J.Elliott).",
+      "playPeriod": "Q2",
+      "playClock": "13:37",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 3",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to LA 15 for 10 yards (J.Brown; R.Green).",
+      "playPeriod": "Q2",
+      "playClock": "12:58",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "10",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 8 at LAR 5",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams left end to LA 13 for -2 yards (T.Hufanga).",
+      "playPeriod": "Q2",
+      "playClock": "12:21",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "-2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 15",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams left guard to LA 15 for 2 yards (F.Warner).",
+      "playPeriod": "Q2",
+      "playClock": "11:37",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 12 at LAR 13",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford scrambles left tackle to LA 26 for 11 yards (D.Lenoir; F.Warner).",
+      "playPeriod": "Q2",
+      "playClock": "10:55",
+      "playerStats": {
+        "12483": {
+          "Rushing": {
+            "rushYds": "11",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 10 at LAR 15",
+      "teamID": "19"
+    },
+    {
+      "play": "P.Nacua right end to LA 34 for 8 yards (N.Bosa).",
+      "playPeriod": "Q2",
+      "playClock": "10:12",
+      "playerStats": {
+        "4426515": {
+          "Rushing": {
+            "rushYds": "8",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 26",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to LA 36 for 2 yards (D.Greenlaw).",
+      "playPeriod": "Q2",
+      "playClock": "9:30",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 2 at LAR 34",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass incomplete deep right to P.Nacua [E.Anderson].",
+      "playPeriod": "Q2",
+      "playClock": "8:50",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4426515": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 36",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to LA 41 for 5 yards (Ka.Davis).",
+      "playPeriod": "Q2",
+      "playClock": "8:44",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "5",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at LAR 36",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass incomplete short middle to C.Parkinson [Y.Gross-Matos].",
+      "playPeriod": "Q2",
+      "playClock": "8:01",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4242557": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 5 at LAR 41",
+      "teamID": "19"
+    },
+    {
+      "play": "E.Evans punts 49 yards to SF 10, Center-A.Ward, downed by LA-X.Smith.",
+      "playPeriod": "Q2",
+      "playClock": "7:55",
+      "playerStats": {
+        "5125875": {
+          "Kicking": {
+            "puntYds": "49",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 5 at LAR 41",
+      "teamID": "19"
+    },
+    {
+      "play": "Official Timeout at 07:44.",
+      "playPeriod": "Q2",
+      "playClock": "7:44",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 10",
+      "teamID": "19"
+    },
+    {
+      "play": "B.Purdy pass incomplete short left to J.Jennings.",
+      "playPeriod": "Q2",
+      "playClock": "7:44",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 10",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo left tackle to SF 12 for 2 yards (O.Speights; B.Brown).",
+      "playPeriod": "Q2",
+      "playClock": "7:40",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at SF 10",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short right to G.Kittle to SF 22 for 10 yards (A.Witherspoon).",
+      "playPeriod": "Q2",
+      "playClock": "7:02",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "10"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "10",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 8 at SF 12",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo right tackle to SF 21 for -1 yards (B.Young).",
+      "playPeriod": "Q2",
+      "playClock": "6:22",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "-1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 22",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete deep right to J.Jennings.",
+      "playPeriod": "Q2",
+      "playClock": "5:45",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 11 at SF 21",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy sacked at SF 17 for -4 yards (K.Turner).",
+      "playPeriod": "Q2",
+      "playClock": "5:41",
+      "playerStats": {},
+      "downAndDistance": "3rd & 11 at SF 21",
+      "teamID": "28"
+    },
+    {
+      "play": "P.O'Donnell punts 48 yards to LA 35, Center-T.Pepper. X.Smith to LA 45 for 10 yards (D.Flannigan-Fowles; E.Saubert).PENALTY on SF-D.Flannigan-Fowles, Illegal Formation, 5 yards, enforced at LA 45.",
+      "playPeriod": "Q2",
+      "playClock": "5:03",
+      "playerStats": {
+        "16863": {
+          "Kicking": {
+            "puntYds": "48",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 15 at SF 17",
+      "teamID": "28"
+    },
+    {
+      "play": "Official Timeout at 04:52.",
+      "playPeriod": "Q2",
+      "playClock": "4:52",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 12",
+      "teamID": "28"
+    },
+    {
+      "play": "K.Williams right tackle to SF 48 for 2 yards (D.Greenlaw; R.Beal).",
+      "playPeriod": "Q2",
+      "playClock": "4:52",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at 50",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to SF 41 for 7 yards (S.Okuayinonu).",
+      "playPeriod": "Q2",
+      "playClock": "4:11",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "7",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 8 at SF 48",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to SF 38 for 3 yards (D.Greenlaw; M.Collins).",
+      "playPeriod": "Q2",
+      "playClock": "3:27",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 1 at SF 41",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams left guard to SF 35 for 3 yards (L.Floyd).",
+      "playPeriod": "Q2",
+      "playClock": "2:46",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 38",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to SF 34 for 1 yard (N.Bosa).",
+      "playPeriod": "Q2",
+      "playClock": "2:01",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at SF 35",
+      "teamID": "19"
+    },
+    {
+      "play": "Two-Minute Warning",
+      "playPeriod": "Q2",
+      "playClock": "1:56",
+      "playerStats": {},
+      "downAndDistance": "3rd & 6 at SF 34",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass short left to P.Nacua to SF 30 for 4 yards (F.Warner; T.Hufanga).",
+      "playPeriod": "Q2",
+      "playClock": "1:56",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "4",
+            "passCompletions": "1"
+          }
+        },
+        "4426515": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "4"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 6 at SF 34",
+      "teamID": "19"
+    },
+    {
+      "play": "Timeout #1 by LA at 01:10.",
+      "playPeriod": "Q2",
+      "playClock": "1:10",
+      "playerStats": {},
+      "downAndDistance": "4th & 2 at SF 30",
+      "teamID": "19"
+    },
+    {
+      "play": "J.Karty 48 yard field goal is GOOD, Center-A.Ward, Holder-E.Evans.",
+      "playPeriod": "Q2",
+      "playClock": "1:05",
+      "playerStats": {
+        "4566192": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "48"
+          }
+        }
+      },
+      "downAndDistance": "4th & 2 at SF 30",
+      "teamID": "19"
+    },
+    {
+      "play": "Official Timeout at 01:05.",
+      "playPeriod": "Q2",
+      "playClock": "1:05",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at LAR 35",
+      "teamID": "19"
+    },
+    {
+      "play": "E.Evans kicks 65 yards from LA 35 to end zone, Touchback to the SF 30.",
+      "playPeriod": "Q2",
+      "playClock": "1:05",
+      "playerStats": {
+        "5125875": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short right to D.Samuel to SF 36 for 6 yards (C.Rozeboom).",
+      "playPeriod": "Q2",
+      "playClock": "1:05",
+      "playerStats": {
+        "3126486": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "6"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "6",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 30",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short middle to R.Pearsall.",
+      "playPeriod": "Q2",
+      "playClock": "0:44",
+      "playerStats": {
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4428209": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 4 at SF 36",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete deep left to J.Jennings (Q.Lake).",
+      "playPeriod": "Q2",
+      "playClock": "0:41",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 4 at SF 36",
+      "teamID": "28"
+    },
+    {
+      "play": "P.O'Donnell punts 42 yards to LA 22, Center-T.Pepper, fair catch by X.Smith.",
+      "playPeriod": "Q2",
+      "playClock": "0:36",
+      "playerStats": {
+        "16863": {
+          "Kicking": {
+            "puntYds": "42",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 4 at SF 36",
+      "teamID": "28"
+    },
+    {
+      "play": "M.Stafford pass short right to P.Nacua to LA 30 for 8 yards (D.Greenlaw; T.Hufanga).",
+      "playPeriod": "Q2",
+      "playClock": "0:29",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "8",
+            "passCompletions": "1"
+          }
+        },
+        "4426515": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "8"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 22",
+      "teamID": "19"
+    },
+    {
+      "play": "END QUARTER 2",
+      "playPeriod": "Q2",
+      "playClock": "0:00",
+      "playerStats": {},
+      "teamID": "19"
+    },
+    {
+      "play": "J.Moody kicks 62 yards from SF 35 to LA 3. J.Whittington to LA 24 for 21 yards (D.Winters).",
+      "playPeriod": "Q3",
+      "playClock": "15:00",
+      "playerStats": {
+        "4372066": {
+          "Kicking": {
+            "kickYards": "62"
+          }
+        }
+      },
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams left end to LA 27 for 3 yards (F.Warner).",
+      "playPeriod": "Q3",
+      "playClock": "14:53",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 24",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to LA 29 for 2 yards (J.Brown).",
+      "playPeriod": "Q3",
+      "playClock": "14:10",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at LAR 27",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass incomplete short right.",
+      "playPeriod": "Q3",
+      "playClock": "13:29",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 5 at LAR 29",
+      "teamID": "19"
+    },
+    {
+      "play": "E.Evans punts 46 yards to SF 25, Center-A.Ward. J.Cowing to SF 37 for 12 yards (J.Whittington).",
+      "playPeriod": "Q3",
+      "playClock": "13:21",
+      "playerStats": {
+        "5125875": {
+          "Kicking": {
+            "puntYds": "46",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 5 at LAR 29",
+      "teamID": "19"
+    },
+    {
+      "play": "I.Guerendo up the middle to SF 45 for 8 yards (C.Rozeboom; Q.Lake).",
+      "playPeriod": "Q3",
+      "playClock": "13:12",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "8",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 37",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo up the middle to SF 49 for 4 yards (B.Brown; B.Fiske).",
+      "playPeriod": "Q3",
+      "playClock": "12:40",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "4",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 2 at SF 45",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short right to I.Guerendo to LA 41 for 10 yards (D.Williams).",
+      "playPeriod": "Q3",
+      "playClock": "12:00",
+      "playerStats": {
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "10",
+            "passCompletions": "1"
+          }
+        },
+        "4372561": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "10"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 49",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short middle to D.Samuel.",
+      "playPeriod": "Q3",
+      "playClock": "11:14",
+      "playerStats": {
+        "3126486": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 41",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short left to G.Kittle pushed ob at LA 32 for 9 yards (M.Hoecht).",
+      "playPeriod": "Q3",
+      "playClock": "11:09",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "9"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "9",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at LAR 41",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy up the middle to LA 29 for 3 yards (C.Rozeboom).",
+      "playPeriod": "Q3",
+      "playClock": "10:33",
+      "playerStats": {
+        "4361741": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 1 at LAR 32",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short left to I.Guerendo to LA 27 for 2 yards (B.Young).",
+      "playPeriod": "Q3",
+      "playClock": "9:57",
+      "playerStats": {
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "2",
+            "passCompletions": "1"
+          }
+        },
+        "4372561": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "2"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 29",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo left tackle to LA 29 for -2 yards (O.Speights, M.Hoecht).",
+      "playPeriod": "Q3",
+      "playClock": "9:14",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "-2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 8 at LAR 27",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short middle to D.Samuel.",
+      "playPeriod": "Q3",
+      "playClock": "8:31",
+      "playerStats": {
+        "3126486": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 10 at LAR 29",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Moody 47 yard field goal is GOOD, Center-T.Pepper, Holder-P.O'Donnell.",
+      "playPeriod": "Q3",
+      "playClock": "8:23",
+      "playerStats": {
+        "4372066": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "47"
+          }
+        }
+      },
+      "downAndDistance": "4th & 10 at LAR 29",
+      "teamID": "28"
+    },
+    {
+      "play": "Official Timeout at 08:23.",
+      "playPeriod": "Q3",
+      "playClock": "8:23",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 35",
+      "teamID": "28"
+    },
+    {
+      "play": "J.Moody kicks 65 yards from SF 35 to end zone, Touchback to the LA 30.",
+      "playPeriod": "Q3",
+      "playClock": "8:23",
+      "playerStats": {
+        "4372066": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass short middle to B.Corum pushed ob at LA 42 for 12 yards (J.Brown; C.Ward).",
+      "playPeriod": "Q3",
+      "playClock": "8:23",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "12",
+            "passCompletions": "1"
+          }
+        },
+        "4429096": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "12"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 30",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass short left to H.Long pushed ob at SF 49 for 9 yards (J.Brown).",
+      "playPeriod": "Q3",
+      "playClock": "7:46",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "9",
+            "passCompletions": "1"
+          }
+        },
+        "4239944": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "9"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 42",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass short right to B.Corum to SF 46 for 3 yards (D.Lenoir).",
+      "playPeriod": "Q3",
+      "playClock": "7:21",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "3",
+            "passCompletions": "1"
+          }
+        },
+        "4429096": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "3"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 1 at SF 49",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass incomplete deep right to C.Parkinson (C.Ward) [N.Bosa].",
+      "playPeriod": "Q3",
+      "playClock": "6:37",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4242557": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 46",
+      "teamID": "19"
+    },
+    {
+      "play": "B.Corum right guard to SF 44 for 2 yards (J.Elliott).",
+      "playPeriod": "Q3",
+      "playClock": "6:32",
+      "playerStats": {
+        "4429096": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at SF 46",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass short left to P.Nacua to SF 37 for 7 yards (J.Brown).",
+      "playPeriod": "Q3",
+      "playClock": "5:48",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "4426515": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 8 at SF 44",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford up the middle to SF 35 for 2 yards (N.Bosa; F.Warner).",
+      "playPeriod": "Q3",
+      "playClock": "5:06",
+      "playerStats": {
+        "12483": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 1 at SF 37",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams right guard to SF 30 for 5 yards (I.Yiadom).",
+      "playPeriod": "Q3",
+      "playClock": "4:27",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "5",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 35",
+      "teamID": "19"
+    },
+    {
+      "play": "PENALTY on LA-R.Havenstein, False Start, 5 yards, enforced at SF 30 - No Play.",
+      "playPeriod": "Q3",
+      "playClock": "3:43",
+      "playerStats": {},
+      "downAndDistance": "2nd & 5 at SF 30",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass short left to P.Nacua to SF 22 for 13 yards (F.Warner).",
+      "playPeriod": "Q3",
+      "playClock": "3:22",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "13",
+            "passCompletions": "1"
+          }
+        },
+        "4426515": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "13"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at SF 35",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams left guard to SF 18 for 4 yards (S.Okuayinonu; E.Anderson).",
+      "playPeriod": "Q3",
+      "playClock": "2:38",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "4",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 22",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams right tackle to SF 17 for 1 yard (F.Warner; E.Anderson).",
+      "playPeriod": "Q3",
+      "playClock": "1:58",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 6 at SF 18",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to SF 11 for 6 yards (L.Floyd).",
+      "playPeriod": "Q3",
+      "playClock": "1:19",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "6",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 5 at SF 17",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams right tackle to SF 4 for 7 yards (C.Ward; T.Gipson).",
+      "playPeriod": "Q3",
+      "playClock": "0:37",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "7",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 11",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford right end to SF 2 for 2 yards (F.Warner, T.Hufanga).PENALTY on LA-D.Allen, Offensive Holding, 10 yards, enforced at SF 2.",
+      "playPeriod": "Q4",
+      "playClock": "15:00",
+      "playerStats": {
+        "12483": {
+          "Rushing": {
+            "rushYds": "2",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 3 at SF 4",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass short left to P.Nacua to SF 5 for 7 yards (F.Warner; R.Green).",
+      "playPeriod": "Q4",
+      "playClock": "14:31",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "4426515": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 11 at SF 12",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass incomplete short left to C.Parkinson (F.Warner, T.Gipson).Penalty on LA-R.Havenstein, Offensive Holding, declined.Penalty on LA-A.Jackson, Ineligible Downfield Pass, declined.",
+      "playPeriod": "Q4",
+      "playClock": "13:49",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4242557": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 4 at SF 5",
+      "teamID": "19"
+    },
+    {
+      "play": "J.Karty 23 yard field goal is GOOD, Center-A.Ward, Holder-E.Evans.",
+      "playPeriod": "Q4",
+      "playClock": "13:38",
+      "playerStats": {
+        "4566192": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "23"
+          }
+        }
+      },
+      "downAndDistance": "4th & 4 at SF 5",
+      "teamID": "19"
+    },
+    {
+      "play": "Official Timeout at 13:38.",
+      "playPeriod": "Q4",
+      "playClock": "13:38",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at LAR 35",
+      "teamID": "19"
+    },
+    {
+      "play": "E.Evans kicks 65 yards from LA 35 to landing zone to end zone, Touchback to the SF 20.",
+      "playPeriod": "Q4",
+      "playClock": "13:38",
+      "playerStats": {
+        "5125875": {
+          "Kicking": {
+            "kickYards": "65"
+          }
+        }
+      },
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short left to D.Samuel to SF 26 for 6 yards (O.Speights).PENALTY on SF-G.Kittle, Offensive Pass Interference, 10 yards, enforced at SF 20 - No Play.Penalty on SF-A.Banks, Ineligible Downfield Pass, declined.",
+      "playPeriod": "Q4",
+      "playClock": "13:38",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 20",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete short left to J.Jennings (Q.Lake).",
+      "playPeriod": "Q4",
+      "playClock": "13:17",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 20 at SF 10",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete deep middle to D.Samuel (K.Kinchens).",
+      "playPeriod": "Q4",
+      "playClock": "13:14",
+      "playerStats": {
+        "3126486": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 20 at SF 10",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo left guard to SF 26 for 16 yards (J.McCollough; K.Kinchens).",
+      "playPeriod": "Q4",
+      "playClock": "13:09",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "16",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 20 at SF 10",
+      "teamID": "28"
+    },
+    {
+      "play": "P.O'Donnell punts 46 yards to LA 28, Center-T.Pepper, fair catch by X.Smith.PENALTY on SF-D.Flannigan-Fowles, Illegal Formation, 5 yards, enforced at LA 28.",
+      "playPeriod": "Q4",
+      "playClock": "12:34",
+      "playerStats": {
+        "16863": {
+          "Kicking": {
+            "puntYds": "46",
+            "punts": "1"
+          }
+        }
+      },
+      "downAndDistance": "4th & 4 at SF 26",
+      "teamID": "28"
+    },
+    {
+      "play": "Official Timeout at 12:28.",
+      "playPeriod": "Q4",
+      "playClock": "12:28",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 21",
+      "teamID": "28"
+    },
+    {
+      "play": "M.Stafford pass deep middle to P.Nacua to SF 16 for 51 yards (C.Ward).",
+      "playPeriod": "Q4",
+      "playClock": "12:28",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "51",
+            "passCompletions": "1"
+          }
+        },
+        "4426515": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "51"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 33",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams right guard to SF 8 for 8 yards (T.Gipson).",
+      "playPeriod": "Q4",
+      "playClock": "11:41",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "8",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 16",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams right guard to SF 8 for no gain (T.Gipson).",
+      "playPeriod": "Q4",
+      "playClock": "11:06",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 2 at SF 8",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass short right to K.Williams to SF 8 for no gain (F.Warner).",
+      "playPeriod": "Q4",
+      "playClock": "10:22",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "0",
+            "passCompletions": "1"
+          }
+        },
+        "4430737": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "0"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 2 at SF 8",
+      "teamID": "19"
+    },
+    {
+      "play": "J.Karty 27 yard field goal is GOOD, Center-A.Ward, Holder-E.Evans.",
+      "playPeriod": "Q4",
+      "playClock": "9:28",
+      "playerStats": {
+        "4566192": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "27"
+          }
+        }
+      },
+      "downAndDistance": "4th & 2 at SF 8",
+      "teamID": "19"
+    },
+    {
+      "play": "Official Timeout at 09:28.",
+      "playPeriod": "Q4",
+      "playClock": "9:28",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at LAR 35",
+      "teamID": "19"
+    },
+    {
+      "play": "E.Evans kicks 68 yards from LA 35 to SF -3. D.Samuel to SF 28 for 31 yards (J.Wallace).",
+      "playPeriod": "Q4",
+      "playClock": "9:28",
+      "playerStats": {
+        "5125875": {
+          "Kicking": {
+            "kickYards": "68"
+          }
+        }
+      },
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo right end pushed ob at SF 29 for 1 yard (Q.Lake).",
+      "playPeriod": "Q4",
+      "playClock": "9:22",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 28",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short middle to R.Pearsall to SF 45 for 16 yards (A.Witherspoon).",
+      "playPeriod": "Q4",
+      "playClock": "8:43",
+      "playerStats": {
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "16",
+            "passCompletions": "1"
+          }
+        },
+        "4428209": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "16"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 9 at SF 29",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo up the middle to SF 48 for 3 yards (O.Speights; B.Young).",
+      "playPeriod": "Q4",
+      "playClock": "8:05",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 45",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass short middle to G.Kittle to LA 43 for 9 yards (C.Rozeboom).",
+      "playPeriod": "Q4",
+      "playClock": "7:26",
+      "playerStats": {
+        "3040151": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "9"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "9",
+            "passCompletions": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at SF 48",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete deep middle to R.Pearsall (A.Witherspoon).",
+      "playPeriod": "Q4",
+      "playClock": "6:46",
+      "playerStats": {
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4428209": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 43",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo left guard to LA 33 for 10 yards (K.Kinchens; O.Speights).",
+      "playPeriod": "Q4",
+      "playClock": "6:40",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "10",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 10 at LAR 43",
+      "teamID": "28"
+    },
+    {
+      "play": "I.Guerendo left guard to LA 33 for no gain (T.Davis; A.Witherspoon).",
+      "playPeriod": "Q4",
+      "playClock": "6:05",
+      "playerStats": {
+        "4372561": {
+          "Rushing": {
+            "rushYds": "0",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 33",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass deep right intended for J.Jennings INTERCEPTED by D.Williams at LA 0. Touchback.",
+      "playClock": "5:20",
+      "playerStats": {
+        "3886598": {
+          "Receiving": {
+            "targets": "1"
+          }
+        },
+        "4239833": {
+          "Defense": {
+            "defensiveInterceptions": "1"
+          }
+        },
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1",
+            "int": "1"
+          }
+        }
+      },
+      "teamID": "28",
+      "playPeriod": "Q4",
+      "downAndDistance": "2nd & 10 at LAR 33",
+      "teamStats": {
+        "away": {
+          "defensiveInterceptions": "1"
+        }
+      }
+    },
+    {
+      "play": "Official Timeout at 05:14.",
+      "playPeriod": "Q4",
+      "playClock": "5:14",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at LAR 20",
+      "teamID": "28"
+    },
+    {
+      "play": "M.Stafford pass short right to T.Atwell to LA 26 for 6 yards (C.Ward). ** Injury Update: SF-J.Brown has returned to the game.",
+      "playPeriod": "Q4",
+      "playClock": "5:14",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "6",
+            "passCompletions": "1"
+          }
+        },
+        "4360797": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "6"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 20",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass short right to H.Long pushed ob at LA 34 for 8 yards (T.Hufanga).",
+      "playPeriod": "Q4",
+      "playClock": "4:37",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "8",
+            "passCompletions": "1"
+          }
+        },
+        "4239944": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "8"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 4 at LAR 26",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to LA 43 for 9 yards (F.Warner).",
+      "playPeriod": "Q4",
+      "playClock": "4:32",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "9",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 34",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford up the middle to LA 46 for 3 yards (F.Warner).",
+      "playPeriod": "Q4",
+      "playClock": "3:50",
+      "playerStats": {
+        "12483": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 1 at LAR 43",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass short left to C.Parkinson pushed ob at SF 47 for 7 yards (D.Lenoir).",
+      "playPeriod": "Q4",
+      "playClock": "3:08",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "7",
+            "passCompletions": "1"
+          }
+        },
+        "4242557": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "7"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at LAR 46",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams right end to SF 38 for 9 yards (E.Anderson).",
+      "playPeriod": "Q4",
+      "playClock": "3:01",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "9",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 3 at SF 47",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to SF 35 for 3 yards (F.Warner).",
+      "playPeriod": "Q4",
+      "playClock": "2:14",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 38",
+      "teamID": "19"
+    },
+    {
+      "play": "Timeout #1 by SF at 02:09.",
+      "playPeriod": "Q4",
+      "playClock": "2:09",
+      "playerStats": {},
+      "downAndDistance": "2nd & 7 at SF 35",
+      "teamID": "19"
+    },
+    {
+      "play": "Timeout #1 by LA at 02:09.",
+      "playPeriod": "Q4",
+      "playClock": "2:09",
+      "playerStats": {},
+      "downAndDistance": "2nd & 7 at SF 35",
+      "teamID": "19"
+    },
+    {
+      "play": "P.Nacua right end to SF 32 for 3 yards (I.Yiadom).",
+      "playPeriod": "Q4",
+      "playClock": "2:09",
+      "playerStats": {
+        "4426515": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at SF 35",
+      "teamID": "19"
+    },
+    {
+      "play": "Two-Minute Warning",
+      "playPeriod": "Q4",
+      "playClock": "2:00",
+      "playerStats": {},
+      "downAndDistance": "3rd & 4 at SF 32",
+      "teamID": "19"
+    },
+    {
+      "play": "M.Stafford pass short right to C.Parkinson to SF 18 for 14 yards (J.Brown).",
+      "playPeriod": "Q4",
+      "playClock": "2:00",
+      "playerStats": {
+        "12483": {
+          "Passing": {
+            "passAttempts": "1",
+            "passYds": "14",
+            "passCompletions": "1"
+          }
+        },
+        "4242557": {
+          "Receiving": {
+            "receptions": "1",
+            "targets": "1",
+            "recYds": "14"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 4 at SF 32",
+      "teamID": "19"
+    },
+    {
+      "play": "Timeout #2 by SF at 01:55.",
+      "playPeriod": "Q4",
+      "playClock": "1:55",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 18",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to SF 15 for 3 yards (D.Lenoir; N.Bosa).",
+      "playPeriod": "Q4",
+      "playClock": "1:55",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at SF 18",
+      "teamID": "19"
+    },
+    {
+      "play": "Timeout #3 by SF at 01:51.",
+      "playPeriod": "Q4",
+      "playClock": "1:51",
+      "playerStats": {},
+      "downAndDistance": "2nd & 7 at SF 15",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams up the middle to SF 14 for 1 yard (T.Hufanga; F.Warner).",
+      "playPeriod": "Q4",
+      "playClock": "1:51",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "1",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "2nd & 7 at SF 15",
+      "teamID": "19"
+    },
+    {
+      "play": "K.Williams right guard to SF 11 for 3 yards (T.Hufanga; J.Elliott).",
+      "playPeriod": "Q4",
+      "playClock": "1:06",
+      "playerStats": {
+        "4430737": {
+          "Rushing": {
+            "rushYds": "3",
+            "carries": "1"
+          }
+        }
+      },
+      "downAndDistance": "3rd & 6 at SF 14",
+      "teamID": "19"
+    },
+    {
+      "play": "Timeout #2 by LA at 00:20.",
+      "playPeriod": "Q4",
+      "playClock": "0:20",
+      "playerStats": {},
+      "downAndDistance": "4th & 3 at SF 11",
+      "teamID": "19"
+    },
+    {
+      "play": "J.Karty 29 yard field goal is GOOD, Center-A.Ward, Holder-E.Evans.",
+      "playPeriod": "Q4",
+      "playClock": "0:18",
+      "playerStats": {
+        "4566192": {
+          "Kicking": {
+            "fgMade": "1",
+            "fgAttempts": "1",
+            "fgYds": "29"
+          }
+        }
+      },
+      "downAndDistance": "4th & 3 at SF 11",
+      "teamID": "19"
+    },
+    {
+      "play": "Official Timeout at 00:18.",
+      "playPeriod": "Q4",
+      "playClock": "0:18",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at LAR 35",
+      "teamID": "19"
+    },
+    {
+      "play": "E.Evans kicks 71 yards from LA 35 to SF -6. D.Samuel pushed ob at SF 35 for 41 yards (C.Woods).PENALTY on LA-C.Woods, Horse Collar Tackle, 15 yards, enforced at SF 35.",
+      "playPeriod": "Q4",
+      "playClock": "0:18",
+      "playerStats": {
+        "5125875": {
+          "Kicking": {
+            "kickYards": "71"
+          }
+        }
+      },
+      "teamID": "28"
+    },
+    {
+      "play": "Timeout #3 by LA at 00:11.",
+      "playPeriod": "Q4",
+      "playClock": "0:11",
+      "playerStats": {},
+      "downAndDistance": "1st & 10 at SF 37",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy pass incomplete deep left to R.Pearsall.",
+      "playPeriod": "Q4",
+      "playClock": "0:11",
+      "playerStats": {
+        "4361741": {
+          "Passing": {
+            "passAttempts": "1"
+          }
+        },
+        "4428209": {
+          "Receiving": {
+            "targets": "1"
+          }
+        }
+      },
+      "downAndDistance": "1st & 10 at 50",
+      "teamID": "28"
+    },
+    {
+      "play": "B.Purdy sacked at SF 44 for -6 yards (C.Rozeboom).",
+      "playPeriod": "Q4",
+      "playClock": "0:06",
+      "playerStats": {},
+      "downAndDistance": "2nd & 10 at 50",
+      "teamID": "28"
+    },
+    {
+      "play": "END GAME",
+      "playPeriod": "Q4",
+      "playClock": "0:00",
+      "playerStats": {},
+      "teamID": "28"
+    }
+  ],
+  "network": "Prime Video",
+  "teamIDHome": "28",
+  "homeResult": "L",
+  "away": "LAR",
+  "gameWeek": "Week 15",
+  "attendance": "71,201",
+  "lineScore": {
+    "period": "Final",
+    "gameClock": "",
+    "away": {
+      "Q1": "0",
+      "Q2": "3",
+      "Q3": "0",
+      "Q4": "9",
+      "teamID": "19",
+      "currentlyInPossession": "False",
+      "totalPts": "12",
+      "teamAbv": "LAR"
+    },
+    "home": {
+      "Q1": "3",
+      "Q2": "0",
+      "Q3": "3",
+      "Q4": "0",
+      "teamID": "28",
+      "currentlyInPossession": "False",
+      "totalPts": "6",
+      "teamAbv": "SF"
+    }
+  },
+  "currentPeriod": "Final",
+  "gameLocation": "Santa Clara, CA",
+  "home": "SF",
+  "playerStats": {
+    "12483": {
+      "gameID": "20241212_LAR@SF",
+      "Rushing": {
+        "rushAvg": "4.5",
+        "rushYds": "18",
+        "carries": "4",
+        "longRush": "11",
+        "rushTD": "0"
+      },
+      "Passing": {
+        "qbr": "64.8",
+        "rtg": "76.2",
+        "sacked": "0-0",
+        "passAttempts": "27",
+        "passAvg": "5.9",
+        "passTD": "0",
+        "passYds": "160",
+        "int": "0",
+        "passCompletions": "16"
+      },
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "65",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "12483",
+      "longName": "Matthew Stafford",
+      "fantasyPoints": "9.0",
+      "fantasyPointsDefault": {
+        "standard": "8.2",
+        "PPR": "8.2",
+        "halfPPR": "8.2"
+      }
+    },
+    "15235": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "10",
+        "stSnap": "12",
+        "stSnapPct": "0.44",
+        "offSnap": "0",
+        "defSnapPct": "0.15"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "15235",
+      "longName": "Tashaun Gipson Sr.",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "16002": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.50",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "27",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "16002",
+      "longName": "Kyle Juszczyk",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "16863": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "9",
+        "stSnapPct": "0.33",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Punting": {
+        "puntYds": "316",
+        "punts": "7",
+        "puntAvg": "45.1",
+        "puntsin20": "2",
+        "puntTouchBacks": "0",
+        "puntLong": "55"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "16863",
+      "longName": "Pat O'Donnell",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2310331": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.08",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "5",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "2310331",
+      "longName": "Tyler Johnson",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2515613": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "4",
+        "stSnapPct": "0.15",
+        "offSnap": "65",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "2515613",
+      "longName": "Rob Havenstein",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2577185": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "54",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "2577185",
+      "longName": "Jake Brendel",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2578533": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.06",
+        "defSnap": "0",
+        "stSnap": "20",
+        "stSnapPct": "0.74",
+        "offSnap": "3",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "2578533",
+      "longName": "Chris Conley",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2975863": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.31",
+        "defSnap": "0",
+        "stSnap": "22",
+        "stSnapPct": "0.81",
+        "offSnap": "17",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "2975863",
+      "longName": "Eric Saubert",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2977187": {
+      "gameID": "20241212_LAR@SF",
+      "Receiving": {
+        "receptions": "0",
+        "recTD": "0",
+        "longRec": "0",
+        "targets": "3",
+        "recYds": "0",
+        "recAvg": "0.0"
+      },
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.85",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "55",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "2977187",
+      "longName": "Cooper Kupp",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "2979553": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "9",
+        "stSnapPct": "0.33",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "2979553",
+      "longName": "Taybor Pepper",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3040151": {
+      "gameID": "20241212_LAR@SF",
+      "Receiving": {
+        "receptions": "4",
+        "recTD": "0",
+        "longRec": "33",
+        "targets": "7",
+        "recYds": "61",
+        "recAvg": "15.3"
+      },
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.96",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "52",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "3040151",
+      "longName": "George Kittle",
+      "fantasyPoints": "8.1",
+      "fantasyPointsDefault": {
+        "standard": "6.1",
+        "PPR": "10.1",
+        "halfPPR": "8.1"
+      }
+    },
+    "3040471": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "45",
+        "stSnap": "5",
+        "stSnapPct": "0.19",
+        "offSnap": "0",
+        "defSnapPct": "0.69"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3040471",
+      "longName": "Maliek Collins",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3043116": {
+      "gameID": "20241212_LAR@SF",
+      "Receiving": {
+        "receptions": "0",
+        "recTD": "0",
+        "longRec": "0",
+        "targets": "1",
+        "recYds": "0",
+        "recAvg": "0.0"
+      },
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.78",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "51",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "3043116",
+      "longName": "Demarcus Robinson",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3043136": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "39",
+        "stSnap": "1",
+        "stSnapPct": "0.04",
+        "offSnap": "0",
+        "defSnapPct": "0.60"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3043136",
+      "longName": "Leonard Floyd",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3122630": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "54",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "5",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "4",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "3"
+      },
+      "playerID": "3122630",
+      "longName": "Ahkello Witherspoon",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3122797": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "8",
+        "stSnap": "25",
+        "stSnapPct": "0.93",
+        "offSnap": "0",
+        "defSnapPct": "0.12"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3122797",
+      "longName": "Isaac Yiadom",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3126486": {
+      "gameID": "20241212_LAR@SF",
+      "Rushing": {
+        "rushAvg": "1.5",
+        "rushYds": "3",
+        "carries": "2",
+        "longRush": "2",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "3",
+        "recTD": "0",
+        "longRec": "6",
+        "targets": "7",
+        "recYds": "16",
+        "recAvg": "5.3"
+      },
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.78",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.19",
+        "offSnap": "42",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "kickReturns": "2",
+        "kickReturnTD": "0",
+        "kickReturnYds": "72",
+        "kickReturnAvg": "36.0",
+        "kickReturnLong": "41"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "3126486",
+      "longName": "Deebo Samuel Sr.",
+      "fantasyPoints": "3.8",
+      "fantasyPointsDefault": {
+        "standard": "1.9",
+        "PPR": "4.9",
+        "halfPPR": "3.4"
+      }
+    },
+    "3138826": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "64",
+        "stSnap": "5",
+        "stSnapPct": "0.19",
+        "offSnap": "0",
+        "defSnapPct": "0.98"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "15",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "8",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "3138826",
+      "longName": "Fred Warner",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3886598": {
+      "gameID": "20241212_LAR@SF",
+      "Receiving": {
+        "receptions": "2",
+        "recTD": "0",
+        "longRec": "18",
+        "targets": "9",
+        "recYds": "31",
+        "recAvg": "15.5"
+      },
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.94",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "51",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "3886598",
+      "longName": "Jauan Jennings",
+      "fantasyPoints": "4.1",
+      "fantasyPointsDefault": {
+        "standard": "3.1",
+        "PPR": "5.1",
+        "halfPPR": "4.1"
+      }
+    },
+    "3892883": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "12",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.22"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "3892883",
+      "longName": "Neville Gallimore",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3909013": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "47",
+        "stSnap": "9",
+        "stSnapPct": "0.33",
+        "offSnap": "0",
+        "defSnapPct": "0.87"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "9",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "7",
+        "tfl": "1",
+        "qbHits": "1",
+        "defensiveInterceptions": "0",
+        "sacks": "1",
+        "passDeflections": "0"
+      },
+      "playerID": "3909013",
+      "longName": "Christian Rozeboom",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3916075": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "2",
+        "stSnapPct": "0.07",
+        "offSnap": "54",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "3916075",
+      "longName": "Colton McKivitz",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3916903": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "30",
+        "stSnap": "1",
+        "stSnapPct": "0.04",
+        "offSnap": "0",
+        "defSnapPct": "0.46"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "8",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3916903",
+      "longName": "Dre Greenlaw",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3917599": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "4",
+        "stSnapPct": "0.15",
+        "offSnap": "65",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "3917599",
+      "longName": "Kevin Dotson",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3917612": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.22",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "3917612",
+      "longName": "Ke'Shawn Vaughn",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "3931424": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "26",
+        "stSnap": "21",
+        "stSnapPct": "0.78",
+        "offSnap": "0",
+        "defSnapPct": "0.40"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "3931424",
+      "longName": "Demetrius Flannigan-Fowles",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4033234": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "30",
+        "stSnap": "8",
+        "stSnapPct": "0.30",
+        "offSnap": "0",
+        "defSnapPct": "0.56"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4033234",
+      "longName": "Michael Hoecht",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4036135": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "4",
+        "stSnapPct": "0.15",
+        "offSnap": "65",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4036135",
+      "longName": "Alaric Jackson",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4036169": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "20",
+        "stSnapPct": "0.74",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4036169",
+      "longName": "Nick McCloud",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4037361": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "57",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.88"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "5",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "4037361",
+      "longName": "Charvarius Ward",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4039052": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "39",
+        "stSnap": "4",
+        "stSnapPct": "0.15",
+        "offSnap": "0",
+        "defSnapPct": "0.60"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4039052",
+      "longName": "Jordan Elliott",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4039358": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.06",
+        "defSnap": "0",
+        "stSnap": "17",
+        "stSnapPct": "0.63",
+        "offSnap": "3",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4039358",
+      "longName": "Patrick Taylor Jr.",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4040605": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "47",
+        "stSnap": "1",
+        "stSnapPct": "0.04",
+        "offSnap": "0",
+        "defSnapPct": "0.72"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "4",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "3",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4040605",
+      "longName": "Nick Bosa",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4043041": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "2",
+        "stSnapPct": "0.07",
+        "offSnap": "54",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4043041",
+      "longName": "Jaylon Moore",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4239833": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "54",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "1",
+        "defensiveInterceptionsYards": "0",
+        "interceptionTDs": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "4239833",
+      "longName": "Darious Williams",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4239944": {
+      "gameID": "20241212_LAR@SF",
+      "Receiving": {
+        "receptions": "2",
+        "recTD": "0",
+        "longRec": "9",
+        "targets": "2",
+        "recYds": "17",
+        "recAvg": "8.5"
+      },
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.34",
+        "defSnap": "0",
+        "stSnap": "24",
+        "stSnapPct": "0.89",
+        "offSnap": "22",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4239944",
+      "longName": "Hunter Long",
+      "fantasyPoints": "2.7",
+      "fantasyPointsDefault": {
+        "standard": "1.7",
+        "PPR": "3.7",
+        "halfPPR": "2.7"
+      }
+    },
+    "4241250": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "22",
+        "stSnapPct": "0.81",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4241250",
+      "longName": "Jacob Hummel",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4242154": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "54",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "0",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "2"
+      },
+      "playerID": "4242154",
+      "longName": "Kamren Curl",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4242390": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "2",
+        "stSnapPct": "0.07",
+        "offSnap": "54",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4242390",
+      "longName": "Aaron Banks",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4242488": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "64",
+        "stSnap": "5",
+        "stSnapPct": "0.19",
+        "offSnap": "0",
+        "defSnapPct": "0.98"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "4",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "2"
+      },
+      "playerID": "4242488",
+      "longName": "Deommodore Lenoir",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4242557": {
+      "gameID": "20241212_LAR@SF",
+      "Receiving": {
+        "receptions": "2",
+        "recTD": "0",
+        "longRec": "14",
+        "targets": "5",
+        "recYds": "21",
+        "recAvg": "10.5"
+      },
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.49",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.22",
+        "offSnap": "32",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4242557",
+      "longName": "Colby Parkinson",
+      "fantasyPoints": "3.1",
+      "fantasyPointsDefault": {
+        "standard": "2.1",
+        "PPR": "4.1",
+        "halfPPR": "3.1"
+      }
+    },
+    "4243003": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "20",
+        "stSnapPct": "0.74",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4243003",
+      "longName": "Ronnie Rivers",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4243541": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "17",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.26"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4243541",
+      "longName": "Kalia Davis",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4243545": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "10",
+        "stSnapPct": "0.37",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4243545",
+      "longName": "Alex Ward",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4247590": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "2",
+        "stSnapPct": "0.07",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4247590",
+      "longName": "Nick Zakelj",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4249128": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "54",
+        "stSnap": "3",
+        "stSnapPct": "0.11",
+        "offSnap": "0",
+        "defSnapPct": "1.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "2"
+      },
+      "playerID": "4249128",
+      "longName": "Quentin Lake",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4250621": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "38",
+        "stSnap": "3",
+        "stSnapPct": "0.11",
+        "offSnap": "0",
+        "defSnapPct": "0.70"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "5",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "2",
+        "qbHits": "2",
+        "defensiveInterceptions": "0",
+        "sacks": "2",
+        "passDeflections": "0"
+      },
+      "playerID": "4250621",
+      "longName": "Kobie Turner",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4259147": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "14",
+        "stSnapPct": "0.52",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4259147",
+      "longName": "Jake Tonges",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4259558": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "5",
+        "stSnap": "20",
+        "stSnapPct": "0.74",
+        "offSnap": "0",
+        "defSnapPct": "0.08"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4259558",
+      "longName": "Robert Beal Jr.",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4259594": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "31",
+        "stSnap": "4",
+        "stSnapPct": "0.15",
+        "offSnap": "0",
+        "defSnapPct": "0.48"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "0",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "1",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4259594",
+      "longName": "Yetur Gross-Matos",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4360290": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "20",
+        "stSnapPct": "0.74",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4360290",
+      "longName": "Brayden Willis",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4360773": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "20",
+        "stSnapPct": "0.74",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4360773",
+      "longName": "Nick Hampton",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4360797": {
+      "gameID": "20241212_LAR@SF",
+      "Receiving": {
+        "receptions": "1",
+        "recTD": "0",
+        "longRec": "6",
+        "targets": "2",
+        "recYds": "6",
+        "recAvg": "6.0"
+      },
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.31",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "20",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4360797",
+      "longName": "Tutu Atwell",
+      "fantasyPoints": "1.1",
+      "fantasyPointsDefault": {
+        "standard": "0.6",
+        "PPR": "1.6",
+        "halfPPR": "1.1"
+      }
+    },
+    "4360853": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "62",
+        "stSnap": "7",
+        "stSnapPct": "0.26",
+        "offSnap": "0",
+        "defSnapPct": "0.95"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "8",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "1",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4360853",
+      "longName": "Talanoa Hufanga",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4360859": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "4",
+        "stSnapPct": "0.15",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4360859",
+      "longName": "Justin Dedich",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4361741": {
+      "gameID": "20241212_LAR@SF",
+      "Rushing": {
+        "rushAvg": "3.0",
+        "rushYds": "3",
+        "carries": "1",
+        "longRush": "3",
+        "rushTD": "0"
+      },
+      "Passing": {
+        "qbr": "20.3",
+        "rtg": "45.4",
+        "sacked": "3-14",
+        "passAttempts": "31",
+        "passAvg": "4.6",
+        "passTD": "0",
+        "passYds": "142",
+        "int": "1",
+        "passCompletions": "14"
+      },
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "54",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4361741",
+      "longName": "Brock Purdy",
+      "fantasyPoints": "4.18",
+      "fantasyPointsDefault": {
+        "standard": "4.98",
+        "PPR": "4.98",
+        "halfPPR": "4.98"
+      }
+    },
+    "4362245": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "34",
+        "stSnap": "3",
+        "stSnapPct": "0.11",
+        "offSnap": "0",
+        "defSnapPct": "0.63"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4362245",
+      "longName": "Braden Fiske",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4362294": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "8",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.15"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4362294",
+      "longName": "Desjuan Johnson",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4362474": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "4",
+        "stSnapPct": "0.15",
+        "offSnap": "65",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4362474",
+      "longName": "Steve Avila",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4362999": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "2",
+        "stSnapPct": "0.07",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4362999",
+      "longName": "Spencer Burford",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4368113": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "14",
+        "stSnapPct": "0.52",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4368113",
+      "longName": "Charles Woods",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4372066": {
+      "gameID": "20241212_LAR@SF",
+      "scoringPlays": [
+        {
+          "score": "Jake Moody 53 Yd Field Goal",
+          "scorePeriod": "Q1",
+          "homeScore": "3",
+          "awayScore": "0",
+          "teamID": "28",
+          "scoreDetails": "5 plays, 39 yards, 2:47",
+          "scoreType": "FG",
+          "scoreTime": "10:01",
+          "team": "SF",
+          "playerIDs": [
+            "4372066"
+          ]
+        },
+        {
+          "score": "Jake Moody 47 Yd Field Goal",
+          "scorePeriod": "Q3",
+          "homeScore": "6",
+          "awayScore": "3",
+          "teamID": "28",
+          "scoreDetails": "10 plays, 34 yards, 4:49",
+          "scoreType": "FG",
+          "scoreTime": "8:23",
+          "team": "SF",
+          "playerIDs": [
+            "4372066"
+          ]
+        }
+      ],
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "5",
+        "stSnapPct": "0.19",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "fgLong": "53",
+        "fgMade": "2",
+        "fgAttempts": "2",
+        "xpMade": "0",
+        "fgPct": "100.0",
+        "kickingPts": "6",
+        "xpAttempts": "0",
+        "fgMissed": "0",
+        "xpMissed": "0"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4372066",
+      "longName": "Jake Moody",
+      "fantasyPoints": "6.0",
+      "fantasyPointsDefault": {
+        "standard": "6.0",
+        "PPR": "6.0",
+        "halfPPR": "6.0"
+      }
+    },
+    "4372518": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "24",
+        "stSnap": "3",
+        "stSnapPct": "0.11",
+        "offSnap": "0",
+        "defSnapPct": "0.44"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4372518",
+      "longName": "Bobby Brown III",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4372561": {
+      "gameID": "20241212_LAR@SF",
+      "Rushing": {
+        "rushAvg": "3.6",
+        "rushYds": "57",
+        "carries": "16",
+        "longRush": "16",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "4",
+        "recTD": "0",
+        "longRec": "10",
+        "targets": "4",
+        "recYds": "18",
+        "recAvg": "4.5"
+      },
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.76",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "41",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4372561",
+      "longName": "Isaac Guerendo",
+      "fantasyPoints": "12.7",
+      "fantasyPointsDefault": {
+        "standard": "7.5",
+        "PPR": "11.5",
+        "halfPPR": "9.5"
+      }
+    },
+    "4386544": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "13",
+        "stSnapPct": "0.48",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Punting": {
+        "puntReturns": "1",
+        "puntReturnYds": "10",
+        "puntReturnAvg": "10.0",
+        "puntReturnLong": "10",
+        "puntReturnTD": "0"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4386544",
+      "longName": "Xavier Smith",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4426515": {
+      "gameID": "20241212_LAR@SF",
+      "Rushing": {
+        "rushAvg": "5.5",
+        "rushYds": "11",
+        "carries": "2",
+        "longRush": "8",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "7",
+        "recTD": "0",
+        "longRec": "51",
+        "targets": "8",
+        "recYds": "97",
+        "recAvg": "13.9"
+      },
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.77",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "50",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4426515",
+      "longName": "Puka Nacua",
+      "fantasyPoints": "14.7",
+      "fantasyPointsDefault": {
+        "standard": "10.8",
+        "PPR": "17.8",
+        "halfPPR": "14.3"
+      }
+    },
+    "4426553": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.23",
+        "defSnap": "0",
+        "stSnap": "3",
+        "stSnapPct": "0.11",
+        "offSnap": "15",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4426553",
+      "longName": "Davis Allen",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4427120": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "18",
+        "stSnap": "17",
+        "stSnapPct": "0.63",
+        "offSnap": "0",
+        "defSnapPct": "0.33"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4427120",
+      "longName": "Jaylen McCollough",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4427325": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "64",
+        "stSnap": "1",
+        "stSnapPct": "0.04",
+        "offSnap": "0",
+        "defSnapPct": "0.98"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4427325",
+      "longName": "Renardo Green",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4428209": {
+      "gameID": "20241212_LAR@SF",
+      "Receiving": {
+        "receptions": "1",
+        "recTD": "0",
+        "longRec": "16",
+        "targets": "4",
+        "recYds": "16",
+        "recAvg": "16.0"
+      },
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.56",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "30",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4428209",
+      "longName": "Ricky Pearsall",
+      "fantasyPoints": "2.1",
+      "fantasyPointsDefault": {
+        "standard": "1.6",
+        "PPR": "2.6",
+        "halfPPR": "2.1"
+      }
+    },
+    "4428550": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "36",
+        "stSnap": "11",
+        "stSnapPct": "0.41",
+        "offSnap": "0",
+        "defSnapPct": "0.67"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "7",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "3",
+        "tfl": "1",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4428550",
+      "longName": "Omar Speights",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4428914": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "6",
+        "stSnap": "12",
+        "stSnapPct": "0.44",
+        "offSnap": "0",
+        "defSnapPct": "0.09"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4428914",
+      "longName": "Dee Winters",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4429096": {
+      "gameID": "20241212_LAR@SF",
+      "Rushing": {
+        "rushAvg": "1.7",
+        "rushYds": "5",
+        "carries": "3",
+        "longRush": "3",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "2",
+        "recTD": "0",
+        "longRec": "12",
+        "targets": "3",
+        "recYds": "15",
+        "recAvg": "7.5"
+      },
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.14",
+        "defSnap": "0",
+        "stSnap": "17",
+        "stSnapPct": "0.63",
+        "offSnap": "9",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4429096",
+      "longName": "Blake Corum",
+      "fantasyPoints": "3.6",
+      "fantasyPointsDefault": {
+        "standard": "2.0",
+        "PPR": "4.0",
+        "halfPPR": "3.0"
+      }
+    },
+    "4430737": {
+      "gameID": "20241212_LAR@SF",
+      "Rushing": {
+        "rushAvg": "3.7",
+        "rushYds": "108",
+        "carries": "29",
+        "longRush": "10",
+        "rushTD": "0"
+      },
+      "Receiving": {
+        "receptions": "2",
+        "recTD": "0",
+        "longRec": "4",
+        "targets": "2",
+        "recYds": "4",
+        "recAvg": "2.0"
+      },
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.86",
+        "defSnap": "0",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "56",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4430737",
+      "longName": "Kyren Williams",
+      "fantasyPoints": "18.0",
+      "fantasyPointsDefault": {
+        "standard": "11.2",
+        "PPR": "13.2",
+        "halfPPR": "12.2"
+      }
+    },
+    "4566192": {
+      "gameID": "20241212_LAR@SF",
+      "scoringPlays": [
+        {
+          "score": "Joshua Karty 48 Yd Field Goal",
+          "scorePeriod": "Q2",
+          "homeScore": "3",
+          "awayScore": "3",
+          "teamID": "19",
+          "scoreDetails": "7 plays, 20 yards, 3:47",
+          "scoreType": "FG",
+          "scoreTime": "1:05",
+          "team": "LAR",
+          "playerIDs": [
+            "4566192"
+          ]
+        },
+        {
+          "score": "Joshua Karty 23 Yd Field Goal ",
+          "scorePeriod": "Q4",
+          "homeScore": "6",
+          "awayScore": "6",
+          "teamID": "19",
+          "scoreDetails": "17 plays, 65 yards, 9:45",
+          "scoreType": "FG",
+          "scoreTime": "13:38",
+          "team": "LAR",
+          "playerIDs": [
+            "4566192"
+          ]
+        },
+        {
+          "score": "Joshua Karty 27 Yd Field Goal ",
+          "scorePeriod": "Q4",
+          "homeScore": "6",
+          "awayScore": "9",
+          "teamID": "19",
+          "scoreDetails": "5 plays, 59 yards, 3:00",
+          "scoreType": "FG",
+          "scoreTime": "9:28",
+          "team": "LAR",
+          "playerIDs": [
+            "4566192"
+          ]
+        },
+        {
+          "score": "Joshua Karty 29 Yd Field Goal",
+          "scorePeriod": "Q4",
+          "homeScore": "6",
+          "awayScore": "12",
+          "teamID": "19",
+          "scoreDetails": "13 plays, 69 yards, 4:56",
+          "scoreType": "FG",
+          "scoreTime": "0:18",
+          "team": "LAR",
+          "playerIDs": [
+            "4566192"
+          ]
+        }
+      ],
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "4",
+        "stSnapPct": "0.15",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "fgLong": "48",
+        "fgMade": "4",
+        "fgAttempts": "4",
+        "xpMade": "0",
+        "fgPct": "100.0",
+        "kickingPts": "12",
+        "xpAttempts": "0",
+        "fgMissed": "0",
+        "xpMissed": "0"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4566192",
+      "longName": "Joshua Karty",
+      "fantasyPoints": "12.0",
+      "fantasyPointsDefault": {
+        "standard": "12.0",
+        "PPR": "12.0",
+        "halfPPR": "12.0"
+      }
+    },
+    "4567175": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "4",
+        "stSnapPct": "0.15",
+        "offSnap": "65",
+        "defSnapPct": "0.00"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "4567175",
+      "longName": "Beaux Limmer",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4568217": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "15",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.28"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4568217",
+      "longName": "Tyler Davis",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4569382": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.15",
+        "defSnap": "0",
+        "stSnap": "20",
+        "stSnapPct": "0.74",
+        "offSnap": "10",
+        "defSnapPct": "0.00"
+      },
+      "Kicking": {
+        "kickReturns": "2",
+        "kickReturnTD": "0",
+        "kickReturnYds": "51",
+        "kickReturnAvg": "25.5",
+        "kickReturnLong": "30"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4569382",
+      "longName": "Jordan Whittington",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4569497": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "19",
+        "stSnap": "1",
+        "stSnapPct": "0.04",
+        "offSnap": "0",
+        "defSnapPct": "0.29"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4569497",
+      "longName": "Sam Okuayinonu",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4572371": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "3",
+        "stSnap": "17",
+        "stSnapPct": "0.63",
+        "offSnap": "0",
+        "defSnapPct": "0.06"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "1",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4572371",
+      "longName": "Josh Wallace",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4575665": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.07",
+        "defSnap": "0",
+        "stSnap": "6",
+        "stSnapPct": "0.22",
+        "offSnap": "4",
+        "defSnapPct": "0.00"
+      },
+      "Punting": {
+        "puntReturns": "5",
+        "puntReturnYds": "51",
+        "puntReturnAvg": "10.2",
+        "puntReturnLong": "17",
+        "puntReturnTD": "0"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "4575665",
+      "longName": "Jacob Cowing",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4578085": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "44",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.81"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4578085",
+      "longName": "Jared Verse",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4596363": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "28",
+        "stSnap": "11",
+        "stSnapPct": "0.41",
+        "offSnap": "0",
+        "defSnapPct": "0.52"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "2",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "0",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "1"
+      },
+      "playerID": "4596363",
+      "longName": "Kamren Kinchens",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4612182": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "22",
+        "stSnap": "4",
+        "stSnapPct": "0.15",
+        "offSnap": "0",
+        "defSnapPct": "0.34"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "3",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "1",
+        "tfl": "0",
+        "qbHits": "1",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4612182",
+      "longName": "Evan Anderson",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4693644": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "60",
+        "stSnap": "3",
+        "stSnapPct": "0.11",
+        "offSnap": "0",
+        "defSnapPct": "0.92"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "Defense": {
+        "totalTackles": "6",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "4",
+        "tfl": "0",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4693644",
+      "longName": "Ji'Ayir Brown",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "4875196": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "41",
+        "stSnap": "0",
+        "stSnapPct": "0.00",
+        "offSnap": "0",
+        "defSnapPct": "0.76"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "Defense": {
+        "totalTackles": "4",
+        "defTD": "0",
+        "forcedFumbles": "0",
+        "soloTackles": "2",
+        "tfl": "1",
+        "qbHits": "0",
+        "defensiveInterceptions": "0",
+        "sacks": "0",
+        "passDeflections": "0"
+      },
+      "playerID": "4875196",
+      "longName": "Byron Young",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "5092959": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "28",
+      "snapCounts": {
+        "offSnapPct": "1.00",
+        "defSnap": "0",
+        "stSnap": "2",
+        "stSnapPct": "0.07",
+        "offSnap": "54",
+        "defSnapPct": "0.00"
+      },
+      "team": "SF",
+      "teamAbv": "SF",
+      "playerID": "5092959",
+      "longName": "Dominick Puni",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    },
+    "5125875": {
+      "gameID": "20241212_LAR@SF",
+      "teamID": "19",
+      "snapCounts": {
+        "offSnapPct": "0.00",
+        "defSnap": "0",
+        "stSnap": "15",
+        "stSnapPct": "0.56",
+        "offSnap": "0",
+        "defSnapPct": "0.00"
+      },
+      "Punting": {
+        "puntYds": "325",
+        "punts": "6",
+        "puntAvg": "54.2",
+        "puntsin20": "2",
+        "puntTouchBacks": "0",
+        "puntLong": "68"
+      },
+      "team": "LAR",
+      "teamAbv": "LAR",
+      "playerID": "5125875",
+      "longName": "Ethan Evans",
+      "fantasyPoints": "0.0",
+      "fantasyPointsDefault": {
+        "standard": "0.0",
+        "PPR": "0.0",
+        "halfPPR": "0.0"
+      }
+    }
+  },
+  "arenaCapacity": "68,500",
+  "arena": "Levi's Stadium",
+  "homePts": "6",
+  "awayResult": "W",
+  "teamIDAway": "19",
+  "Referees": "Greg Wilson, Clay Martin, Jerod Phillips, Dave Hawkshaw, Alonzo Ramsey III, James Carter II, Brian Perry",
+  "gameClock": "",
+  "awayPts": "12",
+  "gameID": "20241212_LAR@SF",
+  "seasonType": "Regular Season",
+  "gameStatusCode": "2"
+}

@@ -1,0 +1,182 @@
+{
+  "gameID": "20241003_TB@ATL",
+  "timestamp": "2025-06-14T15:32:54.530Z",
+  "playerStatsStructure": {
+    "topLevelKeys": [
+      "gameStatus",
+      "DST",
+      "teamStats",
+      "gameDate",
+      "scoringPlays",
+      "allPlayByPlay",
+      "network",
+      "teamIDHome",
+      "homeResult",
+      "away",
+      "gameWeek",
+      "attendance",
+      "lineScore",
+      "currentPeriod",
+      "gameLocation",
+      "home",
+      "playerStats",
+      "arenaCapacity",
+      "arena",
+      "homePts"
+    ],
+    "hasPlayerStats": true,
+    "playerStatsKeys": 91
+  },
+  "twoPointConversions": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "defensiveStats": {
+    "found": true,
+    "fieldNames": [
+      "Defense.totalTackles",
+      "Defense.soloTackles",
+      "Defense.defensiveInterceptions",
+      "Defense.defensiveInterceptionsYards",
+      "Defense.passDeflections",
+      "Defense.fumblesRecovered",
+      "Defense.tfl"
+    ],
+    "examples": [
+      {
+        "player": "Lavonte David",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "8"
+      },
+      {
+        "player": "Lavonte David",
+        "position": "Unknown",
+        "field": "Defense.soloTackles",
+        "value": "6"
+      },
+      {
+        "player": "Lavonte David",
+        "position": "Unknown",
+        "field": "Defense.defensiveInterceptions",
+        "value": "1"
+      },
+      {
+        "player": "Lavonte David",
+        "position": "Unknown",
+        "field": "Defense.defensiveInterceptionsYards",
+        "value": "7"
+      },
+      {
+        "player": "Lavonte David",
+        "position": "Unknown",
+        "field": "Defense.passDeflections",
+        "value": "2"
+      },
+      {
+        "player": "Mike Evans",
+        "position": "Unknown",
+        "field": "Defense.fumblesRecovered",
+        "value": "1"
+      },
+      {
+        "player": "Grady Jarrett",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "5"
+      },
+      {
+        "player": "Grady Jarrett",
+        "position": "Unknown",
+        "field": "Defense.soloTackles",
+        "value": "3"
+      },
+      {
+        "player": "Justin Simmons",
+        "position": "Unknown",
+        "field": "Defense.totalTackles",
+        "value": "3"
+      },
+      {
+        "player": "Justin Simmons",
+        "position": "Unknown",
+        "field": "Defense.soloTackles",
+        "value": "3"
+      },
+      {
+        "player": "Justin Simmons",
+        "position": "Unknown",
+        "field": "Defense.tfl",
+        "value": "1"
+      }
+    ]
+  },
+  "returnTouchdowns": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "teamDefenseStats": {
+    "found": false,
+    "fieldNames": [],
+    "examples": []
+  },
+  "samplePlayers": [
+    {
+      "playerId": "14880",
+      "name": "Kirk Cousins",
+      "position": "Unknown",
+      "team": "ATL",
+      "allFields": [
+        "gameID",
+        "Passing",
+        "scoringPlays",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    },
+    {
+      "playerId": "14985",
+      "name": "Lavonte David",
+      "position": "Unknown",
+      "team": "TB",
+      "allFields": [
+        "gameID",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "Defense",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    },
+    {
+      "playerId": "16019",
+      "name": "William Gholston",
+      "position": "Unknown",
+      "team": "TB",
+      "allFields": [
+        "gameID",
+        "teamID",
+        "snapCounts",
+        "team",
+        "teamAbv",
+        "playerID",
+        "longName",
+        "fantasyPoints",
+        "fantasyPointsDefault"
+      ]
+    }
+  ],
+  "interestingFindings": []
+}
