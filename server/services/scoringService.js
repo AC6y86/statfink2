@@ -38,7 +38,7 @@ class ScoringService {
         const passingYards = playerStats.passing_yards || 0;
         if (passingYards >= 400) points += 15;
         else if (passingYards >= 325) points += 12;
-        else if (passingYards >= 250) points += 9;
+        else if (passingYards >= 250) points += 9;  // Per SCORING_SYSTEM.md
         else if (passingYards >= 175) points += 6;
 
         // Receiving (by any player) - tiered system
@@ -47,6 +47,7 @@ class ScoringService {
         else if (receivingYards >= 150) points += 12;
         else if (receivingYards >= 100) points += 9;
         else if (receivingYards >= 75) points += 6;
+        else if (receivingYards >= 50) points += 3;
 
         // Rushing (by any player) - tiered system
         const rushingYards = playerStats.rushing_yards || 0;
@@ -54,6 +55,7 @@ class ScoringService {
         else if (rushingYards >= 150) points += 12;
         else if (rushingYards >= 100) points += 9;
         else if (rushingYards >= 75) points += 6;
+        else if (rushingYards >= 50) points += 3;
 
         // Kicker scoring - fixed points regardless of distance
         points += (playerStats.field_goals_made || 0) * 2; // Field goals: 2 points (distance doesn't matter)
@@ -76,10 +78,6 @@ class ScoringService {
 
         // Kick or Punt returner
         points += (playerStats.return_tds || 0) * 20; // Touchdown scored: 20 points
-
-        // Negative points for turnovers
-        points -= (playerStats.interceptions || 0) * 2; // Interceptions thrown
-        // Note: Fumbles lost have no penalty (0 points) per scoring guide
 
         return Math.round(points * 100) / 100; // Round to 2 decimals
     }
