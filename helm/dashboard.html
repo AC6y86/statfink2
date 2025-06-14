@@ -2396,40 +2396,41 @@
             if (data.rows.length === 0) {
                 resultDiv.innerHTML = '<strong>Query executed successfully.</strong><br>No rows returned.';
             } else {
-                let html = `<strong>Query executed successfully.</strong><br>Returned ${data.rowCount} rows.<br><br>`;
+                let queryHtml = `<strong>Query executed successfully.</strong><br>Returned ${data.rowCount} rows.<br><br>`;
                 
                 // Create a simple table for results
-                html += '<table style="width: 100%; border-collapse: collapse; margin-top: 10px; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">';
+                queryHtml += '<table style="width: 100%; border-collapse: collapse; margin-top: 10px; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">';
                 
                 // Header
-                html += '<thead><tr>';
+                queryHtml += '<thead><tr>';
                 Object.keys(data.rows[0]).forEach(column => {
-                    html += `<th style="background: #34495e; color: white; padding: 12px 8px; text-align: left; font-weight: bold; font-size: 12px; border: 1px solid #2c3e50;">${column}</th>`;
+                    queryHtml += `<th style="background: #34495e; color: white; padding: 12px 8px; text-align: left; font-weight: bold; font-size: 12px; border: 1px solid #2c3e50;">${column}</th>`;
                 });
-                html += '</tr></thead>';
+                queryHtml += '</tr></thead>';
                 
                 // Body (limit to first 100 rows for display)
-                html += '<tbody>';
+                queryHtml += '<tbody>';
                 data.rows.slice(0, 100).forEach((row, index) => {
                     const bgColor = index % 2 === 1 ? 'background: #f8f9fa;' : '';
-                    html += `<tr style="${bgColor}">`;
+                    queryHtml += `<tr style="${bgColor}">`;
                     Object.values(row).forEach(value => {
                         if (value === null || value === undefined) {
-                            html += '<td style="padding: 8px; border: 1px solid #ddd; font-size: 12px;"><span style="color: #7f8c8d; font-style: italic;">NULL</span></td>';
+                            queryHtml += '<td style="padding: 8px; border: 1px solid #ddd; font-size: 12px;"><span style="color: #7f8c8d; font-style: italic;">NULL</span></td>';
                         } else {
-                            html += `<td style="padding: 8px; border: 1px solid #ddd; font-size: 12px;">${String(value).substring(0, 200)}</td>`;
+                            queryHtml += `<td style="padding: 8px; border: 1px solid #ddd; font-size: 12px;">${String(value).substring(0, 200)}</td>`;
                         }
                     });
-                    html += '</tr>';
+                    queryHtml += '</tr>';
                 });
-                html += '</tbody></table>';
+                queryHtml += '</tbody></table>';
                 
                 if (data.rowCount > 100) {
-                    html += `<p><em>Showing first 100 rows of ${data.rowCount} total results.</em></p>`;
+                    queryHtml += `<p><em>Showing first 100 rows of ${data.rowCount} total results.</em></p>`;
                 }
+                
+                resultDiv.innerHTML = queryHtml;
             }
             
-            resultDiv.innerHTML = html;
             resultDiv.style.display = 'block';
         }
         
