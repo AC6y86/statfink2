@@ -10,39 +10,38 @@ async function recalculateAllFantasyPoints(db, scoringService) {
         // Get all player stats from the database
         const allStats = await db.all(`
             SELECT 
-                stat_id,
-                player_id,
-                week,
-                season,
-                passing_yards,
-                passing_tds,
-                interceptions,
-                rushing_yards,
-                rushing_tds,
-                receiving_yards,
-                receiving_tds,
-                receptions,
-                fumbles,
-                fumbles_lost,
-                sacks,
-                def_interceptions,
-                fumbles_recovered,
-                def_touchdowns,
-                safeties,
-                points_allowed,
-                yards_allowed,
-                field_goals_made,
-                field_goals_attempted,
-                extra_points_made,
-                extra_points_attempted,
-                return_tds,
-                two_point_conversions_pass,
-                two_point_conversions_run,
-                position,
-                fantasy_points as old_fantasy_points
+                ps.stat_id,
+                ps.player_id,
+                ps.week,
+                ps.season,
+                ps.passing_yards,
+                ps.passing_tds,
+                ps.interceptions,
+                ps.rushing_yards,
+                ps.rushing_tds,
+                ps.receiving_yards,
+                ps.receiving_tds,
+                ps.receptions,
+                ps.fumbles,
+                ps.sacks,
+                ps.def_interceptions,
+                ps.fumbles_recovered,
+                ps.def_touchdowns,
+                ps.safeties,
+                ps.points_allowed,
+                ps.yards_allowed,
+                ps.field_goals_made,
+                ps.field_goals_attempted,
+                ps.extra_points_made,
+                ps.extra_points_attempted,
+                ps.field_goals_0_39,
+                ps.field_goals_40_49,
+                ps.field_goals_50_plus,
+                np.position,
+                ps.fantasy_points as old_fantasy_points
             FROM player_stats ps
             JOIN nfl_players np ON ps.player_id = np.player_id
-            ORDER BY season DESC, week DESC, stat_id
+            ORDER BY ps.season DESC, ps.week DESC, ps.stat_id
         `);
         
         logInfo(`Found ${allStats.length} player stat records to recalculate`);
@@ -57,8 +56,21 @@ async function recalculateAllFantasyPoints(db, scoringService) {
             const updates = [];
             
             for (const stats of batch) {
+                // Add default values for any missing fields that scoring service might expect
+                const statsWithDefaults = {
+                    ...stats,
+                    fumbles_lost: 0,
+                    return_tds: 0,
+                    two_point_conversions_pass: 0,
+                    two_point_conversions_run: 0,
+                    two_point_conversions_rec: 0,
+                    def_points_allowed_rank: null,
+                    def_yards_allowed_rank: null,
+                    ...stats // Override with actual values if they exist
+                };
+                
                 // Calculate new fantasy points using the updated scoring system
-                const newPoints = await scoringService.calculateFantasyPoints(stats);
+                const newPoints = await scoringService.calculateFantasyPoints(statsWithDefaults);
                 const oldPoints = stats.old_fantasy_points || 0;
                 const difference = newPoints - oldPoints;
                 
