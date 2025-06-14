@@ -48,8 +48,8 @@ describe('ScoringService', () => {
 
       const points = await scoringService.calculateFantasyPoints(qbStats);
       
-      // 300 * 0.04 + 3 * 4 + 1 * -2 + 20 * 0.1 + 1 * 6
-      // = 12 + 12 - 2 + 2 + 6 = 30
+      // Passing TDs: 3 * 5 = 15, Rushing TDs: 1 * 8 = 8, Passing yards 300 (250-324) = 9, Rushing yards 20 (< 75) = 0, Interceptions: -2
+      // = 15 + 8 + 9 + 0 - 2 = 30
       expect(points).toBe(30);
     });
 
@@ -60,14 +60,14 @@ describe('ScoringService', () => {
         receiving_yards: 30,
         receiving_tds: 0,
         receptions: 3,
-        fumbles: 1
+        fumbles_lost: 1
       };
 
       const points = await scoringService.calculateFantasyPoints(rbStats);
       
-      // 100 rushing yards (100-174) = 9 points + 2 rushing TDs * 8 = 16 points + 30 receiving yards (< 75) = 0 points
-      // Total: 9 + 16 + 0 = 25 points
-      expect(points).toBe(25);
+      // Rushing TDs: 2 * 8 = 16, Rushing yards 100 (100-149) = 9, Receiving yards 30 (< 75) = 0, Fumbles lost: -2
+      // Total: 16 + 9 + 0 - 2 = 23 points
+      expect(points).toBe(23);
     });
 
     test('should calculate DST fantasy points correctly', async () => {
@@ -78,14 +78,16 @@ describe('ScoringService', () => {
         fumbles_recovered: 1,
         def_touchdowns: 1,
         safeties: 0,
-        points_allowed: 7
+        points_allowed: 7,
+        def_points_allowed_rank: 2,
+        def_yards_allowed_rank: 1
       };
 
       const points = await scoringService.calculateFantasyPoints(dstStats);
       
-      // Only def_touchdowns * 8 = 8 points (DST scoring only includes touchdowns in current logic)
-      // Points allowed > 6 so no bonus
-      expect(points).toBe(8);
+      // def_touchdowns * 8 = 8 points + yards allowed rank 1 bonus = 5 points
+      // Points allowed rank 2 (not 1) so no bonus
+      expect(points).toBe(13);
     });
 
     test('should calculate kicker fantasy points correctly', async () => {
@@ -111,17 +113,21 @@ describe('ScoringService', () => {
       expect(points).toBe(0);
     });
 
-    test('should apply points allowed tiers correctly', async () => {
+    test('should apply defensive ranking bonuses correctly', async () => {
       const testCases = [
-        { points_allowed: 0, expected_bonus: 5 }, // <= 6 gets bonus
-        { points_allowed: 6, expected_bonus: 5 }, // <= 6 gets bonus
-        { points_allowed: 7, expected_bonus: 0 }, // > 6 gets no bonus
-        { points_allowed: 13, expected_bonus: 0 },
-        { points_allowed: 20, expected_bonus: 0 }
+        { def_points_allowed_rank: 1, def_yards_allowed_rank: 1, expected_bonus: 10 }, // Both rank 1
+        { def_points_allowed_rank: 1, def_yards_allowed_rank: 2, expected_bonus: 5 }, // Points rank 1 only
+        { def_points_allowed_rank: 2, def_yards_allowed_rank: 1, expected_bonus: 5 }, // Yards rank 1 only
+        { def_points_allowed_rank: 2, def_yards_allowed_rank: 2, expected_bonus: 0 }, // Neither rank 1
+        { def_points_allowed_rank: 3, def_yards_allowed_rank: 5, expected_bonus: 0 }  // Neither rank 1
       ];
 
       for (const testCase of testCases) {
-        const dstStats = { position: 'DST', points_allowed: testCase.points_allowed };
+        const dstStats = { 
+          position: 'DST', 
+          def_points_allowed_rank: testCase.def_points_allowed_rank,
+          def_yards_allowed_rank: testCase.def_yards_allowed_rank
+        };
         const points = await scoringService.calculateFantasyPoints(dstStats);
         expect(points).toBe(testCase.expected_bonus);
       }
@@ -131,15 +137,19 @@ describe('ScoringService', () => {
   describe('validateLineup', () => {
     test('should validate correct starting lineup', () => {
       const validRoster = [
-        { position: 'QB', roster_position: 'starter' },
+        { position: 'QB', roster_position: 'starter' },      // 1 QB
+        { position: 'RB', roster_position: 'starter' },      // 4 RBs
         { position: 'RB', roster_position: 'starter' },
         { position: 'RB', roster_position: 'starter' },
-        { position: 'WR', roster_position: 'starter' },
+        { position: 'RB', roster_position: 'starter' },
+        { position: 'WR', roster_position: 'starter' },      // 3 WR/TE combined
         { position: 'WR', roster_position: 'starter' },
         { position: 'TE', roster_position: 'starter' },
-        { position: 'K', roster_position: 'starter' },
+        { position: 'K', roster_position: 'starter' },       // 1 K
+        { position: 'DST', roster_position: 'starter' },     // 2 DST
         { position: 'DST', roster_position: 'starter' },
-        { position: 'WR', roster_position: 'starter' }, // FLEX
+        { position: 'QB', roster_position: 'starter' },      // 2 Bonus players (any position)
+        { position: 'RB', roster_position: 'starter' },
         { position: 'RB', roster_position: 'bench' },
         { position: 'WR', roster_position: 'bench' }
       ];
@@ -164,22 +174,25 @@ describe('ScoringService', () => {
       expect(() => scoringService.validateLineup(invalidRoster)).toThrow('Need at least 1 QB');
     });
 
-    test('should reject lineup with too many players', () => {
+    test('should reject lineup with insufficient RBs', () => {
       const invalidRoster = [
         { position: 'QB', roster_position: 'starter' },
-        { position: 'QB', roster_position: 'starter' }, // Too many QBs
         { position: 'RB', roster_position: 'starter' },
         { position: 'RB', roster_position: 'starter' },
+        { position: 'RB', roster_position: 'starter' }, // Only 3 RBs instead of 4
+        { position: 'WR', roster_position: 'starter' },
         { position: 'WR', roster_position: 'starter' },
         { position: 'WR', roster_position: 'starter' },
         { position: 'TE', roster_position: 'starter' },
         { position: 'K', roster_position: 'starter' },
         { position: 'DST', roster_position: 'starter' },
-        { position: 'WR', roster_position: 'starter' }
+        { position: 'DST', roster_position: 'starter' },
+        { position: 'WR', roster_position: 'starter' },
+        { position: 'TE', roster_position: 'starter' }
       ];
 
       expect(() => scoringService.validateLineup(invalidRoster)).toThrow(ValidationError);
-      expect(() => scoringService.validateLineup(invalidRoster)).toThrow('Can have at most 1 QB');
+      expect(() => scoringService.validateLineup(invalidRoster)).toThrow('Need at least 4 RB');
     });
 
     test('should reject lineup with wrong total players', () => {
@@ -191,7 +204,7 @@ describe('ScoringService', () => {
         // Missing players
       ];
 
-      expect(() => scoringService.validateLineup(invalidRoster)).toThrow('Starting lineup must have exactly 9 players');
+      expect(() => scoringService.validateLineup(invalidRoster)).toThrow('Starting lineup must have exactly 13 players');
     });
   });
 

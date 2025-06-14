@@ -24,61 +24,62 @@ class ScoringService {
         
         let points = 0;
 
-        // Touchdown scoring
-        const totalTDs = (playerStats.passing_tds || 0) + (playerStats.rushing_tds || 0) + (playerStats.receiving_tds || 0);
+        // Touchdown scoring (any player)
         points += (playerStats.passing_tds || 0) * 5; // Touchdown Pass: 5 points
-        points += ((playerStats.rushing_tds || 0) + (playerStats.receiving_tds || 0)) * 8; // Touchdown Scored: 8 points
+        points += (playerStats.rushing_tds || 0) * 8; // Touchdown Scored: 8 points
+        points += (playerStats.receiving_tds || 0) * 8; // Touchdown Scored: 8 points
 
-        // Two Point Conversions
+        // Two Point Conversions (any player)
         points += (playerStats.two_point_conversions_pass || 0) * 2; // Two Point Conversion Pass: 2 points
         points += (playerStats.two_point_conversions_run || 0) * 2; // Two Point Conversion Scored: 2 points
+        points += (playerStats.two_point_conversions_rec || 0) * 2; // Two Point Conversion Scored: 2 points
 
-        // Passing Yards (tiered system)
+        // Quarterback (or any player) passing yards - tiered system
         const passingYards = playerStats.passing_yards || 0;
         if (passingYards >= 400) points += 15;
         else if (passingYards >= 325) points += 12;
         else if (passingYards >= 250) points += 9;
         else if (passingYards >= 175) points += 6;
 
-        // Receiving Yards (tiered system) 
+        // Receiving (by any player) - tiered system
         const receivingYards = playerStats.receiving_yards || 0;
         if (receivingYards >= 200) points += 15;
         else if (receivingYards >= 150) points += 12;
         else if (receivingYards >= 100) points += 9;
         else if (receivingYards >= 75) points += 6;
 
-        // Rushing Yards (tiered system)
+        // Rushing (by any player) - tiered system
         const rushingYards = playerStats.rushing_yards || 0;
         if (rushingYards >= 200) points += 15;
         else if (rushingYards >= 150) points += 12;
         else if (rushingYards >= 100) points += 9;
         else if (rushingYards >= 75) points += 6;
 
-        // Kicker scoring
-        points += (playerStats.field_goals_made || 0) * 2; // Field goals: 2 points
+        // Kicker scoring - fixed points regardless of distance
+        points += (playerStats.field_goals_made || 0) * 2; // Field goals: 2 points (distance doesn't matter)
         points += (playerStats.extra_points_made || 0) * 0.5; // Extra points: 0.5 points
 
-        // Team Defense scoring
+        // Team Defense (of the 16 teams drafted)
         if (playerStats.position === 'DST') {
             points += (playerStats.def_touchdowns || 0) * 8; // Touchdown scored: 8 points
             
-            // Defensive bonuses (least points/yards allowed among 16 teams)
-            // This would need to be calculated weekly based on all team performances
-            // For now, using placeholder logic
-            if (playerStats.points_allowed !== undefined && playerStats.points_allowed <= 6) {
-                points += 5; // Least points allowed bonus
+            // Note: Defensive bonuses for "fewest points allowed" and "fewest yards allowed" 
+            // need to be calculated weekly based on all drafted teams' performance
+            // This requires a separate calculation method that compares all DST performances
+            if (playerStats.def_points_allowed_rank === 1) {
+                points += 5; // Least points allowed: 5 points
             }
-            if (playerStats.yards_allowed !== undefined && playerStats.yards_allowed <= 250) {
-                points += 5; // Least yards allowed bonus  
+            if (playerStats.def_yards_allowed_rank === 1) {
+                points += 5; // Least yards allowed: 5 points
             }
         }
 
-        // Kick/Punt Return TDs
-        points += (playerStats.return_tds || 0) * 20; // Kick or Punt returner touchdown: 20 points
+        // Kick or Punt returner
+        points += (playerStats.return_tds || 0) * 20; // Touchdown scored: 20 points
 
         // Negative points for turnovers
         points -= (playerStats.interceptions || 0) * 2; // Interceptions thrown
-        points -= (playerStats.fumbles_lost || 0) * 2; // Fumbles lost
+        // Note: Fumbles lost have no penalty (0 points) per scoring guide
 
         return Math.round(points * 100) / 100; // Round to 2 decimals
     }
@@ -140,31 +141,34 @@ class ScoringService {
             positionCounts[player.position] = (positionCounts[player.position] || 0) + 1;
         });
 
-        // Standard lineup requirements
-        const requirements = {
-            QB: { min: 1, max: 1 },
-            RB: { min: 2, max: 3 },
-            WR: { min: 2, max: 4 },
-            TE: { min: 1, max: 2 },
-            K: { min: 1, max: 1 },
-            DST: { min: 1, max: 1 }
-        };
-
         const errors = [];
 
-        Object.entries(requirements).forEach(([position, req]) => {
+        // Core requirements (minimum required positions)
+        const coreRequirements = {
+            QB: 1,      // 1 each Quarterback
+            RB: 4,      // 4 each Running Backs
+            K: 1,       // 1 each Kicker
+            DST: 2      // 2 each Team Defense (points + yards allowed)
+        };
+
+        // Check core position requirements
+        Object.entries(coreRequirements).forEach(([position, required]) => {
             const count = positionCounts[position] || 0;
-            if (count < req.min) {
-                errors.push(`Need at least ${req.min} ${position}, currently have ${count}`);
-            }
-            if (count > req.max) {
-                errors.push(`Can have at most ${req.max} ${position}, currently have ${count}`);
+            if (count < required) {
+                errors.push(`Need at least ${required} ${position}, currently have ${count}`);
             }
         });
 
+        // Check WR/TE combined requirement (3 each Wide Receivers or Tight Ends)
+        const wrTeCount = (positionCounts['WR'] || 0) + (positionCounts['TE'] || 0);
+        if (wrTeCount < 3) {
+            errors.push(`Need at least 3 Wide Receivers or Tight Ends combined, currently have ${wrTeCount}`);
+        }
+
+        // Total lineup size should be: 1 QB + 4 RB + 3 WR/TE + 1 K + 2 DST + 2 Bonus = 13
         const totalStarters = starters.length;
-        if (totalStarters !== 9) { // Standard starting lineup size
-            errors.push(`Starting lineup must have exactly 9 players, currently has ${totalStarters}`);
+        if (totalStarters !== 13) {
+            errors.push(`Starting lineup must have exactly 13 players, currently has ${totalStarters}`);
         }
 
         if (errors.length > 0) {
@@ -172,6 +176,49 @@ class ScoringService {
         }
 
         return true;
+    }
+
+    async calculateDefensiveBonuses(week, season) {
+        // Get all DST performances for the week from drafted teams
+        const query = `
+            SELECT ps.player_id, ps.points_allowed, ps.yards_allowed, p.team
+            FROM player_stats ps
+            JOIN nfl_players p ON ps.player_id = p.player_id
+            WHERE ps.week = ? AND ps.season = ? AND p.position = 'DST'
+            AND ps.player_id IN (
+                SELECT DISTINCT player_id FROM fantasy_rosters
+            )
+            ORDER BY ps.points_allowed ASC, ps.yards_allowed ASC
+        `;
+        
+        const dstStats = await this.db.all(query, [week, season]);
+        
+        if (dstStats.length === 0) return;
+
+        // Calculate rankings for points allowed
+        let pointsRank = 1;
+        let yardsRank = 1;
+        
+        // Sort by points allowed and assign ranks
+        const pointsSorted = [...dstStats].sort((a, b) => a.points_allowed - b.points_allowed);
+        pointsSorted.forEach((stat, index) => {
+            stat.def_points_allowed_rank = index + 1;
+        });
+
+        // Sort by yards allowed and assign ranks
+        const yardsSorted = [...dstStats].sort((a, b) => a.yards_allowed - b.yards_allowed);
+        yardsSorted.forEach((stat, index) => {
+            stat.def_yards_allowed_rank = index + 1;
+        });
+
+        // Update the database with rankings
+        for (const stat of dstStats) {
+            await this.db.run(`
+                UPDATE player_stats 
+                SET def_points_allowed_rank = ?, def_yards_allowed_rank = ?
+                WHERE player_id = ? AND week = ? AND season = ?
+            `, [stat.def_points_allowed_rank, stat.def_yards_allowed_rank, stat.player_id, week, season]);
+        }
     }
 }
 
