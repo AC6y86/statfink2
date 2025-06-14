@@ -6,28 +6,9 @@
 </head>
 <body onload="read_cont()">
     <div id="controls" class="controls">
-        <div id="optsmenu" class="menu">Options</div>
-        <div id="weeknav" class="menu" style="margin-left: 10px;">Week Nav</div>
-        <div id="updatemsg" style="display: inline-block; margin-left: 10px; font-size: 11px; color: #333;"></div>
+        <div id="updatemsg" style="display: inline-block; font-size: 11px; color: #333;"></div>
     </div>
     <div id="lastupdate" class="lastupdate"></div>
-        <div id="firstmenu" class="firstmenu">
-            <div id="detailsdiv" class="menuitem">Toggle Details</div>
-            <div id="breakoutdiv" class="menuitem">Matchup In New Window</div>
-            <div id="injuriesdiv" class="menuitem">Injuries</div>
-            <div id="defensivediv" class="menuitem">Defensive TDs</div>
-            <div class="menuitem" id="safetiesdiv">Safeties</div>
-            <div id="zerodiv" class="menuitem">Zero Check</div>
-            <div id="scoresdiv" class="menuitem">Scores File</div>
-        </div>
-        <div id="weekmenu" class="firstmenu" style="display: none;">
-            <div id="seasonview" class="menuitem">View All Weeks</div>
-            <div id="prevweek" class="menuitem">← Previous Week</div>
-            <div id="nextweek" class="menuitem">Next Week →</div>
-            <div id="currentweek" class="menuitem">Current Week</div>
-        </div>
-        <div id="configdiv" class="configdiv"></div>
-    </div>
 
     <div id="leaguediv">
         <table class="leaguetable" id="leaguetable" width="250">
@@ -109,95 +90,10 @@
     document.getElementById("teams").className = "absteams";
     document.getElementById("leaguediv").className = "absleague";
 
-    // Menu event handlers
-    var buttondivs = document.getElementById("controls").getElementsByTagName("div");
-    for (var divnum = 0; divnum < buttondivs.length; divnum++) {
-        buttondivs[divnum].onclick = buttonclick;
-        buttondivs[divnum].onmouseover = buttonmouseover;
-        buttondivs[divnum].onmouseout = buttonmouseout;
-        if (buttondivs[divnum].id == "firstmenu") {
-            buttondivs[divnum].onmouseout = menumouseout;
-            buttondivs[divnum].onmouseover = "";
-            buttondivs[divnum].onclick = "";
-            menuvis(0);
-        }
-    }
-
-    // Menu visibility control
-    function menuvis(show) {
-        document.getElementById("firstmenu").style.display = show ? "block" : "none";
-    }
+    // No menu handlers needed anymore
     
-    // Week menu visibility control
-    function weekMenuVis(show) {
-        document.getElementById("weekmenu").style.display = show ? "block" : "none";
-    }
 
-    // Button event handlers
-    function buttonclick(e) {
-        var target = e.target || e.srcElement;
-        switch(target.id) {
-            case "optsmenu":
-                weekMenuVis(false);
-                menuvis(document.getElementById("firstmenu").style.display === "none");
-                break;
-            case "weeknav":
-                menuvis(false);
-                weekMenuVis(document.getElementById("weekmenu").style.display === "none");
-                break;
-            case "detailsdiv":
-                toggleDetails();
-                break;
-            case "breakoutdiv":
-                openMatchupWindow();
-                break;
-            case "injuriesdiv":
-                showInjuries();
-                break;
-            case "defensivediv":
-                showDefensiveTDs();
-                break;
-            case "safetiesdiv":
-                showSafeties();
-                break;
-            case "zerodiv":
-                checkZeroScores();
-                break;
-            case "scoresdiv":
-                showScoresFile();
-                break;
-            case "seasonview":
-                viewAllWeeks();
-                break;
-            case "prevweek":
-                navigateWeek(-1);
-                break;
-            case "nextweek":
-                navigateWeek(1);
-                break;
-            case "currentweek":
-                goToCurrentWeek();
-                break;
-        }
-    }
-
-    function buttonmouseover(e) {
-        var target = e.target || e.srcElement;
-        if (target.className === "menuitem") {
-            target.style.backgroundColor = "#f0f0f0";
-        }
-    }
-
-    function buttonmouseout(e) {
-        var target = e.target || e.srcElement;
-        if (target.className === "menuitem") {
-            target.style.backgroundColor = "";
-        }
-    }
-
-    function menumouseout() {
-        // Implement menu mouseout if needed
-    }
+    // Removed menu handlers - no longer needed
 
     // Matchup row event handlers
     function matchupmouseover(e) {
@@ -285,31 +181,6 @@
         alert("Scores file feature coming soon!");
     }
     
-    // Week navigation functions
-    function viewAllWeeks() {
-        window.location.href = "/2024-season.html";
-    }
-    
-    function navigateWeek(direction) {
-        const newWeek = currentWeek + direction;
-        if (newWeek >= 1 && newWeek <= 17) {
-            window.location.href = `/statfink/${currentSeason}/${newWeek}`;
-        }
-    }
-    
-    async function goToCurrentWeek() {
-        try {
-            const response = await fetch('/api/league/settings');
-            const data = await response.json();
-            if (data.success) {
-                const actualCurrentWeek = data.data.current_week;
-                const season = data.data.season_year;
-                window.location.href = `/statfink/${season}/${actualCurrentWeek}`;
-            }
-        } catch (error) {
-            console.error('Error getting current week:', error);
-        }
-    }
 
     // Parse URL to get year, week, and mode
     function parseUrl() {
@@ -507,8 +378,8 @@
         const team2Remaining = 0;
         
         // Update team headers
-        document.getElementById("fteam0").innerHTML = `${matchup.team1_owner}(${team1Remaining})`;
-        document.getElementById("fteam1").innerHTML = `${matchup.team2_owner}(${team2Remaining})`;
+        document.getElementById("fteam0").innerHTML = `${matchup.team1_owner} (${team1Remaining})`;
+        document.getElementById("fteam1").innerHTML = `${matchup.team2_owner} (${team2Remaining})`;
         
         // Build team tables
         displayTeamRoster("team0", data.team1.starters, matchup.team1_name);

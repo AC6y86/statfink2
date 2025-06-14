@@ -35,6 +35,30 @@
             opacity: 0.9;
         }
 
+        .statfink-link-section {
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-bottom: 1rem;
+        }
+
+        .statfink-link {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+        }
+
+        .statfink-link:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -600,6 +624,20 @@
     </div>
 
     <div class="container">
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('players')">Players</button>
+            <button class="tab" onclick="showTab('teams')">Teams</button>
+            <button class="tab" onclick="showTab('rosters')">Rosters</button>
+            <button class="tab" onclick="showTab('stats')">Statistics</button>
+            <button class="tab" onclick="showTab('database')">Database Browser</button>
+            <button class="tab" onclick="showTab('admin')">Admin</button>
+            <button class="tab" onclick="showTab('settings')">Settings</button>
+        </div>
+
+        <div class="statfink-link-section">
+            <a href="/statfink" class="statfink-link">Go to StatFink Matchup Viewer →</a>
+        </div>
         <!-- Overview Stats -->
         <div id="overview-stats" class="stats-grid">
             <div class="stat-card">
@@ -629,16 +667,6 @@
             </div>
         </div>
 
-        <!-- Navigation Tabs -->
-        <div class="tabs">
-            <button class="tab active" onclick="showTab('players')">Players</button>
-            <button class="tab" onclick="showTab('teams')">Teams</button>
-            <button class="tab" onclick="showTab('rosters')">Rosters</button>
-            <button class="tab" onclick="showTab('stats')">Statistics</button>
-            <button class="tab" onclick="showTab('database')">Database Browser</button>
-            <button class="tab" onclick="showTab('admin')">Admin</button>
-            <button class="tab" onclick="showTab('settings')">Settings</button>
-        </div>
 
         <!-- Players Tab -->
         <div id="players-tab" class="tab-content active">
