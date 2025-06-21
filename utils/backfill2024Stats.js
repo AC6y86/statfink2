@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 const Tank01Service = require('../server/services/tank01Service');
+const ScoringService = require('../server/services/scoringService');
+const DatabaseManager = require('../server/database/database');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 require('dotenv').config();
@@ -11,9 +13,12 @@ const dbPath = path.join(__dirname, '../fantasy_football.db');
 class Backfill2024Stats {
     constructor() {
         this.tank01 = new Tank01Service(process.env.TANK01_API_KEY);
+        this.dbManager = new DatabaseManager();
         this.db = new sqlite3.Database(dbPath);
+        this.scoringService = new ScoringService(this.dbManager);
         this.totalStatsImported = 0;
         this.totalGamesProcessed = 0;
+        this.totalPointsCalculated = 0;
         this.errors = [];
     }
 
@@ -37,11 +42,15 @@ class Backfill2024Stats {
                 await this.delay(2000);
             }
 
+            // Fantasy points are calculated inline during import
+            console.log(`\n✅ Fantasy points calculated during import`);
+
             // Summary
             console.log('\n🎉 2024 Stats Backfill Complete!');
             console.log(`📊 Summary:`);
             console.log(`  • ${this.totalGamesProcessed} games processed`);
             console.log(`  • ${this.totalStatsImported} player stat records imported`);
+            console.log(`  • ${this.totalPointsCalculated} fantasy points calculated`);
             console.log(`  • ${this.errors.length} errors encountered`);
 
             if (this.errors.length > 0) {
@@ -294,13 +303,46 @@ class Backfill2024Stats {
                     0, 0, 0, 0, 0, 0, // No 2pt conversions or return TDs for team DST
                     playerName, teamAbv, 'DEF', // Position is 'DEF' for StatFink display
                     gameID, JSON.stringify(dstData), new Date().toISOString()
-                ], (err) => {
+                ], async (err) => {
                     if (err) {
                         console.error(`        ❌ Error inserting DST ${teamAbv}: ${err.message}`);
                         reject(err);
                     } else {
-                        console.log(`        ✅ Successfully inserted DST ${teamAbv}`);
-                        resolve(true);
+                        // Calculate fantasy points for DST
+                        const dstStatsForScoring = {
+                            player_id: dstPlayerId,
+                            def_touchdowns: defTouchdowns,
+                            def_interceptions: defInterceptions,
+                            sacks: sacks,
+                            fumbles_recovered: fumblesRecovered,
+                            safeties: safeties,
+                            points_allowed: pointsAllowed,
+                            yards_allowed: yardsAllowed,
+                            position: 'DST'
+                        };
+                        
+                        try {
+                            const fantasyPoints = await this.scoringService.calculateFantasyPoints(dstStatsForScoring);
+                            
+                            // Update DST record with fantasy points
+                            this.db.run(`
+                                UPDATE player_stats 
+                                SET fantasy_points = ? 
+                                WHERE player_id = ? AND week = ? AND season = ?
+                            `, [fantasyPoints, dstPlayerId, week, season], (updateErr) => {
+                                if (updateErr) {
+                                    console.error(`        ⚠️  Error updating DST fantasy points for ${teamAbv}: ${updateErr.message}`);
+                                } else {
+                                    this.totalPointsCalculated++;
+                                    console.log(`        ✅ Successfully inserted DST ${teamAbv} with ${fantasyPoints} fantasy points`);
+                                }
+                                resolve(true);
+                            });
+                        } catch (scoringError) {
+                            console.error(`        ⚠️  Error calculating DST fantasy points for ${teamAbv}: ${scoringError.message}`);
+                            console.log(`        ✅ Successfully inserted DST ${teamAbv} (points calculation failed)`);
+                            resolve(true);
+                        }
                     }
                 });
             });
@@ -403,13 +445,58 @@ class Backfill2024Stats {
                     extraPointsAttempted, twoPointConversionsPass, twoPointConversionsRun, 
                     twoPointConversionsRec, returnTds, playerName, team, position,
                     gameID, JSON.stringify(playerData), new Date().toISOString()
-                ], (err) => {
+                ], async (err) => {
                     if (err) {
                         console.error(`        ❌ Error inserting ${playerName}: ${err.message}`);
                         reject(err);
                     } else {
-                        // console.log(`        ✅ Successfully inserted ${playerName}`);
-                        resolve(true);
+                        // Calculate and update fantasy points immediately after inserting stats
+                        const statsForScoring = {
+                            player_id: playerId,
+                            passing_yards: passingYards,
+                            passing_tds: passingTds,
+                            interceptions: interceptions,
+                            rushing_yards: rushingYards,
+                            rushing_tds: rushingTds,
+                            receiving_yards: receivingYards,
+                            receiving_tds: receivingTds,
+                            receptions: receptions,
+                            fumbles: fumbles,
+                            sacks: individualSacks,
+                            def_interceptions: defInterceptions,
+                            fumbles_recovered: defFumblesRecovered,
+                            def_touchdowns: defTouchdowns,
+                            field_goals_made: fieldGoalsMade,
+                            field_goals_attempted: fieldGoalsAttempted,
+                            extra_points_made: extraPointsMade,
+                            extra_points_attempted: extraPointsAttempted,
+                            two_point_conversions_pass: twoPointConversionsPass,
+                            two_point_conversions_run: twoPointConversionsRun,
+                            two_point_conversions_rec: twoPointConversionsRec,
+                            return_tds: returnTds,
+                            position: position
+                        };
+                        
+                        try {
+                            const fantasyPoints = await this.scoringService.calculateFantasyPoints(statsForScoring);
+                            
+                            // Update the record with calculated fantasy points
+                            this.db.run(`
+                                UPDATE player_stats 
+                                SET fantasy_points = ? 
+                                WHERE player_id = ? AND week = ? AND season = ?
+                            `, [fantasyPoints, playerId, week, season], (updateErr) => {
+                                if (updateErr) {
+                                    console.error(`        ⚠️  Error updating fantasy points for ${playerName}: ${updateErr.message}`);
+                                } else {
+                                    this.totalPointsCalculated++;
+                                }
+                                resolve(true);
+                            });
+                        } catch (scoringError) {
+                            console.error(`        ⚠️  Error calculating fantasy points for ${playerName}: ${scoringError.message}`);
+                            resolve(true); // Still resolve as the stat was inserted successfully
+                        }
                     }
                 });
             });
