@@ -477,11 +477,13 @@
                 if (stats.extra_points_made > 0) details.push(`${stats.extra_points_made}/${stats.extra_points_attempted} XP`);
                 break;
             case 'DST':
+            case 'DEF':
                 if (stats.sacks > 0) details.push(`${stats.sacks} sacks`);
-                if (stats.interceptions > 0) details.push(`${stats.interceptions} INT`);
+                if (stats.def_interceptions > 0) details.push(`${stats.def_interceptions} INT`);
                 if (stats.fumbles_recovered > 0) details.push(`${stats.fumbles_recovered} FR`);
-                if (stats.defensive_tds > 0) details.push(`${stats.defensive_tds} TD`);
+                if (stats.def_touchdowns > 0) details.push(`${stats.def_touchdowns} TD`);
                 if (stats.points_allowed !== undefined) details.push(`${stats.points_allowed} PA`);
+                if (stats.yards_allowed !== undefined) details.push(`${stats.yards_allowed} YA`);
                 break;
         }
         
@@ -519,9 +521,13 @@
                 if (stats.extra_points_made > 0) details.push(`${stats.extra_points_made} XP`);
                 break;
             case 'DST':
+            case 'DEF':
                 if (stats.sacks > 0) details.push(`${stats.sacks} Sck`);
-                if (stats.interceptions > 0) details.push(`${stats.interceptions} Int`);
+                if (stats.def_interceptions > 0) details.push(`${stats.def_interceptions} Int`);
+                if (stats.fumbles_recovered > 0) details.push(`${stats.fumbles_recovered} FR`);
+                if (stats.def_touchdowns > 0) details.push(`${stats.def_touchdowns} TD`);
                 if (stats.points_allowed !== undefined) details.push(`${stats.points_allowed} PA`);
+                if (stats.yards_allowed !== undefined) details.push(`${stats.yards_allowed} YA`);
                 break;
         }
         

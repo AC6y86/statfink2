@@ -62,7 +62,7 @@ class ScoringService {
         points += (playerStats.extra_points_made || 0) * 0.5; // Extra points: 0.5 points
 
         // Team Defense (of the 16 teams drafted)
-        if (playerStats.position === 'DST') {
+        if (playerStats.position === 'DST' || playerStats.position === 'DEF') {
             points += (playerStats.def_touchdowns || 0) * 8; // Touchdown scored: 8 points
             
             // Note: Defensive bonuses for "fewest points allowed" and "fewest yards allowed" 
