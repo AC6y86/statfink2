@@ -82,9 +82,16 @@ class StatsSyncService {
             
             logInfo(`Transformed ${playerStats.length} player stat entries from Tank01 API`);
 
-            // Calculate fantasy points for each stat entry
+            // Calculate fantasy points for each stat entry (skip defenses - they are calculated at end of week)
             for (const stats of playerStats) {
-                stats.fantasy_points = await this.scoringService.calculateFantasyPoints(stats);
+                const isDefensePlayer = await this.isDefensePlayer(stats.player_id);
+                if (isDefensePlayer) {
+                    // Skip fantasy points calculation for defense players - they need to be calculated at the end of the week
+                    stats.fantasy_points = 0;
+                    logInfo(`Skipping fantasy points calculation for defense player ID: ${stats.player_id}`);
+                } else {
+                    stats.fantasy_points = await this.scoringService.calculateFantasyPoints(stats);
+                }
             }
 
             // Bulk insert/update player stats
@@ -295,6 +302,21 @@ class StatsSyncService {
         } catch (error) {
             logError(`Error finding player ID for ${playerName}`, error);
             return null;
+        }
+    }
+
+    // Check if a player is a defense player
+    async isDefensePlayer(playerId) {
+        try {
+            const player = await this.db.get(
+                'SELECT position FROM nfl_players WHERE player_id = ?',
+                [playerId]
+            );
+            
+            return player && player.position === 'DST';
+        } catch (error) {
+            logError(`Error checking if player ${playerId} is defense player`, error);
+            return false;
         }
     }
 
