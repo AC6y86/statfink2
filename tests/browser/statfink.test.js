@@ -325,6 +325,46 @@ describe('StatFink Viewer', () => {
       });
     });
 
+    test('should display defensive stats for DST/DEF positions', async () => {
+      // Ensure we have a matchup loaded
+      const firstMatchup = await page.$('#leaguetable tbody tr:nth-child(2)');
+      await firstMatchup.click();
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Find all defensive players
+      const defenseStats = await page.$$eval('#team0 tbody tr, #team1 tbody tr', rows => {
+        const defRows = rows.filter(row => {
+          const position = row.querySelector('.position')?.textContent.trim();
+          return position === 'DST' || position === 'DEF';
+        });
+
+        return defRows.map(row => {
+          const span = row.querySelector('.playername span');
+          return {
+            team: row.querySelector('.playername')?.textContent.split('\n')[0].trim(),
+            stats: span ? span.textContent : null,
+            position: row.querySelector('.position')?.textContent.trim()
+          };
+        });
+      });
+
+      // Should have at least 2 defensive players (one per team)
+      expect(defenseStats.length).toBeGreaterThanOrEqual(2);
+
+      // Check each defensive player has stats
+      defenseStats.forEach(def => {
+        expect(def.stats).toBeTruthy();
+        
+        // If not "0 Stats", should contain defensive stat abbreviations
+        if (def.stats !== '0 Stats') {
+          // Should contain at least one of: Sck (sacks), Int (interceptions), 
+          // FR (fumble recoveries), TD (touchdowns), PA (points allowed), YA (yards allowed)
+          const hasDefensiveStats = /Sck|Int|FR|TD|PA|YA/.test(def.stats);
+          expect(hasDefensiveStats).toBe(true);
+        }
+      });
+    });
+
     test('should display valid player positions', async () => {
       const positions = await page.$$eval('.position', cells => 
         cells.map(cell => cell.textContent.trim())
@@ -348,8 +388,8 @@ describe('StatFink Viewer', () => {
       });
       
       if (qbStats && qbStats !== '0 Stats') {
-        // QB stats should mention passing
-        expect(qbStats.toLowerCase()).toMatch(/pass|yds|td|int/);
+        // QB stats should mention passing yards or completions
+        expect(qbStats).toMatch(/Comp|Pyds|TDs/);
       }
 
       // Check RB stats format
@@ -364,7 +404,25 @@ describe('StatFink Viewer', () => {
       
       if (rbStats && rbStats !== '0 Stats') {
         // RB stats should mention rushing or receiving
-        expect(rbStats.toLowerCase()).toMatch(/rush|rec|yds|td/);
+        expect(rbStats).toMatch(/Rshyds|Recs|Recyds|TDs/);
+      }
+
+      // Check defensive stats format
+      const defStats = await page.$$eval('#team0 tbody tr, #team1 tbody tr', rows => {
+        const defRow = rows.find(row => {
+          const pos = row.querySelector('.position')?.textContent.trim();
+          return pos === 'DST' || pos === 'DEF';
+        });
+        if (defRow) {
+          const span = defRow.querySelector('.playername span');
+          return span ? span.textContent : null;
+        }
+        return null;
+      });
+      
+      if (defStats && defStats !== '0 Stats') {
+        // Defensive stats should include sacks, interceptions, etc.
+        expect(defStats).toMatch(/Sck|Int|FR|TD|PA|YA/);
       }
     });
   });
