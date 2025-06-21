@@ -217,7 +217,7 @@ describe('ScoringService', () => {
       expect(score).toBe(145.5);
       expect(mockDb.get).toHaveBeenCalledWith(
         expect.stringContaining('SUM(ps.fantasy_points)'),
-        [1, 1, 2024]
+        [1, 1, 2024, 1, 2024]
       );
     });
 

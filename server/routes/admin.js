@@ -168,8 +168,16 @@ router.get('/dashboard', requireAdmin, asyncHandler(async (req, res) => {
         db.getLeagueSettings()
     ]);
     
-    // Count total rostered players
-    const rosteredPlayers = await db.get('SELECT COUNT(*) as count FROM fantasy_rosters');
+    // Count total rostered players from current week
+    const currentSeason = 2024; // TODO: Make this dynamic
+    const latestWeek = await db.get(`
+        SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+    `, [currentSeason]);
+    
+    const rosteredPlayers = await db.get(`
+        SELECT COUNT(*) as count FROM weekly_rosters 
+        WHERE week = ? AND season = ?
+    `, [latestWeek.week, currentSeason]);
     
     // Get teams with roster issues
     const teamsWithIssues = [];

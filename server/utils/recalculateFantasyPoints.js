@@ -144,11 +144,13 @@ async function recalculateTeamScores(db, week, season) {
             // Calculate total points for starters
             const result = await db.get(`
                 SELECT SUM(ps.fantasy_points) as total_points
-                FROM fantasy_rosters fr
-                JOIN player_stats ps ON fr.player_id = ps.player_id
-                WHERE fr.team_id = ? AND ps.week = ? AND ps.season = ?
-                AND fr.roster_position = 'starter'
-            `, [team.team_id, week, season]);
+                FROM weekly_rosters wr
+                JOIN tank01_player_mapping m ON wr.player_id = m.our_player_id
+                JOIN player_stats ps ON m.tank01_player_id = ps.player_id
+                WHERE wr.team_id = ? AND ps.week = ? AND ps.season = ?
+                AND wr.week = ? AND wr.season = ?
+                AND wr.roster_position = 'active'
+            `, [team.team_id, week, season, week, season]);
             
             const totalPoints = result?.total_points || 0;
             

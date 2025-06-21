@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { Validator, ValidationError } = require('./validation');
 const { DatabaseError, logError, logInfo } = require('../utils/errorHandler');
+const { getTeamAbbreviation } = require('../utils/teamMappings');
 
 class DatabaseManager {
     constructor() {
@@ -156,13 +157,31 @@ class DatabaseManager {
 
     // Roster methods
     async getTeamRoster(teamId) {
+        // Get current season and latest week
+        const currentSeason = 2024; // TODO: Make this dynamic
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+        
         const query = `
-            SELECT r.*, p.name, p.position, p.team, p.bye_week
-            FROM fantasy_rosters r
-            JOIN nfl_players p ON r.player_id = p.player_id
-            WHERE r.team_id = ?
+            SELECT 
+                r.weekly_roster_id as roster_id,
+                r.team_id,
+                r.player_id,
+                CASE 
+                    WHEN r.roster_position = 'injured_reserve' THEN 'injured_reserve'
+                    ELSE 'active'
+                END as roster_position,
+                r.player_name as name,
+                r.player_position as position,
+                COALESCE(p.team, r.player_team) as team,
+                p.bye_week,
+                r.snapshot_date as acquisition_date
+            FROM weekly_rosters r
+            LEFT JOIN nfl_players p ON r.player_id = p.player_id
+            WHERE r.team_id = ? AND r.week = ? AND r.season = ?
             ORDER BY 
-                CASE p.position 
+                CASE r.player_position 
                     WHEN 'QB' THEN 1 
                     WHEN 'RB' THEN 2 
                     WHEN 'WR' THEN 3 
@@ -172,75 +191,144 @@ class DatabaseManager {
                     ELSE 7 
                 END,
                 r.roster_position DESC,
-                p.name
+                r.player_name
         `;
-        return this.all(query, [teamId]);
+        const roster = await this.all(query, [teamId, latestWeek.week, currentSeason]);
+        
+        // Convert team names to abbreviations
+        return roster.map(player => ({
+            ...player,
+            team: getTeamAbbreviation(player.team)
+        }));
     }
 
     async addPlayerToRoster(teamId, playerId, rosterPosition = 'starter') {
-        // First check if player is already on another team
-        const existing = await this.get('SELECT team_id FROM fantasy_rosters WHERE player_id = ?', [playerId]);
+        // Get current season and latest week
+        const currentSeason = 2024; // TODO: Make this dynamic
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+        
+        // Check if player is already on another team in current week
+        const existing = await this.get(`
+            SELECT team_id FROM weekly_rosters 
+            WHERE player_id = ? AND week = ? AND season = ?
+              AND roster_position != 'injured_reserve'
+        `, [playerId, latestWeek.week, currentSeason]);
         
         if (existing) {
             throw new DatabaseError(`Player is already on team ${existing.team_id}`, 'roster_constraint');
         }
         
+        // Get player info for denormalized data
+        const player = await this.get('SELECT * FROM nfl_players WHERE player_id = ?', [playerId]);
+        
+        if (!player) {
+            throw new DatabaseError('Player not found', 'not_found');
+        }
+        
         return this.run(`
-            INSERT INTO fantasy_rosters (team_id, player_id, roster_position)
-            VALUES (?, ?, ?)
-        `, [teamId, playerId, rosterPosition]);
+            INSERT INTO weekly_rosters (team_id, player_id, week, season, roster_position, 
+                                       player_name, player_position, player_team)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `, [teamId, playerId, latestWeek.week, currentSeason, rosterPosition, 
+            player.name, player.position, player.team]);
     }
 
     async removePlayerFromRoster(teamId, playerId) {
+        // Get current season and latest week
+        const currentSeason = 2024; // TODO: Make this dynamic
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+        
         return this.run(`
-            DELETE FROM fantasy_rosters 
-            WHERE team_id = ? AND player_id = ?
-        `, [teamId, playerId]);
+            DELETE FROM weekly_rosters 
+            WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+        `, [teamId, playerId, latestWeek.week, currentSeason]);
     }
 
     async updateRosterPosition(teamId, playerId, rosterPosition) {
+        // Get current season and latest week
+        const currentSeason = 2024; // TODO: Make this dynamic
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+        
         return this.run(`
-            UPDATE fantasy_rosters 
+            UPDATE weekly_rosters 
             SET roster_position = ?
-            WHERE team_id = ? AND player_id = ?
-        `, [rosterPosition, teamId, playerId]);
+            WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+        `, [rosterPosition, teamId, playerId, latestWeek.week, currentSeason]);
     }
 
     // Check if a player is available
     async isPlayerAvailable(playerId) {
-        const result = await this.get('SELECT COUNT(*) as count FROM fantasy_rosters WHERE player_id = ?', [playerId]);
+        // Get current season and latest week
+        const currentSeason = 2024; // TODO: Make this dynamic
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+        
+        const result = await this.get(`
+            SELECT COUNT(*) as count FROM weekly_rosters 
+            WHERE player_id = ? AND week = ? AND season = ?
+              AND roster_position != 'injured_reserve'
+        `, [playerId, latestWeek.week, currentSeason]);
         return result.count === 0;
     }
 
     // Get all available players by position
     async getAvailablePlayersByPosition(position) {
+        // Get current season and latest week
+        const currentSeason = 2024; // TODO: Make this dynamic
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+        
         return this.all(`
             SELECT p.* 
             FROM nfl_players p
-            LEFT JOIN fantasy_rosters r ON p.player_id = r.player_id
+            LEFT JOIN weekly_rosters r ON p.player_id = r.player_id 
+                AND r.week = ? AND r.season = ?
+                AND r.roster_position != 'injured_reserve'
             WHERE p.position = ? AND r.player_id IS NULL
             ORDER BY p.name
-        `, [position]);
+        `, [latestWeek.week, currentSeason, position]);
     }
 
     // Check if team has an injured reserve player
     async hasInjuredReservePlayer(teamId) {
+        // Get current season and latest week
+        const currentSeason = 2024; // TODO: Make this dynamic
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+        
         const result = await this.get(`
             SELECT COUNT(*) as count 
-            FROM fantasy_rosters 
+            FROM weekly_rosters 
             WHERE team_id = ? AND roster_position = 'injured_reserve'
-        `, [teamId]);
+              AND week = ? AND season = ?
+        `, [teamId, latestWeek.week, currentSeason]);
         return result.count > 0;
     }
 
     // Get team's injured reserve player
     async getTeamInjuredReservePlayer(teamId) {
+        // Get current season and latest week
+        const currentSeason = 2024; // TODO: Make this dynamic
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+        
         return this.get(`
-            SELECT r.*, p.name, p.position, p.team, p.bye_week
-            FROM fantasy_rosters r
-            JOIN nfl_players p ON r.player_id = p.player_id
+            SELECT r.*, p.bye_week
+            FROM weekly_rosters r
+            LEFT JOIN nfl_players p ON r.player_id = p.player_id
             WHERE r.team_id = ? AND r.roster_position = 'injured_reserve'
-        `, [teamId]);
+              AND r.week = ? AND r.season = ?
+        `, [teamId, latestWeek.week, currentSeason]);
     }
 
     // Stats methods
@@ -412,12 +500,13 @@ class DatabaseManager {
     async calculateTeamWeeklyPoints(teamId, week, season) {
         const result = await this.get(`
             SELECT SUM(ps.fantasy_points) as total_points
-            FROM fantasy_rosters r
-            JOIN player_stats ps ON r.player_id = ps.player_id
-            WHERE r.team_id = ? AND r.roster_position = 'starter' 
-                AND r.roster_position != 'injured_reserve'
+            FROM weekly_rosters r
+            JOIN tank01_player_mapping m ON r.player_id = m.our_player_id
+            JOIN player_stats ps ON m.tank01_player_id = ps.player_id
+            WHERE r.team_id = ? AND r.roster_position = 'active'
                 AND ps.week = ? AND ps.season = ?
-        `, [teamId, week, season]);
+                AND r.week = ? AND r.season = ?
+        `, [teamId, week, season, week, season]);
         
         return result ? result.total_points || 0 : 0;
     }
@@ -427,9 +516,9 @@ class DatabaseManager {
         return this.all(`
             SELECT 
                 r.*, 
-                p.name, 
-                p.position, 
-                p.team,
+                r.player_name as name, 
+                r.player_position as position, 
+                COALESCE(p.team, r.player_team) as team,
                 ps.fantasy_points,
                 ps.passing_yards,
                 ps.passing_tds,
@@ -438,14 +527,15 @@ class DatabaseManager {
                 ps.receiving_yards,
                 ps.receiving_tds,
                 ps.receptions
-            FROM fantasy_rosters r
-            JOIN nfl_players p ON r.player_id = p.player_id
-            LEFT JOIN player_stats ps ON r.player_id = ps.player_id 
+            FROM weekly_rosters r
+            LEFT JOIN nfl_players p ON r.player_id = p.player_id
+            LEFT JOIN tank01_player_mapping m ON r.player_id = m.our_player_id
+            LEFT JOIN player_stats ps ON m.tank01_player_id = ps.player_id 
                 AND ps.week = ? AND ps.season = ?
-            WHERE r.team_id = ? AND r.roster_position = 'starter'
-                AND r.roster_position != 'injured_reserve'
+            WHERE r.team_id = ? AND r.roster_position = 'active'
+                AND r.week = ? AND r.season = ?
             ORDER BY 
-                CASE p.position 
+                CASE r.player_position 
                     WHEN 'QB' THEN 1 
                     WHEN 'RB' THEN 2 
                     WHEN 'WR' THEN 3 
@@ -454,37 +544,57 @@ class DatabaseManager {
                     WHEN 'Defense' THEN 6
                     ELSE 7 
                 END
-        `, [week, season, teamId]);
+        `, [week, season, teamId, week, season]);
     }
 
     // Get player ownership
     async getPlayerOwnership(playerId) {
+        // Get current season and latest week
+        const currentSeason = 2024; // TODO: Make this dynamic
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+        
         return this.get(`
             SELECT r.*, t.team_name, t.owner_name
-            FROM fantasy_rosters r
+            FROM weekly_rosters r
             JOIN teams t ON r.team_id = t.team_id
-            WHERE r.player_id = ?
-        `, [playerId]);
+            WHERE r.player_id = ? AND r.week = ? AND r.season = ?
+              AND r.roster_position != 'injured_reserve'
+        `, [playerId, latestWeek.week, currentSeason]);
     }
 
     // Get roster size for a team
     async getTeamRosterSize(teamId) {
+        // Get current season and latest week
+        const currentSeason = 2024; // TODO: Make this dynamic
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+        
         const result = await this.get(`
             SELECT COUNT(*) as roster_size
-            FROM fantasy_rosters
-            WHERE team_id = ?
-        `, [teamId]);
+            FROM weekly_rosters
+            WHERE team_id = ? AND week = ? AND season = ?
+        `, [teamId, latestWeek.week, currentSeason]);
         
         return result ? result.roster_size : 0;
     }
 
     // Get starter count for a team
     async getTeamStarterCount(teamId) {
+        // Get current season and latest week
+        const currentSeason = 2024; // TODO: Make this dynamic
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+        
         const result = await this.get(`
             SELECT COUNT(*) as starter_count
-            FROM fantasy_rosters
+            FROM weekly_rosters
             WHERE team_id = ? AND roster_position = 'starter'
-        `, [teamId]);
+              AND week = ? AND season = ?
+        `, [teamId, latestWeek.week, currentSeason]);
         
         return result ? result.starter_count : 0;
     }

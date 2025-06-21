@@ -344,6 +344,25 @@
     async function selectMatchup(matchupId) {
         currentMatchupId = matchupId;
         await loadMatchup(matchupId);
+        
+        // Update browser URL to reflect current matchup
+        updateUrlWithMatchup(matchupId);
+    }
+    
+    // Update browser URL with current matchup
+    function updateUrlWithMatchup(matchupId) {
+        const currentPath = window.location.pathname;
+        const isMockMode = currentPath.includes('/statfink/mock');
+        
+        let newUrl;
+        if (isMockMode) {
+            newUrl = `/statfink/mock/${currentWeek}/${currentSeason}?matchup=${matchupId}`;
+        } else {
+            newUrl = `/statfink/${currentSeason}/${currentWeek}?matchup=${matchupId}`;
+        }
+        
+        // Update URL without reloading the page
+        history.pushState({ matchupId: matchupId }, '', newUrl);
     }
 
 
@@ -568,6 +587,15 @@
         }
         await loadWeekMatchups();
     }
+
+    // Handle browser back/forward navigation
+    window.addEventListener('popstate', function(event) {
+        const urlData = parseUrl();
+        if (urlData.matchup) {
+            currentMatchupId = parseInt(urlData.matchup);
+            loadMatchup(currentMatchupId);
+        }
+    });
 
     // Clean up on unload
     window.onbeforeunload = function() {

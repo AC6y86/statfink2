@@ -14,14 +14,23 @@ const ROSTER_CONSTRAINTS = {
 
 // Validate roster constraints for PFL rules
 async function validateRosterConstraints(db, teamId, position, action) {
-    // Get current roster by position
+    // Get current season and week
+    const currentSeason = 2024; // TODO: Make this dynamic
+    const currentWeek = await db.get(`
+        SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+    `, [currentSeason]);
+    
+    // Get current roster by position from latest weekly snapshot
     const roster = await db.all(`
         SELECT p.position, COUNT(*) as count
-        FROM fantasy_rosters r
+        FROM weekly_rosters r
         JOIN nfl_players p ON r.player_id = p.player_id
-        WHERE r.team_id = ? AND r.roster_position = 'active'
+        WHERE r.team_id = ? 
+          AND r.week = ? 
+          AND r.season = ?
+          AND r.roster_position IN ('starter', 'bench')
         GROUP BY p.position
-    `, [teamId]);
+    `, [teamId, currentWeek.week, currentSeason]);
     
     const currentCounts = {};
     roster.forEach(row => {
@@ -120,7 +129,7 @@ router.get('/:teamId/roster', asyncHandler(async (req, res) => {
         data: {
             roster,
             groupedByPosition: groupedRoster,
-            active: roster.filter(p => p.roster_position === 'active'),
+            active: roster.filter(p => p.roster_position === 'starter' || p.roster_position === 'bench'),
             injured_reserve: roster.filter(p => p.roster_position === 'injured_reserve')
         }
     });
@@ -182,10 +191,20 @@ router.post('/:teamId/roster/add', asyncHandler(async (req, res) => {
         throw new APIError('Player not found', 404);
     }
     
+    // Get current season and week
+    const currentSeason = 2024; // TODO: Make this dynamic
+    const currentWeek = await db.get(`
+        SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+    `, [currentSeason]);
+    
     // Check if player is already on a roster
     const existingRoster = await db.get(
-        'SELECT team_id FROM fantasy_rosters WHERE player_id = ?', 
-        [playerId]
+        `SELECT team_id FROM weekly_rosters 
+         WHERE player_id = ? 
+           AND week = ? 
+           AND season = ?
+           AND roster_position != 'injured_reserve'`, 
+        [playerId, currentWeek.week, currentSeason]
     );
     
     if (existingRoster) {
@@ -243,10 +262,20 @@ router.delete('/:teamId/roster/remove', asyncHandler(async (req, res) => {
         throw new APIError('Player not found', 404);
     }
     
+    // Get current season and week
+    const currentSeason = 2024; // TODO: Make this dynamic
+    const currentWeek = await db.get(`
+        SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+    `, [currentSeason]);
+    
     // Check if player is actually on this team's roster
     const rosterEntry = await db.get(
-        'SELECT * FROM fantasy_rosters WHERE team_id = ? AND player_id = ?',
-        [parseInt(teamId), playerId]
+        `SELECT * FROM weekly_rosters 
+         WHERE team_id = ? 
+           AND player_id = ?
+           AND week = ?
+           AND season = ?`,
+        [parseInt(teamId), playerId, currentWeek.week, currentSeason]
     );
     
     if (!rosterEntry) {
@@ -307,10 +336,20 @@ router.put('/:teamId/roster/move', asyncHandler(async (req, res) => {
         throw new APIError('Player not found', 404);
     }
     
+    // Get current season and week
+    const currentSeason = 2024; // TODO: Make this dynamic  
+    const currentWeek = await db.get(`
+        SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+    `, [currentSeason]);
+    
     // Check if player is on this team's roster
     const rosterEntry = await db.get(
-        'SELECT * FROM fantasy_rosters WHERE team_id = ? AND player_id = ?',
-        [parseInt(teamId), playerId]
+        `SELECT * FROM weekly_rosters 
+         WHERE team_id = ? 
+           AND player_id = ?
+           AND week = ?
+           AND season = ?`,
+        [parseInt(teamId), playerId, currentWeek.week, currentSeason]
     );
     
     if (!rosterEntry) {
@@ -319,10 +358,19 @@ router.put('/:teamId/roster/move', asyncHandler(async (req, res) => {
 
     // No limit on injured reserve players
     
-    // Update roster position
+    // For moving to IR, we need to update the weekly_rosters table
+    // This would typically be handled by creating a new weekly snapshot
+    // For now, we'll update the current week's entry
+    const newRosterPosition = rosterPosition === 'active' ? 'starter' : 'injured_reserve';
+    
     await db.run(
-        'UPDATE fantasy_rosters SET roster_position = ? WHERE team_id = ? AND player_id = ?',
-        [rosterPosition, parseInt(teamId), playerId]
+        `UPDATE weekly_rosters 
+         SET roster_position = ? 
+         WHERE team_id = ? 
+           AND player_id = ?
+           AND week = ?
+           AND season = ?`,
+        [newRosterPosition, parseInt(teamId), playerId, currentWeek.week, currentSeason]
     );
     
     res.json({
@@ -336,7 +384,7 @@ router.put('/:teamId/roster/move', asyncHandler(async (req, res) => {
                 position: player.position,
                 team: player.team
             },
-            oldPosition: rosterEntry.roster_position,
+            oldPosition: rosterEntry.roster_position === 'injured_reserve' ? 'injured_reserve' : 'active',
             newPosition: rosterPosition
         }
     });

@@ -145,9 +145,19 @@ describe('StatFink Viewer', () => {
         const playerRow = rows.find(row => row.querySelector('.playername'));
         if (!playerRow) return null;
         
+        const playerNameEl = playerRow.querySelector('.playername');
+        const playerText = playerNameEl?.textContent.trim() || '';
+        // Extract team name - it's after multiple spaces, before the newline
+        const mainLine = playerText.split('\n')[0];
+        const parts = mainLine.split(/\s{2,}/);
+        const playerName = parts[0];
+        const teamName = parts[1] || '';
+        
         return {
           position: playerRow.querySelector('.position')?.textContent.trim(),
-          playerInfo: playerRow.querySelector('.playername')?.textContent.trim(),
+          playerInfo: playerText,
+          playerName: playerName,
+          teamName: teamName,
           status: playerRow.querySelector('.status')?.textContent.trim(),
           opp: playerRow.querySelector('.opp')?.textContent.trim(),
           points: playerRow.querySelector('.fanpts')?.textContent.trim()
@@ -159,9 +169,11 @@ describe('StatFink Viewer', () => {
       // Check position
       expect(['QB', 'RB', 'WR', 'TE', 'K', 'DST', 'DEF']).toContain(playerData.position);
 
-      // Check player name and team
-      expect(playerData.playerInfo).toMatch(/[\w\s\.\-\']+/); // Player name
-      expect(playerData.playerInfo).toMatch(/[A-Z]{2,3}/); // Team abbreviation
+      // Check player name exists
+      expect(playerData.playerName).toMatch(/[\w\s\.\-\']+/);
+      
+      // Check team abbreviation is 2-3 uppercase letters (not full team name)
+      expect(playerData.teamName).toMatch(/^[A-Z]{2,3}$/);
 
       // Check game status
       expect(playerData.status).toBeTruthy();

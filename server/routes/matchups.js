@@ -1,5 +1,6 @@
 const express = require('express');
 const { asyncHandler, APIError } = require('../utils/errorHandler');
+const { getTeamAbbreviation } = require('../utils/teamMappings');
 const router = express.Router();
 
 // Mock API endpoints for testing (must be first to avoid conflicts)
@@ -200,12 +201,17 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
     // Get player stats for this week if available
     const team1Stats = await Promise.all(
         team1Roster.filter(p => p.roster_position === 'active').map(async player => {
-            const stats = await db.getPlayerStats(player.player_id, matchup.week, matchup.season);
+            // Get stats using player mapping
+            const stats = await db.get(`
+                SELECT ps.* FROM player_stats ps
+                JOIN tank01_player_mapping m ON ps.player_id = m.tank01_player_id
+                WHERE m.our_player_id = ? AND ps.week = ? AND ps.season = ?
+            `, [player.player_id, matchup.week, matchup.season]);
             return {
                 player_id: player.player_id,
                 name: player.name,
                 position: player.position,
-                team: player.team,
+                team: getTeamAbbreviation(player.team),
                 roster_position: player.roster_position,
                 stats: stats || { fantasy_points: 0 }
             };
@@ -214,12 +220,17 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
     
     const team2Stats = await Promise.all(
         team2Roster.filter(p => p.roster_position === 'active').map(async player => {
-            const stats = await db.getPlayerStats(player.player_id, matchup.week, matchup.season);
+            // Get stats using player mapping
+            const stats = await db.get(`
+                SELECT ps.* FROM player_stats ps
+                JOIN tank01_player_mapping m ON ps.player_id = m.tank01_player_id
+                WHERE m.our_player_id = ? AND ps.week = ? AND ps.season = ?
+            `, [player.player_id, matchup.week, matchup.season]);
             return {
                 player_id: player.player_id,
                 name: player.name,
                 position: player.position,
-                team: player.team,
+                team: getTeamAbbreviation(player.team),
                 roster_position: player.roster_position,
                 stats: stats || { fantasy_points: 0 }
             };

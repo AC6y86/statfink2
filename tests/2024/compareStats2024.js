@@ -81,8 +81,44 @@ class StatsComparator {
                             -- Non-defense: match by exact name
                             (ps.position != 'DEF' AND wr.player_name = ps.player_name)
                             OR
-                            -- Defense: both must be defenses (let normalization handle name matching)
-                            (ps.position = 'DEF' AND wr.player_position = 'DEF')
+                            -- Defense: match using normalization mapping
+                            (ps.position = 'DEF' AND wr.player_position = 'DEF' AND 
+                             wr.player_name = CASE ps.player_name
+                                WHEN 'ARI Defense' THEN 'Cardinals'
+                                WHEN 'ATL Defense' THEN 'Falcons'
+                                WHEN 'BAL Defense' THEN 'Ravens'
+                                WHEN 'BUF Defense' THEN 'Bills'
+                                WHEN 'CAR Defense' THEN 'Panthers'
+                                WHEN 'CHI Defense' THEN 'Bears'
+                                WHEN 'CIN Defense' THEN 'Bengals'
+                                WHEN 'CLE Defense' THEN 'Browns'
+                                WHEN 'DAL Defense' THEN 'Cowboys'
+                                WHEN 'DEN Defense' THEN 'Broncos'
+                                WHEN 'DET Defense' THEN 'Lions'
+                                WHEN 'GB Defense' THEN 'Packers'
+                                WHEN 'HOU Defense' THEN 'Texans'
+                                WHEN 'IND Defense' THEN 'Colts'
+                                WHEN 'JAX Defense' THEN 'Jaguars'
+                                WHEN 'KC Defense' THEN 'Chiefs'
+                                WHEN 'LAC Defense' THEN 'Chargers'
+                                WHEN 'LAR Defense' THEN 'Rams'
+                                WHEN 'LV Defense' THEN 'Raiders'
+                                WHEN 'MIA Defense' THEN 'Dolphins'
+                                WHEN 'MIN Defense' THEN 'Vikings'
+                                WHEN 'NE Defense' THEN 'Patriots'
+                                WHEN 'NO Defense' THEN 'Saints'
+                                WHEN 'NYG Defense' THEN 'Giants'
+                                WHEN 'NYJ Defense' THEN 'Jets'
+                                WHEN 'PHI Defense' THEN 'Eagles'
+                                WHEN 'PIT Defense' THEN 'Steelers'
+                                WHEN 'SEA Defense' THEN 'Seahawks'
+                                WHEN 'SF Defense' THEN '49ers'
+                                WHEN 'TB Defense' THEN 'Buccaneers'
+                                WHEN 'TEN Defense' THEN 'Titans'
+                                WHEN 'WAS Defense' THEN 'Commanders'
+                                WHEN 'WSH Defense' THEN 'Commanders'
+                                ELSE ps.player_name
+                             END)
                         )
                     )
                     GROUP BY ps.player_name, ps.week, ps.season, ps.position, ps.team

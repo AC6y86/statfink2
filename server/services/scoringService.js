@@ -85,14 +85,15 @@ class ScoringService {
     async calculateTeamScore(teamId, week, season) {
         const query = `
             SELECT SUM(ps.fantasy_points) as total_points
-            FROM fantasy_rosters fr
-            JOIN player_stats ps ON fr.player_id = ps.player_id
-            WHERE fr.team_id = ? AND ps.week = ? AND ps.season = ?
-            AND fr.roster_position = 'starter'
-            AND fr.roster_position != 'injured_reserve'
+            FROM weekly_rosters wr
+            JOIN tank01_player_mapping m ON wr.player_id = m.our_player_id
+            JOIN player_stats ps ON m.tank01_player_id = ps.player_id
+            WHERE wr.team_id = ? AND ps.week = ? AND ps.season = ?
+            AND wr.week = ? AND wr.season = ?
+            AND wr.roster_position = 'active'
         `;
         
-        const result = await this.db.get(query, [teamId, week, season]);
+        const result = await this.db.get(query, [teamId, week, season, week, season]);
         return result?.total_points || 0;
     }
 
@@ -184,12 +185,13 @@ class ScoringService {
             JOIN nfl_players p ON ps.player_id = p.player_id
             WHERE ps.week = ? AND ps.season = ? AND p.position = 'DST'
             AND ps.player_id IN (
-                SELECT DISTINCT player_id FROM fantasy_rosters
+                SELECT DISTINCT player_id FROM weekly_rosters
+                WHERE week = ? AND season = ?
             )
             ORDER BY ps.points_allowed ASC, ps.yards_allowed ASC
         `;
         
-        const dstStats = await this.db.all(query, [week, season]);
+        const dstStats = await this.db.all(query, [week, season, week, season]);
         
         if (dstStats.length === 0) return;
 

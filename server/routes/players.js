@@ -27,10 +27,18 @@ router.get('/', asyncHandler(async (req, res) => {
     
     // Filter available players (not on any roster) if requested
     if (available === 'true') {
-        // Get all rostered players
+        // Get current season and latest week
+        const currentSeason = 2024; // TODO: Make this dynamic
+        const latestWeek = await db.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+        
+        // Get all rostered players from current week
         const rosteredPlayers = await db.all(`
-            SELECT DISTINCT player_id FROM fantasy_rosters
-        `);
+            SELECT DISTINCT player_id FROM weekly_rosters
+            WHERE week = ? AND season = ?
+              AND roster_position != 'injured_reserve'
+        `, [latestWeek.week, currentSeason]);
         const rosteredIds = new Set(rosteredPlayers.map(p => p.player_id));
         
         players = players.filter(p => !rosteredIds.has(p.player_id));
@@ -72,14 +80,22 @@ router.get('/position/:position', asyncHandler(async (req, res) => {
 router.get('/available', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     
+    // Get current season and latest week
+    const currentSeason = 2024; // TODO: Make this dynamic
+    const latestWeek = await db.get(`
+        SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+    `, [currentSeason]);
+    
     // Use efficient LEFT JOIN to get available players in one query
     const availablePlayers = await db.all(`
         SELECT p.* 
         FROM nfl_players p
-        LEFT JOIN fantasy_rosters r ON p.player_id = r.player_id
+        LEFT JOIN weekly_rosters r ON p.player_id = r.player_id 
+            AND r.week = ? AND r.season = ?
+            AND r.roster_position != 'injured_reserve'
         WHERE r.player_id IS NULL
         ORDER BY p.position, p.name
-    `);
+    `, [latestWeek.week, currentSeason]);
     
     res.json({
         success: true,
@@ -99,14 +115,22 @@ router.get('/available/:position', asyncHandler(async (req, res) => {
         throw new APIError(`Invalid position. Must be one of: ${validPositions.join(', ')}`, 400);
     }
     
+    // Get current season and latest week
+    const currentSeason = 2024; // TODO: Make this dynamic
+    const latestWeek = await db.get(`
+        SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+    `, [currentSeason]);
+    
     // Use efficient LEFT JOIN to get available players by position in one query
     const availablePlayers = await db.all(`
         SELECT p.* 
         FROM nfl_players p
-        LEFT JOIN fantasy_rosters r ON p.player_id = r.player_id
+        LEFT JOIN weekly_rosters r ON p.player_id = r.player_id
+            AND r.week = ? AND r.season = ?
+            AND r.roster_position != 'injured_reserve'
         WHERE r.player_id IS NULL AND p.position = ?
         ORDER BY p.name
-    `, [position.toUpperCase()]);
+    `, [latestWeek.week, currentSeason, position.toUpperCase()]);
     
     res.json({
         success: true,
@@ -169,13 +193,19 @@ router.get('/:playerId', asyncHandler(async (req, res) => {
         throw new APIError('Player not found', 404);
     }
     
+    // Get current season and latest week
+    const currentSeason = 2024; // TODO: Make this dynamic
+    const latestWeek = await db.get(`
+        SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+    `, [currentSeason]);
+    
     // Check if player is on a roster
     const rosterInfo = await db.get(`
-        SELECT fr.*, t.team_name, t.owner_name 
-        FROM fantasy_rosters fr
-        JOIN teams t ON fr.team_id = t.team_id
-        WHERE fr.player_id = ?
-    `, [playerId]);
+        SELECT wr.*, t.team_name, t.owner_name 
+        FROM weekly_rosters wr
+        JOIN teams t ON wr.team_id = t.team_id
+        WHERE wr.player_id = ? AND wr.week = ? AND wr.season = ?
+    `, [playerId, latestWeek.week, currentSeason]);
     
     res.json({
         success: true,
