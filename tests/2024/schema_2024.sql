@@ -103,30 +103,7 @@ CREATE TABLE IF NOT EXISTS scoring_rules (
     points_per_unit REAL NOT NULL
 );
 
--- Insert default PPR scoring rules
-INSERT OR IGNORE INTO scoring_rules (stat_type, points_per_unit) VALUES 
-    -- Offensive scoring
-    ('passing_yards', 0.04),
-    ('passing_tds', 4),
-    ('interceptions', -2),
-    ('rushing_yards', 0.1),
-    ('rushing_tds', 6),
-    ('receiving_yards', 0.1),
-    ('receiving_tds', 6),
-    ('receptions', 1),
-    ('fumbles', -2),
-    -- Defensive scoring
-    ('sacks', 1),
-    ('def_interceptions', 2),
-    ('fumbles_recovered', 2),
-    ('def_touchdowns', 6),
-    ('safeties', 2),
-    -- Kicking scoring
-    ('extra_points_made', 1),
-    ('field_goals_0_39', 3),
-    ('field_goals_40_49', 4),
-    ('field_goals_50_plus', 5),
-    ('field_goals_missed', -1);
+-- Custom scoring rules will be inserted separately
 
 -- Weekly Roster Snapshots for Historical Tracking
 CREATE TABLE IF NOT EXISTS weekly_rosters (
@@ -145,26 +122,6 @@ CREATE TABLE IF NOT EXISTS weekly_rosters (
     UNIQUE(team_id, player_id, week, season)
 );
 
--- Tank01 API Cache
-CREATE TABLE IF NOT EXISTS tank01_cache (
-    cache_key VARCHAR(255) PRIMARY KEY,
-    endpoint VARCHAR(100) NOT NULL,
-    params TEXT, -- JSON string of parameters
-    response_data TEXT NOT NULL, -- JSON string of response
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    expires_at DATETIME, -- NULL for permanent cache
-    is_historical BOOLEAN DEFAULT 0, -- 1 for historical data that never expires
-    hit_count INTEGER DEFAULT 0,
-    last_accessed DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
--- Tank01 Daily Request Stats
-CREATE TABLE IF NOT EXISTS tank01_daily_stats (
-    date TEXT PRIMARY KEY,
-    requests INTEGER DEFAULT 0,
-    last_reset TEXT
-);
-
 -- Create indexes for performance
 CREATE INDEX IF NOT EXISTS idx_player_stats_lookup ON player_stats(player_id, week, season);
 CREATE INDEX IF NOT EXISTS idx_fantasy_rosters_team ON fantasy_rosters(team_id);
@@ -173,8 +130,3 @@ CREATE INDEX IF NOT EXISTS idx_nfl_players_position ON nfl_players(position);
 CREATE INDEX IF NOT EXISTS idx_weekly_rosters_team_week ON weekly_rosters(team_id, week, season);
 CREATE INDEX IF NOT EXISTS idx_weekly_rosters_week ON weekly_rosters(week, season);
 CREATE INDEX IF NOT EXISTS idx_weekly_rosters_player ON weekly_rosters(player_id, week, season);
-
--- Create indexes for tank01_cache
-CREATE INDEX IF NOT EXISTS idx_tank01_cache_expires ON tank01_cache(expires_at);
-CREATE INDEX IF NOT EXISTS idx_tank01_cache_endpoint ON tank01_cache(endpoint);
-CREATE INDEX IF NOT EXISTS idx_tank01_cache_historical ON tank01_cache(is_historical);

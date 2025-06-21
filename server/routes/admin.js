@@ -378,4 +378,66 @@ router.post('/recalculate/fantasy-points', requireAdmin, asyncHandler(async (req
     }
 }));
 
+// Cache management endpoints
+router.get('/cache/stats', requireAdmin, asyncHandler(async (req, res) => {
+    const tank01Service = req.app.locals.tank01Service;
+    const db = req.app.locals.db;
+    
+    if (!tank01Service) {
+        throw new APIError('Tank01 service not available', 500);
+    }
+    
+    const cacheStats = await tank01Service.getCacheStats();
+    const storageStats = await db.getCacheStorageSize();
+    const mostAccessed = await db.getMostAccessedCacheEntries(10);
+    
+    res.json({
+        success: true,
+        data: {
+            cacheStats,
+            storageStats,
+            mostAccessed
+        }
+    });
+}));
+
+router.post('/cache/cleanup', requireAdmin, asyncHandler(async (req, res) => {
+    const tank01Service = req.app.locals.tank01Service;
+    const db = req.app.locals.db;
+    const { onlyExpired = true } = req.body;
+    
+    if (!tank01Service) {
+        throw new APIError('Tank01 service not available', 500);
+    }
+    
+    // Clean up using tank01Service method
+    await tank01Service.clearCache(onlyExpired);
+    
+    // Also run database cleanup
+    const deletedCount = await db.cleanupExpiredCache();
+    
+    res.json({
+        success: true,
+        message: onlyExpired ? 'Expired cache entries cleaned up' : 'Non-historical cache cleared',
+        data: {
+            deletedEntries: deletedCount
+        }
+    });
+}));
+
+router.get('/cache/entries/:endpoint', requireAdmin, asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const { endpoint } = req.params;
+    
+    const entries = await db.getCacheEntriesByEndpoint(`/${endpoint}`);
+    
+    res.json({
+        success: true,
+        data: {
+            endpoint: `/${endpoint}`,
+            entries
+        }
+    });
+}));
+
 module.exports = router;

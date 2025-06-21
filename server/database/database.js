@@ -649,6 +649,57 @@ class DatabaseManager {
         return result ? result.last_roster_snapshot_week : 0;
     }
 
+    // Tank01 Cache Management Methods
+    
+    // Get most accessed cache entries
+    async getMostAccessedCacheEntries(limit = 10) {
+        return this.all(`
+            SELECT cache_key, endpoint, hit_count, is_historical, created_at, last_accessed
+            FROM tank01_cache
+            ORDER BY hit_count DESC
+            LIMIT ?
+        `, [limit]);
+    }
+    
+    // Get cache entries by endpoint
+    async getCacheEntriesByEndpoint(endpoint) {
+        return this.all(`
+            SELECT cache_key, params, hit_count, is_historical, created_at, expires_at
+            FROM tank01_cache
+            WHERE endpoint = ?
+            ORDER BY last_accessed DESC
+        `, [endpoint]);
+    }
+    
+    // Clean up old cache entries (not historical)
+    async cleanupExpiredCache() {
+        const result = await this.run(`
+            DELETE FROM tank01_cache 
+            WHERE is_historical = 0 AND expires_at IS NOT NULL AND expires_at < CURRENT_TIMESTAMP
+        `);
+        logInfo(`Cleaned up ${result.changes} expired cache entries`);
+        return result.changes;
+    }
+    
+    // Get cache storage size estimate
+    async getCacheStorageSize() {
+        const result = await this.get(`
+            SELECT 
+                COUNT(*) as total_entries,
+                SUM(LENGTH(response_data)) as total_bytes,
+                SUM(CASE WHEN is_historical = 1 THEN LENGTH(response_data) ELSE 0 END) as historical_bytes,
+                SUM(CASE WHEN is_historical = 0 THEN LENGTH(response_data) ELSE 0 END) as temporary_bytes
+            FROM tank01_cache
+        `);
+        
+        return {
+            totalEntries: result.total_entries || 0,
+            totalSizeMB: (result.total_bytes || 0) / (1024 * 1024),
+            historicalSizeMB: (result.historical_bytes || 0) / (1024 * 1024),
+            temporarySizeMB: (result.temporary_bytes || 0) / (1024 * 1024)
+        };
+    }
+
     // Close database connection
     close() {
         return new Promise((resolve, reject) => {
