@@ -118,6 +118,29 @@ class PFL2024Extractor {
         return null;
     }
 
+    parseFantasyPoints(ptsCell) {
+        if (!ptsCell || ptsCell === '' || ptsCell === 'X') {
+            return 0;
+        }
+        
+        // Handle string values (may have * prefix for starters)
+        if (typeof ptsCell === 'string') {
+            const cleanPts = ptsCell.replace(/^\*/, '').trim();
+            if (cleanPts === 'X' || cleanPts === '') {
+                return 0;
+            }
+            const parsed = parseFloat(cleanPts);
+            return isNaN(parsed) ? 0 : parsed;
+        }
+        
+        // Handle numeric values
+        if (typeof ptsCell === 'number') {
+            return ptsCell;
+        }
+        
+        return 0;
+    }
+
     extractWeekData(weekNum) {
         console.log(`\n📅 Extracting Week ${weekNum} data...`);
         
@@ -196,6 +219,11 @@ class PFL2024Extractor {
                     return;
                 }
 
+                // Get the fantasy points from the adjacent column (PTS column)
+                const ptsCol = team.col + 1;
+                const ptsCell = row[ptsCol];
+                const fantasyPoints = this.parseFantasyPoints(ptsCell);
+
                 // Handle DEF specially
                 if (currentPosition === 'DEF') {
                     const cleanDEF = cellStr.replace(/^\*/, '').trim();
@@ -203,7 +231,8 @@ class PFL2024Extractor {
                         rosters[team.name].push({
                             position: 'DEF',
                             playerText: cellStr,
-                            isStarter: cellStr.startsWith('*')
+                            isStarter: cellStr.startsWith('*'),
+                            fantasyPoints: fantasyPoints
                         });
                     }
                     return;
@@ -222,7 +251,8 @@ class PFL2024Extractor {
                         position: actualPosition,
                         playerText: cellStr,
                         playerInfo: playerInfo,
-                        isStarter: playerInfo.isStarter
+                        isStarter: playerInfo.isStarter,
+                        fantasyPoints: fantasyPoints
                     });
                 }
             });
@@ -417,8 +447,8 @@ class PFL2024Extractor {
                     // Find or create player
                     const playerId = await this.findOrCreatePlayer(playerName, position, nflTeam);
                     
-                    // For now, set fantasy points to 0 - this would be extracted from Excel if available
-                    const fantasyPoints = 0; // TODO: Extract actual points from Excel
+                    // Use the actual fantasy points extracted from Excel
+                    const fantasyPoints = playerEntry.fantasyPoints || 0;
                     const didScore = playerEntry.isStarter;
 
                     // Insert player performance
@@ -433,7 +463,7 @@ class PFL2024Extractor {
                         });
                     });
 
-                    console.log(`  ✓ Inserted: ${playerName} (${position})`);
+                    console.log(`  ✓ Inserted: ${playerName} (${position}) - ${fantasyPoints} pts`);
 
                     if (didScore) {
                         starterPoints += fantasyPoints;
