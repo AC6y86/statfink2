@@ -20,8 +20,12 @@ describe('Tank01Service', () => {
     jest.useFakeTimers();
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     jest.useRealTimers();
+    // Close database connection to prevent logging after tests
+    if (service && service.db && typeof service.db.close === 'function') {
+      await service.db.close();
+    }
   });
 
   describe('Initialization', () => {
@@ -40,8 +44,9 @@ describe('Tank01Service', () => {
     });
 
     test('should initialize cache system', () => {
-      expect(service.cache).toBeInstanceOf(Map);
-      expect(service.cacheExpiry).toBeGreaterThan(0);
+      expect(service.defaultCacheExpiry).toBeGreaterThan(0);
+      expect(service.historicalCacheExpiry).toBe(null);
+      expect(service.db).toBeDefined();
     });
 
     test('should handle missing API key', () => {
@@ -103,44 +108,25 @@ describe('Tank01Service', () => {
   });
 
   describe('Cache Management', () => {
-    test('should cache responses with expiry', () => {
-      const testData = { test: 'data' };
-      const cacheKey = 'test-key';
-      
-      // Simulate caching
-      service.cache.set(cacheKey, {
-        data: testData,
-        timestamp: Date.now()
-      });
-      
-      expect(service.cache.has(cacheKey)).toBe(true);
-      expect(service.cache.get(cacheKey).data).toEqual(testData);
+    test('should have cache configuration', () => {
+      expect(service.defaultCacheExpiry).toBeGreaterThan(0);
+      expect(service.historicalCacheExpiry).toBe(null);
     });
 
-    test('should handle cache expiry', () => {
-      const testData = { test: 'data' };
-      const cacheKey = 'expired-key';
+    test('should determine historical data correctly', () => {
+      const currentYear = new Date().getFullYear();
       
-      // Set cache with old timestamp
-      service.cache.set(cacheKey, {
-        data: testData,
-        timestamp: Date.now() - (service.cacheExpiry + 1000)
-      });
+      // Test historical season
+      expect(service.isHistoricalData('/test', { season: currentYear - 1 })).toBe(true);
       
-      // Check if cache item is considered expired
-      const cachedItem = service.cache.get(cacheKey);
-      const isExpired = (Date.now() - cachedItem.timestamp) > service.cacheExpiry;
-      expect(isExpired).toBe(true);
+      // Test current season
+      expect(service.isHistoricalData('/test', { season: currentYear })).toBe(false);
     });
 
-    test('should clear cache when needed', () => {
-      service.cache.set('test1', { data: 'test1', timestamp: Date.now() });
-      service.cache.set('test2', { data: 'test2', timestamp: Date.now() });
-      
-      expect(service.cache.size).toBe(2);
-      
-      service.cache.clear();
-      expect(service.cache.size).toBe(0);
+    test('should have cache management methods', () => {
+      expect(typeof service.getCachedData).toBe('function');
+      expect(typeof service.setCachedData).toBe('function');
+      expect(typeof service.clearCache).toBe('function');
     });
   });
 

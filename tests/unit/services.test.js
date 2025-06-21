@@ -80,8 +80,8 @@ describe('Service Initialization Tests', () => {
 
     test('should initialize cache system', () => {
       const tank01Service = new Tank01Service('test-key');
-      expect(tank01Service.cache).toBeInstanceOf(Map);
-      expect(tank01Service.cacheExpiry).toBeGreaterThan(0);
+      expect(tank01Service.defaultCacheExpiry).toBeGreaterThan(0);
+      expect(tank01Service.historicalCacheExpiry).toBe(null);
     });
 
     test('should handle missing API key', () => {

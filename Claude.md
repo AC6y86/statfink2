@@ -4,3 +4,5 @@ There aere 12 owners, which have 19 players each week.  If in a week a team does
 
 
 A player can only be Active or on Injured Reserve, there is no "starter" "bench" or other states.
+
+Never write to the database when writing tests.

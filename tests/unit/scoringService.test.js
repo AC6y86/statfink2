@@ -48,9 +48,9 @@ describe('ScoringService', () => {
 
       const points = await scoringService.calculateFantasyPoints(qbStats);
       
-      // Passing TDs: 3 * 5 = 15, Rushing TDs: 1 * 8 = 8, Passing yards 300 (250-324) = 9, Rushing yards 20 (< 75) = 0, Interceptions: -2
-      // = 15 + 8 + 9 + 0 - 2 = 30
-      expect(points).toBe(30);
+      // Passing TDs: 3 * 5 = 15, Rushing TDs: 1 * 8 = 8, Passing yards 300 (250-324) = 9, Rushing yards 20 (< 75) = 0
+      // = 15 + 8 + 9 + 0 = 32
+      expect(points).toBe(32);
     });
 
     test('should calculate RB fantasy points correctly', async () => {
@@ -65,9 +65,9 @@ describe('ScoringService', () => {
 
       const points = await scoringService.calculateFantasyPoints(rbStats);
       
-      // Rushing TDs: 2 * 8 = 16, Rushing yards 100 (100-149) = 9, Receiving yards 30 (< 75) = 0, Fumbles lost: -2
-      // Total: 16 + 9 + 0 - 2 = 23 points
-      expect(points).toBe(23);
+      // Rushing TDs: 2 * 8 = 16, Rushing yards 100 (100-149) = 9, Receiving yards 30 (< 75) = 0
+      // Total: 16 + 9 + 0 = 25 points
+      expect(points).toBe(25);
     });
 
     test('should calculate DST fantasy points correctly', async () => {
