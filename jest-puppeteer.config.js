@@ -8,11 +8,5 @@ module.exports = {
       '--disable-web-security',
       '--disable-features=VizDisplayCompositor'
     ]
-  },
-  server: {
-    command: 'npm start',
-    port: 3000,
-    launchTimeout: 30000,
-    debug: true
   }
 };

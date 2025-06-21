@@ -4,7 +4,7 @@
   "description": "A single-league fantasy football management application with a read-only public interface and admin roster management capabilities.",
   "main": "server/app.js",
   "scripts": {
-    "start": "node server/app.js",
+    "start": "(lsof -ti:3000 | xargs kill -9 2>/dev/null || true) && node server/app.js",
     "dev": "nodemon server/app.js --ignore tests/",
     "init-league": "node server/utils/initializeLeague.js",
     "test": "jest --maxWorkers=2",

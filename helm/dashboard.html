@@ -1386,15 +1386,15 @@
                     response = await fetch(`/api/teams/${teamId}/roster`);
                     data = await response.json();
                     
-                    if (data.success && data.roster && data.roster.length > 0) {
-                        // Use current roster data
-                        tbody.innerHTML = data.roster.map(player => `
+                    if (data.success && data.data && data.data.roster && data.data.roster.length > 0) {
+                        // Use current roster data - access data.data.roster instead of data.roster
+                        tbody.innerHTML = data.data.roster.map(player => `
                             <tr>
                                 <td><strong>${player.name}</strong></td>
                                 <td><span class="position-badge position-${player.position}">${player.position}</span></td>
                                 <td><span class="team-badge">${player.team}</span></td>
                                 <td>${player.roster_position}</td>
-                                <td>TBD</td>
+                                <td>${player.bye_week || 'N/A'}</td>
                             </tr>
                         `).join('');
                         return;
