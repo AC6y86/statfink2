@@ -144,9 +144,13 @@ class PFL2024Extractor {
     extractWeekData(weekNum) {
         console.log(`\n📅 Extracting Week ${weekNum} data...`);
         
-        const sheetName = `Week ${weekNum}`;
+        let sheetName = `Week ${weekNum}`;
         if (!this.workbook.Sheets[sheetName]) {
-            throw new Error(`Sheet "${sheetName}" not found in Excel file`);
+            // Try the "Week X Stats" format for weeks 2-7
+            sheetName = `Week ${weekNum} Stats`;
+            if (!this.workbook.Sheets[sheetName]) {
+                throw new Error(`Sheet "${sheetName}" not found in Excel file`);
+            }
         }
 
         const worksheet = this.workbook.Sheets[sheetName];
@@ -496,7 +500,7 @@ class PFL2024Extractor {
         console.log('\n🚀 Starting extraction of available weeks...');
         
         // Only extract weeks that have data sheets available
-        const availableWeeks = [1, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+        const availableWeeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
         
         for (const week of availableWeeks) {
             try {
