@@ -18,9 +18,9 @@ function getOpponentFromGameId(gameId, playerTeam) {
     
     // Determine if player's team is home or away, then return opponent
     if (playerTeam === away) {
-        return `@${home}`; // Playing away
+        return `@${home}`; // Playing away - show @ symbol
     } else if (playerTeam === home) {
-        return `@${away}`; // Playing at home
+        return away; // Playing at home - just show opponent team
     }
     
     return null;
@@ -168,7 +168,7 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
                     name: "Mock RB2 (Test)",
                     position: "RB",
                     team: "TST",
-                    opp: "@BAL", 
+                    opp: "BAL", 
                     stats: {
                         fantasy_points: 15.3,
                         rushing_yards: 73,

@@ -38,6 +38,11 @@
 .secondmenu{}
 .configdiv {visibility:hidden; position:relative; bottom: 1px; border: outset 1px #556; z-index: 98; background-color: #fff;}
 .totalsrow { color: #fff; font-size: 13px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; }
+.opp { 
+    text-align: center; 
+    width: 40px; 
+    padding: 3px 2px 3px 2px; 
+}
 .leaguetable { border: 1px solid #556; border-top: 0px;}
 .nfldiv { padding: 5px 0px 0px 0px;}
 .nfltable { border: 1px solid #556; }

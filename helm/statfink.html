@@ -422,7 +422,7 @@
             <td>Pos</td>
             <td>Player</td>
             <td align="right" nowrap>Game Status</td>
-            <td align="right">Opp</td>
+            <td class="opp">Opp</td>
             <td align="right">FanPts</td>
         `;
         
@@ -448,7 +448,7 @@
                     <span style="font-size: 10px; color: #000; margin-top: 3px; display: block;">${formatPlayerStatsCompact(player.position, player.stats)}</span>
                 </td>
                 <td class="status" align="right">Final</td>
-                <td class="opp" align="right">${player.opp || '@OPP'}</td>
+                <td class="opp">${player.opp || '@OPP'}</td>
                 <td class="points fanpts" align="right">${points.toFixed(2)}</td>
             `;
             
