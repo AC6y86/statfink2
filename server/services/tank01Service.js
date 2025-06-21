@@ -504,7 +504,7 @@ class Tank01Service {
             }
 
             // Return a mock current week for now since this is just for health check
-            return { currentWeek: 1, season: 2025 };
+            return { currentWeek: 1, season: 2024 };
         } catch (error) {
             logError('Failed to fetch current week', error);
             throw error;

@@ -191,10 +191,10 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
         throw new APIError('Matchup not found', 404);
     }
     
-    // Get weekly rosters for both teams for this specific week
+    // Get current rosters for both teams (using simplified roster system)
     const [team1Roster, team2Roster] = await Promise.all([
-        db.getTeamWeeklyRoster(matchup.team1_id, matchup.week, matchup.season),
-        db.getTeamWeeklyRoster(matchup.team2_id, matchup.week, matchup.season)
+        db.getTeamRoster(matchup.team1_id),
+        db.getTeamRoster(matchup.team2_id)
     ]);
     
     // Get player stats for this week if available
@@ -203,9 +203,9 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
             const stats = await db.getPlayerStats(player.player_id, matchup.week, matchup.season);
             return {
                 player_id: player.player_id,
-                name: player.player_name,
-                position: player.player_position,
-                team: player.player_team,
+                name: player.name,
+                position: player.position,
+                team: player.team,
                 roster_position: player.roster_position,
                 stats: stats || { fantasy_points: 0 }
             };
@@ -217,9 +217,9 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
             const stats = await db.getPlayerStats(player.player_id, matchup.week, matchup.season);
             return {
                 player_id: player.player_id,
-                name: player.player_name,
-                position: player.player_position,
-                team: player.player_team,
+                name: player.name,
+                position: player.position,
+                team: player.team,
                 roster_position: player.roster_position,
                 stats: stats || { fantasy_points: 0 }
             };

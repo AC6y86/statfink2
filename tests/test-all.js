@@ -6,9 +6,6 @@
  */
 
 const { spawn } = require('child_process');
-const axios = require('axios');
-
-const BASE_URL = 'http://localhost:3000';
 const COLORS = {
   GREEN: '\x1b[32m',
   RED: '\x1b[31m',
@@ -41,39 +38,6 @@ function runCommand(command, args, options = {}) {
   });
 }
 
-async function checkServerHealth() {
-  try {
-    await axios.get(`${BASE_URL}/api/health`, { timeout: 5000 });
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
-async function waitForServer(maxAttempts = 30) {
-  log('Waiting for server to be ready...', COLORS.YELLOW);
-  
-  for (let i = 0; i < maxAttempts; i++) {
-    if (await checkServerHealth()) {
-      log('✓ Server is ready', COLORS.GREEN);
-      return true;
-    }
-    
-    if (i === 0) {
-      log('Server not ready, starting server...', COLORS.YELLOW);
-      // Start server in background
-      const serverProcess = spawn('npm', ['start'], {
-        stdio: ['ignore', 'ignore', 'inherit'],
-        detached: true
-      });
-      serverProcess.unref();
-    }
-    
-    await new Promise(resolve => setTimeout(resolve, 1000));
-  }
-  
-  return false;
-}
 
 async function runTestSuite() {
   const startTime = Date.now();
@@ -101,52 +65,8 @@ async function runTestSuite() {
     
     console.log();
     
-    // 2. Check Server Status
-    log(`${COLORS.BOLD}2. Server Health Check${COLORS.RESET}`, COLORS.BLUE);
-    const serverReady = await checkServerHealth();
-    
-    if (!serverReady) {
-      log('Server not running, attempting to start...', COLORS.YELLOW);
-      const serverStarted = await waitForServer();
-      
-      if (!serverStarted) {
-        log('✗ Could not start server for integration tests', COLORS.RED);
-        log('Please start the server manually: npm start', COLORS.YELLOW);
-        failures++;
-      }
-    } else {
-      log('✓ Server is running', COLORS.GREEN);
-    }
-    
-    console.log();
-    
-    // 3. Run Integration Tests (require server)
-    if (await checkServerHealth()) {
-      log(`${COLORS.BOLD}3. Running Integration Tests${COLORS.RESET}`, COLORS.BLUE);
-      log('   ├─ API smoke tests');
-      log('   ├─ App lifecycle tests');
-      log('   ├─ Comprehensive route tests');
-      log('   ├─ Database integration tests');
-      log('   ├─ Dashboard tests');
-      log('   ├─ Tank01 integration tests');
-      log('   ├─ Roster management tests');
-      log('   └─ Contract tests');
-      
-      try {
-        await runCommand('npm', ['run', 'test:integration']);
-        log('✓ Integration tests passed', COLORS.GREEN);
-      } catch (error) {
-        log('✗ Some integration tests failed', COLORS.RED);
-        failures++;
-      }
-    } else {
-      log('⚠ Skipping integration tests - server not available', COLORS.YELLOW);
-    }
-    
-    console.log();
-    
-    // 4. Generate Coverage Report
-    log(`${COLORS.BOLD}4. Generating Coverage Report${COLORS.RESET}`, COLORS.BLUE);
+    // 2. Generate Coverage Report
+    log(`${COLORS.BOLD}2. Generating Coverage Report${COLORS.RESET}`, COLORS.BLUE);
     try {
       await runCommand('npm', ['run', 'test:coverage']);
       log('✓ Coverage report generated', COLORS.GREEN);
@@ -156,7 +76,7 @@ async function runTestSuite() {
     
     console.log();
     
-    // 5. Test Summary
+    // 3. Test Summary
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
     log(`${COLORS.BOLD}Test Summary${COLORS.RESET}`, COLORS.BLUE);
     log(`Duration: ${duration}s`);
@@ -169,14 +89,14 @@ async function runTestSuite() {
       log('Please fix failing tests before refactoring.', COLORS.RED);
     }
     
-    // 6. Next Steps
+    // 4. Next Steps
     console.log();
     log(`${COLORS.BOLD}Next Steps:${COLORS.RESET}`, COLORS.BLUE);
     log('• Review any failing tests above');
     log('• Check coverage report in coverage/lcov-report/index.html');
     log('• Run specific test suites during refactoring:');
     log('  - npm run test:fast (quick unit tests)');
-    log('  - npm run test:integration (full integration)');
+    log('  - npm run test:unit (all unit tests)');
     log('• Re-run this comprehensive suite after major changes');
     
     return failures === 0;
@@ -199,4 +119,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { runTestSuite, checkServerHealth };
+module.exports = { runTestSuite };

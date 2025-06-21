@@ -1318,28 +1318,11 @@
                     const currentSeason = settingsData.data.season_year;
                     
                     if (currentWeek && currentSeason) {
-                        // Check if weekly roster data exists for this week
-                        try {
-                            const snapshotResponse = await fetch(`/api/roster-history/exists/${currentWeek}/${currentSeason}`);
-                            const snapshotData = await snapshotResponse.json();
-                            
-                            if (snapshotData.success && snapshotData.exists) {
-                                rosterWeekInfo.innerHTML = `
-                                    <div class="status-indicator status-healthy"></div>
-                                    <span><strong>Showing Week ${currentWeek}, ${currentSeason}</strong> - Weekly roster data available</span>
-                                `;
-                            } else {
-                                rosterWeekInfo.innerHTML = `
-                                    <div class="status-indicator status-unhealthy"></div>
-                                    <span><strong>Week ${currentWeek}, ${currentSeason}</strong> - No roster snapshot exists for this week</span>
-                                `;
-                            }
-                        } catch (snapshotError) {
-                            rosterWeekInfo.innerHTML = `
-                                <div class="status-indicator status-unhealthy"></div>
-                                <span><strong>Week ${currentWeek}, ${currentSeason}</strong> - Error checking roster snapshot availability</span>
-                            `;
-                        }
+                        // Display current week information
+                        rosterWeekInfo.innerHTML = `
+                            <div class="status-indicator status-healthy"></div>
+                            <span><strong>Showing Week ${currentWeek}, ${currentSeason}</strong> - Current roster data</span>
+                        `;
                     } else {
                         rosterWeekInfo.innerHTML = `
                             <div class="status-indicator status-unhealthy"></div>
@@ -1398,37 +1381,31 @@
                 
                 let response, data;
                 
-                // Try to get weekly roster data if week is set
-                if (currentWeek && currentSeason) {
-                    try {
-                        response = await fetch(`/api/roster-history/team/${teamId}/week/${currentWeek}/${currentSeason}`);
-                        data = await response.json();
-                        
-                        if (data.success && data.roster && data.roster.starters && data.roster.starters.length > 0) {
-                            // Use weekly roster data
-                            tbody.innerHTML = data.roster.starters.map(player => `
-                                <tr>
-                                    <td><strong>${player.player_name}</strong></td>
-                                    <td><span class="position-badge position-${player.player_position}">${player.player_position}</span></td>
-                                    <td><span class="team-badge">${player.player_team}</span></td>
-                                    <td>${player.roster_position}</td>
-                                    <td>TBD</td>
-                                </tr>
-                            `).join('');
-                            return;
-                        } else {
-                            // No roster snapshot exists for this week
-                            tbody.innerHTML = `<tr><td colspan="5" class="error">No roster snapshot exists for Week ${currentWeek}, ${currentSeason}. Use the Settings tab to capture a roster snapshot for this week.</td></tr>`;
-                            return;
-                        }
-                    } catch (weeklyError) {
-                        // Error fetching weekly data
-                        tbody.innerHTML = `<tr><td colspan="5" class="error">Error loading roster for Week ${currentWeek}, ${currentSeason}: ${weeklyError.message}</td></tr>`;
+                // Get current roster data
+                try {
+                    response = await fetch(`/api/teams/${teamId}/roster`);
+                    data = await response.json();
+                    
+                    if (data.success && data.roster && data.roster.length > 0) {
+                        // Use current roster data
+                        tbody.innerHTML = data.roster.map(player => `
+                            <tr>
+                                <td><strong>${player.name}</strong></td>
+                                <td><span class="position-badge position-${player.position}">${player.position}</span></td>
+                                <td><span class="team-badge">${player.team}</span></td>
+                                <td>${player.roster_position}</td>
+                                <td>TBD</td>
+                            </tr>
+                        `).join('');
+                        return;
+                    } else {
+                        // No roster data available
+                        tbody.innerHTML = `<tr><td colspan="5" class="error">No roster data found for this team.</td></tr>`;
                         return;
                     }
-                } else {
-                    // No week/season set in settings
-                    tbody.innerHTML = '<tr><td colspan="5" class="error">Week and season must be set in Settings to view rosters. Please configure these values first.</td></tr>';
+                } catch (rosterError) {
+                    // Error fetching roster data
+                    tbody.innerHTML = `<tr><td colspan="5" class="error">Error loading roster: ${rosterError.message}</td></tr>`;
                     return;
                 }
 
@@ -1851,63 +1828,6 @@
             }
         }
 
-        async function captureSnapshot() {
-            const week = document.getElementById('snapshot-week').value;
-            
-            if (!week || week < 1 || week > 18) {
-                showSnapshotMessage('Please enter a valid week number (1-18)', 'error');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`/api/roster-history/capture/${week}`, {
-                    method: 'POST'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showSnapshotMessage(`Successfully captured ${result.entries_captured} roster entries for Week ${week}`, 'success');
-                    // Clear the input
-                    document.getElementById('snapshot-week').value = '';
-                    // Refresh available snapshots
-                    setTimeout(() => {
-                        showAvailableSnapshots();
-                    }, 500);
-                } else {
-                    showSnapshotMessage(`Failed to capture snapshot: ${result.error}`, 'error');
-                }
-            } catch (error) {
-                showSnapshotMessage(`Error capturing snapshot: ${error.message}`, 'error');
-            }
-        }
-
-        async function showAvailableSnapshots() {
-            try {
-                const response = await fetch('/api/roster-history/snapshots');
-                const result = await response.json();
-                
-                const snapshotsDisplay = document.getElementById('available-snapshots');
-                
-                if (result.success && result.snapshots.length > 0) {
-                    let snapshotsHTML = '<h4>Available Snapshots:</h4>';
-                    result.snapshots.forEach(snapshot => {
-                        const date = new Date(snapshot.snapshot_date).toLocaleDateString();
-                        snapshotsHTML += `
-                            <div class="snapshot-item">
-                                <span><strong>Week ${snapshot.week}</strong> - ${snapshot.roster_count} entries</span>
-                                <span>Captured: ${date}</span>
-                            </div>
-                        `;
-                    });
-                    snapshotsDisplay.innerHTML = snapshotsHTML;
-                } else {
-                    snapshotsDisplay.innerHTML = '<p>No roster snapshots found</p>';
-                }
-            } catch (error) {
-                showSnapshotMessage(`Error loading snapshots: ${error.message}`, 'error');
-            }
-        }
 
         function showSettingsMessage(message, type) {
             const messagesContainer = document.getElementById('settings-messages');
@@ -1926,22 +1846,6 @@
             }, 5000);
         }
 
-        function showSnapshotMessage(message, type) {
-            const messagesContainer = document.getElementById('snapshot-messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            messageDiv.textContent = message;
-            
-            messagesContainer.innerHTML = '';
-            messagesContainer.appendChild(messageDiv);
-            
-            // Auto-remove after 5 seconds
-            setTimeout(() => {
-                if (messageDiv.parentNode) {
-                    messageDiv.parentNode.removeChild(messageDiv);
-                }
-            }, 5000);
-        }
 
         // Stats Sync Functions
         async function syncWeeklyStats() {
