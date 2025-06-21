@@ -26,11 +26,11 @@ async function initializeServices() {
         // Initialize scoring service
         scoringService = new ScoringService(db);
         
-        // Initialize Tank01 API service
+        // Initialize Tank01 API service with database connection
         const apiKey = process.env.TANK01_API_KEY;
         if (apiKey) {
-            tank01Service = new Tank01Service(apiKey);
-            logInfo('Tank01 API service initialized');
+            tank01Service = new Tank01Service(apiKey, db);
+            logInfo('Tank01 API service initialized with persistent cache');
         } else {
             logError('Tank01 API key not found in environment variables');
         }
@@ -109,6 +109,8 @@ app.get('/health', async (req, res) => {
             health.services.tank01 = tank01Health.status;
             health.tank01_stats = {
                 requests: tank01Health.requestCount,
+                daily_requests: tank01Health.dailyRequests,
+                daily_stats_date: tank01Health.dailyStatsDate,
                 cache_size: tank01Health.cacheSize,
                 response_time: tank01Health.responseTime
             };

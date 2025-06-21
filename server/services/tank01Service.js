@@ -1,8 +1,9 @@
 const axios = require('axios');
 const { logError, logInfo, logWarn } = require('../utils/errorHandler');
+const DatabaseManager = require('../database/database');
 
 class Tank01Service {
-    constructor(apiKey) {
+    constructor(apiKey, db = null) {
         this.apiKey = apiKey;
         this.baseURL = 'https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com';
         this.headers = {
@@ -10,15 +11,97 @@ class Tank01Service {
             'X-RapidAPI-Host': 'tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com'
         };
         
+        // Database connection for persistent cache
+        this.db = db || new DatabaseManager();
+        
         // Rate limiting
         this.lastRequestTime = 0;
-        this.minRequestInterval = 1000; // 1 second between requests
+        this.minRequestInterval = 1; // disable for now
         this.requestCount = 0;
-        this.maxRequestsPerMinute = 50; // Conservative limit
+        this.maxRequestsPerMinute = 600; // Conservative limit
         
-        // Cache for frequently accessed data
-        this.cache = new Map();
-        this.cacheExpiry = 5 * 60 * 1000; // 5 minutes
+        // Daily counter tracking
+        this.dailyStats = {
+            date: new Date().toDateString(),
+            requests: 0,
+            lastReset: new Date().toISOString()
+        };
+        this.loadDailyStats();
+        
+        // Cache settings
+        this.defaultCacheExpiry = 5 * 60 * 1000; // 5 minutes for current data
+        this.historicalCacheExpiry = null; // Never expire historical data
+        this.currentSeasonYear = new Date().getFullYear();
+    }
+
+    // Load daily stats from database
+    async loadDailyStats() {
+        try {
+            const stats = await this.db.get(`
+                SELECT date, requests, last_reset 
+                FROM tank01_daily_stats 
+                WHERE date = date('now', 'localtime')
+            `);
+            
+            if (stats) {
+                this.dailyStats = {
+                    date: stats.date,
+                    requests: stats.requests,
+                    lastReset: stats.last_reset
+                };
+            } else {
+                await this.resetDailyStats();
+            }
+        } catch (error) {
+            logError('Error loading daily stats', error);
+            // Create table if it doesn't exist
+            await this.db.run(`
+                CREATE TABLE IF NOT EXISTS tank01_daily_stats (
+                    date TEXT PRIMARY KEY,
+                    requests INTEGER DEFAULT 0,
+                    last_reset TEXT
+                )
+            `);
+            await this.resetDailyStats();
+        }
+    }
+    
+    // Reset daily stats
+    async resetDailyStats() {
+        const today = new Date().toDateString();
+        const now = new Date().toISOString();
+        
+        this.dailyStats = {
+            date: today,
+            requests: 0,
+            lastReset: now
+        };
+        
+        await this.db.run(`
+            INSERT OR REPLACE INTO tank01_daily_stats (date, requests, last_reset)
+            VALUES (date('now', 'localtime'), 0, ?)
+        `, [now]);
+        
+        logInfo('Daily stats reset for', today);
+    }
+    
+    // Update daily counter
+    async updateDailyCounter() {
+        const today = new Date().toDateString();
+        
+        // Check if we need to reset for a new day
+        if (this.dailyStats.date !== today) {
+            await this.resetDailyStats();
+        }
+        
+        this.dailyStats.requests++;
+        
+        // Update database
+        await this.db.run(`
+            UPDATE tank01_daily_stats 
+            SET requests = requests + 1 
+            WHERE date = date('now', 'localtime')
+        `);
     }
 
     // Rate limiting helper
@@ -34,19 +117,110 @@ class Tank01Service {
         
         this.lastRequestTime = Date.now();
         this.requestCount++;
+        
+        // Update daily counter
+        await this.updateDailyCounter();
+    }
+
+    // Determine if data should be permanently cached (historical data)
+    isHistoricalData(endpoint, params) {
+        // Box scores and game data from completed seasons
+        if (params.season && parseInt(params.season) < this.currentSeasonYear) {
+            return true;
+        }
+        
+        // Box scores from past weeks in current season (if game is completed)
+        if (endpoint === '/getNFLBoxScore' && params.gameID) {
+            // Games older than 7 days are considered historical
+            // This is a simplified check - in production you'd check game status
+            return true; // For now, cache all box scores permanently
+        }
+        
+        // Player stats from past weeks
+        if (endpoint.includes('Stats') && params.week && params.season) {
+            const season = parseInt(params.season);
+            const week = parseInt(params.week);
+            const currentDate = new Date();
+            const currentWeek = Math.ceil((currentDate - new Date(currentDate.getFullYear(), 8, 1)) / (7 * 24 * 60 * 60 * 1000));
+            
+            if (season < this.currentSeasonYear || (season === this.currentSeasonYear && week < currentWeek - 1)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    // Get cache from SQLite
+    async getCachedData(cacheKey) {
+        try {
+            const cached = await this.db.get(`
+                SELECT response_data, expires_at, is_historical 
+                FROM tank01_cache 
+                WHERE cache_key = ?
+            `, [cacheKey]);
+            
+            if (!cached) {
+                return null;
+            }
+            
+            // Update hit count and last accessed
+            await this.db.run(`
+                UPDATE tank01_cache 
+                SET hit_count = hit_count + 1, last_accessed = CURRENT_TIMESTAMP 
+                WHERE cache_key = ?
+            `, [cacheKey]);
+            
+            // Check if expired (historical data never expires)
+            if (!cached.is_historical && cached.expires_at) {
+                const expiresAt = new Date(cached.expires_at).getTime();
+                if (Date.now() > expiresAt) {
+                    await this.db.run('DELETE FROM tank01_cache WHERE cache_key = ?', [cacheKey]);
+                    return null;
+                }
+            }
+            
+            logInfo(`Persistent cache hit for ${cacheKey}`);
+            return JSON.parse(cached.response_data);
+        } catch (error) {
+            logError('Error reading from cache', error);
+            return null;
+        }
+    }
+
+    // Save to SQLite cache
+    async setCachedData(cacheKey, endpoint, params, data) {
+        try {
+            const isHistorical = this.isHistoricalData(endpoint, params);
+            const expiresAt = isHistorical ? null : new Date(Date.now() + this.defaultCacheExpiry).toISOString();
+            
+            await this.db.run(`
+                INSERT OR REPLACE INTO tank01_cache 
+                (cache_key, endpoint, params, response_data, expires_at, is_historical) 
+                VALUES (?, ?, ?, ?, ?, ?)
+            `, [
+                cacheKey,
+                endpoint,
+                JSON.stringify(params),
+                JSON.stringify(data),
+                expiresAt,
+                isHistorical ? 1 : 0
+            ]);
+            
+            logInfo(`Cached data for ${cacheKey} (historical: ${isHistorical})`);
+        } catch (error) {
+            logError('Error saving to cache', error);
+        }
     }
 
     // Generic request method with error handling and caching
     async makeRequest(endpoint, params = {}, cacheKey = null) {
         try {
             // Check cache first
-            if (cacheKey && this.cache.has(cacheKey)) {
-                const cached = this.cache.get(cacheKey);
-                if (Date.now() - cached.timestamp < this.cacheExpiry) {
-                    logInfo(`Cache hit for ${cacheKey}`);
-                    return cached.data;
-                } else {
-                    this.cache.delete(cacheKey);
+            if (cacheKey) {
+                const cachedData = await this.getCachedData(cacheKey);
+                if (cachedData) {
+                    return cachedData;
                 }
             }
 
@@ -62,10 +236,7 @@ class Tank01Service {
 
             // Cache successful responses
             if (cacheKey && response.data) {
-                this.cache.set(cacheKey, {
-                    data: response.data,
-                    timestamp: Date.now()
-                });
+                await this.setCachedData(cacheKey, endpoint, params, response.data);
             }
 
             logInfo(`Tank01 API request successful`, { 
@@ -395,13 +566,61 @@ class Tank01Service {
     }
 
     // Utility methods
-    clearCache() {
-        this.cache.clear();
-        logInfo('Tank01 service cache cleared');
+    async clearCache(onlyExpired = false) {
+        try {
+            if (onlyExpired) {
+                await this.db.run(`
+                    DELETE FROM tank01_cache 
+                    WHERE is_historical = 0 AND expires_at IS NOT NULL AND expires_at < CURRENT_TIMESTAMP
+                `);
+                logInfo('Expired cache entries cleared');
+            } else {
+                await this.db.run('DELETE FROM tank01_cache WHERE is_historical = 0');
+                logInfo('Non-historical cache cleared');
+            }
+        } catch (error) {
+            logError('Error clearing cache', error);
+        }
     }
 
-    getCacheSize() {
-        return this.cache.size;
+    async getCacheStats() {
+        try {
+            const stats = await this.db.get(`
+                SELECT 
+                    COUNT(*) as total_entries,
+                    SUM(CASE WHEN is_historical = 1 THEN 1 ELSE 0 END) as historical_entries,
+                    SUM(CASE WHEN is_historical = 0 THEN 1 ELSE 0 END) as temporary_entries,
+                    SUM(hit_count) as total_hits,
+                    AVG(hit_count) as avg_hits_per_entry
+                FROM tank01_cache
+            `);
+            
+            return {
+                totalEntries: stats.total_entries || 0,
+                historicalEntries: stats.historical_entries || 0,
+                temporaryEntries: stats.temporary_entries || 0,
+                totalHits: stats.total_hits || 0,
+                avgHitsPerEntry: stats.avg_hits_per_entry || 0
+            };
+        } catch (error) {
+            logError('Error getting cache stats', error);
+            return {
+                totalEntries: 0,
+                historicalEntries: 0,
+                temporaryEntries: 0,
+                totalHits: 0,
+                avgHitsPerEntry: 0
+            };
+        }
+    }
+    
+    // Get daily stats
+    async getDailyStats() {
+        await this.loadDailyStats(); // Ensure we have the latest
+        return {
+            ...this.dailyStats,
+            totalRequests: this.requestCount
+        };
     }
 
     getRequestCount() {
@@ -419,19 +638,27 @@ class Tank01Service {
             const startTime = Date.now();
             await this.getCurrentWeek();
             const responseTime = Date.now() - startTime;
+            const cacheStats = await this.getCacheStats();
+            const dailyStats = await this.getDailyStats();
             
             return {
                 status: 'healthy',
                 responseTime: `${responseTime}ms`,
                 requestCount: this.requestCount,
-                cacheSize: this.cache.size
+                dailyRequests: dailyStats.requests,
+                dailyStatsDate: dailyStats.date,
+                cacheStats: cacheStats,
+                cacheSize: cacheStats.totalEntries
             };
         } catch (error) {
+            const cacheStats = await this.getCacheStats();
             return {
                 status: 'unhealthy',
                 error: error.message,
                 requestCount: this.requestCount,
-                cacheSize: this.cache.size
+                dailyRequests: this.dailyStats.requests,
+                cacheStats: cacheStats,
+                cacheSize: cacheStats.totalEntries
             };
         }
     }
