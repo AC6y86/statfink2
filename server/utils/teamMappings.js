@@ -12,7 +12,7 @@ const teamAbbreviations = {
     'Chargers': 'LAC',
     'Chiefs': 'KC',
     'Colts': 'IND',
-    'Commanders': 'WAS',
+    'Commanders': 'WSH',
     'Cowboys': 'DAL',
     'Dolphins': 'MIA',
     'Eagles': 'PHI',

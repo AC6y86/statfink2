@@ -3,6 +3,54 @@ const { asyncHandler, APIError } = require('../utils/errorHandler');
 const { getTeamAbbreviation } = require('../utils/teamMappings');
 const router = express.Router();
 
+// Helper function to extract opponent from game_id
+function getOpponentFromGameId(gameId, playerTeam) {
+    if (!gameId || !playerTeam) return null;
+    
+    // gameId format: YYYYMMDD_AWAY@HOME (e.g., "20240905_BAL@KC")
+    const parts = gameId.split('_');
+    if (parts.length !== 2) return null;
+    
+    const teams = parts[1].split('@');
+    if (teams.length !== 2) return null;
+    
+    const [away, home] = teams;
+    
+    // Determine if player's team is home or away, then return opponent
+    if (playerTeam === away) {
+        return `@${home}`; // Playing away
+    } else if (playerTeam === home) {
+        return `@${away}`; // Playing at home
+    }
+    
+    return null;
+}
+
+// Helper function to get opponent for any player based on their team
+async function getPlayerOpponent(db, player, week, season, stats) {
+    // If we have stats with game_id, use that
+    if (stats?.game_id && stats?.team) {
+        return getOpponentFromGameId(stats.game_id, stats.team);
+    }
+    
+    // Otherwise, look up the game for this team in this week
+    // Use the team from the roster data (player.team) 
+    const teamCode = getTeamAbbreviation(player.team); // Convert team name to abbreviation
+    
+    // Find any game_id for this team in this week/season
+    const gameInfo = await db.get(`
+        SELECT DISTINCT game_id, team FROM player_stats
+        WHERE team = ? AND week = ? AND season = ?
+        LIMIT 1
+    `, [teamCode, week, season]);
+    
+    if (gameInfo?.game_id && gameInfo?.team) {
+        return getOpponentFromGameId(gameInfo.game_id, gameInfo.team);
+    }
+    
+    return null;
+}
+
 // Mock API endpoints for testing (must be first to avoid conflicts)
 // Mock matchups for a specific week/season
 router.get('/mock/:week/:season', asyncHandler(async (req, res) => {
@@ -76,6 +124,7 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
                     name: "Mock QB (Test)",
                     position: "QB",
                     team: "TST",
+                    opp: "@OPP",
                     stats: {
                         fantasy_points: 24.5,
                         passing_yards: 285,
@@ -88,6 +137,7 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
                     name: "Mock RB (Test)",
                     position: "RB",
                     team: "TST",
+                    opp: "@OPP",
                     stats: {
                         fantasy_points: 18.7,
                         rushing_yards: 87,
@@ -105,6 +155,7 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
                     name: "Mock QB2 (Test)",
                     position: "QB", 
                     team: "TST",
+                    opp: "@KC",
                     stats: {
                         fantasy_points: 22.1,
                         passing_yards: 245,
@@ -116,7 +167,8 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
                     player_id: "RB101",
                     name: "Mock RB2 (Test)",
                     position: "RB",
-                    team: "TST", 
+                    team: "TST",
+                    opp: "@BAL", 
                     stats: {
                         fantasy_points: 15.3,
                         rushing_yards: 73,
@@ -218,13 +270,17 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
                 `, [player.player_id, matchup.week, matchup.season]);
             }
             
+            const playerTeam = getTeamAbbreviation(player.team);
+            const opponent = await getPlayerOpponent(db, player, matchup.week, matchup.season, stats);
+            
             return {
                 player_id: player.player_id,
                 name: player.name,
                 position: player.position,
-                team: getTeamAbbreviation(player.team),
+                team: playerTeam,
                 roster_position: player.roster_position,
-                stats: stats || { fantasy_points: 0 }
+                stats: stats || { fantasy_points: 0 },
+                opp: opponent || '@OPP'
             };
         })
     );
@@ -248,13 +304,17 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
                 `, [player.player_id, matchup.week, matchup.season]);
             }
             
+            const playerTeam = getTeamAbbreviation(player.team);
+            const opponent = await getPlayerOpponent(db, player, matchup.week, matchup.season, stats);
+            
             return {
                 player_id: player.player_id,
                 name: player.name,
                 position: player.position,
-                team: getTeamAbbreviation(player.team),
+                team: playerTeam,
                 roster_position: player.roster_position,
-                stats: stats || { fantasy_points: 0 }
+                stats: stats || { fantasy_points: 0 },
+                opp: opponent || '@OPP'
             };
         })
     );

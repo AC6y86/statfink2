@@ -238,12 +238,12 @@
                 
                 // Check for mock mode
                 if (urlData.isMock) {
-                    document.getElementById("fleague").innerHTML = `${settings.data.league_name || 'PFL'}<br>Mock Mode - Week ${currentWeek}`;
+                    document.getElementById("fleague").innerHTML = `Week ${currentWeek}<br>Mock Mode`;
                     document.getElementById("updatemsg").innerHTML = "MOCK DATA - Testing Mode";
                     document.getElementById("updatemsg").style.color = "#ff6600";
                     document.getElementById("updatemsg").style.fontWeight = "bold";
                 } else {
-                    document.getElementById("fleague").innerHTML = `${settings.data.league_name || 'PFL'}<br>Week ${currentWeek}`;
+                    document.getElementById("fleague").innerHTML = `Week ${currentWeek}`;
                 }
             }
 
@@ -448,7 +448,7 @@
                     <span style="font-size: 10px; color: #000; margin-top: 3px; display: block;">${formatPlayerStatsCompact(player.position, player.stats)}</span>
                 </td>
                 <td class="status" align="right">Final</td>
-                <td class="opp" align="right">@OPP</td>
+                <td class="opp" align="right">${player.opp || '@OPP'}</td>
                 <td class="points fanpts" align="right">${points.toFixed(2)}</td>
             `;
             
@@ -522,18 +522,23 @@
                 if (stats.passing_yards > 0) details.push(`${stats.passing_yards} Pyds`);
                 if (stats.rushing_yards > 0) details.push(`${stats.rushing_yards} Rshyds`);
                 if (stats.passing_tds + stats.rushing_tds > 0) details.push(`${stats.passing_tds + stats.rushing_tds} TDs`);
+                if (stats.two_point_conversions_pass > 0) details.push(`${stats.two_point_conversions_pass} 2PC`);
                 break;
             case 'RB':
                 if (stats.rushing_yards > 0) details.push(`${stats.rushing_yards} Rshyds`);
                 if (stats.receptions > 0) details.push(`${stats.receptions} Recs`);
                 if (stats.receiving_yards > 0) details.push(`${stats.receiving_yards} Recyds`);
                 if (stats.rushing_tds + stats.receiving_tds > 0) details.push(`${stats.rushing_tds + stats.receiving_tds} TDs`);
+                if (stats.two_point_conversions_run + stats.two_point_conversions_rec > 0) {
+                    details.push(`${stats.two_point_conversions_run + stats.two_point_conversions_rec} 2PC`);
+                }
                 break;
             case 'WR':
             case 'TE':
                 if (stats.receptions > 0) details.push(`${stats.receptions} Recs`);
                 if (stats.receiving_yards > 0) details.push(`${stats.receiving_yards} Recyds`);
                 if (stats.receiving_tds > 0) details.push(`${stats.receiving_tds} TDs`);
+                if (stats.two_point_conversions_rec > 0) details.push(`${stats.two_point_conversions_rec} 2PC`);
                 break;
             case 'K':
                 if (stats.field_goals_made > 0) details.push(`${stats.field_goals_made} FG`);
