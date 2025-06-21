@@ -194,8 +194,8 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
     
     // Get current rosters for both teams (using simplified roster system)
     const [team1Roster, team2Roster] = await Promise.all([
-        db.getTeamRoster(matchup.team1_id),
-        db.getTeamRoster(matchup.team2_id)
+        db.getTeamRoster(matchup.team1_id, matchup.week, matchup.season),
+        db.getTeamRoster(matchup.team2_id, matchup.week, matchup.season)
     ]);
     
     // Get player stats for this week if available

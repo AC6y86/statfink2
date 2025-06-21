@@ -156,12 +156,17 @@ class DatabaseManager {
     }
 
     // Roster methods
-    async getTeamRoster(teamId) {
-        // Get current season and latest week
-        const currentSeason = 2024; // TODO: Make this dynamic
-        const latestWeek = await this.get(`
-            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
-        `, [currentSeason]);
+    async getTeamRoster(teamId, week = null, season = null) {
+        // Get current season and week if not provided
+        const currentSeason = season || 2024; // TODO: Make this dynamic
+        let currentWeek = week;
+        
+        if (!currentWeek) {
+            const latestWeek = await this.get(`
+                SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+            `, [currentSeason]);
+            currentWeek = latestWeek.week;
+        }
         
         const query = `
             SELECT 
@@ -193,7 +198,7 @@ class DatabaseManager {
                 r.roster_position DESC,
                 r.player_name
         `;
-        const roster = await this.all(query, [teamId, latestWeek.week, currentSeason]);
+        const roster = await this.all(query, [teamId, currentWeek, currentSeason]);
         
         // Convert team names to abbreviations
         return roster.map(player => ({
