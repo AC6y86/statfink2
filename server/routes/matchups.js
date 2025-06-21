@@ -201,12 +201,23 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
     // Get player stats for this week if available
     const team1Stats = await Promise.all(
         team1Roster.filter(p => p.roster_position === 'active').map(async player => {
-            // Get stats using player mapping
-            const stats = await db.get(`
-                SELECT ps.* FROM player_stats ps
-                JOIN tank01_player_mapping m ON ps.player_id = m.tank01_player_id
-                WHERE m.our_player_id = ? AND ps.week = ? AND ps.season = ?
-            `, [player.player_id, matchup.week, matchup.season]);
+            let stats;
+            
+            // Defense/DST players don't have tank01_player_mapping entries
+            if (player.position === 'DEF' || player.position === 'DST') {
+                stats = await db.get(`
+                    SELECT * FROM player_stats
+                    WHERE player_id = ? AND week = ? AND season = ?
+                `, [player.player_id, matchup.week, matchup.season]);
+            } else {
+                // Get stats using player mapping for other positions
+                stats = await db.get(`
+                    SELECT ps.* FROM player_stats ps
+                    JOIN tank01_player_mapping m ON ps.player_id = m.tank01_player_id
+                    WHERE m.our_player_id = ? AND ps.week = ? AND ps.season = ?
+                `, [player.player_id, matchup.week, matchup.season]);
+            }
+            
             return {
                 player_id: player.player_id,
                 name: player.name,
@@ -220,12 +231,23 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
     
     const team2Stats = await Promise.all(
         team2Roster.filter(p => p.roster_position === 'active').map(async player => {
-            // Get stats using player mapping
-            const stats = await db.get(`
-                SELECT ps.* FROM player_stats ps
-                JOIN tank01_player_mapping m ON ps.player_id = m.tank01_player_id
-                WHERE m.our_player_id = ? AND ps.week = ? AND ps.season = ?
-            `, [player.player_id, matchup.week, matchup.season]);
+            let stats;
+            
+            // Defense/DST players don't have tank01_player_mapping entries
+            if (player.position === 'DEF' || player.position === 'DST') {
+                stats = await db.get(`
+                    SELECT * FROM player_stats
+                    WHERE player_id = ? AND week = ? AND season = ?
+                `, [player.player_id, matchup.week, matchup.season]);
+            } else {
+                // Get stats using player mapping for other positions
+                stats = await db.get(`
+                    SELECT ps.* FROM player_stats ps
+                    JOIN tank01_player_mapping m ON ps.player_id = m.tank01_player_id
+                    WHERE m.our_player_id = ? AND ps.week = ? AND ps.season = ?
+                `, [player.player_id, matchup.week, matchup.season]);
+            }
+            
             return {
                 player_id: player.player_id,
                 name: player.name,
