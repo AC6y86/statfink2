@@ -37,11 +37,12 @@ class Tank01Service {
     // Load daily stats from database
     async loadDailyStats() {
         try {
+            const today = new Date().toDateString();
             const stats = await this.db.get(`
                 SELECT date, requests, last_reset 
                 FROM tank01_daily_stats 
-                WHERE date = date('now', 'localtime')
-            `);
+                WHERE date = ?
+            `, [today]);
             
             if (stats) {
                 this.dailyStats = {
@@ -49,8 +50,11 @@ class Tank01Service {
                     requests: stats.requests,
                     lastReset: stats.last_reset
                 };
+                logInfo(`Loaded daily stats: ${stats.requests} requests for ${stats.date}`);
             } else {
-                await this.resetDailyStats();
+                // Only reset if this is genuinely a new day, not a missing record
+                logInfo(`No daily stats found for ${today}, keeping current values`);
+                // Keep the default values from constructor instead of resetting
             }
         } catch (error) {
             logError('Error loading daily stats', error);
@@ -62,7 +66,8 @@ class Tank01Service {
                     last_reset TEXT
                 )
             `);
-            await this.resetDailyStats();
+            // Don't automatically reset, keep constructor defaults
+            logInfo('Created tank01_daily_stats table, keeping current values');
         }
     }
     
@@ -79,8 +84,8 @@ class Tank01Service {
         
         await this.db.run(`
             INSERT OR REPLACE INTO tank01_daily_stats (date, requests, last_reset)
-            VALUES (date('now', 'localtime'), 0, ?)
-        `, [now]);
+            VALUES (?, 0, ?)
+        `, [today, now]);
         
         logInfo('Daily stats reset for', today);
     }
@@ -96,12 +101,11 @@ class Tank01Service {
         
         this.dailyStats.requests++;
         
-        // Update database
+        // Update database - use INSERT OR REPLACE to handle missing records
         await this.db.run(`
-            UPDATE tank01_daily_stats 
-            SET requests = requests + 1 
-            WHERE date = date('now', 'localtime')
-        `);
+            INSERT OR REPLACE INTO tank01_daily_stats (date, requests, last_reset)
+            VALUES (?, ?, ?)
+        `, [today, this.dailyStats.requests, this.dailyStats.lastReset]);
     }
 
     // Rate limiting helper
