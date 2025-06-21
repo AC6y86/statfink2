@@ -12,6 +12,7 @@
     "test:watch": "jest --watch --maxWorkers=2",
     "test:coverage": "jest --coverage --maxWorkers=2",
     "test:fast": "jest tests/unit/ --silent",
+    "test:browser": "jest tests/browser/ --maxWorkers=1",
     "test:all": "node tests/test-all.js"
   },
   "repository": {
@@ -37,7 +38,9 @@
   },
   "devDependencies": {
     "jest": "^30.0.0",
+    "jest-puppeteer": "^11.0.0",
     "nodemon": "^3.1.10",
+    "puppeteer": "^24.10.2",
     "supertest": "^7.1.1"
   }
 }
