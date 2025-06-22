@@ -18,11 +18,14 @@
                     <td class="fleague" id="fleague" colspan="2" nowrap="nowrap">Loading...</td>
                 </tr>
             </tbody>
-            <tfoot></tfoot>
+            <tfoot>
+                <tr class="logofooter">
+                    <td colspan="2" style="text-align: center; padding: 5px 0;">
+                        <img src="/statfink_logo.png" alt="Statfink Fantasy Football Stat Tracker" style="width: 100%; max-width: 240px; height: auto;">
+                    </td>
+                </tr>
+            </tfoot>
         </table>
-        <div style="text-align: center; padding: 10px 0;">
-            <img src="/statfink_logo.png" alt="Statfink Fantasy Football Stat Tracker" style="width: 100%; max-width: 240px; height: auto;">
-        </div>
         <div id="nfldiv" class="nfldiv">
             <table class="nfltable" id="nfltable" width="250">
                 <thead></thead>
@@ -334,6 +337,15 @@
                 });
                 
                 updateLastUpdate();
+                
+                // Apply the appropriate background class to the logo footer
+                const logoFooter = document.querySelector('.logofooter');
+                if (logoFooter && data.data.length > 0) {
+                    // The last matchup row determines the background pattern
+                    const lastMatchupIndex = data.data.length - 1;
+                    const bgClass = lastMatchupIndex % 2 ? 'matchuprow1' : 'matchuprow2';
+                    logoFooter.className = 'logofooter ' + bgClass;
+                }
             }
         } catch (error) {
             console.error('Error loading matchups:', error);
@@ -720,10 +732,10 @@
                 cells.forEach(cell => {
                     cell.addEventListener('mouseenter', () => highlightGame(cells, true));
                     cell.addEventListener('mouseleave', () => highlightGame(cells, false));
-                    // Add click handler to open ESPN game page
+                    // Add click handler to open CBS Sports game page
                     cell.addEventListener('click', () => {
-                        if (game.espn_url) {
-                            window.open(game.espn_url, '_blank');
+                        if (game.game_url) {
+                            window.open(game.game_url, '_blank');
                         }
                     });
                 });
