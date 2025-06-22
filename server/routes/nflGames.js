@@ -71,6 +71,11 @@ router.get('/:week/:season', asyncHandler(async (req, res) => {
             const homeScore = awayDefense?.points_allowed || 0;
             const awayScore = homeDefense?.points_allowed || 0;
             
+            // Generate ESPN game URL
+            // ESPN URL format: https://www.espn.com/nfl/game/_/gameId/YYYYMMDDTEAMTEAM
+            const espnGameId = `${datePart}${awayTeam.toLowerCase()}${homeTeam.toLowerCase()}`;
+            const espnUrl = `https://www.espn.com/nfl/game/_/gameId/${espnGameId}`;
+            
             gameScores.push({
                 game_id,
                 date: datePart,
@@ -78,7 +83,8 @@ router.get('/:week/:season', asyncHandler(async (req, res) => {
                 away_team: awayTeam,
                 home_score: homeScore,
                 away_score: awayScore,
-                status: 'Final'
+                status: 'Final',
+                espn_url: espnUrl
             });
         } catch (err) {
             console.error(`Error processing game ${game_id}:`, err);

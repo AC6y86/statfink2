@@ -715,11 +715,17 @@
                 
                 tr3.appendChild(statusCell);
                 
-                // Add hover effects
+                // Add hover and click effects
                 const cells = [awayTeamCell, awayScoreCell, homeTeamCell, homeScoreCell, statusCell];
                 cells.forEach(cell => {
                     cell.addEventListener('mouseenter', () => highlightGame(cells, true));
                     cell.addEventListener('mouseleave', () => highlightGame(cells, false));
+                    // Add click handler to open ESPN game page
+                    cell.addEventListener('click', () => {
+                        if (game.espn_url) {
+                            window.open(game.espn_url, '_blank');
+                        }
+                    });
                 });
             });
             
