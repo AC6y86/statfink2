@@ -660,10 +660,11 @@
             rowGames.forEach((game, colIndex) => {
                 const gameIndex = rowIndex * gamesPerRow + colIndex;
                 
-                // Determine alternating classes based on game position (entire game box)
-                const baseClass = gameIndex % 2 === 0 ? 'nfl1' : 'nfl2';
-                const ptsClass = gameIndex % 2 === 0 ? 'nfl1pts' : 'nfl2pts';
-                const statusClass = gameIndex % 2 === 0 ? 'nfl1status' : 'nfl2status';
+                // Create checkered pattern based on row and column position
+                const isEven = (rowIndex + colIndex) % 2 === 0;
+                const baseClass = isEven ? 'nfl1' : 'nfl2';
+                const ptsClass = isEven ? 'nfl1pts' : 'nfl2pts';
+                const statusClass = isEven ? 'nfl1status' : 'nfl2status';
                 
                 // Row 1: Away team and score
                 const awayTeamCell = document.createElement('td');
