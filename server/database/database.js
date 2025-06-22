@@ -509,8 +509,7 @@ class DatabaseManager {
         const result = await this.get(`
             SELECT SUM(ps.fantasy_points) as total_points
             FROM weekly_rosters r
-            JOIN tank01_player_mapping m ON r.player_id = m.our_player_id
-            JOIN player_stats ps ON m.tank01_player_id = ps.player_id
+            JOIN player_stats ps ON r.player_id = ps.player_id
             WHERE r.team_id = ? AND r.roster_position = 'active'
                 AND ps.week = ? AND ps.season = ?
                 AND r.week = ? AND r.season = ?
@@ -537,8 +536,7 @@ class DatabaseManager {
                 ps.receptions
             FROM weekly_rosters r
             LEFT JOIN nfl_players p ON r.player_id = p.player_id
-            LEFT JOIN tank01_player_mapping m ON r.player_id = m.our_player_id
-            LEFT JOIN player_stats ps ON m.tank01_player_id = ps.player_id 
+            LEFT JOIN player_stats ps ON r.player_id = ps.player_id 
                 AND ps.week = ? AND ps.season = ?
             WHERE r.team_id = ? AND r.roster_position = 'active'
                 AND r.week = ? AND r.season = ?
