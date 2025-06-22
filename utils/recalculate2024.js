@@ -70,6 +70,13 @@ async function recalculate2024Scores() {
                 ps.field_goals_50_plus,
                 ps.def_points_allowed_rank,
                 ps.def_yards_allowed_rank,
+                ps.two_point_conversions_pass,
+                ps.two_point_conversions_run,
+                ps.two_point_conversions_rec,
+                ps.return_tds,
+                ps.def_points_allowed_bonus,
+                ps.def_yards_allowed_bonus,
+                ps.player_name,
                 np.position,
                 ps.fantasy_points as old_fantasy_points
             FROM player_stats ps
@@ -106,14 +113,24 @@ async function recalculate2024Scores() {
                     difference: difference
                 });
                 
-                if (Math.abs(difference) > 5) {
+                // Check for 2-point conversions
+                const has2PC = (stats.two_point_conversions_pass || 0) + 
+                              (stats.two_point_conversions_run || 0) + 
+                              (stats.two_point_conversions_rec || 0) > 0;
+                
+                if (Math.abs(difference) > 5 || has2PC) {
                     significantChanges.push({
                         player_id: stats.player_id,
+                        player_name: stats.player_name,
                         week: stats.week,
                         position: stats.position,
                         old_points: oldPoints,
                         new_points: newPoints,
-                        difference: difference
+                        difference: difference,
+                        has2PC: has2PC,
+                        two_point_conversions_pass: stats.two_point_conversions_pass || 0,
+                        two_point_conversions_run: stats.two_point_conversions_run || 0,
+                        two_point_conversions_rec: stats.two_point_conversions_rec || 0
                     });
                 }
             }
@@ -143,14 +160,34 @@ async function recalculate2024Scores() {
             await recalculateTeamScores(db, matchup.week, matchup.season);
         }
         
-        // Show significant changes
+        // Show significant changes and 2-point conversions
         if (significantChanges.length > 0) {
-            logInfo(`\nSignificant changes (>5 points):`);
-            significantChanges.slice(0, 10).forEach(change => {
-                logInfo(`Player ${change.player_id} (${change.position}) Week ${change.week}: ${change.old_points.toFixed(2)} → ${change.new_points.toFixed(2)} (${change.difference > 0 ? '+' : ''}${change.difference.toFixed(2)})`);
-            });
-            if (significantChanges.length > 10) {
-                logInfo(`... and ${significantChanges.length - 10} more significant changes`);
+            logInfo(`\nSignificant changes (>5 points) and 2-point conversions:`);
+            
+            // First show all 2-point conversions
+            const twoPointPlayers = significantChanges.filter(c => c.has2PC);
+            if (twoPointPlayers.length > 0) {
+                logInfo(`\n2-Point Conversions Found (${twoPointPlayers.length} total):`);
+                twoPointPlayers.forEach(change => {
+                    let twoPointDetails = [];
+                    if (change.two_point_conversions_pass > 0) twoPointDetails.push(`${change.two_point_conversions_pass} pass`);
+                    if (change.two_point_conversions_run > 0) twoPointDetails.push(`${change.two_point_conversions_run} run`);
+                    if (change.two_point_conversions_rec > 0) twoPointDetails.push(`${change.two_point_conversions_rec} rec`);
+                    
+                    logInfo(`${change.player_name} (${change.position}) Week ${change.week}: ${twoPointDetails.join(', ')} - Points: ${change.old_points.toFixed(2)} → ${change.new_points.toFixed(2)} (${change.difference > 0 ? '+' : ''}${change.difference.toFixed(2)})`);
+                });
+            }
+            
+            // Then show other significant changes
+            const otherChanges = significantChanges.filter(c => !c.has2PC && Math.abs(c.difference) > 5);
+            if (otherChanges.length > 0) {
+                logInfo(`\nOther significant changes (>5 points):`);
+                otherChanges.slice(0, 10).forEach(change => {
+                    logInfo(`${change.player_name} (${change.position}) Week ${change.week}: ${change.old_points.toFixed(2)} → ${change.new_points.toFixed(2)} (${change.difference > 0 ? '+' : ''}${change.difference.toFixed(2)})`);
+                });
+                if (otherChanges.length > 10) {
+                    logInfo(`... and ${otherChanges.length - 10} more significant changes`);
+                }
             }
         }
         
@@ -191,11 +228,13 @@ async function recalculateTeamScores(db, week, season) {
             // Calculate total points for starters
             const result = await db.get(`
                 SELECT SUM(ps.fantasy_points) as total_points
-                FROM fantasy_rosters fr
-                JOIN player_stats ps ON fr.player_id = ps.player_id
-                WHERE fr.team_id = ? AND ps.week = ? AND ps.season = ?
-                AND fr.roster_position = 'starter'
-            `, [team.team_id, week, season]);
+                FROM weekly_rosters wr
+                JOIN tank01_player_mapping m ON wr.player_id = m.our_player_id
+                JOIN player_stats ps ON m.tank01_player_id = ps.player_id
+                WHERE wr.team_id = ? AND ps.week = ? AND ps.season = ?
+                AND wr.week = ? AND wr.season = ?
+                AND wr.roster_position = 'active'
+            `, [team.team_id, week, season, week, season]);
             
             const totalPoints = result?.total_points || 0;
             
