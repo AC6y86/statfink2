@@ -1,4 +1,4 @@
-const Database = require('../server/database/database');
+const Database = require('../../database/database');
 
 // All 32 NFL teams with their standard abbreviations
 const NFL_TEAMS = [

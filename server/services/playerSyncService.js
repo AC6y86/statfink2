@@ -1,5 +1,5 @@
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
-const { createDefensePreservationHook } = require('../../unused/addTeamDefenses');
+const { createDefensePreservationHook } = require('../utils/nfl/teamDefenses');
 
 class PlayerSyncService {
     constructor(db, tank01Service) {
