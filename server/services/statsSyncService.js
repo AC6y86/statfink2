@@ -214,7 +214,10 @@ class StatsSyncService {
             extra_points_attempted: 0,
             field_goals_0_39: 0,
             field_goals_40_49: 0,
-            field_goals_50_plus: 0
+            field_goals_50_plus: 0,
+            two_point_conversions_pass: 0,
+            two_point_conversions_run: 0,
+            two_point_conversions_rec: 0
         };
 
         // Map stats from Tank01 categories
@@ -223,6 +226,10 @@ class StatsSyncService {
             stats.passing_yards = parseInt(passing.passYds) || 0;
             stats.passing_tds = parseInt(passing.passTD) || 0;
             stats.interceptions = parseInt(passing.int) || 0;
+            // Check for passing 2-point conversions
+            if (passing.passingTwoPointConversion) {
+                stats.two_point_conversions_pass = parseInt(passing.passingTwoPointConversion) || 0;
+            }
         }
 
         if (playerData.Rushing) {
@@ -230,6 +237,10 @@ class StatsSyncService {
             stats.rushing_yards = parseInt(rushing.rushYds) || 0;
             stats.rushing_tds = parseInt(rushing.rushTD) || 0;
             stats.fumbles = parseInt(rushing.fumbles) || 0;
+            // Check for rushing 2-point conversions
+            if (rushing.rushingTwoPointConversion) {
+                stats.two_point_conversions_run = parseInt(rushing.rushingTwoPointConversion) || 0;
+            }
         }
 
         if (playerData.Receiving) {
@@ -237,6 +248,10 @@ class StatsSyncService {
             stats.receiving_yards = parseInt(receiving.recYds) || 0;
             stats.receiving_tds = parseInt(receiving.recTD) || 0;
             stats.receptions = parseInt(receiving.receptions) || 0;
+            // Check for receiving 2-point conversions
+            if (receiving.receivingTwoPointConversion) {
+                stats.two_point_conversions_rec = parseInt(receiving.receivingTwoPointConversion) || 0;
+            }
         }
 
         if (playerData.Kicking) {
@@ -256,11 +271,30 @@ class StatsSyncService {
             stats.safeties = parseInt(defense.safeties) || 0;
         }
 
+        // Process scoring plays to find 2-point conversion passers
+        // Only check if this player was involved in the play (check playerIDs array)
+        if (playerData.scoringPlays && Array.isArray(playerData.scoringPlays)) {
+            for (const play of playerData.scoringPlays) {
+                if (play.score && play.score.includes('Two-Point Conversion') && 
+                    play.playerIDs && play.playerIDs.includes(playerData.playerID)) {
+                    // Check if this player passed for a 2-point conversion
+                    const passPattern = new RegExp(`${playerData.longName}\\s+Pass\\s+to\\s+.+\\s+for\\s+Two-Point\\s+Conversion`, 'i');
+                    if (passPattern.test(play.score)) {
+                        stats.two_point_conversions_pass = (stats.two_point_conversions_pass || 0) + 1;
+                        logInfo(`Found 2-point passing conversion for ${playerData.longName}: ${play.score}`);
+                    }
+                }
+            }
+        }
+
         logInfo(`Mapped stats for ${playerData.longName}:`, {
             passing_yards: stats.passing_yards,
             rushing_yards: stats.rushing_yards,
             receiving_yards: stats.receiving_yards,
-            field_goals_made: stats.field_goals_made
+            field_goals_made: stats.field_goals_made,
+            two_point_conversions_pass: stats.two_point_conversions_pass,
+            two_point_conversions_run: stats.two_point_conversions_run,
+            two_point_conversions_rec: stats.two_point_conversions_rec
         });
 
         return stats;

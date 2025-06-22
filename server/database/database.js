@@ -363,8 +363,9 @@ class DatabaseManager {
              safeties, points_allowed, yards_allowed, field_goals_made,
              field_goals_attempted, extra_points_made, extra_points_attempted,
              field_goals_0_39, field_goals_40_49, field_goals_50_plus,
+             two_point_conversions_pass, two_point_conversions_run, two_point_conversions_rec,
              fantasy_points, last_updated)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
         `;
         
         return this.run(query, [
@@ -378,7 +379,9 @@ class DatabaseManager {
             stats.field_goals_made || 0, stats.field_goals_attempted || 0,
             stats.extra_points_made || 0, stats.extra_points_attempted || 0,
             stats.field_goals_0_39 || 0, stats.field_goals_40_49 || 0,
-            stats.field_goals_50_plus || 0, stats.fantasy_points || 0
+            stats.field_goals_50_plus || 0, 
+            stats.two_point_conversions_pass || 0, stats.two_point_conversions_run || 0,
+            stats.two_point_conversions_rec || 0, stats.fantasy_points || 0
         ]);
     }
 

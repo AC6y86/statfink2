@@ -20,18 +20,15 @@
             </tbody>
             <tfoot></tfoot>
         </table>
+        <div style="text-align: center; padding: 10px 0;">
+            <img src="/statfink_logo.png" alt="Statfink Fantasy Football Stat Tracker" style="width: 100%; max-width: 240px; height: auto;">
+        </div>
         <div id="nfldiv" class="nfldiv">
             <table class="nfltable" id="nfltable" width="250">
                 <thead></thead>
                 <tbody>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4" style="text-align: center; padding: 5px 0; background: transparent;">
-                            <img src="/statfink_logo.png" alt="Statfink Fantasy Football Stat Tracker" style="width: 100%; max-width: 240px; height: auto;">
-                        </td>
-                    </tr>
-                </tfoot>
+                <tfoot></tfoot>
             </table>
         </div>
     </div>
@@ -249,6 +246,9 @@
 
             // Load matchups for current week
             await loadWeekMatchups();
+            
+            // Load NFL games
+            await loadNFLGames();
             
             // If specific matchup requested, load it
             if (urlData.matchup) {
@@ -591,6 +591,144 @@
             await loadMatchup(currentMatchupId);
         }
         await loadWeekMatchups();
+        await loadNFLGames();
+    }
+
+    // Highlight NFL game on hover
+    function highlightGame(cells, highlight) {
+        cells.forEach(cell => {
+            if (highlight) {
+                // Store original classes
+                cell.dataset.originalClass = cell.className;
+                // Apply highlight classes
+                if (cell.className.includes('pts')) {
+                    cell.className = 'nflhlpts';
+                } else if (cell.className.includes('status')) {
+                    cell.className = 'nflhlstatus';
+                } else {
+                    cell.className = 'nflhl';
+                }
+            } else {
+                // Restore original classes
+                if (cell.dataset.originalClass) {
+                    cell.className = cell.dataset.originalClass;
+                }
+            }
+        });
+    }
+    
+    // Load NFL games for the week
+    async function loadNFLGames() {
+        try {
+            const response = await fetch(`/api/nfl-games/${currentWeek}/${currentSeason}`);
+            const data = await response.json();
+            
+            if (data.success && data.data.length > 0) {
+                displayNFLGames(data.data);
+            }
+        } catch (error) {
+            console.error('Error loading NFL games:', error);
+        }
+    }
+    
+    // Display NFL games in grid format
+    function displayNFLGames(games) {
+        const tbody = document.getElementById('nfltable').getElementsByTagName('tbody')[0];
+        tbody.innerHTML = ''; // Clear existing content
+        
+        // Group games into rows (4 games per row)
+        const gamesPerRow = 4;
+        const rows = [];
+        
+        for (let i = 0; i < games.length; i += gamesPerRow) {
+            rows.push(games.slice(i, i + gamesPerRow));
+        }
+        
+        // Create table rows with exact HTML structure
+        rows.forEach((rowGames, rowIndex) => {
+            // Create rows using exact HTML from reference
+            const tr1 = document.createElement('tr');
+            tr1.id = `nfl${rowIndex}r0`;
+            
+            const tr2 = document.createElement('tr');
+            tr2.id = `nfl${rowIndex}r1`;
+            
+            const tr3 = document.createElement('tr');
+            tr3.id = `nfl${rowIndex}rs`;
+            
+            // Process each game in this row
+            rowGames.forEach((game, colIndex) => {
+                const gameIndex = rowIndex * gamesPerRow + colIndex;
+                
+                // Determine alternating classes based on game position (entire game box)
+                const baseClass = gameIndex % 2 === 0 ? 'nfl1' : 'nfl2';
+                const ptsClass = gameIndex % 2 === 0 ? 'nfl1pts' : 'nfl2pts';
+                const statusClass = gameIndex % 2 === 0 ? 'nfl1status' : 'nfl2status';
+                
+                // Row 1: Away team and score
+                const awayTeamCell = document.createElement('td');
+                awayTeamCell.id = `g${gameIndex}nfl${rowIndex}r0c${colIndex * 2}`;
+                awayTeamCell.className = baseClass;
+                awayTeamCell.setAttribute('nowrap', '');
+                awayTeamCell.title = game.status;
+                awayTeamCell.textContent = game.away_team;
+                
+                const awayScoreCell = document.createElement('td');
+                awayScoreCell.id = `g${gameIndex}nfl${rowIndex}r0c${colIndex * 2 + 1}p`;
+                awayScoreCell.className = ptsClass;
+                awayScoreCell.setAttribute('nowrap', '');
+                awayScoreCell.align = 'right';
+                awayScoreCell.title = game.status;
+                awayScoreCell.textContent = game.away_score;
+                
+                tr1.appendChild(awayTeamCell);
+                tr1.appendChild(awayScoreCell);
+                
+                // Row 2: Home team and score
+                const homeTeamCell = document.createElement('td');
+                homeTeamCell.id = `g${gameIndex}nfl${rowIndex}r1c${colIndex * 2}`;
+                homeTeamCell.className = baseClass;
+                homeTeamCell.setAttribute('nowrap', '');
+                homeTeamCell.title = game.status;
+                homeTeamCell.textContent = game.home_team;
+                
+                const homeScoreCell = document.createElement('td');
+                homeScoreCell.id = `g${gameIndex}nfl${rowIndex}r1c${colIndex * 2 + 1}p`;
+                homeScoreCell.className = ptsClass;
+                homeScoreCell.setAttribute('nowrap', '');
+                homeScoreCell.align = 'right';
+                homeScoreCell.title = game.status;
+                homeScoreCell.textContent = game.home_score;
+                
+                tr2.appendChild(homeTeamCell);
+                tr2.appendChild(homeScoreCell);
+                
+                // Row 3: Status
+                const statusCell = document.createElement('td');
+                statusCell.id = `g${gameIndex}nfl${rowIndex}rs`;
+                statusCell.className = statusClass;
+                statusCell.setAttribute('nowrap', '');
+                statusCell.colSpan = 2;
+                statusCell.title = game.status;
+                statusCell.textContent = game.status;
+                
+                tr3.appendChild(statusCell);
+                
+                // Add hover effects
+                const cells = [awayTeamCell, awayScoreCell, homeTeamCell, homeScoreCell, statusCell];
+                cells.forEach(cell => {
+                    cell.addEventListener('mouseenter', () => highlightGame(cells, true));
+                    cell.addEventListener('mouseleave', () => highlightGame(cells, false));
+                });
+            });
+            
+            tbody.appendChild(tr1);
+            tbody.appendChild(tr2);
+            tbody.appendChild(tr3);
+        });
+        
+        // Show the NFL games div
+        document.getElementById('nfldiv').style.display = 'block';
     }
 
     // Handle browser back/forward navigation

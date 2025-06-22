@@ -191,6 +191,7 @@ app.use('/api/players', require('./routes/players'));
 app.use('/api/stats', require('./routes/stats'));
 app.use('/api/matchups', require('./routes/matchups'));
 app.use('/api/league', require('./routes/league'));
+app.use('/api/nfl-games', require('./routes/nflGames'));
 app.use('/api/database', require('./routes/databaseBrowser'));
 
 // Admin routes
