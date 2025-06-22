@@ -72,8 +72,8 @@
 .floatleft { float: left; border-style: solid; border-width: 1px; border-color: #556; }
 .floatright { position: relative; }
 .absleague { position: absolute; top : 0px; left : 5px; z-index: 50;}
-.absteams { position: absolute; top : 23px; left : 260px; background-image: url(statfinkbg.png); background-position: center; background-repeat: repeat-x;}
-.absteamsalone { position: absolute; top : 23px; left : 5px; background-image: url(statfinkbg.png); background-position: left; background-repeat: repeat-x;}
+.absteams { position: absolute; top : 23px; left : 260px;}
+.absteamsalone { position: absolute; top : 23px; left : 5px;}
 
 /* Table styling */
 table {
@@ -122,7 +122,9 @@ body {
     font-family: arial;
     font-size: 12px;
     background-image: url(statfinkbg.png);
-    background-repeat: repeat;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
 }
 
 /* Add spacing between player name and stats */
