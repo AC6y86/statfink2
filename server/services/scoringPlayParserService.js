@@ -184,12 +184,19 @@ class ScoringPlayParserService {
             const yardageMatch = originalText.match(/(\d+)\s*Yd/i);
             const yardage = yardageMatch ? parseInt(yardageMatch[1]) : null;
             
-            // Special case: Tank Bigsby type plays - short yardage fumble recovery
-            // "Tank Bigsby 3 Yd Fumble Recovery" = offensive fumble recovery
-            // But exclude 0 yards which could be defensive at the goal line
-            if (yardage !== null && yardage >= 1 && yardage <= 5 && normalizedText.includes('recovery')) {
-                // This is likely an offensive fumble recovery (player recovered his own team's fumble)
-                return null;
+            // Special cases for offensive fumble recoveries:
+            // 1. Short yardage fumble recovery: "Tank Bigsby 3 Yd Fumble Recovery"
+            // 2. End zone fumble recovery: "Patrick Ricard Fumble Recovery in End Zone"
+            if (normalizedText.includes('recovery')) {
+                // Case 1: Short yardage (1-5 yards) suggests offensive fumble recovery
+                if (yardage !== null && yardage >= 1 && yardage <= 5) {
+                    return null;
+                }
+                
+                // Case 2: "in End Zone" suggests offensive fumble recovery
+                if (normalizedText.includes('in end zone')) {
+                    return null;
+                }
             }
             
             // Everything else is considered defensive fumble return
