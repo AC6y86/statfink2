@@ -226,7 +226,7 @@ router.post('/:teamId/roster/add', asyncHandler(async (req, res) => {
             player: {
                 id: player.player_id,
                 name: player.name,
-                position: player.position,
+                position: player.position === 'DST' ? 'DEF' : player.position,
                 team: player.team
             },
             rosterPosition
@@ -297,7 +297,7 @@ router.delete('/:teamId/roster/remove', asyncHandler(async (req, res) => {
             player: {
                 id: player.player_id,
                 name: player.name,
-                position: player.position,
+                position: player.position === 'DST' ? 'DEF' : player.position,
                 team: player.team
             }
         }
@@ -381,7 +381,7 @@ router.put('/:teamId/roster/move', asyncHandler(async (req, res) => {
             player: {
                 id: player.player_id,
                 name: player.name,
-                position: player.position,
+                position: player.position === 'DST' ? 'DEF' : player.position,
                 team: player.team
             },
             oldPosition: rosterEntry.roster_position === 'injured_reserve' ? 'injured_reserve' : 'active',

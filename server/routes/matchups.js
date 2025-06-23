@@ -267,7 +267,7 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
             return {
                 player_id: player.player_id,
                 name: player.name,
-                position: player.position,
+                position: player.position === 'DST' ? 'DEF' : player.position,
                 team: playerTeam,
                 roster_position: player.roster_position,
                 stats: stats || { fantasy_points: 0 },
@@ -292,7 +292,7 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
             return {
                 player_id: player.player_id,
                 name: player.name,
-                position: player.position,
+                position: player.position === 'DST' ? 'DEF' : player.position,
                 team: playerTeam,
                 roster_position: player.roster_position,
                 stats: stats || { fantasy_points: 0 },
