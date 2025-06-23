@@ -1,8 +1,11 @@
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
+const ScoringPlayParserService = require('./scoringPlayParserService');
 
 class DSTManagementService {
-    constructor(db) {
+    constructor(db, tank01Service = null) {
         this.db = db;
+        this.tank01Service = tank01Service;
+        this.scoringPlayParser = new ScoringPlayParserService();
     }
 
     /**
@@ -125,10 +128,30 @@ class DSTManagementService {
     }
 
     /**
-     * Process DST stats from game data
+     * Process DST stats from game data with scoring play analysis
      */
     async processDSTStats(dstData, game, week, gameId, season) {
         try {
+            // Get detailed boxscore data for scoring play analysis
+            let scoringPlaysData = null;
+            if (this.tank01Service) {
+                try {
+                    scoringPlaysData = await this.tank01Service.getNFLBoxScore(gameId);
+                } catch (error) {
+                    logWarn(`Could not fetch detailed boxscore for game ${gameId}:`, error.message);
+                }
+            }
+
+            // Parse scoring plays to get defensive TD breakdown
+            let awayDefensiveBreakdown = null;
+            let homeDefensiveBreakdown = null;
+            
+            if (scoringPlaysData && game.away && game.home) {
+                const parsedPlays = this.scoringPlayParser.parseScoringPlays(scoringPlaysData, game.home, game.away);
+                awayDefensiveBreakdown = this.scoringPlayParser.getDefensiveTouchdownBreakdown(parsedPlays, game.away);
+                homeDefensiveBreakdown = this.scoringPlayParser.getDefensiveTouchdownBreakdown(parsedPlays, game.home);
+            }
+
             // Process away team DST
             if (dstData.away && game.away && game.teamIDHome && game.teamIDAway) {
                 const awayTeam = game.away;
@@ -142,7 +165,8 @@ class DSTManagementService {
                     dstData.away,
                     homeScore,  // Away DST allowed home team's points
                     homeYards,  // Away DST allowed home team's yards
-                    season
+                    season,
+                    awayDefensiveBreakdown
                 );
             }
             
@@ -159,7 +183,8 @@ class DSTManagementService {
                     dstData.home,
                     awayScore,  // Home DST allowed away team's points
                     awayYards,  // Home DST allowed away team's yards
-                    season
+                    season,
+                    homeDefensiveBreakdown
                 );
             }
         } catch (error) {
@@ -170,7 +195,7 @@ class DSTManagementService {
     /**
      * Insert DST stats into the database
      */
-    async insertDSTStats(defensePlayerId, week, gameId, dstData, pointsAllowed, yardsAllowed, season) {
+    async insertDSTStats(defensePlayerId, week, gameId, dstData, pointsAllowed, yardsAllowed, season, defensiveBreakdown = null) {
         const stats = {
             player_id: defensePlayerId,
             week: week,
@@ -188,8 +213,8 @@ class DSTManagementService {
             sacks: parseInt(dstData.sacks) || 0,
             def_interceptions: parseInt(dstData.defensiveInterceptions) || 0,
             fumbles_recovered: parseInt(dstData.fumblesRecovered) || 0,
-            def_touchdowns: parseInt(dstData.defTD) || 0,
-            safeties: parseInt(dstData.safeties) || 0,
+            def_touchdowns: 0, // Don't use unreliable API defTD field
+            safeties: defensiveBreakdown?.safeties || parseInt(dstData.safeties) || 0,
             points_allowed: pointsAllowed,
             yards_allowed: yardsAllowed,
             field_goals_made: 0,
@@ -202,7 +227,13 @@ class DSTManagementService {
             two_point_conversions_pass: 0,
             two_point_conversions_run: 0,
             two_point_conversions_rec: 0,
-            fantasy_points: 0
+            fantasy_points: 0,
+            // New defensive TD breakdown fields
+            def_int_return_tds: defensiveBreakdown?.def_int_return_tds || 0,
+            def_fumble_return_tds: defensiveBreakdown?.def_fumble_return_tds || 0,
+            def_blocked_return_tds: defensiveBreakdown?.def_blocked_return_tds || 0,
+            kick_return_tds: 0, // These are for individual players, not DST
+            punt_return_tds: 0  // These are for individual players, not DST
         };
         
         try {
@@ -218,8 +249,10 @@ class DSTManagementService {
                     extra_points_made, extra_points_attempted,
                     field_goals_0_39, field_goals_40_49, field_goals_50_plus,
                     two_point_conversions_pass, two_point_conversions_run,
-                    two_point_conversions_rec, fantasy_points
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    two_point_conversions_rec, fantasy_points,
+                    def_int_return_tds, def_fumble_return_tds, def_blocked_return_tds,
+                    kick_return_tds, punt_return_tds
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `, [
                 stats.player_id, stats.week, stats.season, stats.game_id,
                 stats.passing_yards, stats.passing_tds, stats.interceptions,
@@ -231,7 +264,9 @@ class DSTManagementService {
                 stats.extra_points_made, stats.extra_points_attempted,
                 stats.field_goals_0_39, stats.field_goals_40_49, stats.field_goals_50_plus,
                 stats.two_point_conversions_pass, stats.two_point_conversions_run,
-                stats.two_point_conversions_rec, stats.fantasy_points
+                stats.two_point_conversions_rec, stats.fantasy_points,
+                stats.def_int_return_tds, stats.def_fumble_return_tds, stats.def_blocked_return_tds,
+                stats.kick_return_tds, stats.punt_return_tds
             ]);
         } catch (error) {
             logWarn(`Failed to insert stats for player ${stats.player_id}:`, error.message);

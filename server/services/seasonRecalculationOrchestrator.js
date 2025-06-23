@@ -25,7 +25,7 @@ class SeasonRecalculationOrchestrator {
         this.nflGamesService = new NFLGamesService(this.db, this.tank01Service);
         this.scoringService = new ScoringService(this.db);
         this.playerSyncService = new PlayerSyncService(this.db, this.tank01Service);
-        this.dstManagementService = new DSTManagementService(this.db);
+        this.dstManagementService = new DSTManagementService(this.db, this.tank01Service);
         this.dataCleanupService = new DataCleanupService(this.db);
         this.statsExtractionService = new StatsExtractionService(this.db);
         this.gameScoreService = new GameScoreService(this.db, this.tank01Service);
@@ -315,8 +315,10 @@ class SeasonRecalculationOrchestrator {
                 extra_points_made, extra_points_attempted,
                 field_goals_0_39, field_goals_40_49, field_goals_50_plus,
                 two_point_conversions_pass, two_point_conversions_run,
-                two_point_conversions_rec, fantasy_points
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                two_point_conversions_rec, fantasy_points,
+                def_int_return_tds, def_fumble_return_tds, def_blocked_return_tds,
+                kick_return_tds, punt_return_tds
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         
         // Insert all stats
@@ -332,7 +334,9 @@ class SeasonRecalculationOrchestrator {
                 stats.extra_points_made, stats.extra_points_attempted,
                 stats.field_goals_0_39, stats.field_goals_40_49, stats.field_goals_50_plus,
                 stats.two_point_conversions_pass, stats.two_point_conversions_run,
-                stats.two_point_conversions_rec, stats.fantasy_points
+                stats.two_point_conversions_rec, stats.fantasy_points,
+                stats.def_int_return_tds || 0, stats.def_fumble_return_tds || 0, stats.def_blocked_return_tds || 0,
+                stats.kick_return_tds || 0, stats.punt_return_tds || 0
             ]);
         }
         

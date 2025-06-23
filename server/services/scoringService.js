@@ -68,7 +68,16 @@ class ScoringService {
 
         // Team Defense (of the 16 teams drafted)
         if (playerStats.position === 'DST' || playerStats.position === 'DEF') {
-            points += (playerStats.def_touchdowns || 0) * 8; // Touchdown scored: 8 points
+            // Defensive touchdowns: 8 points each
+            points += (playerStats.def_int_return_tds || 0) * 8; // Interception return TDs
+            points += (playerStats.def_fumble_return_tds || 0) * 8; // Fumble return TDs
+            points += (playerStats.def_blocked_return_tds || 0) * 8; // Blocked punt/kick return TDs
+            
+            // Safeties: 2 points each
+            points += (playerStats.safeties || 0) * 2; // Safeties
+            
+            // No fallback to def_touchdowns since it's unreliable from Tank01 API
+            // All defensive TDs should come from our specific breakdown fields
             
             // Defensive bonuses are stored as fractional values when there are ties
             // e.g., if 2 teams tie for fewest points, each gets 2.5 points
@@ -76,8 +85,12 @@ class ScoringService {
             points += (playerStats.def_yards_bonus || 0); // Fewest yards allowed bonus (5 points split among ties)
         }
 
-        // Kick or Punt returner
-        points += (playerStats.return_tds || 0) * 20; // Touchdown scored: 20 points
+        // Special teams return touchdowns for individual players: 20 points each
+        points += (playerStats.kick_return_tds || 0) * 20; // Kickoff return TDs
+        points += (playerStats.punt_return_tds || 0) * 20; // Punt return TDs
+        
+        // Legacy return TDs field (fallback)
+        points += (playerStats.return_tds || 0) * 20; // Legacy return TDs
 
         return Math.round(points * 100) / 100; // Round to 2 decimals
     }
