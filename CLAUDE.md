@@ -9,4 +9,6 @@ Never write to the database when writing tests.
 
 Scoring rules are in (docs/SCORING_SYSTEM.md).  Do not make up scoring rules.
 
-Always start by saying "Sir, "
+Always start by saying a random slang name for me.
+
+Never make new .db files or tables in the db without my permission.
