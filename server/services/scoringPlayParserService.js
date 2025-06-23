@@ -171,8 +171,22 @@ class ScoringPlayParserService {
         }
 
         // Defensive touchdowns - fumble returns (remove "touchdown" requirement)
+        // Only count as defensive if it's likely an opponent's fumble recovered by defense
         if (normalizedText.includes('fumble') && 
             (normalizedText.includes('return') || normalizedText.includes('recovery'))) {
+            
+            // If there's a player name in the play and they're on the scoring team,
+            // this is likely an offensive fumble recovery, not a defensive fumble return
+            const playerPattern = /^([A-Z][a-z]+ [A-Z][a-z]+)/;
+            const playerMatch = playText.match(playerPattern);
+            
+            if (playerMatch) {
+                const playerName = playerMatch[1];
+                // If we can extract a player name, this suggests it's an offensive play
+                // where the named player recovered their own team's fumble
+                return null; // Don't categorize as defensive TD
+            }
+            
             return 'defensive_fumble_return_td';
         }
 
