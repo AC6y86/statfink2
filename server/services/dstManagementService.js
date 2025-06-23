@@ -133,7 +133,7 @@ class DSTManagementService {
             if (dstData.away && game.away && game.teamIDHome && game.teamIDAway) {
                 const awayTeam = game.away;
                 const homeScore = parseInt(game.homePts || dstData.home?.ptsAllowed || 0);
-                const homeYards = parseInt(dstData.home?.ydsAllowed || 0);
+                const homeYards = parseInt(dstData.away?.ydsAllowed || 0);  // Away DST's yards allowed
                 
                 await this.insertDSTStats(
                     `DEF_${awayTeam}`,
@@ -150,7 +150,7 @@ class DSTManagementService {
             if (dstData.home && game.home && game.teamIDHome && game.teamIDAway) {
                 const homeTeam = game.home;
                 const awayScore = parseInt(game.awayPts || dstData.away?.ptsAllowed || 0);
-                const awayYards = parseInt(dstData.away?.ydsAllowed || 0);
+                const awayYards = parseInt(dstData.home?.ydsAllowed || 0);  // Home DST's yards allowed
                 
                 await this.insertDSTStats(
                     `DEF_${homeTeam}`,

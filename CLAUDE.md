@@ -12,3 +12,5 @@ Scoring rules are in (docs/SCORING_SYSTEM.md).  Do not make up scoring rules.
 Always start by saying a random slang name for me.
 
 Never make new .db files or tables in the db without my permission.
+
+When we need to update stats for 2024, you can do manually to test, but after always run recalculate2024season.js.
