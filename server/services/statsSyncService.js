@@ -180,10 +180,10 @@ class StatsSyncService {
 
     // Map Tank01 player stats to our database format
     async mapTank01PlayerStats(playerData, week, season) {
-        // Find player in our database by name matching
-        const playerId = await this.findPlayerIdByName(playerData.longName);
+        // Use Tank01 player ID directly
+        const playerId = playerData.playerID;
         if (!playerId) {
-            logWarn(`Player not found in database: ${playerData.longName}`);
+            logWarn(`No player ID for: ${playerData.longName}`);
             return null;
         }
 

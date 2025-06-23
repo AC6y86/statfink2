@@ -42,120 +42,80 @@ class StatsComparator {
         return new Promise((resolve, reject) => {
             let query;
             if (rosterPlayersOnly) {
-                // Only get stats for players who were on fantasy rosters
+                // Get stats for players who were on fantasy rosters
+                // Now using Tank01 IDs - join on player_id directly
                 query = `
                     SELECT 
-                        MIN(ps.player_id) as player_id,
-                        ps.player_name,
+                        ps.player_id,
+                        p.name as player_name,
                         ps.week,
                         ps.season,
-                        ps.position,
-                        ps.team,
-                        MAX(ps.passing_yards) as passing_yards,
-                        MAX(ps.passing_tds) as passing_tds,
-                        MAX(ps.interceptions) as interceptions,
-                        MAX(ps.rushing_yards) as rushing_yards,
-                        MAX(ps.rushing_tds) as rushing_tds,
-                        MAX(ps.receiving_yards) as receiving_yards,
-                        MAX(ps.receiving_tds) as receiving_tds,
-                        MAX(ps.receptions) as receptions,
-                        MAX(ps.fumbles) as fumbles,
-                        MAX(ps.sacks) as sacks,
-                        MAX(ps.def_interceptions) as def_interceptions,
-                        MAX(ps.fumbles_recovered) as fumbles_recovered,
-                        MAX(ps.def_touchdowns) as def_touchdowns,
-                        MAX(ps.points_allowed) as points_allowed,
-                        MAX(ps.yards_allowed) as yards_allowed,
-                        MAX(ps.field_goals_made) as field_goals_made,
-                        MAX(ps.field_goals_attempted) as field_goals_attempted,
-                        MAX(ps.extra_points_made) as extra_points_made,
-                        MAX(ps.extra_points_attempted) as extra_points_attempted,
-                        MAX(ps.fantasy_points) as fantasy_points
+                        p.position,
+                        p.team,
+                        ps.passing_yards,
+                        ps.passing_tds,
+                        ps.interceptions,
+                        ps.rushing_yards,
+                        ps.rushing_tds,
+                        ps.receiving_yards,
+                        ps.receiving_tds,
+                        ps.receptions,
+                        ps.fumbles,
+                        ps.sacks,
+                        ps.def_interceptions,
+                        ps.fumbles_recovered,
+                        ps.def_touchdowns,
+                        ps.points_allowed,
+                        ps.yards_allowed,
+                        ps.field_goals_made,
+                        ps.field_goals_attempted,
+                        ps.extra_points_made,
+                        ps.extra_points_attempted,
+                        ps.fantasy_points
                     FROM player_stats ps
+                    JOIN nfl_players p ON ps.player_id = p.player_id
                     WHERE ps.season = 2024
                     AND EXISTS (
                         SELECT 1 FROM weekly_rosters wr 
                         WHERE wr.season = ps.season 
                         AND wr.week = ps.week
-                        AND (
-                            -- Non-defense: match by exact name
-                            (ps.position != 'DEF' AND wr.player_name = ps.player_name)
-                            OR
-                            -- Defense: match using normalization mapping
-                            (ps.position = 'DEF' AND wr.player_position = 'DEF' AND 
-                             wr.player_name = CASE ps.player_name
-                                WHEN 'ARI Defense' THEN 'Cardinals'
-                                WHEN 'ATL Defense' THEN 'Falcons'
-                                WHEN 'BAL Defense' THEN 'Ravens'
-                                WHEN 'BUF Defense' THEN 'Bills'
-                                WHEN 'CAR Defense' THEN 'Panthers'
-                                WHEN 'CHI Defense' THEN 'Bears'
-                                WHEN 'CIN Defense' THEN 'Bengals'
-                                WHEN 'CLE Defense' THEN 'Browns'
-                                WHEN 'DAL Defense' THEN 'Cowboys'
-                                WHEN 'DEN Defense' THEN 'Broncos'
-                                WHEN 'DET Defense' THEN 'Lions'
-                                WHEN 'GB Defense' THEN 'Packers'
-                                WHEN 'HOU Defense' THEN 'Texans'
-                                WHEN 'IND Defense' THEN 'Colts'
-                                WHEN 'JAX Defense' THEN 'Jaguars'
-                                WHEN 'KC Defense' THEN 'Chiefs'
-                                WHEN 'LAC Defense' THEN 'Chargers'
-                                WHEN 'LAR Defense' THEN 'Rams'
-                                WHEN 'LV Defense' THEN 'Raiders'
-                                WHEN 'MIA Defense' THEN 'Dolphins'
-                                WHEN 'MIN Defense' THEN 'Vikings'
-                                WHEN 'NE Defense' THEN 'Patriots'
-                                WHEN 'NO Defense' THEN 'Saints'
-                                WHEN 'NYG Defense' THEN 'Giants'
-                                WHEN 'NYJ Defense' THEN 'Jets'
-                                WHEN 'PHI Defense' THEN 'Eagles'
-                                WHEN 'PIT Defense' THEN 'Steelers'
-                                WHEN 'SEA Defense' THEN 'Seahawks'
-                                WHEN 'SF Defense' THEN '49ers'
-                                WHEN 'TB Defense' THEN 'Buccaneers'
-                                WHEN 'TEN Defense' THEN 'Titans'
-                                WHEN 'WAS Defense' THEN 'Commanders'
-                                WHEN 'WSH Defense' THEN 'Commanders'
-                                ELSE ps.player_name
-                             END)
-                        )
+                        AND wr.player_id = ps.player_id
                     )
-                    GROUP BY ps.player_name, ps.week, ps.season, ps.position, ps.team
-                    ORDER BY ps.week, ps.player_name
+                    ORDER BY ps.week, p.name
                 `;
             } else {
                 query = `
                     SELECT 
-                        player_id,
-                        player_name,
-                        week,
-                        season,
-                        position,
-                        team,
-                        passing_yards,
-                        passing_tds,
-                        interceptions,
-                        rushing_yards,
-                        rushing_tds,
-                        receiving_yards,
-                        receiving_tds,
-                        receptions,
-                        fumbles,
-                        sacks,
-                        def_interceptions,
-                        fumbles_recovered,
-                        def_touchdowns,
-                        points_allowed,
-                        yards_allowed,
-                        field_goals_made,
-                        field_goals_attempted,
-                        extra_points_made,
-                        extra_points_attempted,
-                        fantasy_points
-                    FROM player_stats
-                    WHERE season = 2024
-                    ORDER BY week, player_name
+                        ps.player_id,
+                        p.name as player_name,
+                        ps.week,
+                        ps.season,
+                        p.position,
+                        p.team,
+                        ps.passing_yards,
+                        ps.passing_tds,
+                        ps.interceptions,
+                        ps.rushing_yards,
+                        ps.rushing_tds,
+                        ps.receiving_yards,
+                        ps.receiving_tds,
+                        ps.receptions,
+                        ps.fumbles,
+                        ps.sacks,
+                        ps.def_interceptions,
+                        ps.fumbles_recovered,
+                        ps.def_touchdowns,
+                        ps.points_allowed,
+                        ps.yards_allowed,
+                        ps.field_goals_made,
+                        ps.field_goals_attempted,
+                        ps.extra_points_made,
+                        ps.extra_points_attempted,
+                        ps.fantasy_points
+                    FROM player_stats ps
+                    JOIN nfl_players p ON ps.player_id = p.player_id
+                    WHERE ps.season = 2024
+                    ORDER BY ps.week, p.name
                 `;
             }
             
@@ -203,79 +163,260 @@ class StatsComparator {
             .replace(/\s+(Jr\.?|Sr\.?|III|II|IV|V)$/i, '')
             .replace(/\s+Defense$/i, '')
             .replace(/\s+DEF$/i, '')
+            .replace(/['']/g, "'") // Normalize apostrophes
+            .replace(/\./g, '') // Remove periods
             .trim()
             .toLowerCase();
         
-        // Special handling for defenses - convert abbreviations to full names
-        if (position === 'DEF' || position === 'DST' || normalized.includes('defense')) {
+        // Special handling for defenses - extract just the team nickname
+        if (position === 'DEF' || position === 'DST' || normalized.includes('defense') || name.includes('Defense')) {
+            // Map full team names to nicknames as they appear in reference DB
             const teamMap = {
-                'ari': 'cardinals', 'atl': 'falcons', 'bal': 'ravens', 'buf': 'bills',
-                'car': 'panthers', 'chi': 'bears', 'cin': 'bengals', 'cle': 'browns',
-                'dal': 'cowboys', 'den': 'broncos', 'det': 'lions', 'gb': 'packers',
-                'hou': 'texans', 'ind': 'colts', 'jax': 'jaguars', 'kc': 'chiefs',
-                'lac': 'chargers', 'lar': 'rams', 'lv': 'raiders', 'mia': 'dolphins',
-                'min': 'vikings', 'ne': 'patriots', 'no': 'saints', 'nyg': 'giants',
-                'nyj': 'jets', 'phi': 'eagles', 'pit': 'steelers', 'sea': 'seahawks',
-                'sf': '49ers', 'tb': 'buccaneers', 'ten': 'titans', 'was': 'commanders',
+                'arizona cardinals': 'cardinals',
+                'atlanta falcons': 'falcons',
+                'baltimore ravens': 'ravens',
+                'buffalo bills': 'bills',
+                'carolina panthers': 'panthers',
+                'chicago bears': 'bears',
+                'cincinnati bengals': 'bengals',
+                'cleveland browns': 'browns',
+                'dallas cowboys': 'cowboys',
+                'denver broncos': 'broncos',
+                'detroit lions': 'lions',
+                'green bay packers': 'packers',
+                'houston texans': 'texans',
+                'indianapolis colts': 'colts',
+                'jacksonville jaguars': 'jaguars',
+                'kansas city chiefs': 'chiefs',
+                'las vegas raiders': 'raiders',
+                'los angeles chargers': 'chargers',
+                'los angeles rams': 'rams',
+                'miami dolphins': 'dolphins',
+                'minnesota vikings': 'vikings',
+                'new england patriots': 'patriots',
+                'new orleans saints': 'saints',
+                'new york giants': 'giants',
+                'new york jets': 'jets',
+                'philadelphia eagles': 'eagles',
+                'pittsburgh steelers': 'steelers',
+                'san francisco 49ers': '49ers',
+                'seattle seahawks': 'seahawks',
+                'tampa bay buccaneers': 'buccaneers',
+                'tennessee titans': 'titans',
+                'washington commanders': 'commanders'
+            };
+            
+            // Try to find and extract team nickname
+            const lowerName = name.toLowerCase();
+            for (const [fullTeam, nickname] of Object.entries(teamMap)) {
+                if (lowerName.includes(fullTeam)) {
+                    return nickname;
+                }
+            }
+            
+            // If not found, try to extract just the last word before "defense"
+            const words = normalized.split(' ');
+            const defenseIndex = words.indexOf('defense');
+            if (defenseIndex > 0) {
+                return words[defenseIndex - 1];
+            }
+            
+            // For abbreviated names like "ARI", use the existing reverse mapping
+            const abbreviationMap = {
+                'ari': 'cardinals',
+                'atl': 'falcons',
+                'bal': 'ravens',
+                'buf': 'bills',
+                'car': 'panthers',
+                'chi': 'bears',
+                'cin': 'bengals',
+                'cle': 'browns',
+                'dal': 'cowboys',
+                'den': 'broncos',
+                'det': 'lions',
+                'gb': 'packers',
+                'hou': 'texans',
+                'ind': 'colts',
+                'jax': 'jaguars',
+                'kc': 'chiefs',
+                'lac': 'chargers',
+                'lar': 'rams',
+                'lv': 'raiders',
+                'mia': 'dolphins',
+                'min': 'vikings',
+                'ne': 'patriots',
+                'no': 'saints',
+                'nyg': 'giants',
+                'nyj': 'jets',
+                'phi': 'eagles',
+                'pit': 'steelers',
+                'sea': 'seahawks',
+                'sf': '49ers',
+                'tb': 'buccaneers',
+                'ten': 'titans',
+                'was': 'commanders',
                 'wsh': 'commanders'
             };
             
-            // Extract team abbreviation and convert to full name
-            const teamAbbr = normalized.replace(/\s*defense\s*/, '').toLowerCase();
-            if (teamMap[teamAbbr]) {
-                normalized = teamMap[teamAbbr];
+            for (const [abbr, nickname] of Object.entries(abbreviationMap)) {
+                if (normalized === abbr) {
+                    return nickname;
+                }
             }
         }
         
         return normalized;
     }
-
-    normalizeStats(stats) {
-        // Normalize stat values to handle nulls and ensure consistent comparison
-        return {
-            passing_yards: stats.passing_yards || 0,
-            passing_tds: stats.passing_tds || 0,
-            interceptions: stats.interceptions || 0,
-            rushing_yards: stats.rushing_yards || 0,
-            rushing_tds: stats.rushing_tds || 0,
-            receiving_yards: stats.receiving_yards || 0,
-            receiving_tds: stats.receiving_tds || 0,
-            receptions: stats.receptions || 0,
-            fumbles: stats.fumbles || 0,
-            sacks: stats.sacks || 0,
-            def_interceptions: stats.def_interceptions || 0,
-            fumbles_recovered: stats.fumbles_recovered || 0,
-            def_touchdowns: stats.def_touchdowns || 0,
-            points_allowed: stats.points_allowed || 0,
-            yards_allowed: stats.yards_allowed || 0,
-            field_goals_made: stats.field_goals_made || 0,
-            field_goals_attempted: stats.field_goals_attempted || 0,
-            extra_points_made: stats.extra_points_made || 0,
-            extra_points_attempted: stats.extra_points_attempted || 0,
-            fantasy_points: stats.fantasy_points || 0
-        };
-    }
-
-    compareStats(current, reference) {
-        const currentNorm = this.normalizeStats(current);
-        const referenceNorm = this.normalizeStats(reference);
+    
+    // Create a more flexible name matching function
+    createNameVariations(name) {
+        const variations = [];
         
-        const statKeys = Object.keys(currentNorm);
-        const differences = {};
-        let hasDifference = false;
+        // Base name
+        variations.push(name);
         
-        for (const key of statKeys) {
-            if (currentNorm[key] !== referenceNorm[key]) {
-                differences[key] = {
-                    current: currentNorm[key],
-                    reference: referenceNorm[key],
-                    diff: currentNorm[key] - referenceNorm[key]
-                };
-                hasDifference = true;
+        // Special handling for defense names
+        if (name.includes('Defense')) {
+            // Extract just the team nickname
+            const teamMap = {
+                'Arizona Cardinals Defense': 'Cardinals',
+                'Atlanta Falcons Defense': 'Falcons',
+                'Baltimore Ravens Defense': 'Ravens',
+                'Buffalo Bills Defense': 'Bills',
+                'Carolina Panthers Defense': 'Panthers',
+                'Chicago Bears Defense': 'Bears',
+                'Cincinnati Bengals Defense': 'Bengals',
+                'Cleveland Browns Defense': 'Browns',
+                'Dallas Cowboys Defense': 'Cowboys',
+                'Denver Broncos Defense': 'Broncos',
+                'Detroit Lions Defense': 'Lions',
+                'Green Bay Packers Defense': 'Packers',
+                'Houston Texans Defense': 'Texans',
+                'Indianapolis Colts Defense': 'Colts',
+                'Jacksonville Jaguars Defense': 'Jaguars',
+                'Kansas City Chiefs Defense': 'Chiefs',
+                'Las Vegas Raiders Defense': 'Raiders',
+                'Los Angeles Chargers Defense': 'Chargers',
+                'Los Angeles Rams Defense': 'Rams',
+                'Miami Dolphins Defense': 'Dolphins',
+                'Minnesota Vikings Defense': 'Vikings',
+                'New England Patriots Defense': 'Patriots',
+                'New Orleans Saints Defense': 'Saints',
+                'New York Giants Defense': 'Giants',
+                'New York Jets Defense': 'Jets',
+                'Philadelphia Eagles Defense': 'Eagles',
+                'Pittsburgh Steelers Defense': 'Steelers',
+                'San Francisco 49ers Defense': '49ers',
+                'Seattle Seahawks Defense': 'Seahawks',
+                'Tampa Bay Buccaneers Defense': 'Buccaneers',
+                'Tennessee Titans Defense': 'Titans',
+                'Washington Commanders Defense': 'Commanders'
+            };
+            
+            if (teamMap[name]) {
+                variations.push(teamMap[name]);
             }
         }
         
-        return hasDifference ? differences : null;
+        // Remove suffixes
+        const withoutSuffix = name.replace(/\s+(Jr\.?|Sr\.?|III|II|IV|V)$/i, '');
+        if (withoutSuffix !== name) {
+            variations.push(withoutSuffix);
+        }
+        
+        // Remove periods
+        const withoutPeriods = name.replace(/\./g, '');
+        if (withoutPeriods !== name) {
+            variations.push(withoutPeriods);
+        }
+        
+        // Remove apostrophes
+        const withoutApostrophes = name.replace(/['']/g, '');
+        if (withoutApostrophes !== name) {
+            variations.push(withoutApostrophes);
+        }
+        
+        // Handle "St. Brown" vs "St.Brown" specifically
+        if (name.includes('St. ')) {
+            variations.push(name.replace('St. ', 'St.'));
+        }
+        if (name.includes('St.')) {
+            variations.push(name.replace('St.', 'St. '));
+        }
+        
+        // First name + last name only (for names with middle initials)
+        const parts = name.split(/\s+/);
+        if (parts.length > 2) {
+            // Try first + last
+            variations.push(`${parts[0]} ${parts[parts.length - 1]}`);
+        }
+        
+        // Common nickname variations
+        const nicknames = {
+            'William': 'Will',
+            'Robert': 'Rob',
+            'Michael': 'Mike',
+            'Christopher': 'Chris',
+            'Matthew': 'Matt',
+            'Joshua': 'Josh',
+            'Daniel': 'Dan',
+            'Benjamin': 'Ben',
+            'Nicholas': 'Nick',
+            'Alexander': 'Alex'
+        };
+        
+        for (const [full, nick] of Object.entries(nicknames)) {
+            if (name.includes(full)) {
+                variations.push(name.replace(full, nick));
+            }
+            if (name.includes(nick)) {
+                variations.push(name.replace(nick, full));
+            }
+        }
+        
+        return [...new Set(variations)]; // Remove duplicates
+    }
+
+    compareStats(current, reference) {
+        const currentNorm = {
+            passing_yards: current.passing_yards || 0,
+            passing_tds: current.passing_tds || 0,
+            interceptions: current.interceptions || 0,
+            rushing_yards: current.rushing_yards || 0,
+            rushing_tds: current.rushing_tds || 0,
+            receiving_yards: current.receiving_yards || 0,
+            receiving_tds: current.receiving_tds || 0,
+            receptions: current.receptions || 0,
+            fumbles: current.fumbles || 0,
+            sacks: current.sacks || 0,
+            def_interceptions: current.def_interceptions || 0,
+            fumbles_recovered: current.fumbles_recovered || 0,
+            def_touchdowns: current.def_touchdowns || 0,
+            points_allowed: current.points_allowed || 0,
+            yards_allowed: current.yards_allowed || 0,
+            field_goals_made: current.field_goals_made || 0,
+            field_goals_attempted: current.field_goals_attempted || 0,
+            extra_points_made: current.extra_points_made || 0,
+            extra_points_attempted: current.extra_points_attempted || 0,
+            fantasy_points: current.fantasy_points || 0
+        };
+
+        const referenceNorm = {
+            fantasy_points: reference.fantasy_points || 0
+        };
+        
+        // Only compare fantasy points since reference DB only has that
+        if (Math.abs(currentNorm.fantasy_points - referenceNorm.fantasy_points) > 0.1) {
+            return {
+                fantasy_points: {
+                    current: currentNorm.fantasy_points,
+                    reference: referenceNorm.fantasy_points,
+                    diff: currentNorm.fantasy_points - referenceNorm.fantasy_points
+                }
+            };
+        }
+        
+        return null;
     }
 
     async compareAllStats(rosterPlayersOnly = false) {
@@ -292,9 +433,10 @@ class StatsComparator {
             console.log(`Loaded ${referenceStats.length} stat records from reference database`);
             
             // Create lookup map for reference stats by player name and week
-            // Since the reference DB uses different player IDs, we'll match by name
             const referenceMap = new Map();
             const referenceMapNormalized = new Map();
+            const referenceMapVariations = new Map();
+            
             referenceStats.forEach(stat => {
                 const key = `${stat.player_name.toLowerCase()}_${stat.week}`;
                 referenceMap.set(key, stat);
@@ -302,6 +444,13 @@ class StatsComparator {
                 // Also create normalized name map for fuzzy matching
                 const normalizedKey = `${this.normalizePlayerName(stat.player_name, stat.position)}_${stat.week}`;
                 referenceMapNormalized.set(normalizedKey, stat);
+                
+                // Create variations map
+                const variations = this.createNameVariations(stat.player_name);
+                variations.forEach(variation => {
+                    const varKey = `${variation.toLowerCase()}_${stat.week}`;
+                    referenceMapVariations.set(varKey, stat);
+                });
             });
             
             // Compare each current stat with reference
@@ -313,9 +462,7 @@ class StatsComparator {
             for (const currentStat of currentStats) {
                 // For roster players, include 0 points (they might have points in reference)
                 // For all players mode, skip 0 points to reduce noise
-                if (rosterPlayersOnly) {
-                    // Include all roster players, even with 0 points
-                } else {
+                if (!rosterPlayersOnly) {
                     // Skip if no fantasy points or zero points in current (likely didn't play)
                     if (!currentStat.fantasy_points || currentStat.fantasy_points === 0) {
                         continue;
@@ -331,53 +478,29 @@ class StatsComparator {
                     referenceStat = referenceMapNormalized.get(normalizedKey);
                 }
                 
+                // If still not found, try name variations
                 if (!referenceStat) {
-                    // Try alternate matching for special cases like defenses
-                    let altKey = null;
-                    if (currentStat.position === 'DEF' || currentStat.position === 'DST') {
-                        // Try team name variations for defenses
-                        const teamName = currentStat.player_name.replace(' Defense', '').replace(' DEF', '');
-                        altKey = `${teamName.toLowerCase()}_${currentStat.week}`;
+                    const variations = this.createNameVariations(currentStat.player_name);
+                    for (const variation of variations) {
+                        const varKey = `${variation.toLowerCase()}_${currentStat.week}`;
+                        referenceStat = referenceMapVariations.get(varKey);
+                        if (referenceStat) break;
                     }
-                    
-                    const altReferenceStat = altKey ? referenceMap.get(altKey) : null;
-                    
-                    if (!altReferenceStat) {
-                        // Player/week combination not found in reference
-                        this.mismatches.push({
-                            week: currentStat.week,
-                            player_id: currentStat.player_id,
-                            player_name: currentStat.player_name,
-                            position: currentStat.position,
-                            team: currentStat.team,
-                            issue: 'NOT_IN_REFERENCE',
-                            current_fantasy_points: currentStat.fantasy_points,
-                            reference_fantasy_points: null
-                        });
-                        notFoundInReference++;
-                    } else {
-                        totalComparisons++;
-                        // Compare fantasy points
-                        const currentPoints = Math.round(currentStat.fantasy_points * 10) / 10;
-                        const referencePoints = Math.round(altReferenceStat.fantasy_points * 10) / 10;
-                        
-                        if (Math.abs(currentPoints - referencePoints) > 0.1) {
-                            this.mismatches.push({
-                                week: currentStat.week,
-                                player_id: currentStat.player_id,
-                                player_name: currentStat.player_name,
-                                position: currentStat.position,
-                                team: currentStat.team,
-                                issue: 'FANTASY_POINTS_MISMATCH',
-                                current_fantasy_points: currentPoints,
-                                reference_fantasy_points: referencePoints,
-                                difference: currentPoints - referencePoints
-                            });
-                            totalMismatches++;
-                        } else {
-                            totalMatches++;
-                        }
-                    }
+                }
+                
+                if (!referenceStat) {
+                    // Player/week combination not found in reference
+                    this.mismatches.push({
+                        week: currentStat.week,
+                        player_id: currentStat.player_id,
+                        player_name: currentStat.player_name,
+                        position: currentStat.position,
+                        team: currentStat.team,
+                        issue: 'NOT_IN_REFERENCE',
+                        current_fantasy_points: currentStat.fantasy_points,
+                        reference_fantasy_points: null
+                    });
+                    notFoundInReference++;
                 } else {
                     totalComparisons++;
                     // Compare fantasy points
@@ -411,7 +534,7 @@ class StatsComparator {
             
             // Print results
             console.log('\n=== COMPARISON RESULTS ===');
-            console.log(`Total player-week records${rosterPlayersOnly ? ' (including 0 points)' : ' with fantasy points'}: ${rosterPlayersOnly ? currentStats.length : currentStats.filter(s => s.fantasy_points > 0).length}`);
+            console.log(`Total player-week records${rosterPlayersOnly ? ' (on fantasy rosters)' : ' with fantasy points'}: ${rosterPlayersOnly ? currentStats.length : currentStats.filter(s => s.fantasy_points > 0).length}`);
             console.log(`Players not found in reference database: ${notFoundInReference}`);
             console.log(`Total comparisons made (found in both DBs): ${totalComparisons}`);
             console.log(`Total matches: ${totalMatches}`);
@@ -421,8 +544,7 @@ class StatsComparator {
             }
             
             // Show week coverage
-            const statsToAnalyze = rosterPlayersOnly ? currentStats : currentStats.filter(s => s.fantasy_points > 0);
-            const weeksWithData = [...new Set(statsToAnalyze.map(s => s.week))].sort((a, b) => a - b);
+            const weeksWithData = [...new Set(currentStats.map(s => s.week))].sort((a, b) => a - b);
             console.log(`\nWeeks analyzed: ${weeksWithData.join(', ')}`);
             
             // Show weeks with mismatches
@@ -441,7 +563,7 @@ class StatsComparator {
                         console.log(`\n--- WEEK ${currentWeek} ---`);
                     }
                     
-                    console.log(`\n${mismatch.player_name} (${mismatch.position}, ${mismatch.team})`);
+                    console.log(`\n${mismatch.player_name} (${mismatch.position}, ${mismatch.team}) [ID: ${mismatch.player_id}]`);
                     
                     if (mismatch.issue === 'NOT_IN_REFERENCE') {
                         console.log('  Issue: Not found in reference database');
