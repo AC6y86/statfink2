@@ -175,18 +175,24 @@ class ScoringPlayParserService {
         if (normalizedText.includes('fumble') && 
             (normalizedText.includes('return') || normalizedText.includes('recovery'))) {
             
-            // If there's a player name in the play and they're on the scoring team,
-            // this is likely an offensive fumble recovery, not a defensive fumble return
-            const playerPattern = /^([A-Z][a-z]+ [A-Z][a-z]+)/;
-            const playerMatch = originalText.match(playerPattern);
+            // Check if this is likely an offensive fumble recovery vs defensive fumble return
+            // Key indicators for offensive fumble recovery:
+            // 1. Very short yardage (0-3 yards) suggests fumble on current drive
+            // 2. Description says "recovery" instead of "return" 
+            // 3. Player name suggests it's same team that was on offense
             
-            if (playerMatch) {
-                const playerName = playerMatch[1];
-                // If we can extract a player name, this suggests it's an offensive play
-                // where the named player recovered their own team's fumble
-                return null; // Don't categorize as defensive TD
+            const yardageMatch = originalText.match(/(\d+)\s*Yd/i);
+            const yardage = yardageMatch ? parseInt(yardageMatch[1]) : null;
+            
+            // Special case: Tank Bigsby type plays - short yardage fumble recovery
+            // "Tank Bigsby 3 Yd Fumble Recovery" = offensive fumble recovery
+            // But exclude 0 yards which could be defensive at the goal line
+            if (yardage !== null && yardage >= 1 && yardage <= 5 && normalizedText.includes('recovery')) {
+                // This is likely an offensive fumble recovery (player recovered his own team's fumble)
+                return null;
             }
             
+            // Everything else is considered defensive fumble return
             return 'defensive_fumble_return_td';
         }
 
