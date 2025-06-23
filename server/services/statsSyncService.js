@@ -168,9 +168,17 @@ class StatsSyncService {
                 }
                 
                 // Transform player stats for each category they have
-                const transformedStats = await this.mapTank01PlayerStats(playerData, week, season);
+                const transformedStats = await this.mapTank01PlayerStats(playerData, week, season, gameId);
                 if (transformedStats) {
                     playerStats.push(transformedStats);
+                }
+            }
+            
+            // Process DST stats if available
+            if (game.DST) {
+                const dstStats = await this.processDSTStats(game.DST, game, week, gameId);
+                if (dstStats && dstStats.length > 0) {
+                    playerStats.push(...dstStats);
                 }
             }
         }
@@ -179,7 +187,7 @@ class StatsSyncService {
     }
 
     // Map Tank01 player stats to our database format
-    async mapTank01PlayerStats(playerData, week, season) {
+    async mapTank01PlayerStats(playerData, week, season, gameId = null) {
         // Use Tank01 player ID directly
         const playerId = playerData.playerID;
         if (!playerId) {
@@ -192,6 +200,7 @@ class StatsSyncService {
             player_id: playerId,
             week: week,
             season: season,
+            game_id: gameId,
             passing_yards: 0,
             passing_tds: 0,
             interceptions: 0,
@@ -353,6 +362,102 @@ class StatsSyncService {
             return false;
         }
     }
+    
+    // Process DST stats from Tank01 data
+    async processDSTStats(dstData, game, week, gameId) {
+        const dstStats = [];
+        
+        try {
+            // Process away team DST
+            if (dstData.away && game.away) {
+                const awayTeam = game.away;
+                const homeScore = parseInt(game.homePts || dstData.home?.ptsAllowed || 0);
+                const homeYards = parseInt(dstData.home?.ydsAllowed || 0);
+                
+                const awayDstStats = {
+                    player_id: `DEF_${awayTeam}`,
+                    week: week,
+                    season: game.season || new Date().getFullYear(),
+                    game_id: gameId,
+                    passing_yards: 0,
+                    passing_tds: 0,
+                    interceptions: 0,
+                    rushing_yards: 0,
+                    rushing_tds: 0,
+                    receiving_yards: 0,
+                    receiving_tds: 0,
+                    receptions: 0,
+                    fumbles: 0,
+                    sacks: parseInt(dstData.away.sacks) || 0,
+                    def_interceptions: parseInt(dstData.away.defensiveInterceptions) || 0,
+                    fumbles_recovered: parseInt(dstData.away.fumblesRecovered) || 0,
+                    def_touchdowns: parseInt(dstData.away.defTD) || 0,
+                    safeties: parseInt(dstData.away.safeties) || 0,
+                    points_allowed: homeScore,  // Away DST allowed home team's points
+                    yards_allowed: homeYards,   // Away DST allowed home team's yards
+                    field_goals_made: 0,
+                    field_goals_attempted: 0,
+                    extra_points_made: 0,
+                    extra_points_attempted: 0,
+                    field_goals_0_39: 0,
+                    field_goals_40_49: 0,
+                    field_goals_50_plus: 0,
+                    two_point_conversions_pass: 0,
+                    two_point_conversions_run: 0,
+                    two_point_conversions_rec: 0
+                };
+                
+                dstStats.push(awayDstStats);
+            }
+            
+            // Process home team DST
+            if (dstData.home && game.home) {
+                const homeTeam = game.home;
+                const awayScore = parseInt(game.awayPts || dstData.away?.ptsAllowed || 0);
+                const awayYards = parseInt(dstData.away?.ydsAllowed || 0);
+                
+                const homeDstStats = {
+                    player_id: `DEF_${homeTeam}`,
+                    week: week,
+                    season: game.season || new Date().getFullYear(),
+                    game_id: gameId,
+                    passing_yards: 0,
+                    passing_tds: 0,
+                    interceptions: 0,
+                    rushing_yards: 0,
+                    rushing_tds: 0,
+                    receiving_yards: 0,
+                    receiving_tds: 0,
+                    receptions: 0,
+                    fumbles: 0,
+                    sacks: parseInt(dstData.home.sacks) || 0,
+                    def_interceptions: parseInt(dstData.home.defensiveInterceptions) || 0,
+                    fumbles_recovered: parseInt(dstData.home.fumblesRecovered) || 0,
+                    def_touchdowns: parseInt(dstData.home.defTD) || 0,
+                    safeties: parseInt(dstData.home.safeties) || 0,
+                    points_allowed: awayScore,  // Home DST allowed away team's points
+                    yards_allowed: awayYards,   // Home DST allowed away team's yards
+                    field_goals_made: 0,
+                    field_goals_attempted: 0,
+                    extra_points_made: 0,
+                    extra_points_attempted: 0,
+                    field_goals_0_39: 0,
+                    field_goals_40_49: 0,
+                    field_goals_50_plus: 0,
+                    two_point_conversions_pass: 0,
+                    two_point_conversions_run: 0,
+                    two_point_conversions_rec: 0
+                };
+                
+                dstStats.push(homeDstStats);
+            }
+            
+            return dstStats;
+        } catch (error) {
+            logWarn(`Error processing DST stats for game ${gameId}:`, error.message);
+            return [];
+        }
+    }
 
     // Get sync status
     getSyncStatus() {
@@ -428,6 +533,65 @@ class StatsSyncService {
             
         } catch (error) {
             logError(`Error recalculating team scores for Week ${week}, ${season}:`, error);
+            throw error;
+        }
+    }
+    
+    // Check if all games are complete and calculate defensive bonuses
+    async checkAndCalculateDefensiveBonuses(week, season) {
+        try {
+            const result = await this.scoringService.calculateDefensiveBonuses(week, season);
+            
+            if (result && result.success) {
+                logInfo(`Defensive bonuses calculated for Week ${week}, ${season}: ${result.message}`);
+                
+                // Recalculate DST fantasy points after bonuses are applied
+                await this.recalculateDSTFantasyPoints(week, season);
+            } else {
+                logInfo(`Defensive bonuses not calculated for Week ${week}, ${season}: ${result?.message || 'Unknown error'}`);
+            }
+            
+            return result;
+        } catch (error) {
+            logError(`Error checking/calculating defensive bonuses for Week ${week}, ${season}:`, error);
+            return { success: false, error: error.message };
+        }
+    }
+    
+    // Recalculate DST fantasy points after defensive bonuses have been applied
+    async recalculateDSTFantasyPoints(week, season) {
+        try {
+            // Get all DST stats for the week
+            const dstStats = await this.db.all(`
+                SELECT 
+                    ps.*,
+                    p.position
+                FROM player_stats ps
+                JOIN nfl_players p ON ps.player_id = p.player_id
+                WHERE ps.week = ? AND ps.season = ? AND p.position = 'DST'
+            `, [week, season]);
+            
+            logInfo(`Recalculating fantasy points for ${dstStats.length} DST teams in Week ${week}`);
+            
+            let updated = 0;
+            for (const stats of dstStats) {
+                const fantasyPoints = await this.scoringService.calculateFantasyPoints(stats);
+                
+                await this.db.run(
+                    'UPDATE player_stats SET fantasy_points = ? WHERE stat_id = ?',
+                    [fantasyPoints, stats.stat_id]
+                );
+                
+                updated++;
+            }
+            
+            logInfo(`Updated fantasy points for ${updated} DST teams`);
+            
+            // Recalculate team scores after updating DST points
+            await this.recalculateTeamScores(week, season);
+            
+        } catch (error) {
+            logError(`Error recalculating DST fantasy points for Week ${week}, ${season}:`, error);
             throw error;
         }
     }

@@ -357,7 +357,7 @@ class DatabaseManager {
     async upsertPlayerStats(stats) {
         const query = `
             INSERT OR REPLACE INTO player_stats 
-            (player_id, week, season, passing_yards, passing_tds, interceptions,
+            (player_id, week, season, game_id, passing_yards, passing_tds, interceptions,
              rushing_yards, rushing_tds, receiving_yards, receiving_tds, receptions,
              fumbles, sacks, def_interceptions, fumbles_recovered, def_touchdowns,
              safeties, points_allowed, yards_allowed, field_goals_made,
@@ -365,11 +365,11 @@ class DatabaseManager {
              field_goals_0_39, field_goals_40_49, field_goals_50_plus,
              two_point_conversions_pass, two_point_conversions_run, two_point_conversions_rec,
              fantasy_points, last_updated)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
         `;
         
         return this.run(query, [
-            stats.player_id, stats.week, stats.season,
+            stats.player_id, stats.week, stats.season, stats.game_id || null,
             stats.passing_yards || 0, stats.passing_tds || 0, stats.interceptions || 0,
             stats.rushing_yards || 0, stats.rushing_tds || 0,
             stats.receiving_yards || 0, stats.receiving_tds || 0, stats.receptions || 0,

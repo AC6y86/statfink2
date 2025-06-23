@@ -1,9 +1,14 @@
 const { ValidationError } = require('../database/validation');
 
 class ScoringService {
-    constructor(db) {
+    constructor(db, nflGamesService = null) {
         this.db = db;
+        this.nflGamesService = nflGamesService;
         this.scoringRules = null;
+    }
+    
+    setNFLGamesService(nflGamesService) {
+        this.nflGamesService = nflGamesService;
     }
 
     async loadScoringRules() {
@@ -172,6 +177,21 @@ class ScoringService {
     }
 
     async calculateDefensiveBonuses(week, season) {
+        // Check if all games for the week are complete
+        if (this.nflGamesService) {
+            const completion = await this.nflGamesService.areAllWeekGamesComplete(week, season);
+            if (!completion.isComplete) {
+                console.log(`[WARNING] Not all games complete for Week ${week}, ${season}. ` +
+                    `${completion.completedGames}/${completion.totalGames} games finished. ` +
+                    `Skipping defensive bonus calculation.`);
+                return {
+                    success: false,
+                    message: 'Not all games complete',
+                    completion
+                };
+            }
+        }
+        
         // Get all DST performances for the week from drafted teams
         const query = `
             SELECT ps.player_id, ps.points_allowed, ps.yards_allowed, p.team
@@ -246,6 +266,12 @@ class ScoringService {
                 season
             ]);
         }
+        
+        return {
+            success: true,
+            message: `Calculated defensive bonuses for ${dstStats.length} DST teams`,
+            teamsProcessed: dstStats.length
+        };
     }
 }
 

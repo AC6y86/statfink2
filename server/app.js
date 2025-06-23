@@ -5,6 +5,7 @@ const cors = require('cors');
 const DatabaseManager = require('./database/database');
 const ScoringService = require('./services/scoringService');
 const Tank01Service = require('./services/tank01Service');
+const NFLGamesService = require('./services/nflGamesService');
 const PlayerSyncService = require('./services/playerSyncService');
 const StatsSyncService = require('./services/statsSyncService');
 const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
@@ -13,7 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Initialize services
-let db, scoringService, tank01Service, playerSyncService, statsSyncService;
+let db, scoringService, tank01Service, nflGamesService, playerSyncService, statsSyncService;
 
 async function initializeServices() {
     try {
@@ -23,9 +24,6 @@ async function initializeServices() {
         db = new DatabaseManager();
         await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for DB init
         
-        // Initialize scoring service
-        scoringService = new ScoringService(db);
-        
         // Initialize Tank01 API service with database connection
         const apiKey = process.env.TANK01_API_KEY;
         if (apiKey) {
@@ -34,6 +32,13 @@ async function initializeServices() {
         } else {
             logError('Tank01 API key not found in environment variables');
         }
+        
+        // Initialize NFL Games service
+        nflGamesService = new NFLGamesService(db, tank01Service);
+        logInfo('NFL Games service initialized');
+        
+        // Initialize scoring service with NFL Games service
+        scoringService = new ScoringService(db, nflGamesService);
         
         // Initialize player sync service
         playerSyncService = new PlayerSyncService(db, tank01Service);
@@ -47,6 +52,7 @@ async function initializeServices() {
         app.locals.db = db;
         app.locals.scoringService = scoringService;
         app.locals.tank01Service = tank01Service;
+        app.locals.nflGamesService = nflGamesService;
         app.locals.playerSyncService = playerSyncService;
         app.locals.statsSyncService = statsSyncService;
         
