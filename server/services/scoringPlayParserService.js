@@ -107,7 +107,7 @@ class ScoringPlayParserService {
             }
 
             const normalizedText = playText.toLowerCase();
-            const playType = this.categorizePlayType(normalizedText);
+            const playType = this.categorizePlayType(normalizedText, playText);
             
             // Determine scoring team - first try to extract from play data itself
             let scoringTeam = this.extractScoringTeam(playText, homeTeam, awayTeam, play);
