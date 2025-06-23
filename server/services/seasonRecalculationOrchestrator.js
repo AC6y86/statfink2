@@ -5,6 +5,7 @@ const NFLGamesService = require('./nflGamesService');
 const ScoringService = require('./scoringService');
 const PlayerSyncService = require('./playerSyncService');
 const DSTManagementService = require('./dstManagementService');
+const IndividualPlayerScoringService = require('./individualPlayerScoringService');
 const DataCleanupService = require('./dataCleanupService');
 const StatsExtractionService = require('./statsExtractionService');
 const GameScoreService = require('./gameScoreService');
@@ -26,6 +27,7 @@ class SeasonRecalculationOrchestrator {
         this.scoringService = new ScoringService(this.db);
         this.playerSyncService = new PlayerSyncService(this.db, this.tank01Service);
         this.dstManagementService = new DSTManagementService(this.db, this.tank01Service);
+        this.individualPlayerScoringService = new IndividualPlayerScoringService(this.db);
         this.dataCleanupService = new DataCleanupService(this.db);
         this.statsExtractionService = new StatsExtractionService(this.db);
         this.gameScoreService = new GameScoreService(this.db, this.tank01Service);
@@ -270,6 +272,14 @@ class SeasonRecalculationOrchestrator {
                     dstData.season
                 );
             }
+            
+            // Process individual player scoring from scoring plays (special teams TDs, etc.)
+            await this.individualPlayerScoringService.processWeekScoring(
+                this.dstManagementService.scoringPlayParser,
+                this.tank01Service,
+                week,
+                this.season
+            );
             
             logInfo(`    ✓ Synced ${allStats.length} player stats + ${dstStatsToProcess.length * 2} DST stats`);
             
