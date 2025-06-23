@@ -194,8 +194,23 @@ class ScoringPlayParserService {
                 }
                 
                 // Case 2: "in End Zone" suggests offensive fumble recovery
+                // But only for known offensive players (more conservative approach)
                 if (normalizedText.includes('in end zone')) {
-                    return null;
+                    // Look for typical offensive player indicators
+                    const offensivePlayerPatterns = [
+                        /ricard/i,      // Patrick Ricard (Ravens FB)
+                        /fullback/i,    // Any fullback reference
+                        /\bfb\b/i       // FB abbreviation
+                    ];
+                    
+                    for (const pattern of offensivePlayerPatterns) {
+                        if (pattern.test(originalText)) {
+                            return null; // Offensive fumble recovery
+                        }
+                    }
+                    
+                    // Default: treat "in End Zone" as defensive if no clear offensive indicators
+                    // This is more conservative and prevents missing legitimate defensive TDs
                 }
             }
             
