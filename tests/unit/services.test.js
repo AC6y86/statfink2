@@ -7,7 +7,6 @@ const DatabaseManager = require('../../server/database/database');
 const ScoringService = require('../../server/services/scoringService');
 const Tank01Service = require('../../server/services/tank01Service');
 const PlayerSyncService = require('../../server/services/playerSyncService');
-const StatsSyncService = require('../../server/services/statsSyncService');
 
 // Mock external dependencies
 jest.mock('../../server/database/database');
@@ -125,25 +124,6 @@ describe('Service Initialization Tests', () => {
     });
   });
 
-  describe('StatsSyncService', () => {
-    test('should initialize with all dependencies', () => {
-      const scoringService = new ScoringService(mockDb);
-      const tank01Service = new Tank01Service('test-key');
-      const statsSyncService = new StatsSyncService(mockDb, tank01Service, scoringService);
-      
-      expect(statsSyncService).toBeInstanceOf(StatsSyncService);
-      expect(statsSyncService.db).toBe(mockDb);
-      expect(statsSyncService.tank01Service).toBe(tank01Service);
-      expect(statsSyncService.scoringService).toBe(scoringService);
-    });
-
-    test('should handle missing dependencies gracefully', () => {
-      expect(() => new StatsSyncService(mockDb, null, null)).not.toThrow();
-      const statsSyncService = new StatsSyncService(mockDb, null, null);
-      expect(statsSyncService.tank01Service).toBeNull();
-      expect(statsSyncService.scoringService).toBeNull();
-    });
-  });
 });
 
 describe('Service Method Validation Tests', () => {
@@ -235,6 +215,5 @@ describe('Service Error Handling Tests', () => {
     expect(() => new ScoringService(null)).not.toThrow();
     expect(() => new Tank01Service(null)).not.toThrow();
     expect(() => new PlayerSyncService(null, null)).not.toThrow();
-    expect(() => new StatsSyncService(null, null, null)).not.toThrow();
   });
 });

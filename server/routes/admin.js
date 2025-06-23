@@ -313,51 +313,6 @@ router.get('/debug/tank01/:week/:season', requireAdmin, asyncHandler(async (req,
     }
 }));
 
-// Get stats sync status - MUST come before /sync/stats route
-router.get('/sync/stats/status', requireAdmin, asyncHandler(async (req, res) => {
-    const statsSyncService = req.app.locals.statsSyncService;
-    
-    if (!statsSyncService) {
-        throw new APIError('Stats sync service not available', 500);
-    }
-    
-    const status = statsSyncService.getSyncStatus();
-    const health = await statsSyncService.healthCheck();
-    
-    res.json({
-        success: true,
-        data: {
-            ...status,
-            health: health
-        }
-    });
-}));
-
-// Sync player stats for a specific week
-router.post('/sync/stats', requireAdmin, asyncHandler(async (req, res) => {
-    const statsSyncService = req.app.locals.statsSyncService;
-    const { week, season } = req.body;
-    
-    if (!statsSyncService) {
-        throw new APIError('Stats sync service not available', 500);
-    }
-    
-    // Validate parameters
-    const weekNum = parseInt(week);
-    const seasonYear = parseInt(season);
-    
-    if (isNaN(weekNum) || weekNum < 1 || weekNum > 18) {
-        throw new APIError('Week must be between 1 and 18', 400);
-    }
-    
-    if (isNaN(seasonYear) || seasonYear < 2020 || seasonYear > 2030) {
-        throw new APIError('Season must be between 2020 and 2030', 400);
-    }
-    
-    const result = await statsSyncService.syncWeeklyStats(weekNum, seasonYear);
-    
-    res.json(result);
-}));
 
 // Recalculate all fantasy points using current scoring system
 router.post('/recalculate/fantasy-points', requireAdmin, asyncHandler(async (req, res) => {

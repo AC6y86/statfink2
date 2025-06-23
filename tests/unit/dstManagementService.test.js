@@ -147,12 +147,12 @@ describe('DSTManagementService', () => {
             // Verify away DST insertion (NYG defense allowed home team's 21 points)
             const awayCall = mockDb.run.mock.calls[0];
             expect(awayCall[1][0]).toBe('DEF_NYG'); // player_id
-            expect(awayCall[1][19]).toBe(21); // points_allowed
+            expect(awayCall[1][18]).toBe(21); // points_allowed
             
             // Verify home DST insertion (DAL defense allowed away team's 17 points)
             const homeCall = mockDb.run.mock.calls[1];
             expect(homeCall[1][0]).toBe('DEF_DAL'); // player_id
-            expect(homeCall[1][19]).toBe(17); // points_allowed
+            expect(homeCall[1][18]).toBe(17); // points_allowed
         });
 
         test('should handle missing DST data gracefully', async () => {
@@ -182,12 +182,12 @@ describe('DSTManagementService', () => {
             expect(args[0]).toBe('DEF_NYG'); // player_id
             expect(args[1]).toBe(1); // week
             expect(args[2]).toBe(2024); // season
-            expect(args[14]).toBe(3); // sacks
-            expect(args[15]).toBe(2); // def_interceptions
-            expect(args[16]).toBe(1); // fumbles_recovered
-            expect(args[17]).toBe(1); // def_touchdowns
-            expect(args[19]).toBe(21); // points_allowed
-            expect(args[20]).toBe(350); // yards_allowed
+            expect(args[13]).toBe(3); // sacks
+            expect(args[14]).toBe(2); // def_interceptions
+            expect(args[15]).toBe(1); // fumbles_recovered
+            expect(args[16]).toBe(1); // def_touchdowns
+            expect(args[18]).toBe(21); // points_allowed
+            expect(args[19]).toBe(350); // yards_allowed
         });
 
         test('should handle database errors gracefully', async () => {

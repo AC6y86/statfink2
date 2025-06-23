@@ -79,14 +79,14 @@ describe('ScoringService', () => {
         def_touchdowns: 1,
         safeties: 0,
         points_allowed: 7,
-        def_points_allowed_rank: 2,
-        def_yards_allowed_rank: 1
+        def_points_bonus: 0,    // Not rank 1 for points allowed
+        def_yards_bonus: 5      // Rank 1 for yards allowed gets full 5 points
       };
 
       const points = await scoringService.calculateFantasyPoints(dstStats);
       
-      // def_touchdowns * 8 = 8 points + yards allowed rank 1 bonus = 5 points
-      // Points allowed rank 2 (not 1) so no bonus
+      // def_touchdowns * 8 = 8 points + def_yards_bonus = 5 points
+      // def_points_bonus = 0 (not rank 1)
       expect(points).toBe(13);
     });
 
@@ -115,21 +115,21 @@ describe('ScoringService', () => {
 
     test('should apply defensive ranking bonuses correctly', async () => {
       const testCases = [
-        { def_points_allowed_rank: 1, def_yards_allowed_rank: 1, expected_bonus: 10 }, // Both rank 1
-        { def_points_allowed_rank: 1, def_yards_allowed_rank: 2, expected_bonus: 5 }, // Points rank 1 only
-        { def_points_allowed_rank: 2, def_yards_allowed_rank: 1, expected_bonus: 5 }, // Yards rank 1 only
-        { def_points_allowed_rank: 2, def_yards_allowed_rank: 2, expected_bonus: 0 }, // Neither rank 1
-        { def_points_allowed_rank: 3, def_yards_allowed_rank: 5, expected_bonus: 0 }  // Neither rank 1
+        { def_points_bonus: 5, def_yards_bonus: 5, expected_total: 10 }, // Both rank 1
+        { def_points_bonus: 5, def_yards_bonus: 0, expected_total: 5 }, // Points rank 1 only
+        { def_points_bonus: 0, def_yards_bonus: 5, expected_total: 5 }, // Yards rank 1 only
+        { def_points_bonus: 0, def_yards_bonus: 0, expected_total: 0 }, // Neither rank 1
+        { def_points_bonus: 2.5, def_yards_bonus: 2.5, expected_total: 5 }  // Tie scenario
       ];
 
       for (const testCase of testCases) {
         const dstStats = { 
           position: 'DST', 
-          def_points_allowed_rank: testCase.def_points_allowed_rank,
-          def_yards_allowed_rank: testCase.def_yards_allowed_rank
+          def_points_bonus: testCase.def_points_bonus,
+          def_yards_bonus: testCase.def_yards_bonus
         };
         const points = await scoringService.calculateFantasyPoints(dstStats);
-        expect(points).toBe(testCase.expected_bonus);
+        expect(points).toBe(testCase.expected_total);
       }
     });
   });
