@@ -237,8 +237,18 @@ class ScoringPlayParserService {
 
         // Other touchdown types
         if (normalizedText.includes('touchdown')) {
+            // Skip lateral plays - they don't count for individual player fantasy points
+            if (normalizedText.includes('lateral')) {
+                return null;
+            }
+            
             if (normalizedText.includes('pass')) {
-                return 'passing_td';
+                // If the play says "pass from [QB]", the extracted player is the receiver
+                if (normalizedText.includes('pass from')) {
+                    return 'receiving_td';
+                } else {
+                    return 'passing_td';
+                }
             } else if (normalizedText.includes('rush') || normalizedText.includes('run')) {
                 return 'rushing_td';
             } else if (normalizedText.includes('receiv')) {
