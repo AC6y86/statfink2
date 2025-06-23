@@ -156,7 +156,7 @@ class ScoringPlayParserService {
     /**
      * Categorize the type of scoring play
      */
-    categorizePlayType(normalizedText) {
+    categorizePlayType(normalizedText, originalText = '') {
         // Defensive touchdowns - blocked returns (remove "touchdown" requirement)
         if (normalizedText.includes('blocked') && 
             (normalizedText.includes('punt') || normalizedText.includes('kick') || normalizedText.includes('field goal')) &&
@@ -178,7 +178,7 @@ class ScoringPlayParserService {
             // If there's a player name in the play and they're on the scoring team,
             // this is likely an offensive fumble recovery, not a defensive fumble return
             const playerPattern = /^([A-Z][a-z]+ [A-Z][a-z]+)/;
-            const playerMatch = playText.match(playerPattern);
+            const playerMatch = originalText.match(playerPattern);
             
             if (playerMatch) {
                 const playerName = playerMatch[1];
