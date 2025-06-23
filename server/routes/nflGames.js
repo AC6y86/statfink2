@@ -18,12 +18,12 @@ router.get('/:week/:season', asyncHandler(async (req, res) => {
         throw new APIError('Invalid season year', 400);
     }
     
-    // Get all unique games for the week
+    // Get all games for the week from nfl_games table
     const games = await db.all(`
-        SELECT DISTINCT game_id
-        FROM player_stats
+        SELECT game_id, home_team, away_team, home_score, away_score, status, game_date
+        FROM nfl_games
         WHERE week = ? AND season = ?
-        ORDER BY game_id
+        ORDER BY game_date, game_id
     `, [weekNum, seasonYear]);
     
     if (!games || games.length === 0) {
@@ -35,58 +35,35 @@ router.get('/:week/:season', asyncHandler(async (req, res) => {
         });
     }
     
-    // Process each game to get scores
+    // Process each game to format the response
     const gameScores = [];
     
-    for (const { game_id } of games) {
+    for (const game of games) {
         try {
-            if (!game_id) continue;
+            if (!game.game_id) continue;
             
             // Parse game_id format: YYYYMMDD_AWAY@HOME
-            const parts = game_id.split('_');
+            const parts = game.game_id.split('_');
             if (parts.length !== 2) continue;
             
             const datePart = parts[0];
-            const teams = parts[1].split('@');
-            if (teams.length !== 2) continue;
-            
-            const [awayTeam, homeTeam] = teams;
-            
-            // Get defense points allowed which contains actual game scores
-            const homeDefense = await db.get(`
-                SELECT points_allowed FROM player_stats
-                WHERE game_id = ? AND team = ? AND position IN ('DEF', 'DST')
-                AND week = ? AND season = ?
-                LIMIT 1
-            `, [game_id, homeTeam, weekNum, seasonYear]);
-            
-            const awayDefense = await db.get(`
-                SELECT points_allowed FROM player_stats
-                WHERE game_id = ? AND team = ? AND position IN ('DEF', 'DST')
-                AND week = ? AND season = ?
-                LIMIT 1
-            `, [game_id, awayTeam, weekNum, seasonYear]);
-            
-            // The defense's points_allowed is what the opponent scored
-            const homeScore = awayDefense?.points_allowed || 0;
-            const awayScore = homeDefense?.points_allowed || 0;
             
             // Generate CBS Sports game URL
             // CBS uses format: https://www.cbssports.com/nfl/gametracker/live/NFL_YYYYMMDD_AWAY@HOME/
-            const cbsUrl = `https://www.cbssports.com/nfl/gametracker/live/NFL_${game_id}/`;
+            const cbsUrl = `https://www.cbssports.com/nfl/gametracker/live/NFL_${game.game_id}/`;
             
             gameScores.push({
-                game_id,
+                game_id: game.game_id,
                 date: datePart,
-                home_team: homeTeam,
-                away_team: awayTeam,
-                home_score: homeScore,
-                away_score: awayScore,
-                status: 'Final',
+                home_team: game.home_team,
+                away_team: game.away_team,
+                home_score: game.home_score || 0,
+                away_score: game.away_score || 0,
+                status: game.status || 'Final',
                 game_url: cbsUrl
             });
         } catch (err) {
-            console.error(`Error processing game ${game_id}:`, err);
+            console.error(`Error processing game ${game.game_id}:`, err);
         }
     }
     

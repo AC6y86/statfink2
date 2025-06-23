@@ -128,6 +128,9 @@ class Recalculate2024SeasonFixed {
             
             if (result.success) {
                 logInfo(`    ✓ Synced ${result.gamesProcessed} games`);
+                
+                // Now update scores from boxscore data
+                await this.updateGameScoresFromBoxscores(week);
             } else {
                 logWarn(`    ⚠ Game sync failed: ${result.message}`);
             }
@@ -136,6 +139,64 @@ class Recalculate2024SeasonFixed {
         } catch (error) {
             logError(`Error syncing games for Week ${week}:`, error);
             throw error;
+        }
+    }
+
+    async updateGameScoresFromBoxscores(week) {
+        try {
+            // Get all games for this week from database
+            const games = await this.db.all(`
+                SELECT game_id, home_team, away_team, home_score, away_score
+                FROM nfl_games 
+                WHERE week = ? AND season = ?
+            `, [week, this.season]);
+            
+            logInfo(`    📊 Updating scores for ${games.length} games...`);
+            let updated = 0;
+            
+            for (const game of games) {
+                try {
+                    // Fetch boxscore data
+                    const boxScore = await this.tank01Service.getNFLBoxScore(game.game_id);
+                    
+                    if (!boxScore) {
+                        continue;
+                    }
+                    
+                    // Extract scores
+                    let homeScore = 0;
+                    let awayScore = 0;
+                    
+                    if (boxScore.homePts !== undefined && boxScore.awayPts !== undefined) {
+                        homeScore = parseInt(boxScore.homePts) || 0;
+                        awayScore = parseInt(boxScore.awayPts) || 0;
+                    } else if (boxScore.lineScore?.home?.totalPts && boxScore.lineScore?.away?.totalPts) {
+                        homeScore = parseInt(boxScore.lineScore.home.totalPts) || 0;
+                        awayScore = parseInt(boxScore.lineScore.away.totalPts) || 0;
+                    }
+                    
+                    // Update database if we found scores
+                    if (homeScore > 0 || awayScore > 0) {
+                        await this.db.run(`
+                            UPDATE nfl_games 
+                            SET home_score = ?, away_score = ?, last_updated = CURRENT_TIMESTAMP
+                            WHERE game_id = ?
+                        `, [homeScore, awayScore, game.game_id]);
+                        updated++;
+                    }
+                    
+                    // Small delay to avoid rate limiting
+                    await this.delay(100);
+                    
+                } catch (error) {
+                    logWarn(`      Failed to update scores for game ${game.game_id}: ${error.message}`);
+                }
+            }
+            
+            logInfo(`    ✓ Updated scores for ${updated} games`);
+            
+        } catch (error) {
+            logError(`Error updating game scores for week ${week}:`, error);
         }
     }
 
