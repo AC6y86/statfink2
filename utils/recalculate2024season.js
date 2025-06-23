@@ -671,11 +671,11 @@ class Recalculate2024SeasonFixed {
     /**
      * Recalculates fantasy points for all DST players
      * Must be run AFTER defensive bonuses are calculated
-     * DST scoring includes: sacks, interceptions, fumble recoveries, defensive TDs, safeties, points/yards allowed
+     * DST scoring includes: defensive TDs and bonuses for fewest points/yards allowed
      */
     async recalculateDSTFantasyPoints() {
         try {
-            // Get all DST stats
+            // Get all DST stats including bonus columns
             const dstStats = await this.db.all(`
                 SELECT 
                     ps.*,

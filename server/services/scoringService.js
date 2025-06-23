@@ -65,15 +65,10 @@ class ScoringService {
         if (playerStats.position === 'DST' || playerStats.position === 'DEF') {
             points += (playerStats.def_touchdowns || 0) * 8; // Touchdown scored: 8 points
             
-            // Note: Defensive bonuses for "fewest points allowed" and "fewest yards allowed" 
-            // need to be calculated weekly based on all drafted teams' performance
-            // This requires a separate calculation method that compares all DST performances
-            if (playerStats.def_points_allowed_rank === 1) {
-                points += 5; // Least points allowed: 5 points
-            }
-            if (playerStats.def_yards_allowed_rank === 1) {
-                points += 5; // Least yards allowed: 5 points
-            }
+            // Defensive bonuses are stored as fractional values when there are ties
+            // e.g., if 2 teams tie for fewest points, each gets 2.5 points
+            points += (playerStats.def_points_bonus || 0); // Fewest points allowed bonus (5 points split among ties)
+            points += (playerStats.def_yards_bonus || 0); // Fewest yards allowed bonus (5 points split among ties)
         }
 
         // Kick or Punt returner
@@ -194,29 +189,62 @@ class ScoringService {
         
         if (dstStats.length === 0) return;
 
-        // Calculate rankings for points allowed
-        let pointsRank = 1;
-        let yardsRank = 1;
-        
-        // Sort by points allowed and assign ranks
+        // Sort by points allowed
         const pointsSorted = [...dstStats].sort((a, b) => a.points_allowed - b.points_allowed);
-        pointsSorted.forEach((stat, index) => {
-            stat.def_points_allowed_rank = index + 1;
-        });
-
-        // Sort by yards allowed and assign ranks
+        
+        // Find the lowest points allowed and count ties
+        const lowestPoints = pointsSorted[0].points_allowed;
+        const pointsTiedCount = pointsSorted.filter(s => s.points_allowed === lowestPoints).length;
+        const pointsBonus = 5 / pointsTiedCount; // Split 5 points among tied teams
+        
+        // Sort by yards allowed
         const yardsSorted = [...dstStats].sort((a, b) => a.yards_allowed - b.yards_allowed);
-        yardsSorted.forEach((stat, index) => {
-            stat.def_yards_allowed_rank = index + 1;
-        });
+        
+        // Find the lowest yards allowed and count ties
+        const lowestYards = yardsSorted[0].yards_allowed;
+        const yardsTiedCount = yardsSorted.filter(s => s.yards_allowed === lowestYards).length;
+        const yardsBonus = 5 / yardsTiedCount; // Split 5 points among tied teams
+        
+        // Assign rankings and bonuses
+        let currentPointsRank = 1;
+        let currentYardsRank = 1;
+        
+        // Process points allowed rankings
+        for (let i = 0; i < pointsSorted.length; i++) {
+            if (i > 0 && pointsSorted[i].points_allowed !== pointsSorted[i-1].points_allowed) {
+                currentPointsRank = i + 1;
+            }
+            pointsSorted[i].def_points_allowed_rank = currentPointsRank;
+            pointsSorted[i].def_points_bonus = pointsSorted[i].points_allowed === lowestPoints ? pointsBonus : 0;
+        }
+        
+        // Process yards allowed rankings
+        for (let i = 0; i < yardsSorted.length; i++) {
+            if (i > 0 && yardsSorted[i].yards_allowed !== yardsSorted[i-1].yards_allowed) {
+                currentYardsRank = i + 1;
+            }
+            yardsSorted[i].def_yards_allowed_rank = currentYardsRank;
+            yardsSorted[i].def_yards_bonus = yardsSorted[i].yards_allowed === lowestYards ? yardsBonus : 0;
+        }
 
-        // Update the database with rankings
+        // Update the database with rankings and bonuses
         for (const stat of dstStats) {
             await this.db.run(`
                 UPDATE player_stats 
-                SET def_points_allowed_rank = ?, def_yards_allowed_rank = ?
+                SET def_points_allowed_rank = ?, 
+                    def_yards_allowed_rank = ?,
+                    def_points_bonus = ?,
+                    def_yards_bonus = ?
                 WHERE player_id = ? AND week = ? AND season = ?
-            `, [stat.def_points_allowed_rank, stat.def_yards_allowed_rank, stat.player_id, week, season]);
+            `, [
+                stat.def_points_allowed_rank, 
+                stat.def_yards_allowed_rank,
+                stat.def_points_bonus || 0,
+                stat.def_yards_bonus || 0,
+                stat.player_id, 
+                week, 
+                season
+            ]);
         }
     }
 }
