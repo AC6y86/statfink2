@@ -31,12 +31,18 @@ class SeasonRecalculationOrchestrator {
         this.gameScoreService = new GameScoreService(this.db, this.tank01Service);
         this.fantasyPointsCalculationService = new FantasyPointsCalculationService(this.db, this.scoringService);
         this.teamScoreService = new TeamScoreService(this.db);
+        
+        // Performance tracking
+        this.startTime = null;
+        this.weekTimes = {};
     }
 
     /**
-     * Main orchestration method
+     * Main orchestration method with performance optimizations
      */
     async run() {
+        this.startTime = Date.now();
+        
         try {
             logInfo(`🔄 Starting ${this.season} season recalculation...`);
             
@@ -52,41 +58,92 @@ class SeasonRecalculationOrchestrator {
             // Step 0b: Ensure DST players exist
             await this.dstManagementService.ensureDSTPlayersExist();
             
-            // Step 1: Clean existing data
-            await this.dataCleanupService.cleanExistingData(this.season);
+            // Step 1: Clean existing data with transaction
+            await this.db.beginTransaction();
+            try {
+                await this.dataCleanupService.cleanExistingData(this.season);
+                await this.db.commit();
+            } catch (error) {
+                await this.db.rollback();
+                throw error;
+            }
             
             // Step 2: Sync all weeks
             for (let week = 1; week <= this.totalWeeks; week++) {
+                const weekStart = Date.now();
                 logInfo(`\n📅 Processing Week ${week}...`);
                 
-                // Sync games for the week
-                await this.syncWeekGames(week);
+                // Start transaction for entire week processing
+                await this.db.beginTransaction();
                 
-                // Sync player stats directly from Tank01 data
-                await this.syncWeekStatsDirectly(week);
-                
-                // Small delay between weeks
-                await this.delay(500);
+                try {
+                    // Sync games for the week
+                    await this.syncWeekGames(week);
+                    
+                    // Sync player stats with batching
+                    await this.syncWeekStatsDirectly(week);
+                    
+                    // Commit the entire week's changes
+                    await this.db.commit();
+                    
+                    const weekTime = Date.now() - weekStart;
+                    this.weekTimes[week] = weekTime;
+                    logInfo(`  ⏱️ Week ${week} completed in ${(weekTime / 1000).toFixed(2)} seconds`);
+                    
+                } catch (error) {
+                    await this.db.rollback();
+                    logError(`Error processing Week ${week}:`, error);
+                    throw error;
+                }
             }
             
-            // Step 3: Calculate all fantasy points
+            // Step 3: Calculate all fantasy points in a transaction
             logInfo('\n💯 Calculating fantasy points for all players...');
-            await this.fantasyPointsCalculationService.calculateAllFantasyPoints(this.season);
+            await this.db.beginTransaction();
+            try {
+                await this.fantasyPointsCalculationService.calculateAllFantasyPoints(this.season);
+                await this.db.commit();
+            } catch (error) {
+                await this.db.rollback();
+                throw error;
+            }
             
             // Step 4: Calculate defense bonuses for all weeks
             logInfo('\n🛡️ Calculating defense bonuses for all weeks...');
-            for (let week = 1; week <= this.totalWeeks; week++) {
-                await this.scoringService.calculateDefensiveBonuses(week, this.season);
+            await this.db.beginTransaction();
+            try {
+                for (let week = 1; week <= this.totalWeeks; week++) {
+                    await this.scoringService.calculateDefensiveBonuses(week, this.season);
+                }
+                await this.db.commit();
+            } catch (error) {
+                await this.db.rollback();
+                throw error;
             }
             
             // Step 5: Calculate DST fantasy points after bonuses
             logInfo('\n🛡️ Calculating DST bonuses...');
-            await this.fantasyPointsCalculationService.calculateEndOfWeekDSTBonuses(this.season);
+            await this.db.beginTransaction();
+            try {
+                await this.fantasyPointsCalculationService.calculateEndOfWeekDSTBonuses(this.season);
+                await this.db.commit();
+            } catch (error) {
+                await this.db.rollback();
+                throw error;
+            }
             
             // Step 6: Recalculate all team scores
             logInfo('\n📊 Recalculating team scores for all weeks...');
-            await this.teamScoreService.recalculateSeasonScores(this.season, 1, this.totalWeeks);
+            await this.db.beginTransaction();
+            try {
+                await this.teamScoreService.recalculateSeasonScores(this.season, 1, this.totalWeeks);
+                await this.db.commit();
+            } catch (error) {
+                await this.db.rollback();
+                throw error;
+            }
             
+            const totalTime = Date.now() - this.startTime;
             logInfo(`\n✅ ${this.season} season recalculation completed successfully!`);
             
             // Print summary
@@ -100,6 +157,7 @@ class SeasonRecalculationOrchestrator {
             this.db.close();
         }
     }
+
 
     /**
      * Sync games for a specific week
@@ -126,13 +184,13 @@ class SeasonRecalculationOrchestrator {
     }
 
     /**
-     * Sync player stats directly from Tank01 API
+     * Sync player stats directly from Tank01 API with optimized batching
      */
     async syncWeekStatsDirectly(week) {
         try {
             logInfo(`  📊 Syncing player stats for Week ${week}...`);
             
-            // Get player stats from Tank01 API
+            // Get player stats from Tank01 API (cached)
             const boxScoreData = await this.tank01Service.getPlayerStats(week, this.season);
             
             if (!boxScoreData) {
@@ -140,16 +198,20 @@ class SeasonRecalculationOrchestrator {
                 return;
             }
             
-            let statsCount = 0;
+            // Collect all stats for batch processing
+            const allStats = [];
+            const dstStatsToProcess = [];
             
-            // Process each game
-            for (const gameId of Object.keys(boxScoreData)) {
+            // Process all games in parallel for stats extraction
+            const gamePromises = Object.keys(boxScoreData).map(async (gameId) => {
                 const game = boxScoreData[gameId];
                 
                 if (!game.playerStats) {
                     logWarn(`No playerStats in game ${gameId}`);
-                    continue;
+                    return { stats: [], dstStats: null };
                 }
+                
+                const gameStats = [];
                 
                 // Process player stats
                 for (const playerId of Object.keys(game.playerStats)) {
@@ -159,7 +221,7 @@ class SeasonRecalculationOrchestrator {
                         continue;
                     }
                     
-                    // Use the Tank01 player ID directly
+                    // Extract stats
                     const stats = await this.statsExtractionService.extractPlayerStats(
                         playerId, 
                         playerData, 
@@ -169,25 +231,47 @@ class SeasonRecalculationOrchestrator {
                     );
                     
                     if (stats) {
-                        await this.statsExtractionService.insertPlayerStats(stats);
-                        statsCount++;
+                        gameStats.push(stats);
                     }
                 }
                 
-                // Process DST stats
+                // Collect DST stats for later processing
+                let gameDstStats = null;
                 if (game.DST) {
-                    await this.dstManagementService.processDSTStats(
-                        game.DST, 
-                        game, 
-                        week, 
-                        gameId, 
-                        this.season
-                    );
-                    statsCount += 2; // home and away DST
+                    gameDstStats = { DST: game.DST, game, week, gameId, season: this.season };
+                }
+                
+                return { stats: gameStats, dstStats: gameDstStats };
+            });
+            
+            // Wait for all games to be processed
+            const gameResults = await Promise.all(gamePromises);
+            
+            // Collect all stats
+            for (const result of gameResults) {
+                allStats.push(...result.stats);
+                if (result.dstStats) {
+                    dstStatsToProcess.push(result.dstStats);
                 }
             }
             
-            logInfo(`    ✓ Synced ${statsCount} player stats`);
+            // Batch insert all player stats
+            if (allStats.length > 0) {
+                await this.batchInsertStats(allStats);
+            }
+            
+            // Process DST stats
+            for (const dstData of dstStatsToProcess) {
+                await this.dstManagementService.processDSTStats(
+                    dstData.DST, 
+                    dstData.game, 
+                    dstData.week, 
+                    dstData.gameId, 
+                    dstData.season
+                );
+            }
+            
+            logInfo(`    ✓ Synced ${allStats.length} player stats + ${dstStatsToProcess.length * 2} DST stats`);
             
         } catch (error) {
             logError(`Error syncing stats for Week ${week}:`, error);
@@ -196,7 +280,67 @@ class SeasonRecalculationOrchestrator {
     }
 
     /**
-     * Print final summary
+     * Batch insert stats with prepared statements
+     */
+    async batchInsertStats(statsList) {
+        // First, get all unique player IDs and check which exist
+        const playerIds = [...new Set(statsList.map(s => s.player_id))];
+        
+        // Check which players exist in a single query
+        const placeholders = playerIds.map(() => '?').join(',');
+        const existingPlayers = await this.db.all(
+            `SELECT player_id FROM nfl_players WHERE player_id IN (${placeholders})`,
+            playerIds
+        );
+        const existingPlayerIds = new Set(existingPlayers.map(p => p.player_id));
+        
+        // Filter stats to only include existing players
+        const validStats = statsList.filter(stats => existingPlayerIds.has(stats.player_id));
+        
+        if (validStats.length === 0) {
+            logWarn('No valid stats to insert after filtering');
+            return;
+        }
+        
+        // Use the database's bulk insert method (already optimized in transaction)
+        const insertQuery = `
+            INSERT OR REPLACE INTO player_stats (
+                player_id, week, season, game_id,
+                passing_yards, passing_tds, interceptions,
+                rushing_yards, rushing_tds, receiving_yards,
+                receiving_tds, receptions, fumbles, sacks,
+                def_interceptions, fumbles_recovered, def_touchdowns,
+                safeties, points_allowed, yards_allowed,
+                field_goals_made, field_goals_attempted,
+                extra_points_made, extra_points_attempted,
+                field_goals_0_39, field_goals_40_49, field_goals_50_plus,
+                two_point_conversions_pass, two_point_conversions_run,
+                two_point_conversions_rec, fantasy_points
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+        
+        // Insert all stats
+        for (const stats of validStats) {
+            await this.db.run(insertQuery, [
+                stats.player_id, stats.week, stats.season, stats.game_id,
+                stats.passing_yards, stats.passing_tds, stats.interceptions,
+                stats.rushing_yards, stats.rushing_tds, stats.receiving_yards,
+                stats.receiving_tds, stats.receptions, stats.fumbles, stats.sacks,
+                stats.def_interceptions, stats.fumbles_recovered, stats.def_touchdowns,
+                stats.safeties, stats.points_allowed, stats.yards_allowed,
+                stats.field_goals_made, stats.field_goals_attempted,
+                stats.extra_points_made, stats.extra_points_attempted,
+                stats.field_goals_0_39, stats.field_goals_40_49, stats.field_goals_50_plus,
+                stats.two_point_conversions_pass, stats.two_point_conversions_run,
+                stats.two_point_conversions_rec, stats.fantasy_points
+            ]);
+        }
+        
+        logInfo(`  ✓ Batch inserted ${validStats.length} stats (${statsList.length - validStats.length} skipped)`);
+    }
+
+    /**
+     * Print final summary with performance metrics
      */
     async printSummary() {
         try {
@@ -240,16 +384,24 @@ class SeasonRecalculationOrchestrator {
             `, [this.season]);
             logInfo(`  • Average points per matchup: ${(avgPoints.avg_points || 0).toFixed(2)}`);
             
+            // Performance metrics
+            logInfo('\n⏱️ Performance Metrics:');
+            const totalTime = Date.now() - this.startTime;
+            logInfo(`  • Total execution time: ${(totalTime / 1000).toFixed(2)} seconds`);
+            logInfo(`  • Average time per week: ${(totalTime / this.totalWeeks / 1000).toFixed(2)} seconds`);
+            
+            // Show slowest weeks
+            const sortedWeeks = Object.entries(this.weekTimes)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3);
+            logInfo('  • Slowest weeks:');
+            for (const [week, time] of sortedWeeks) {
+                logInfo(`    - Week ${week}: ${(time / 1000).toFixed(2)} seconds`);
+            }
+            
         } catch (error) {
             logError('Error printing summary:', error);
         }
-    }
-
-    /**
-     * Utility function for delays
-     */
-    delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }
 
