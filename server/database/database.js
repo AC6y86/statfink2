@@ -181,7 +181,9 @@ class DatabaseManager {
                 r.player_position as position,
                 COALESCE(p.team, r.player_team) as team,
                 p.bye_week,
-                r.snapshot_date as acquisition_date
+                r.snapshot_date as acquisition_date,
+                r.is_scoring,
+                r.scoring_slot
             FROM weekly_rosters r
             LEFT JOIN nfl_players p ON r.player_id = p.player_id
             WHERE r.team_id = ? AND r.week = ? AND r.season = ?

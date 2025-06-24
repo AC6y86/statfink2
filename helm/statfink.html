@@ -80,7 +80,6 @@
     var refreshInterval = null;
     var showDetails = false;
     var currentMatchupData = null;
-    var scoringTotalsCache = {}; // Cache scoring totals by matchup_id
 
     // Initialize layout
     if (view == 0) {
@@ -348,8 +347,7 @@
                     logoFooter.className = 'logofooter ' + bgClass;
                 }
                 
-                // Load scoring totals for all matchups
-                setTimeout(() => loadAllMatchupScoringTotals(data.data), 100);
+                // No longer need to load scoring totals - backend provides them
             }
         } catch (error) {
             console.error('Error loading matchups:', error);
@@ -419,19 +417,10 @@
         // Build team tables and get scoring totals
         const team1ScoringTotal = displayTeamRoster("team0", data.team1.starters, matchup.team1_name);
         const team2ScoringTotal = displayTeamRoster("team1", data.team2.starters, matchup.team2_name);
-        
-        // Cache the scoring totals
-        scoringTotalsCache[matchup.matchup_id] = {
-            team1: team1ScoringTotal,
-            team2: team2ScoringTotal
-        };
-        
-        // Update the matchup display in the left panel
-        updateMatchupScoreDisplay(matchup.matchup_id, team1ScoringTotal, team2ScoringTotal);
     }
 
-    // Load scoring totals for all matchups
-    async function loadAllMatchupScoringTotals(matchups) {
+    // This function is no longer needed - backend provides scoring totals
+    async function loadAllMatchupScoringTotals_DEPRECATED(matchups) {
         try {
             // Process each matchup to calculate scoring totals
             for (const matchup of matchups) {
@@ -525,8 +514,8 @@
         }
     }
 
-    // Calculate which players are scoring based on position requirements
-    function calculateScoringPlayers(starters) {
+    // This function is no longer needed - backend provides is_scoring flag
+    function calculateScoringPlayers_DEPRECATED(starters) {
         // Create a Set to store scoring players
         const scoringPlayers = new Set();
         
@@ -620,9 +609,6 @@
             <td align="right">FanPts</td>
         `;
         
-        // Calculate which players are scoring (top 11 based on position requirements)
-        const scoringPlayers = calculateScoringPlayers(starters);
-        
         let totalPoints = 0;
         let scoringTotalPoints = 0;
         let rowIndex = 0;
@@ -631,8 +617,8 @@
             const points = player.stats ? player.stats.fantasy_points : 0;
             totalPoints += points;
             
-            // Check if this player is one of the scoring players
-            const isScoring = scoringPlayers.has(player);
+            // Check if this player is one of the scoring players (from backend)
+            const isScoring = player.is_scoring === true;
             if (isScoring) {
                 scoringTotalPoints += points;
             }

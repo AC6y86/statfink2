@@ -200,14 +200,26 @@ router.get('/current', asyncHandler(async (req, res) => {
     const matchups = await db.getWeekMatchups(settings.current_week, settings.season_year);
     
     // Add additional matchup information
-    const enrichedMatchups = matchups.map(matchup => ({
-        ...matchup,
-        margin: Math.abs(matchup.team1_points - matchup.team2_points),
-        winner: matchup.team1_points > matchup.team2_points ? 'team1' : 
-                matchup.team2_points > matchup.team1_points ? 'team2' : 'tie',
-        total_points: matchup.team1_points + matchup.team2_points,
-        is_close_game: Math.abs(matchup.team1_points - matchup.team2_points) < 10
-    }));
+    const enrichedMatchups = matchups.map(matchup => {
+        // Use scoring points if they exist, otherwise fall back to total points
+        const team1Points = matchup.team1_scoring_points ?? matchup.team1_points;
+        const team2Points = matchup.team2_scoring_points ?? matchup.team2_points;
+        
+        return {
+            ...matchup,
+            // Override with scoring points
+            team1_points: team1Points,
+            team2_points: team2Points,
+            // Keep original totals available
+            team1_total_points: matchup.team1_points,
+            team2_total_points: matchup.team2_points,
+            margin: Math.abs(team1Points - team2Points),
+            winner: team1Points > team2Points ? 'team1' : 
+                    team2Points > team1Points ? 'team2' : 'tie',
+            total_points: team1Points + team2Points,
+            is_close_game: Math.abs(team1Points - team2Points) < 10
+        };
+    });
     
     res.json({
         success: true,
@@ -270,6 +282,8 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
                 position: player.position === 'DST' ? 'DEF' : player.position,
                 team: playerTeam,
                 roster_position: player.roster_position,
+                is_scoring: player.is_scoring === 1,
+                scoring_slot: player.scoring_slot,
                 stats: stats || { fantasy_points: 0 },
                 opp: opponent || '@OPP'
             };
@@ -295,6 +309,8 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
                 position: player.position === 'DST' ? 'DEF' : player.position,
                 team: playerTeam,
                 roster_position: player.roster_position,
+                is_scoring: player.is_scoring === 1,
+                scoring_slot: player.scoring_slot,
                 stats: stats || { fantasy_points: 0 },
                 opp: opponent || '@OPP'
             };
@@ -530,14 +546,26 @@ router.get('/:week/:season', asyncHandler(async (req, res) => {
     }
     
     // Add additional matchup information
-    const enrichedMatchups = matchups.map(matchup => ({
-        ...matchup,
-        margin: Math.abs(matchup.team1_points - matchup.team2_points),
-        winner: matchup.team1_points > matchup.team2_points ? 'team1' : 
-                matchup.team2_points > matchup.team1_points ? 'team2' : 'tie',
-        total_points: matchup.team1_points + matchup.team2_points,
-        is_close_game: Math.abs(matchup.team1_points - matchup.team2_points) < 10
-    }));
+    const enrichedMatchups = matchups.map(matchup => {
+        // Use scoring points if they exist, otherwise fall back to total points
+        const team1Points = matchup.team1_scoring_points ?? matchup.team1_points;
+        const team2Points = matchup.team2_scoring_points ?? matchup.team2_points;
+        
+        return {
+            ...matchup,
+            // Override with scoring points
+            team1_points: team1Points,
+            team2_points: team2Points,
+            // Keep original totals available
+            team1_total_points: matchup.team1_points,
+            team2_total_points: matchup.team2_points,
+            margin: Math.abs(team1Points - team2Points),
+            winner: team1Points > team2Points ? 'team1' : 
+                    team2Points > team1Points ? 'team2' : 'tie',
+            total_points: team1Points + team2Points,
+            is_close_game: Math.abs(team1Points - team2Points) < 10
+        };
+    });
     
     res.json({
         success: true,
