@@ -1,202 +1,163 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StatFink Fantasy League - Standings</title>
+    <link href="/statfink-styles.css" rel="stylesheet" type="text/css" media="all" />
     <style>
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            background: #fff;
+            font-family: arial, sans-serif;
         }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f0f2f5;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px 0;
-            margin-bottom: 30px;
+        .page-header {
+            background-color: #556;
+            color: #fff;
+            font-size: 24px;
+            font-family: arial;
+            font-weight: 900;
+            padding: 15px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 2px solid #343443;
         }
         
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .week-selector {
-            background: white;
+        .content-wrapper {
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
             text-align: center;
         }
         
-        .week-selector select {
-            font-size: 16px;
-            padding: 8px 16px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            background: white;
-            cursor: pointer;
+        .standings-wrapper {
+            display: inline-flex;
+            gap: 10px;
+            justify-content: center;
         }
         
         .standings-section {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            background: transparent;
+            margin-bottom: 10px;
         }
         
-        .standings-section h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #eee;
-        }
-        
-        table {
-            width: 100%;
+        .standings-table {
+            border: 1px solid #556;
             border-collapse: collapse;
+            border-spacing: 0;
+            background: #fff;
+            width: 450px;
         }
         
-        th {
-            background: #f8f9fa;
-            padding: 12px;
+        .section-title {
+            color: #fff;
+            font-size: 16px;
+            font-family: arial;
+            font-weight: 900;
+            background-color: #556;
+            padding: 8px 10px;
+            text-align: center;
+            border: 1px solid #343443;
+        }
+        
+        .standings-table th {
+            color: #000;
+            font-size: 13px;
+            font-family: arial;
+            font-weight: bold;
+            background-color: #ddd;
+            padding: 6px 10px;
             text-align: left;
-            font-weight: 600;
-            border-bottom: 2px solid #dee2e6;
+            border-bottom: 1px solid #556;
         }
         
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
+        .standings-table td {
+            padding: 6px 10px;
+            font-size: 13px;
+            font-family: arial;
+            text-align: left;
         }
         
-        tr:hover {
-            background: #f8f9fa;
+        .row1 {
+            color: #000;
+            background-color: #fff;
+        }
+        
+        .row2 {
+            color: #000;
+            background-color: #f0f0f0;
         }
         
         .rank-1 {
             font-weight: bold;
-            color: #28a745;
         }
         
         .crown-icon {
-            display: inline-block;
-            margin-right: 5px;
+            color: #b83535;
+            font-size: 14px;
         }
         
         .weekly-wins {
-            display: inline-block;
-            background: #ffc107;
-            color: #333;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.875rem;
-            font-weight: 600;
+            font-weight: bold;
         }
         
         .loading {
             text-align: center;
             padding: 40px;
             color: #666;
+            font-size: 12px;
         }
         
         .error {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 20px;
-            border-radius: 4px;
-            margin: 20px 0;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            table {
-                font-size: 0.9rem;
-            }
-            
-            th, td {
-                padding: 8px;
-            }
+            background: #b83535;
+            color: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="container">
-            <h1>StatFink Fantasy League</h1>
-            <p>League Standings</p>
-        </div>
+    <div class="page-header" id="pageHeader">
+        Week X Standings
     </div>
     
-    <div class="container">
-        <div class="week-selector">
-            <label for="weekSelect">Select Week: </label>
-            <select id="weekSelect">
-                <!-- Options will be populated by JavaScript -->
-            </select>
-        </div>
-        
+    <div class="content-wrapper">
         <div id="loadingMessage" class="loading">Loading standings...</div>
         <div id="errorMessage" class="error" style="display: none;"></div>
         
-        <div id="weeklyRankings" class="standings-section" style="display: none;">
-            <h2 id="weeklyTitle">Week X Rankings</h2>
-            <table>
-                <thead>
+        <div class="standings-wrapper">
+            <div id="weeklyRankings" class="standings-section" style="display: none;">
+                <table class="standings-table">
                     <tr>
-                        <th>Rank</th>
-                        <th>Team</th>
-                        <th>Points</th>
+                        <td colspan="3" class="section-title" id="weeklyTitle">Week X Rankings</td>
                     </tr>
-                </thead>
-                <tbody id="weeklyRankingsBody">
-                    <!-- Weekly rankings will be populated here -->
-                </tbody>
-            </table>
-        </div>
-        
-        <div id="overallStandings" class="standings-section" style="display: none;">
-            <h2 id="overallTitle">Season Standings (Through Week X)</h2>
-            <table>
-                <thead>
                     <tr>
-                        <th>Rank</th>
+                        <th style="width: 60px;">Rank</th>
                         <th>Team</th>
-                        <th>W-L-T</th>
-                        <th>Total Points</th>
-                        <th>Weekly Wins</th>
+                        <th style="width: 80px;">Points</th>
                     </tr>
-                </thead>
-                <tbody id="overallStandingsBody">
-                    <!-- Overall standings will be populated here -->
-                </tbody>
-            </table>
+                    <tbody id="weeklyRankingsBody">
+                        <!-- Weekly rankings will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="overallStandings" class="standings-section" style="display: none;">
+                <table class="standings-table">
+                    <tr>
+                        <td colspan="5" class="section-title" id="overallTitle">Season Standings (Through Week X)</td>
+                    </tr>
+                    <tr>
+                        <th style="width: 40px;">Rank</th>
+                        <th>Team</th>
+                        <th style="width: 50px;">W-L-T</th>
+                        <th style="width: 70px;">Points</th>
+                        <th style="width: 80px;">Week Wins</th>
+                    </tr>
+                    <tbody id="overallStandingsBody">
+                        <!-- Overall standings will be populated here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     
@@ -237,25 +198,7 @@
                     }
                 }
                 
-                // Populate week selector
-                const weekSelect = document.getElementById('weekSelect');
-                for (let week = 1; week <= 17; week++) {
-                    const option = document.createElement('option');
-                    option.value = week;
-                    option.textContent = `Week ${week}`;
-                    if (week === currentWeek) {
-                        option.selected = true;
-                    }
-                    weekSelect.appendChild(option);
-                }
-                
-                // Add event listener
-                weekSelect.addEventListener('change', (e) => {
-                    const newWeek = parseInt(e.target.value);
-                    // Update URL to reflect new week
-                    window.history.pushState({}, '', `/standings/${currentSeason}/${newWeek}`);
-                    loadStandings(currentSeason, newWeek);
-                });
+                // Removed week selector - page shows current week only
                 
                 // Load initial standings
                 loadStandings(currentSeason, currentWeek);
@@ -290,6 +233,9 @@
         function displayStandings(data) {
             const { weeklyRankings, overallStandings, week } = data;
             
+            // Update page header
+            document.getElementById('pageHeader').textContent = `Week ${week} Standings`;
+            
             // Update titles
             document.getElementById('weeklyTitle').textContent = `Week ${week} Rankings`;
             document.getElementById('overallTitle').textContent = `Season Standings (Through Week ${week})`;
@@ -300,13 +246,18 @@
             
             weeklyRankings.forEach((team, index) => {
                 const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'row1' : 'row2';
+                
                 if (team.weekly_rank === 1) {
                     row.classList.add('rank-1');
                 }
                 
+                // Extract first name from owner_name
+                const firstName = team.owner_name ? team.owner_name.split(' ')[0].replace("'s", '') : team.team_name;
+                
                 row.innerHTML = `
-                    <td>${team.weekly_rank}${team.weekly_rank === 1 ? ' <span class="crown-icon">👑</span>' : ''}</td>
-                    <td>${team.team_name}</td>
+                    <td style="width: 60px;">${team.weekly_rank}${team.weekly_rank === 1 ? ' <span class="crown-icon">👑</span>' : ''}</td>
+                    <td>${firstName}</td>
                     <td>${team.points_for_week.toFixed(2)}</td>
                 `;
                 weeklyBody.appendChild(row);
@@ -316,32 +267,23 @@
             const overallBody = document.getElementById('overallStandingsBody');
             overallBody.innerHTML = '';
             
-            // Sort overall standings
+            // Sort overall standings by total points
             const sortedOverall = [...overallStandings];
-            if (week <= 12) {
-                // Sort by wins, then by total points
-                sortedOverall.sort((a, b) => {
-                    const aWins = a.wins - a.losses;
-                    const bWins = b.wins - b.losses;
-                    if (aWins !== bWins) return bWins - aWins;
-                    return b.cumulative_points - a.cumulative_points;
-                });
-            } else {
-                // After week 12, sort by total points only
-                sortedOverall.sort((a, b) => b.cumulative_points - a.cumulative_points);
-            }
+            sortedOverall.sort((a, b) => b.cumulative_points - a.cumulative_points);
             
             sortedOverall.forEach((team, index) => {
                 const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'row1' : 'row2';
+                
+                // Extract first name from owner_name
+                const firstName = team.owner_name ? team.owner_name.split(' ')[0].replace("'s", '') : team.team_name;
                 
                 // Format W-L-T record
-                const record = week <= 12 
-                    ? `${team.wins}-${team.losses}${team.ties > 0 ? `-${team.ties}` : ''}`
-                    : `${team.wins}-${team.losses}${team.ties > 0 ? `-${team.ties}` : ''} (Final)`;
+                const record = `${team.wins}-${team.losses}${team.ties > 0 ? `-${team.ties}` : ''}`;
                 
                 row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${team.team_name}</td>
+                    <td style="width: 40px;">${index + 1}</td>
+                    <td>${firstName}</td>
                     <td>${record}</td>
                     <td>${team.cumulative_points.toFixed(2)}</td>
                     <td>${team.weekly_wins > 0 ? `<span class="weekly-wins">${team.weekly_wins}</span>` : '0'}</td>

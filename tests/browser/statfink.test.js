@@ -237,9 +237,15 @@ describe('StatFink Viewer', () => {
       expect(team1Total).toMatch(/^\d+\.\d{2}$/);
 
       // Verify totals match sum of individual player points
-      const team0PlayerPoints = await page.$$eval('#team0 tbody tr .fanpts', cells => 
-        cells.map(cell => parseFloat(cell.textContent))
-          .filter(num => !isNaN(num))
+      // Only count scoring players (those with asterisks - 11 + 2 DST)
+      const team0PlayerPoints = await page.$$eval('#team0 tbody tr', rows => 
+        rows.filter(row => {
+          const playerName = row.querySelector('.playername');
+          return playerName && playerName.textContent.includes('*');
+        }).map(row => {
+          const fanpts = row.querySelector('.fanpts');
+          return fanpts ? parseFloat(fanpts.textContent) : 0;
+        }).filter(num => !isNaN(num))
       );
       
       const calculatedTotal = team0PlayerPoints.reduce((sum, points) => sum + points, 0);

@@ -185,7 +185,7 @@ describe('DSTManagementService', () => {
             expect(args[13]).toBe(3); // sacks
             expect(args[14]).toBe(2); // def_interceptions
             expect(args[15]).toBe(1); // fumbles_recovered
-            expect(args[16]).toBe(1); // def_touchdowns
+            expect(args[16]).toBe(0); // def_touchdowns - always 0 per implementation
             expect(args[18]).toBe(21); // points_allowed
             expect(args[19]).toBe(350); // yards_allowed
         });

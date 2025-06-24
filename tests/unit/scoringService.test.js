@@ -77,6 +77,7 @@ describe('ScoringService', () => {
         def_interceptions: 2,
         fumbles_recovered: 1,
         def_touchdowns: 1,
+        def_int_return_tds: 1,  // Defensive TD breakdown
         safeties: 0,
         points_allowed: 7,
         def_points_bonus: 0,    // Not rank 1 for points allowed

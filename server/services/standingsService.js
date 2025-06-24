@@ -180,6 +180,7 @@ class StandingsService {
                 SELECT 
                     ws.team_id,
                     t.team_name,
+                    t.owner_name,
                     ws.points_for_week,
                     ws.weekly_rank
                 FROM weekly_standings ws
@@ -193,6 +194,7 @@ class StandingsService {
                 SELECT 
                     ws.team_id,
                     t.team_name,
+                    t.owner_name,
                     ws.wins,
                     ws.losses,
                     ws.ties,
