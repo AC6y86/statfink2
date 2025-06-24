@@ -80,6 +80,7 @@
     var refreshInterval = null;
     var showDetails = false;
     var currentMatchupData = null;
+    var scoringTotalsCache = {}; // Cache scoring totals by matchup_id
 
     // Initialize layout
     if (view == 0) {
@@ -346,6 +347,9 @@
                     const bgClass = lastMatchupIndex % 2 ? 'matchuprow1' : 'matchuprow2';
                     logoFooter.className = 'logofooter ' + bgClass;
                 }
+                
+                // Load scoring totals for all matchups
+                setTimeout(() => loadAllMatchupScoringTotals(data.data), 100);
             }
         } catch (error) {
             console.error('Error loading matchups:', error);
@@ -412,9 +416,187 @@
         document.getElementById("fteam0").innerHTML = `${matchup.team1_owner} (${team1Remaining})`;
         document.getElementById("fteam1").innerHTML = `${matchup.team2_owner} (${team2Remaining})`;
         
-        // Build team tables
-        displayTeamRoster("team0", data.team1.starters, matchup.team1_name);
-        displayTeamRoster("team1", data.team2.starters, matchup.team2_name);
+        // Build team tables and get scoring totals
+        const team1ScoringTotal = displayTeamRoster("team0", data.team1.starters, matchup.team1_name);
+        const team2ScoringTotal = displayTeamRoster("team1", data.team2.starters, matchup.team2_name);
+        
+        // Cache the scoring totals
+        scoringTotalsCache[matchup.matchup_id] = {
+            team1: team1ScoringTotal,
+            team2: team2ScoringTotal
+        };
+        
+        // Update the matchup display in the left panel
+        updateMatchupScoreDisplay(matchup.matchup_id, team1ScoringTotal, team2ScoringTotal);
+    }
+
+    // Load scoring totals for all matchups
+    async function loadAllMatchupScoringTotals(matchups) {
+        try {
+            // Process each matchup to calculate scoring totals
+            for (const matchup of matchups) {
+                // Skip if already calculated
+                if (scoringTotalsCache[matchup.matchup_id]) {
+                    updateMatchupScoreDisplay(matchup.matchup_id, 
+                        scoringTotalsCache[matchup.matchup_id].team1,
+                        scoringTotalsCache[matchup.matchup_id].team2);
+                    continue;
+                }
+                
+                // Fetch matchup details
+                const isMockMode = window.location.pathname.includes('/statfink/mock');
+                const apiUrl = isMockMode 
+                    ? `/api/matchups/mock-game/${matchup.matchup_id}`
+                    : `/api/matchups/game/${matchup.matchup_id}`;
+                
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Calculate scoring players for both teams
+                    const team1Scoring = calculateScoringPlayers(data.data.team1.starters);
+                    const team2Scoring = calculateScoringPlayers(data.data.team2.starters);
+                    
+                    // Calculate totals
+                    let team1Total = 0;
+                    let team2Total = 0;
+                    
+                    data.data.team1.starters.forEach(player => {
+                        if (team1Scoring.has(player)) {
+                            team1Total += player.stats ? player.stats.fantasy_points : 0;
+                        }
+                    });
+                    
+                    data.data.team2.starters.forEach(player => {
+                        if (team2Scoring.has(player)) {
+                            team2Total += player.stats ? player.stats.fantasy_points : 0;
+                        }
+                    });
+                    
+                    // Cache and update display
+                    scoringTotalsCache[matchup.matchup_id] = {
+                        team1: team1Total,
+                        team2: team2Total
+                    };
+                    
+                    updateMatchupScoreDisplay(matchup.matchup_id, team1Total, team2Total);
+                }
+                
+                // Small delay to avoid overwhelming the server
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+        } catch (error) {
+            console.error('Error loading scoring totals:', error);
+        }
+    }
+
+    // Update matchup score display in the left panel
+    function updateMatchupScoreDisplay(matchupId, team1Score, team2Score) {
+        // Find the matchup rows
+        const rows = document.getElementById("leaguetable").getElementsByTagName("tbody")[0].rows;
+        
+        for (let i = 1; i < rows.length; i += 2) {
+            const row1 = rows[i];
+            const row2 = rows[i + 1];
+            
+            if (row1 && row1.onclick) {
+                // Extract matchup ID from the onclick handler
+                const onclickStr = row1.onclick.toString();
+                if (onclickStr.includes(`selectMatchup(${matchupId})`)) {
+                    // Update scores
+                    const score1Cell = row1.cells[1];
+                    const score2Cell = row2.cells[1];
+                    
+                    if (score1Cell) {
+                        score1Cell.textContent = team1Score.toFixed(2);
+                        score1Cell.style.fontWeight = 'bold';
+                        score1Cell.style.color = '#000'; // Black for final scoring total
+                        score1Cell.title = "Scoring players total";
+                    }
+                    if (score2Cell) {
+                        score2Cell.textContent = team2Score.toFixed(2);
+                        score2Cell.style.fontWeight = 'bold';
+                        score2Cell.style.color = '#000'; // Black for final scoring total
+                        score2Cell.title = "Scoring players total";
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    // Calculate which players are scoring based on position requirements
+    function calculateScoringPlayers(starters) {
+        // Create a Set to store scoring players
+        const scoringPlayers = new Set();
+        
+        // Sort players by fantasy points (highest first)
+        const sortedPlayers = [...starters].sort((a, b) => {
+            const pointsA = a.stats ? a.stats.fantasy_points : 0;
+            const pointsB = b.stats ? b.stats.fantasy_points : 0;
+            return pointsB - pointsA;
+        });
+        
+        // Track how many of each position we've selected
+        const positionCounts = {
+            QB: 0,
+            RB: 0,
+            WR_TE: 0,  // Combined WR/TE
+            K: 0,
+            DST: 0,
+            BONUS: 0
+        };
+        
+        // Position limits based on scoring rules
+        const limits = {
+            QB: 1,
+            RB: 4,
+            WR_TE: 4,
+            K: 1,
+            DST: 2,  // This will be handled separately (best points/yards allowed)
+            BONUS: 1
+        };
+        
+        // First pass: Fill required position slots (skip players with 0 points)
+        sortedPlayers.forEach(player => {
+            const points = player.stats ? player.stats.fantasy_points : 0;
+            if (points === 0) return; // Skip players with 0 points
+            
+            const pos = player.position;
+            
+            if (pos === 'QB' && positionCounts.QB < limits.QB) {
+                scoringPlayers.add(player);
+                positionCounts.QB++;
+            } else if (pos === 'RB' && positionCounts.RB < limits.RB) {
+                scoringPlayers.add(player);
+                positionCounts.RB++;
+            } else if ((pos === 'WR' || pos === 'TE') && positionCounts.WR_TE < limits.WR_TE) {
+                scoringPlayers.add(player);
+                positionCounts.WR_TE++;
+            } else if (pos === 'K' && positionCounts.K < limits.K) {
+                scoringPlayers.add(player);
+                positionCounts.K++;
+            } else if ((pos === 'DST' || pos === 'DEF') && positionCounts.DST < limits.DST) {
+                // For DST, we should ideally pick best points allowed and best yards allowed
+                // For now, just take top 2 DST by fantasy points
+                scoringPlayers.add(player);
+                positionCounts.DST++;
+            }
+        });
+        
+        // Second pass: Fill bonus slots with highest scoring remaining players (skip 0 point players)
+        sortedPlayers.forEach(player => {
+            const points = player.stats ? player.stats.fantasy_points : 0;
+            if (points === 0) return; // Skip players with 0 points
+            
+            if (!scoringPlayers.has(player) && positionCounts.BONUS < limits.BONUS) {
+                // Any position can be a bonus player
+                scoringPlayers.add(player);
+                positionCounts.BONUS++;
+            }
+        });
+        
+        return scoringPlayers;
     }
 
     // Display team roster
@@ -438,21 +620,30 @@
             <td align="right">FanPts</td>
         `;
         
+        // Calculate which players are scoring (top 11 based on position requirements)
+        const scoringPlayers = calculateScoringPlayers(starters);
+        
         let totalPoints = 0;
+        let scoringTotalPoints = 0;
         let rowIndex = 0;
         
         starters.forEach(player => {
             const points = player.stats ? player.stats.fantasy_points : 0;
             totalPoints += points;
             
+            // Check if this player is one of the scoring players
+            const isScoring = scoringPlayers.has(player);
+            if (isScoring) {
+                scoringTotalPoints += points;
+            }
+            
             // Player row
             const row = tbody.insertRow(-1);
             row.className = rowIndex % 2 ? "playerrow2" : "playerrow1";
             row.id = `t${tableId.slice(-1)}r${rowIndex}`;
             
-            const isStarter = player.roster_position === 'starter';
-            const hasPoints = points > 0;
-            const playerName = (isStarter && hasPoints) ? `*${player.name}` : player.name;
+            // Add asterisk if player is scoring
+            const playerName = isScoring ? `*${player.name}` : player.name;
             
             row.innerHTML = `
                 <td class="position position-${player.position}">${player.position}</td>
@@ -467,13 +658,15 @@
             rowIndex++;
         });
         
-        // Add total row
+        // Add total row (show scoring total, not all players total)
         const totalRow = tbody.insertRow(-1);
         totalRow.className = "totalsrow";
         totalRow.innerHTML = `
             <td colspan="4" class="fanptsbig">Net Points</td>
-            <td class="fanptsbig" align="right">${totalPoints.toFixed(2)}</td>
+            <td class="fanptsbig" align="right">${scoringTotalPoints.toFixed(2)}</td>
         `;
+        
+        return scoringTotalPoints;
     }
 
     // Format player stats based on position

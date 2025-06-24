@@ -6,9 +6,9 @@ Each team scores any player they draft and accumulates a weekly score based on t
 
 - 1 each **Quarterback**
 - 4 each **Running Backs**
-- 3 each **Wide Receivers or Tight Ends**
+- 4 each **Wide Receivers or Tight Ends**
 - 1 each **Kicker**
-- 2 each **Bonus Players**
+- 1 each **Bonus Players**
 
 **Defense:**
 - 1 each **Team Defense** (fewest points allowed)
