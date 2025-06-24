@@ -12,6 +12,7 @@ const GameScoreService = require('./gameScoreService');
 const FantasyPointsCalculationService = require('./fantasyPointsCalculationService');
 const TeamScoreService = require('./teamScoreService');
 const ScoringPlayersService = require('./scoringPlayersService');
+const StandingsService = require('./standingsService');
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 
 class SeasonRecalculationOrchestrator {
@@ -35,6 +36,7 @@ class SeasonRecalculationOrchestrator {
         this.fantasyPointsCalculationService = new FantasyPointsCalculationService(this.db, this.scoringService);
         this.teamScoreService = new TeamScoreService(this.db);
         this.scoringPlayersService = new ScoringPlayersService(this.db);
+        this.standingsService = new StandingsService(this.db);
         
         // Performance tracking
         this.startTime = null;
@@ -154,6 +156,19 @@ class SeasonRecalculationOrchestrator {
             await this.db.beginTransaction();
             try {
                 await this.teamScoreService.recalculateSeasonScores(this.season, 1, this.totalWeeks);
+                await this.db.commit();
+            } catch (error) {
+                await this.db.rollback();
+                throw error;
+            }
+            
+            // Step 8: Calculate standings for all weeks
+            logInfo('\n📈 Calculating standings for all weeks...');
+            await this.db.beginTransaction();
+            try {
+                for (let week = 1; week <= this.totalWeeks; week++) {
+                    await this.standingsService.calculateWeeklyStandings(week, this.season);
+                }
                 await this.db.commit();
             } catch (error) {
                 await this.db.rollback();

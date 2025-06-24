@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StatFink Fantasy League - Standings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .week-selector {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .week-selector select {
+            font-size: 16px;
+            padding: 8px 16px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .standings-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .standings-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .rank-1 {
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .crown-icon {
+            display: inline-block;
+            margin-right: 5px;
+        }
+        
+        .weekly-wins {
+            display: inline-block;
+            background: #ffc107;
+            color: #333;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>StatFink Fantasy League</h1>
+            <p>League Standings</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="week-selector">
+            <label for="weekSelect">Select Week: </label>
+            <select id="weekSelect">
+                <!-- Options will be populated by JavaScript -->
+            </select>
+        </div>
+        
+        <div id="loadingMessage" class="loading">Loading standings...</div>
+        <div id="errorMessage" class="error" style="display: none;"></div>
+        
+        <div id="weeklyRankings" class="standings-section" style="display: none;">
+            <h2 id="weeklyTitle">Week X Rankings</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Team</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody id="weeklyRankingsBody">
+                    <!-- Weekly rankings will be populated here -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="overallStandings" class="standings-section" style="display: none;">
+            <h2 id="overallTitle">Season Standings (Through Week X)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Team</th>
+                        <th>W-L-T</th>
+                        <th>Total Points</th>
+                        <th>Weekly Wins</th>
+                    </tr>
+                </thead>
+                <tbody id="overallStandingsBody">
+                    <!-- Overall standings will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        let currentSeason = 2024;
+        let currentWeek = 1;
+        
+        // Initialize the page
+        async function init() {
+            try {
+                // Parse season and week from URL if available
+                const pathParts = window.location.pathname.split('/');
+                if (pathParts.length >= 4 && pathParts[1] === 'standings') {
+                    const urlSeason = parseInt(pathParts[2]);
+                    const urlWeek = parseInt(pathParts[3]);
+                    if (!isNaN(urlSeason) && !isNaN(urlWeek)) {
+                        currentSeason = urlSeason;
+                        currentWeek = urlWeek;
+                    }
+                } else if (pathParts.length >= 3 && pathParts[1] === 'standings') {
+                    // Legacy URL format with just week
+                    const urlWeek = parseInt(pathParts[2]);
+                    if (!isNaN(urlWeek)) {
+                        currentWeek = urlWeek;
+                    }
+                }
+                
+                // If season not set from URL, get from league settings
+                if (!currentSeason) {
+                    const settingsResponse = await fetch('/api/league/settings');
+                    if (!settingsResponse.ok) {
+                        throw new Error('Failed to fetch league settings');
+                    }
+                    const settings = await settingsResponse.json();
+                    currentSeason = settings.season_year || 2024;
+                    if (!currentWeek) {
+                        currentWeek = settings.current_week || 1;
+                    }
+                }
+                
+                // Populate week selector
+                const weekSelect = document.getElementById('weekSelect');
+                for (let week = 1; week <= 17; week++) {
+                    const option = document.createElement('option');
+                    option.value = week;
+                    option.textContent = `Week ${week}`;
+                    if (week === currentWeek) {
+                        option.selected = true;
+                    }
+                    weekSelect.appendChild(option);
+                }
+                
+                // Add event listener
+                weekSelect.addEventListener('change', (e) => {
+                    const newWeek = parseInt(e.target.value);
+                    // Update URL to reflect new week
+                    window.history.pushState({}, '', `/standings/${currentSeason}/${newWeek}`);
+                    loadStandings(currentSeason, newWeek);
+                });
+                
+                // Load initial standings
+                loadStandings(currentSeason, currentWeek);
+                
+            } catch (error) {
+                console.error('Error initializing:', error);
+                showError('Failed to initialize standings page');
+            }
+        }
+        
+        // Load standings for a specific week
+        async function loadStandings(season, week) {
+            showLoading();
+            hideError();
+            
+            try {
+                const response = await fetch(`/api/standings/${season}/${week}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch standings');
+                }
+                
+                const data = await response.json();
+                displayStandings(data);
+                
+            } catch (error) {
+                console.error('Error loading standings:', error);
+                showError('Failed to load standings data');
+            }
+        }
+        
+        // Display standings data
+        function displayStandings(data) {
+            const { weeklyRankings, overallStandings, week } = data;
+            
+            // Update titles
+            document.getElementById('weeklyTitle').textContent = `Week ${week} Rankings`;
+            document.getElementById('overallTitle').textContent = `Season Standings (Through Week ${week})`;
+            
+            // Display weekly rankings
+            const weeklyBody = document.getElementById('weeklyRankingsBody');
+            weeklyBody.innerHTML = '';
+            
+            weeklyRankings.forEach((team, index) => {
+                const row = document.createElement('tr');
+                if (team.weekly_rank === 1) {
+                    row.classList.add('rank-1');
+                }
+                
+                row.innerHTML = `
+                    <td>${team.weekly_rank}${team.weekly_rank === 1 ? ' <span class="crown-icon">👑</span>' : ''}</td>
+                    <td>${team.team_name}</td>
+                    <td>${team.points_for_week.toFixed(2)}</td>
+                `;
+                weeklyBody.appendChild(row);
+            });
+            
+            // Display overall standings
+            const overallBody = document.getElementById('overallStandingsBody');
+            overallBody.innerHTML = '';
+            
+            // Sort overall standings
+            const sortedOverall = [...overallStandings];
+            if (week <= 12) {
+                // Sort by wins, then by total points
+                sortedOverall.sort((a, b) => {
+                    const aWins = a.wins - a.losses;
+                    const bWins = b.wins - b.losses;
+                    if (aWins !== bWins) return bWins - aWins;
+                    return b.cumulative_points - a.cumulative_points;
+                });
+            } else {
+                // After week 12, sort by total points only
+                sortedOverall.sort((a, b) => b.cumulative_points - a.cumulative_points);
+            }
+            
+            sortedOverall.forEach((team, index) => {
+                const row = document.createElement('tr');
+                
+                // Format W-L-T record
+                const record = week <= 12 
+                    ? `${team.wins}-${team.losses}${team.ties > 0 ? `-${team.ties}` : ''}`
+                    : `${team.wins}-${team.losses}${team.ties > 0 ? `-${team.ties}` : ''} (Final)`;
+                
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${team.team_name}</td>
+                    <td>${record}</td>
+                    <td>${team.cumulative_points.toFixed(2)}</td>
+                    <td>${team.weekly_wins > 0 ? `<span class="weekly-wins">${team.weekly_wins}</span>` : '0'}</td>
+                `;
+                overallBody.appendChild(row);
+            });
+            
+            // Show sections and hide loading
+            document.getElementById('weeklyRankings').style.display = 'block';
+            document.getElementById('overallStandings').style.display = 'block';
+            document.getElementById('loadingMessage').style.display = 'none';
+        }
+        
+        // Helper functions
+        function showLoading() {
+            document.getElementById('loadingMessage').style.display = 'block';
+            document.getElementById('weeklyRankings').style.display = 'none';
+            document.getElementById('overallStandings').style.display = 'none';
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('loadingMessage').style.display = 'none';
+        }
+        
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
