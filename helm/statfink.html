@@ -188,7 +188,17 @@
         const urlParams = new URLSearchParams(window.location.search);
         const matchupParam = urlParams.get('matchup');
         
-        // Check if this is mock mode
+        // Check if this is mock mode with week
+        const mockMatch = path.match(/\/statfink\/mock\/(\d+)/);
+        if (mockMatch) {
+            return {
+                isMock: true,
+                week: parseInt(mockMatch[1]),
+                matchup: matchupParam
+            };
+        }
+        
+        // Check if this is mock mode without week
         if (path.includes('/statfink/mock')) {
             return {
                 isMock: true,
@@ -386,7 +396,7 @@
             // Check if we're in mock mode
             const isMockMode = window.location.pathname.includes('/statfink/mock');
             const apiUrl = isMockMode 
-                ? `/api/matchups/mock-game/${matchupId}`
+                ? `/api/matchups/mock-game/${matchupId}?week=${currentWeek}&season=${currentSeason}`
                 : `/api/matchups/game/${matchupId}`;
             
             const response = await fetch(apiUrl);
@@ -435,7 +445,7 @@
                 // Fetch matchup details
                 const isMockMode = window.location.pathname.includes('/statfink/mock');
                 const apiUrl = isMockMode 
-                    ? `/api/matchups/mock-game/${matchup.matchup_id}`
+                    ? `/api/matchups/mock-game/${matchup.matchup_id}?week=${currentWeek}&season=${currentSeason}`
                     : `/api/matchups/game/${matchup.matchup_id}`;
                 
                 const response = await fetch(apiUrl);

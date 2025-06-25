@@ -55,136 +55,208 @@ async function getPlayerOpponent(db, player, week, season, stats) {
 // Mock matchups for a specific week/season
 router.get('/mock/:week/:season', asyncHandler(async (req, res) => {
     const { week, season } = req.params;
+    const weekNum = parseInt(week);
+    
+    // Load mock week data
+    let mockWeekData;
+    try {
+        const { getMockWeek } = require('../../tests/mockWeeks');
+        mockWeekData = getMockWeek(weekNum);
+    } catch (error) {
+        // Fallback to hardcoded data if mock weeks not available
+        mockWeekData = null;
+    }
     
     // Generate mock matchup data
-    const mockMatchups = [
-        {
-            matchup_id: 1,
-            week: parseInt(week),
+    const mockMatchups = [];
+    
+    // Create 6 matchups (12 teams total)
+    for (let i = 0; i < 6; i++) {
+        const matchupId = i + 1;
+        const team1Id = (i * 2) + 1;
+        const team2Id = (i * 2) + 2;
+        
+        // For Week 1, all scores should be 0 (pre-game state)
+        const isWeek1PreGame = weekNum === 1 && mockWeekData && mockWeekData.metadata.scenario === "Pre-Game State";
+        
+        mockMatchups.push({
+            matchup_id: matchupId,
+            week: weekNum,
             season: parseInt(season),
-            team1_id: 1,
-            team2_id: 2,
-            team1_name: "Team Alpha",
-            team1_owner: "Test Owner 1",
-            team1_points: 125.50,
-            team2_name: "Team Beta", 
-            team2_owner: "Test Owner 2",
-            team2_points: 118.75,
-            is_complete: 1
-        },
-        {
-            matchup_id: 2,
-            week: parseInt(week),
-            season: parseInt(season),
-            team1_id: 3,
-            team2_id: 4,
-            team1_name: "Team Gamma",
-            team1_owner: "Test Owner 3",
-            team1_points: 142.25,
-            team2_name: "Team Delta",
-            team2_owner: "Test Owner 4", 
-            team2_points: 139.80,
-            is_complete: 1
-        }
-    ];
+            team1_id: team1Id,
+            team2_id: team2Id,
+            team1_name: `Team ${String.fromCharCode(65 + (i * 2))}`, // A, C, E, etc.
+            team1_owner: `Owner ${team1Id}`,
+            team1_points: isWeek1PreGame ? 0 : (120 + Math.random() * 40).toFixed(2),
+            team2_name: `Team ${String.fromCharCode(66 + (i * 2))}`, // B, D, F, etc.
+            team2_owner: `Owner ${team2Id}`,
+            team2_points: isWeek1PreGame ? 0 : (120 + Math.random() * 40).toFixed(2),
+            is_complete: isWeek1PreGame ? 0 : 1
+        });
+    }
     
     res.json({
         success: true,
         data: mockMatchups,
         count: mockMatchups.length,
-        week: parseInt(week),
+        week: weekNum,
         season: parseInt(season),
-        mock: true
+        mock: true,
+        metadata: mockWeekData ? mockWeekData.metadata : null
     });
 }));
 
 // Mock specific matchup details
 router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
     const { matchupId } = req.params;
+    const { week = 1, season = 2024 } = req.query;
+    const weekNum = parseInt(week);
+    const matchupIdNum = parseInt(matchupId);
+    
+    // Load mock week data
+    let mockWeekData;
+    try {
+        const { getMockWeek } = require('../../tests/mockWeeks');
+        mockWeekData = getMockWeek(weekNum);
+    } catch (error) {
+        mockWeekData = null;
+    }
+    
+    // For Week 1 (pre-game), all stats should be 0
+    const isWeek1PreGame = weekNum === 1 && mockWeekData && mockWeekData.metadata.scenario === "Pre-Game State";
+    
+    // Generate deterministic mock players for each team
+    const generateTeamStarters = (teamId, teamName) => {
+        const positions = ['QB', 'RB', 'RB', 'WR', 'WR', 'WR', 'TE', 'FLEX', 'K', 'DST', 'DST'];
+        const starters = [];
+        
+        positions.forEach((pos, idx) => {
+            const playerId = `${teamId}_${pos}_${idx}`;
+            let player = {
+                player_id: playerId,
+                name: `${teamName} ${pos}${idx > 0 && positions.slice(0, idx).filter(p => p === pos).length > 0 ? positions.slice(0, idx + 1).filter(p => p === pos).length : ''}`,
+                position: pos,
+                team: pos === 'DST' ? ['BAL', 'KC', 'DAL', 'PHI', 'GB', 'SF'][teamId % 6] : 'TST',
+                opp: pos === 'DST' ? '@OPP' : ['@KC', 'BAL', '@DAL', 'PHI', '@GB', 'SF'][idx % 6],
+                stats: {
+                    fantasy_points: 0
+                }
+            };
+            
+            // For Week 2, add realistic stats
+            if (!isWeek1PreGame && weekNum === 2) {
+                switch(pos) {
+                    case 'QB':
+                        player.stats = {
+                            fantasy_points: 18 + Math.random() * 10,
+                            passing_yards: 200 + Math.floor(Math.random() * 150),
+                            passing_tds: Math.floor(Math.random() * 4),
+                            interceptions: Math.floor(Math.random() * 2)
+                        };
+                        break;
+                    case 'RB':
+                        player.stats = {
+                            fantasy_points: 10 + Math.random() * 15,
+                            rushing_yards: 40 + Math.floor(Math.random() * 100),
+                            rushing_tds: Math.floor(Math.random() * 2),
+                            receiving_yards: Math.floor(Math.random() * 50),
+                            receptions: Math.floor(Math.random() * 6)
+                        };
+                        break;
+                    case 'WR':
+                        player.stats = {
+                            fantasy_points: 8 + Math.random() * 15,
+                            receiving_yards: 30 + Math.floor(Math.random() * 120),
+                            receiving_tds: Math.floor(Math.random() * 2),
+                            receptions: 2 + Math.floor(Math.random() * 8)
+                        };
+                        break;
+                    case 'TE':
+                        player.stats = {
+                            fantasy_points: 6 + Math.random() * 10,
+                            receiving_yards: 20 + Math.floor(Math.random() * 80),
+                            receiving_tds: Math.floor(Math.random() * 2),
+                            receptions: 2 + Math.floor(Math.random() * 6)
+                        };
+                        break;
+                    case 'FLEX':
+                        // Could be RB or WR
+                        player.position = Math.random() > 0.5 ? 'RB' : 'WR';
+                        player.stats = {
+                            fantasy_points: 8 + Math.random() * 12,
+                            rushing_yards: player.position === 'RB' ? Math.floor(Math.random() * 80) : 0,
+                            receiving_yards: 20 + Math.floor(Math.random() * 60),
+                            receiving_tds: Math.floor(Math.random() * 2),
+                            receptions: 2 + Math.floor(Math.random() * 5)
+                        };
+                        break;
+                    case 'K':
+                        player.stats = {
+                            fantasy_points: 5 + Math.random() * 8,
+                            field_goals_made: Math.floor(Math.random() * 4),
+                            extra_points_made: 1 + Math.floor(Math.random() * 5)
+                        };
+                        break;
+                    case 'DST':
+                        player.stats = {
+                            fantasy_points: 4 + Math.random() * 10,
+                            points_allowed: 14 + Math.floor(Math.random() * 21),
+                            sacks: Math.floor(Math.random() * 5),
+                            interceptions: Math.floor(Math.random() * 3),
+                            fumbles_recovered: Math.floor(Math.random() * 2)
+                        };
+                        break;
+                }
+            }
+            
+            starters.push(player);
+        });
+        
+        return starters;
+    };
+    
+    // Calculate matchup ID to team mapping
+    const team1Id = ((matchupIdNum - 1) * 2) + 1;
+    const team2Id = ((matchupIdNum - 1) * 2) + 2;
+    const team1Name = `Team ${String.fromCharCode(65 + ((matchupIdNum - 1) * 2))}`;
+    const team2Name = `Team ${String.fromCharCode(66 + ((matchupIdNum - 1) * 2))}`;
+    
+    // Generate starters for both teams
+    const team1Starters = generateTeamStarters(team1Id, team1Name);
+    const team2Starters = generateTeamStarters(team2Id, team2Name);
+    
+    // Calculate total points
+    const team1Points = isWeek1PreGame ? 0 : team1Starters.reduce((sum, p) => sum + (p.stats.fantasy_points || 0), 0);
+    const team2Points = isWeek1PreGame ? 0 : team2Starters.reduce((sum, p) => sum + (p.stats.fantasy_points || 0), 0);
     
     const mockMatchupData = {
         matchup: {
-            matchup_id: parseInt(matchupId),
-            week: 1,
-            season: 2024,
-            team1_id: 1,
-            team2_id: 2,
-            team1_name: "Team Alpha",
-            team1_owner: "Test Owner 1",
-            team1_points: 125.50,
-            team2_name: "Team Beta",
-            team2_owner: "Test Owner 2", 
-            team2_points: 118.75,
-            is_complete: 1
+            matchup_id: matchupIdNum,
+            week: weekNum,
+            season: parseInt(season),
+            team1_id: team1Id,
+            team2_id: team2Id,
+            team1_name: team1Name,
+            team1_owner: `Owner ${team1Id}`,
+            team1_points: parseFloat(team1Points.toFixed(2)),
+            team2_name: team2Name,
+            team2_owner: `Owner ${team2Id}`, 
+            team2_points: parseFloat(team2Points.toFixed(2)),
+            is_complete: isWeek1PreGame ? 0 : 1
         },
         team1: {
-            starters: [
-                {
-                    player_id: "QB123",
-                    name: "Mock QB (Test)",
-                    position: "QB",
-                    team: "TST",
-                    opp: "@OPP",
-                    stats: {
-                        fantasy_points: 24.5,
-                        passing_yards: 285,
-                        passing_tds: 2,
-                        interceptions: 1
-                    }
-                },
-                {
-                    player_id: "RB456", 
-                    name: "Mock RB (Test)",
-                    position: "RB",
-                    team: "TST",
-                    opp: "@OPP",
-                    stats: {
-                        fantasy_points: 18.7,
-                        rushing_yards: 87,
-                        rushing_tds: 1,
-                        receiving_yards: 25,
-                        receptions: 3
-                    }
-                }
-            ]
+            starters: team1Starters
         },
         team2: {
-            starters: [
-                {
-                    player_id: "QB789",
-                    name: "Mock QB2 (Test)",
-                    position: "QB", 
-                    team: "TST",
-                    opp: "@KC",
-                    stats: {
-                        fantasy_points: 22.1,
-                        passing_yards: 245,
-                        passing_tds: 2,
-                        interceptions: 0
-                    }
-                },
-                {
-                    player_id: "RB101",
-                    name: "Mock RB2 (Test)",
-                    position: "RB",
-                    team: "TST",
-                    opp: "BAL", 
-                    stats: {
-                        fantasy_points: 15.3,
-                        rushing_yards: 73,
-                        rushing_tds: 0,
-                        receiving_yards: 35,
-                        receptions: 4
-                    }
-                }
-            ]
+            starters: team2Starters
         }
     };
     
     res.json({
         success: true,
         data: mockMatchupData,
-        mock: true
+        mock: true,
+        metadata: mockWeekData ? mockWeekData.metadata : null
     });
 }));
 

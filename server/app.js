@@ -157,6 +157,18 @@ app.get('/statfink/mock', (req, res) => {
     res.sendFile(path.join(__dirname, '../helm/statfink.html'));
 });
 
+// Serve statfink mock mode for specific week
+app.get('/statfink/mock/:week', async (req, res) => {
+    const { week } = req.params;
+    const weekNum = parseInt(week);
+    
+    if (isNaN(weekNum) || weekNum < 1 || weekNum > 18) {
+        return res.status(400).send('Invalid week. Must be between 1 and 18.');
+    }
+    
+    res.sendFile(path.join(__dirname, '../helm/statfink.html'));
+});
+
 // Serve statfink for specific year/week
 app.get('/statfink/:year/:week', (req, res) => {
     const { year, week } = req.params;
