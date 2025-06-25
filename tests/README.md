@@ -17,6 +17,9 @@ tests/
 │   └── roster.test.js           # Roster management operations (17 tests)
 ├── fixtures/                 # Test data and sample objects
 │   └── sampleData.js             # Sample players, stats, teams
+├── mockWeeks/                # Mock week scenarios for comprehensive testing
+│   ├── mockWeekLoader.js         # Utility to load mock week data
+│   └── week2.js                  # Week 2: Post-Week State (all games complete)
 ├── setup.js                  # Test environment setup
 ├── test-runner.js            # Guided test runner script
 └── README.md                 # This file
@@ -135,6 +138,44 @@ npm run test:integration
 - **Integration Tests**: Uses existing database with sample data
 - **Sample Data**: Realistic NFL players, teams, and stats
 - **Data Cleanup**: Automatic cleanup between test runs
+
+## Mock Weeks Testing
+
+The `mockWeeks/` directory contains comprehensive test scenarios simulating different states throughout an NFL week. These mock weeks are designed to test various game states and edge cases that are difficult to reproduce with real-time data.
+
+### Available Mock Weeks
+
+- **Week 2: Post-Week State** - All games complete with final scores
+  - 16 games all marked as "Final"
+  - Complete player stats for all positions (QB, RB, WR, TE, K)
+  - DST stats for all 32 teams
+  - Edge cases: Players with exactly 175 rushing/receiving yards (bonus thresholds)
+  - Use case: Testing final scoring calculations, weekly winner determination, stat accumulation
+
+### Using Mock Weeks in Tests
+
+```javascript
+// Example usage in a test file
+const { loadMockWeek } = require('../mockWeeks/mockWeekLoader');
+
+describe('Week 2 Final Scoring', () => {
+  beforeEach(async () => {
+    await loadMockWeek(db, 2); // Load week 2 data
+  });
+  
+  test('should calculate correct fantasy points', async () => {
+    // Test implementation
+  });
+});
+```
+
+### Mock Week Data Structure
+
+Each mock week includes:
+- **Games**: Complete game information with scores and status
+- **Player Stats**: Comprehensive stats for offensive players
+- **DST Stats**: Defensive stats for all teams that played
+- **Metadata**: Test scenario description and expected behaviors
 
 ## Continuous Integration Ready
 
