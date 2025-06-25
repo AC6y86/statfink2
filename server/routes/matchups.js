@@ -140,11 +140,16 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
                 opp: pos === 'DST' ? '@OPP' : ['@KC', 'BAL', '@DAL', 'PHI', '@GB', 'SF'][idx % 6],
                 stats: {
                     fantasy_points: 0
-                }
+                },
+                // Add game info for Week 1 pre-game
+                game_time: isWeek1PreGame ? ['1:00 PM ET', '1:00 PM ET', '4:05 PM ET', '4:25 PM ET', '8:20 PM ET'][idx % 5] : null,
+                game_status: isWeek1PreGame ? 'Scheduled' : 'Final'
             };
             
-            // For Week 2, add realistic stats
+            // For Week 2, add realistic stats and update game status
             if (!isWeek1PreGame && weekNum === 2) {
+                player.game_status = 'Final';
+                player.game_time = null;
                 switch(pos) {
                     case 'QB':
                         player.stats = {

@@ -2,6 +2,57 @@ const express = require('express');
 const { asyncHandler, APIError } = require('../utils/errorHandler');
 const router = express.Router();
 
+// Mock NFL games endpoint
+router.get('/mock/:week/:season', asyncHandler(async (req, res) => {
+    const { week, season } = req.params;
+    const weekNum = parseInt(week);
+    const seasonYear = parseInt(season);
+    
+    if (isNaN(weekNum) || weekNum < 1 || weekNum > 18) {
+        throw new APIError('Week must be between 1 and 18', 400);
+    }
+    
+    // Load mock week data
+    let mockGames = [];
+    try {
+        const { getMockGames } = require('../../tests/mockWeeks');
+        const games = getMockGames(weekNum);
+        
+        // Process mock games to match the expected format
+        mockGames = games.map(game => {
+            // Parse game_id to extract date
+            const datePart = game.game_id.split('_')[1]; // e.g., "2024" from "mock_2024_01_KC_BAL"
+            
+            // Generate CBS Sports game URL (using mock prefix)
+            const cbsUrl = `https://www.cbssports.com/nfl/gametracker/live/NFL_${game.game_id}/`;
+            
+            return {
+                game_id: game.game_id,
+                date: datePart,
+                home_team: game.home_team,
+                away_team: game.away_team,
+                home_score: game.home_score || 0,
+                away_score: game.away_score || 0,
+                status: game.status || 'Final',
+                game_time: game.game_time || null,
+                game_url: cbsUrl
+            };
+        });
+    } catch (error) {
+        console.error('Error loading mock games:', error);
+        // Return empty array if mock data not available
+        mockGames = [];
+    }
+    
+    res.json({
+        success: true,
+        data: mockGames,
+        week: weekNum,
+        season: seasonYear,
+        mock: true
+    });
+}));
+
 // Get NFL game scores for a specific week
 router.get('/:week/:season', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;

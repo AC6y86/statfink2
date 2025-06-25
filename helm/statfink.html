@@ -314,7 +314,9 @@
                     row1.onmouseout = matchupmouseout;
                     
                     const team1Cell = row1.insertCell(0);
-                    team1Cell.textContent = `${matchup.team1_owner} (0)`;
+                    // For mock week 1 pre-game, all 11 players haven't started
+                    const playersRemaining = (isMockMode && currentWeek === 1 && !matchup.is_complete) ? 11 : 0;
+                    team1Cell.textContent = `${matchup.team1_owner} (${playersRemaining})`;
                     team1Cell.nowrap = true;
                     
                     const score1Cell = row1.insertCell(1);
@@ -332,7 +334,8 @@
                     row2.onmouseout = matchupmouseout;
                     
                     const team2Cell = row2.insertCell(0);
-                    team2Cell.textContent = `${matchup.team2_owner} (0)`;
+                    // Use same players remaining count as team1
+                    team2Cell.textContent = `${matchup.team2_owner} (${playersRemaining})`;
                     team2Cell.nowrap = true;
                     
                     const score2Cell = row2.insertCell(1);
@@ -380,7 +383,7 @@
         
         let newUrl;
         if (isMockMode) {
-            newUrl = `/statfink/mock/${currentWeek}/${currentSeason}?matchup=${matchupId}`;
+            newUrl = `/statfink/mock/${currentWeek}?matchup=${matchupId}`;
         } else {
             newUrl = `/statfink/${currentSeason}/${currentWeek}?matchup=${matchupId}`;
         }
@@ -416,9 +419,13 @@
     function displayMatchup(data) {
         const matchup = data.matchup;
         
-        // Calculate players remaining (will be implemented later)
-        const team1Remaining = 0;
-        const team2Remaining = 0;
+        // Calculate players not started yet
+        const team1Remaining = data.team1.starters.filter(p => 
+            p.game_status === 'Scheduled' || (!p.game_status && !matchup.is_complete)
+        ).length;
+        const team2Remaining = data.team2.starters.filter(p => 
+            p.game_status === 'Scheduled' || (!p.game_status && !matchup.is_complete)
+        ).length;
         
         // Update team headers
         document.getElementById("fteam0").innerHTML = `${matchup.team1_owner} (${team1Remaining})`;
@@ -646,7 +653,7 @@
                 <td class="playername" nowrap>${playerName} &nbsp;&nbsp;${player.team}<br>
                     <span style="font-size: 10px; color: #000; margin-top: 3px; display: block;">${formatPlayerStatsCompact(player.position, player.stats)}</span>
                 </td>
-                <td class="status" align="center">Final</td>
+                <td class="status" align="center">${getPlayerGameStatus(player)}</td>
                 <td class="opp">${player.opp || '@OPP'}</td>
                 <td class="points fanpts" align="right">${points.toFixed(2)}</td>
             `;
@@ -708,6 +715,48 @@
         }
         
         return details.join(', ') || 'No stats';
+    }
+
+    // Get player game status (show time if not started, Final if complete)
+    function getPlayerGameStatus(player) {
+        if (player.game_status === 'Scheduled' && player.game_time) {
+            // Convert ET to PST
+            return convertToPST(player.game_time);
+        }
+        return player.game_status || 'Final';
+    }
+    
+    // Convert ET time to PST
+    function convertToPST(etTime) {
+        // Simple conversion - subtract 3 hours
+        const match = etTime.match(/(\d+):(\d+) (AM|PM) ET/);
+        if (!match) return etTime;
+        
+        let hours = parseInt(match[1]);
+        const minutes = match[2];
+        const period = match[3];
+        
+        // Convert to 24-hour format
+        if (period === 'PM' && hours !== 12) hours += 12;
+        if (period === 'AM' && hours === 12) hours = 0;
+        
+        // Subtract 3 hours for PST
+        hours -= 3;
+        
+        // Handle negative hours
+        if (hours < 0) {
+            hours += 12;
+            // If it was PM, it becomes AM and vice versa
+            const newPeriod = period === 'PM' ? 'AM' : 'PM';
+            return `${hours === 0 ? 12 : hours}:${minutes} ${newPeriod} PST`;
+        }
+        
+        // Convert back to 12-hour format
+        const newPeriod = hours >= 12 ? 'PM' : 'AM';
+        if (hours > 12) hours -= 12;
+        if (hours === 0) hours = 12;
+        
+        return `${hours}:${minutes} ${newPeriod} PST`;
     }
 
     // Format player stats in compact form like original Statfink
@@ -782,8 +831,22 @@
             document.getElementById("lastupdate").textContent = `Last Update: ${now.toLocaleTimeString()}`;
         }
         
-        // Update the message next to Options
-        document.getElementById("updatemsg").textContent = "Updated 6-10-25, 11:35pm - All games are over, come back next week.";
+        // Update the message next to Options with current time
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US', { 
+            hour: 'numeric', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const dateString = now.toLocaleDateString('en-US', { 
+            month: 'numeric', 
+            day: 'numeric',
+            year: '2-digit'
+        });
+        document.getElementById("updatemsg").textContent = `Updated ${dateString}, ${timeString}`;
+        // Reset color to default (not orange) for regular updates
+        document.getElementById("updatemsg").style.color = "#333";
+        document.getElementById("updatemsg").style.fontWeight = "normal";
     }
 
     // Refresh data
@@ -821,7 +884,13 @@
     // Load NFL games for the week
     async function loadNFLGames() {
         try {
-            const response = await fetch(`/api/nfl-games/${currentWeek}/${currentSeason}`);
+            // Check if we're in mock mode
+            const isMockMode = window.location.pathname.includes('/statfink/mock');
+            const apiUrl = isMockMode 
+                ? `/api/nfl-games/mock/${currentWeek}/${currentSeason}`
+                : `/api/nfl-games/${currentWeek}/${currentSeason}`;
+            
+            const response = await fetch(apiUrl);
             const data = await response.json();
             
             if (data.success && data.data.length > 0) {
@@ -881,7 +950,7 @@
                 awayScoreCell.setAttribute('nowrap', '');
                 awayScoreCell.align = 'right';
                 awayScoreCell.title = game.status;
-                awayScoreCell.textContent = game.away_score;
+                awayScoreCell.textContent = game.status === 'Scheduled' ? '0' : game.away_score;
                 
                 tr1.appendChild(awayTeamCell);
                 tr1.appendChild(awayScoreCell);
@@ -900,7 +969,7 @@
                 homeScoreCell.setAttribute('nowrap', '');
                 homeScoreCell.align = 'right';
                 homeScoreCell.title = game.status;
-                homeScoreCell.textContent = game.home_score;
+                homeScoreCell.textContent = game.status === 'Scheduled' ? '0' : game.home_score;
                 
                 tr2.appendChild(homeTeamCell);
                 tr2.appendChild(homeScoreCell);
@@ -912,7 +981,12 @@
                 statusCell.setAttribute('nowrap', '');
                 statusCell.colSpan = 2;
                 statusCell.title = game.status;
-                statusCell.textContent = game.status;
+                // Show game time in PST for scheduled games
+                if (game.status === 'Scheduled' && game.game_time) {
+                    statusCell.textContent = convertToPST(game.game_time);
+                } else {
+                    statusCell.textContent = game.status;
+                }
                 
                 tr3.appendChild(statusCell);
                 
