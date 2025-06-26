@@ -22,6 +22,9 @@ describe('Mock Week Game Times Browser Test', () => {
   });
 
   beforeEach(async () => {
+    // Reset mock game progression state
+    await fetch('http://localhost:3000/api/matchups/mock/reset', { method: 'POST' });
+    
     page = await browser.newPage();
     
     // Enable console logging to debug
@@ -59,8 +62,17 @@ describe('Mock Week Game Times Browser Test', () => {
         timeout: 10000 
       });
       
+      // Wait for the matchup data to be loaded by checking for a specific element
+      await page.waitForFunction(
+        () => {
+          const cells = document.querySelectorAll('td.status');
+          return cells.length > 10; // Ensure we have player status cells
+        },
+        { timeout: 5000 }
+      );
+      
       // Wait a bit more to ensure JavaScript has executed
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Get all status cells
       const statusCells = await page.$$eval('td.status', cells => 
@@ -211,45 +223,41 @@ describe('Mock Week Game Times Browser Test', () => {
 
   describe('Debug Display Function', () => {
     it('should trace displayTeamRoster execution', async () => {
-      // Set up console message collection
-      const consoleMessages = [];
-      page.on('console', msg => consoleMessages.push(msg.text()));
-      
-      // Add debugging to the page
-      await page.evaluateOnNewDocument(() => {
-        // Override displayTeamRoster to add logging
-        const originalDisplay = window.displayTeamRoster;
-        window.displayTeamRoster = function(...args) {
-          console.log('displayTeamRoster called with:', args[0], args[1]?.length);
-          const result = originalDisplay.apply(this, args);
-          
-          // Check what was actually rendered
-          setTimeout(() => {
-            const cells = document.querySelectorAll('#' + args[0] + ' td.status');
-            console.log(`Rendered ${cells.length} status cells in ${args[0]}`);
-            cells.forEach((cell, i) => {
-              if (i < 3) console.log(`  Cell ${i}: "${cell.textContent}"`);
-            });
-          }, 100);
-          
-          return result;
-        };
-      });
-      
       await page.goto(`${baseUrl}/statfink/mock/3?matchup=1`, {
         waitUntil: 'networkidle0'
       });
       
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Wait for the displayTeamRoster function to be available
+      await page.waitForFunction(() => typeof displayTeamRoster === 'function', {
+        timeout: 5000
+      });
       
-      // Check console messages
-      const displayCalls = consoleMessages.filter(msg => 
-        msg.includes('displayTeamRoster')
-      );
+      // Check if the function was called and data was rendered
+      const result = await page.evaluate(() => {
+        // Check if we have rendered player rows
+        const team0Rows = document.querySelectorAll('#team0 .playerrow1, #team0 .playerrow2');
+        const team1Rows = document.querySelectorAll('#team1 .playerrow1, #team1 .playerrow2');
+        
+        // Get status cells
+        const statusCells = document.querySelectorAll('td.status');
+        const statuses = Array.from(statusCells).map(cell => cell.textContent.trim());
+        
+        return {
+          team0RowCount: team0Rows.length,
+          team1RowCount: team1Rows.length,
+          totalStatusCells: statusCells.length,
+          sampleStatuses: statuses.slice(0, 5),
+          functionExists: typeof displayTeamRoster === 'function'
+        };
+      });
       
-      console.log('Display function calls:', displayCalls);
+      console.log('Display function result:', result);
       
-      expect(displayCalls.length).toBeGreaterThan(0);
+      // Verify that displayTeamRoster exists and rendered data
+      expect(result.functionExists).toBe(true);
+      expect(result.team0RowCount).toBeGreaterThan(0);
+      expect(result.team1RowCount).toBeGreaterThan(0);
+      expect(result.totalStatusCells).toBeGreaterThan(0);
     });
   });
 });

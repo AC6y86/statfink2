@@ -5,8 +5,13 @@
 
 const request = require('supertest');
 const app = require('../../server/app');
+const { resetAllProgressionStates } = require('../mockWeeks');
 
 describe('Mock Week Game Times API Tests', () => {
+  beforeEach(() => {
+    // Reset any game progression state before each test
+    resetAllProgressionStates();
+  });
   describe('Week 1 - Pre-Game State', () => {
     it('should return scheduled games with game times for NFL endpoint', async () => {
       const response = await request(app)

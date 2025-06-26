@@ -390,6 +390,117 @@
     }
 
 
+    // Storage key for previous stats
+    function getStorageKey(matchupId) {
+        return `statfink_stats_${matchupId}_${currentWeek}_${currentSeason}`;
+    }
+    
+    // Clear old/invalid localStorage data (call this if needed for debugging)
+    function clearStatsCache() {
+        const keys = Object.keys(localStorage);
+        keys.forEach(key => {
+            if (key.startsWith('statfink_stats_')) {
+                localStorage.removeItem(key);
+            }
+        });
+        console.log('Cleared all statfink stats from localStorage');
+    }
+
+    // Save current stats to localStorage
+    function saveCurrentStats(matchupId, data) {
+        const storageKey = getStorageKey(matchupId);
+        const statsToSave = {
+            timestamp: Date.now(),
+            team1: {},
+            team2: {}
+        };
+
+        // Save team1 stats
+        data.team1.starters.forEach(player => {
+            statsToSave.team1[player.player_id] = {
+                name: player.name,
+                stats: player.stats || {}
+            };
+        });
+
+        // Save team2 stats
+        data.team2.starters.forEach(player => {
+            statsToSave.team2[player.player_id] = {
+                name: player.name,
+                stats: player.stats || {}
+            };
+        });
+
+        localStorage.setItem(storageKey, JSON.stringify(statsToSave));
+    }
+
+    // Get previous stats from localStorage
+    function getPreviousStats(matchupId) {
+        const storageKey = getStorageKey(matchupId);
+        const saved = localStorage.getItem(storageKey);
+        return saved ? JSON.parse(saved) : null;
+    }
+
+    // Compare stats and return changed players
+    function compareStats(currentData, previousStats) {
+        // If no previous stats exist, return empty (nothing is "changed" on first load)
+        if (!previousStats || !previousStats.timestamp) return { team1: {}, team2: {} };
+
+        const changes = { team1: {}, team2: {} };
+
+        // Compare team1
+        currentData.team1.starters.forEach(player => {
+            const prevPlayer = previousStats.team1[player.player_id];
+            if (prevPlayer && prevPlayer.stats && player.stats) {
+                const changedStats = [];
+                
+                // Only compare stats that exist in both previous and current
+                Object.keys(player.stats).forEach(stat => {
+                    const currentValue = player.stats[stat];
+                    const previousValue = prevPlayer.stats[stat];
+                    
+                    // Only mark as changed if:
+                    // 1. The stat existed before (not undefined)
+                    // 2. The value actually changed
+                    if (previousValue !== undefined && currentValue !== previousValue) {
+                        changedStats.push(stat);
+                    }
+                });
+                
+                if (changedStats.length > 0) {
+                    changes.team1[player.player_id] = changedStats;
+                }
+            }
+        });
+
+        // Compare team2
+        currentData.team2.starters.forEach(player => {
+            const prevPlayer = previousStats.team2[player.player_id];
+            if (prevPlayer && prevPlayer.stats && player.stats) {
+                const changedStats = [];
+                
+                // Only compare stats that exist in both previous and current
+                Object.keys(player.stats).forEach(stat => {
+                    const currentValue = player.stats[stat];
+                    const previousValue = prevPlayer.stats[stat];
+                    
+                    // Only mark as changed if:
+                    // 1. The stat existed before (not undefined)
+                    // 2. The value actually changed
+                    if (previousValue !== undefined && currentValue !== previousValue) {
+                        changedStats.push(stat);
+                    }
+                });
+                
+                if (changedStats.length > 0) {
+                    changes.team2[player.player_id] = changedStats;
+                }
+            }
+        });
+
+        return changes;
+    }
+
     // Load matchup details
     async function loadMatchup(matchupId) {
         try {
@@ -403,8 +514,25 @@
             const data = await response.json();
             
             if (data.success) {
+                // Get previous stats before saving new ones
+                const previousStats = getPreviousStats(matchupId);
+                
+                // Compare stats to find changes
+                const changedStats = compareStats(data.data, previousStats);
+                
+                // Debug logging (remove in production)
+                if (previousStats) {
+                    console.log('Previous stats found, comparing changes...');
+                    console.log('Changed players:', changedStats);
+                } else {
+                    console.log('No previous stats found - first load');
+                }
+                
+                // Save current stats for next comparison
+                saveCurrentStats(matchupId, data.data);
+                
                 currentMatchupData = data.data;
-                displayMatchup(data.data);
+                displayMatchup(data.data, changedStats);
                 updateLastUpdate();
             }
         } catch (error) {
@@ -413,7 +541,7 @@
     }
 
     // Display matchup data
-    function displayMatchup(data) {
+    function displayMatchup(data, changedStats = { team1: {}, team2: {} }) {
         const matchup = data.matchup;
         
         // Calculate players not started yet
@@ -429,8 +557,8 @@
         document.getElementById("fteam1").innerHTML = `${matchup.team2_owner} (${team2Remaining})`;
         
         // Build team tables and get scoring totals
-        const team1ScoringTotal = displayTeamRoster("team0", data.team1.starters, matchup.team1_name);
-        const team2ScoringTotal = displayTeamRoster("team1", data.team2.starters, matchup.team2_name);
+        const team1ScoringTotal = displayTeamRoster("team0", data.team1.starters, matchup.team1_name, changedStats.team1);
+        const team2ScoringTotal = displayTeamRoster("team1", data.team2.starters, matchup.team2_name, changedStats.team2);
     }
 
     // This function is no longer needed - backend provides scoring totals
@@ -603,7 +731,7 @@
     }
 
     // Display team roster
-    function displayTeamRoster(tableId, starters, teamName) {
+    function displayTeamRoster(tableId, starters, teamName, changedPlayers = {}) {
         const table = document.getElementById(tableId);
         const tbody = table.getElementsByTagName("tbody")[0];
         
@@ -637,19 +765,25 @@
                 scoringTotalPoints += points;
             }
             
+            // Check if any stats changed for this player
+            const playerChangedStats = changedPlayers[player.player_id] || [];
+            
             // Player row
             const row = tbody.insertRow(-1);
             row.className = rowIndex % 2 ? "playerrow2" : "playerrow1";
             row.id = `t${tableId.slice(-1)}r${rowIndex}`;
             
-            // Add asterisk if player is scoring
+            // Add asterisk if player is scoring (no bold for player name)
             const playerName = isScoring ? `*${player.name}` : player.name;
             
             // Get the game status before building the HTML
             const gameStatus = getPlayerGameStatus(player);
             
             // Get the stats display before building the HTML
-            const statsDisplay = formatPlayerStatsCompact(player.position, player.stats);
+            const statsDisplay = formatPlayerStatsCompact(player.position, player.stats, playerChangedStats);
+            
+            // Add stat-changed class to points ONLY if fantasy_points changed
+            const pointsClass = playerChangedStats.includes('fantasy_points') ? 'points fanpts stat-changed' : 'points fanpts';
             
             row.innerHTML = `
                 <td class="position position-${player.position}">${player.position}</td>
@@ -658,7 +792,7 @@
                 </td>
                 <td class="status" align="center">${gameStatus}</td>
                 <td class="opp">${player.opp || '@OPP'}</td>
-                <td class="points fanpts" align="right">${points.toFixed(2)}</td>
+                <td class="${pointsClass}" align="right">${points.toFixed(2)}</td>
             `;
             
             rowIndex++;
@@ -766,48 +900,68 @@
     }
 
     // Format player stats in compact form like original Statfink
-    function formatPlayerStatsCompact(position, stats) {
+    function formatPlayerStatsCompact(position, stats, changedStats = []) {
         if (!stats) return '0 Stats';
         
         let details = [];
         
+        // Helper function to wrap entire stat phrase in bold span if changed
+        const wrapIfChanged = (statPhrase, statNames) => {
+            // Check if any of the stat names are in the changed list
+            const isChanged = Array.isArray(statNames) 
+                ? statNames.some(name => changedStats.includes(name))
+                : changedStats.includes(statNames);
+            
+            if (isChanged) {
+                return `<span class="stat-changed">${statPhrase}</span>`;
+            }
+            return statPhrase;
+        };
+        
         switch(position) {
             case 'QB':
-                if (stats.completions > 0) details.push(`${stats.completions} Comp`);
-                if (stats.passing_attempts - stats.completions > 0) details.push(`${stats.passing_attempts - stats.completions} Inc`);
-                if (stats.passing_yards > 0) details.push(`${stats.passing_yards} Pyds`);
-                if (stats.rushing_yards > 0) details.push(`${stats.rushing_yards} Rshyds`);
-                if (stats.passing_tds + stats.rushing_tds > 0) details.push(`${stats.passing_tds + stats.rushing_tds} TDs`);
-                if (stats.two_point_conversions_pass > 0) details.push(`${stats.two_point_conversions_pass} 2PC`);
+                if ((stats.completions || 0) > 0) details.push(wrapIfChanged(`${stats.completions} Comp`, 'completions'));
+                if ((stats.passing_attempts || 0) - (stats.completions || 0) > 0) details.push(wrapIfChanged(`${stats.passing_attempts - stats.completions} Inc`, 'passing_attempts'));
+                if ((stats.passing_yards || 0) > 0) details.push(wrapIfChanged(`${stats.passing_yards} Pyds`, 'passing_yards'));
+                if ((stats.rushing_yards || 0) > 0) details.push(wrapIfChanged(`${stats.rushing_yards} Rshyds`, 'rushing_yards'));
+                if ((stats.passing_tds || 0) + (stats.rushing_tds || 0) > 0) {
+                    const tds = (stats.passing_tds || 0) + (stats.rushing_tds || 0);
+                    details.push(wrapIfChanged(`${tds} TDs`, ['passing_tds', 'rushing_tds']));
+                }
+                if ((stats.two_point_conversions_pass || 0) > 0) details.push(wrapIfChanged(`${stats.two_point_conversions_pass} 2PC`, 'two_point_conversions_pass'));
                 break;
             case 'RB':
-                if (stats.rushing_yards > 0) details.push(`${stats.rushing_yards} Rshyds`);
-                if (stats.receptions > 0) details.push(`${stats.receptions} Recs`);
-                if (stats.receiving_yards > 0) details.push(`${stats.receiving_yards} Recyds`);
-                if (stats.rushing_tds + stats.receiving_tds > 0) details.push(`${stats.rushing_tds + stats.receiving_tds} TDs`);
-                if (stats.two_point_conversions_run + stats.two_point_conversions_rec > 0) {
-                    details.push(`${stats.two_point_conversions_run + stats.two_point_conversions_rec} 2PC`);
+                if ((stats.rushing_yards || 0) > 0) details.push(wrapIfChanged(`${stats.rushing_yards} Rshyds`, 'rushing_yards'));
+                if ((stats.receptions || 0) > 0) details.push(wrapIfChanged(`${stats.receptions} Recs`, 'receptions'));
+                if ((stats.receiving_yards || 0) > 0) details.push(wrapIfChanged(`${stats.receiving_yards} Recyds`, 'receiving_yards'));
+                if ((stats.rushing_tds || 0) + (stats.receiving_tds || 0) > 0) {
+                    const tds = (stats.rushing_tds || 0) + (stats.receiving_tds || 0);
+                    details.push(wrapIfChanged(`${tds} TDs`, ['rushing_tds', 'receiving_tds']));
+                }
+                if ((stats.two_point_conversions_run || 0) + (stats.two_point_conversions_rec || 0) > 0) {
+                    const tpc = (stats.two_point_conversions_run || 0) + (stats.two_point_conversions_rec || 0);
+                    details.push(wrapIfChanged(`${tpc} 2PC`, ['two_point_conversions_run', 'two_point_conversions_rec']));
                 }
                 break;
             case 'WR':
             case 'TE':
-                if (stats.receptions > 0) details.push(`${stats.receptions} Recs`);
-                if (stats.receiving_yards > 0) details.push(`${stats.receiving_yards} Recyds`);
-                if (stats.receiving_tds > 0) details.push(`${stats.receiving_tds} TDs`);
-                if (stats.two_point_conversions_rec > 0) details.push(`${stats.two_point_conversions_rec} 2PC`);
+                if ((stats.receptions || 0) > 0) details.push(wrapIfChanged(`${stats.receptions} Recs`, 'receptions'));
+                if ((stats.receiving_yards || 0) > 0) details.push(wrapIfChanged(`${stats.receiving_yards} Recyds`, 'receiving_yards'));
+                if ((stats.receiving_tds || 0) > 0) details.push(wrapIfChanged(`${stats.receiving_tds} TDs`, 'receiving_tds'));
+                if ((stats.two_point_conversions_rec || 0) > 0) details.push(wrapIfChanged(`${stats.two_point_conversions_rec} 2PC`, 'two_point_conversions_rec'));
                 break;
             case 'K':
-                if (stats.field_goals_made > 0) details.push(`${stats.field_goals_made} FG`);
-                if (stats.extra_points_made > 0) details.push(`${stats.extra_points_made} XP`);
+                if ((stats.field_goals_made || 0) > 0) details.push(wrapIfChanged(`${stats.field_goals_made} FG`, 'field_goals_made'));
+                if ((stats.extra_points_made || 0) > 0) details.push(wrapIfChanged(`${stats.extra_points_made} XP`, 'extra_points_made'));
                 break;
             case 'DST':
             case 'DEF':
-                if (stats.sacks > 0) details.push(`${stats.sacks} Sck`);
-                if (stats.def_interceptions > 0) details.push(`${stats.def_interceptions} Int`);
-                if (stats.fumbles_recovered > 0) details.push(`${stats.fumbles_recovered} FR`);
-                if (stats.def_touchdowns > 0) details.push(`${stats.def_touchdowns} TD`);
-                if (stats.points_allowed !== undefined) details.push(`${stats.points_allowed} PtsAllw`);
-                if (stats.yards_allowed !== undefined) details.push(`${stats.yards_allowed} YdsAllw`);
+                if ((stats.sacks || 0) > 0) details.push(wrapIfChanged(`${stats.sacks} Sck`, 'sacks'));
+                if ((stats.def_interceptions || 0) > 0) details.push(wrapIfChanged(`${stats.def_interceptions} Int`, 'def_interceptions'));
+                if ((stats.fumbles_recovered || 0) > 0) details.push(wrapIfChanged(`${stats.fumbles_recovered} FR`, 'fumbles_recovered'));
+                if ((stats.def_touchdowns || 0) > 0) details.push(wrapIfChanged(`${stats.def_touchdowns} TD`, 'def_touchdowns'));
+                if (stats.points_allowed !== undefined) details.push(wrapIfChanged(`${stats.points_allowed} PtsAllw`, 'points_allowed'));
+                if (stats.yards_allowed !== undefined) details.push(wrapIfChanged(`${stats.yards_allowed} YdsAllw`, 'yards_allowed'));
                 break;
         }
         

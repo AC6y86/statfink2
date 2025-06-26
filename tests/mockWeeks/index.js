@@ -228,6 +228,18 @@ function getProgressionState(weekNumber) {
   return gameProgressionState[weekNumber] || null;
 }
 
+// Reset progression state for a week (useful for tests)
+function resetProgressionState(weekNumber) {
+  if (gameProgressionState[weekNumber]) {
+    delete gameProgressionState[weekNumber];
+  }
+}
+
+// Reset all progression states
+function resetAllProgressionStates() {
+  gameProgressionState = {};
+}
+
 // Check if any games are in progress for a week
 function hasInProgressGames(weekNumber) {
   const state = gameProgressionState[weekNumber];
@@ -253,6 +265,8 @@ module.exports = {
   initializeGameProgression,
   simulateGameProgression,
   getProgressionState,
+  resetProgressionState,
+  resetAllProgressionStates,
   hasInProgressGames,
   
   // Loader utilities

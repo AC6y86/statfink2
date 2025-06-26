@@ -152,3 +152,8 @@ td[colspan="5"] {
 .matchuptable {
     width: 350px;
 }
+
+/* Bold styling for changed stats */
+.stat-changed {
+    font-weight: bold !important;
+}
