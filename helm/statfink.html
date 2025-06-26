@@ -773,8 +773,8 @@
             row.className = rowIndex % 2 ? "playerrow2" : "playerrow1";
             row.id = `t${tableId.slice(-1)}r${rowIndex}`;
             
-            // Add asterisk if player is scoring (no bold for player name)
-            const playerName = isScoring ? `*${player.name}` : player.name;
+            // Add asterisk if player is scoring AND has points (no bold for player name)
+            const playerName = (isScoring && points > 0) ? `*${player.name}` : player.name;
             
             // Get the game status before building the HTML
             const gameStatus = getPlayerGameStatus(player);

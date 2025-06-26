@@ -216,6 +216,23 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
         const positions = ['QB', 'RB', 'RB', 'WR', 'WR', 'WR', 'TE', 'FLEX', 'K', 'DST', 'DST'];
         const starters = [];
         
+        // Determine which players are scoring based on the scoring system:
+        // 1 QB, 4 RBs, 4 WR/TE, 1 K, 1 Bonus (we'll use the FLEX as bonus)
+        // For mock data, let's use: QB, RB1, RB2, WR1, WR2, WR3, TE, FLEX, K, DST1, DST2
+        const scoringPositions = {
+            0: true,   // QB
+            1: true,   // RB1
+            2: true,   // RB2
+            3: true,   // WR1
+            4: true,   // WR2
+            5: true,   // WR3
+            6: true,   // TE
+            7: true,   // FLEX (bonus)
+            8: true,   // K
+            9: true,   // DST1 (points allowed)
+            10: true   // DST2 (yards allowed)
+        };
+        
         positions.forEach((pos, idx) => {
             const playerId = `${teamId}_${pos}_${idx}`;
             let player = {
@@ -227,6 +244,7 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
                 stats: {
                     fantasy_points: 0
                 },
+                is_scoring: scoringPositions[idx] || false,  // Set scoring flag
                 // Add game info for Week 1 pre-game
                 game_time: isWeek1PreGame ? ['1:00 PM ET', '1:00 PM ET', '4:05 PM ET', '4:25 PM ET', '8:20 PM ET'][idx % 5] : null,
                 game_status: isWeek1PreGame ? 'Scheduled' : 'Final'
