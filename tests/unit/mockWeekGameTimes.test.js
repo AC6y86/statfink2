@@ -281,4 +281,37 @@ describe('Mock Week Game Times API Tests', () => {
       expect(progressResponse.body.hasActiveGames).toBeDefined();
     });
   });
+
+  describe('Mock Week 3 Matchup Display', () => {
+    it('should return correct game times for in-progress players', async () => {
+      const response = await request(app)
+        .get('/api/matchups/mock-game/1?week=3')
+        .expect(200);
+      
+      expect(response.body.success).toBe(true);
+      
+      const { team1, team2 } = response.body.data;
+      
+      // Find specific in-progress players
+      const teamAQB = team1.starters.find(p => p.name === 'Team A QB');
+      expect(teamAQB).toBeDefined();
+      expect(teamAQB.game_status).toBe('InProgress');
+      expect(teamAQB.game_time).toBe('3Q 12:45');
+      
+      const teamARB = team1.starters.find(p => p.name === 'Team A RB');
+      expect(teamARB).toBeDefined();
+      expect(teamARB.game_status).toBe('InProgress');
+      expect(teamARB.game_time).toBe('3Q 8:22');
+      
+      // Check all in-progress players have proper game_time
+      const allPlayers = [...team1.starters, ...team2.starters];
+      const inProgressPlayers = allPlayers.filter(p => p.game_status === 'InProgress');
+      
+      inProgressPlayers.forEach(player => {
+        expect(player.game_time).toBeDefined();
+        expect(player.game_time).toMatch(/\d[Q] \d{1,2}:\d{2}/);
+        console.log(`${player.name}: ${player.game_time}`);
+      });
+    });
+  });
 });
