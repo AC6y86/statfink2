@@ -154,7 +154,7 @@ app.get('/statfink', async (req, res) => {
 
 // Mock/test interface for integration tests
 app.get('/statfink/mock', (req, res) => {
-    res.sendFile(path.join(__dirname, '../helm/statfink.html'));
+    res.sendFile(path.join(__dirname, '../public/mock-weeks-index.html'));
 });
 
 // Serve statfink mock mode for specific week
