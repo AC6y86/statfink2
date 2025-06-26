@@ -77,7 +77,6 @@
     var currentMatchupId = null;
     var currentWeek = null;
     var currentSeason = null;
-    var refreshInterval = null;
     var showDetails = false;
     var currentMatchupData = null;
 
@@ -272,10 +271,8 @@
                 document.getElementById("leaguetable").rows[1].click();
             }
 
-            // Start refresh interval (30 seconds) - but not in mock mode to avoid API calls
-            if (!urlData.isMock) {
-                refreshInterval = setInterval(refreshData, 30000);
-            }
+            // Start refresh interval (30 seconds)
+            startAutoRefresh(urlData.isMock);
             
         } catch (error) {
             console.error('Error initializing:', error);
@@ -717,11 +714,14 @@
         return details.join(', ') || 'No stats';
     }
 
-    // Get player game status (show time if not started, Final if complete)
+    // Get player game status (show time if not started, game time if in progress, Final if complete)
     function getPlayerGameStatus(player) {
         if (player.game_status === 'Scheduled' && player.game_time) {
             // Convert ET to PST
             return convertToPST(player.game_time);
+        } else if ((player.game_status === 'InProgress' || player.game_status === 'Halftime') && player.game_time) {
+            // Show game time for in-progress games (e.g. "3Q 12:45" or "Halftime")
+            return player.game_time;
         }
         return player.game_status || 'Final';
     }
@@ -849,13 +849,111 @@
         document.getElementById("updatemsg").style.fontWeight = "normal";
     }
 
+    // Variables for auto-refresh
+    var refreshInterval = null;
+    var refreshCountdown = null;
+    var secondsUntilRefresh = 30;
+    var isMockMode = false;
+    
+    // Start auto-refresh
+    function startAutoRefresh(mockMode) {
+        isMockMode = mockMode;
+        
+        // Clear any existing intervals
+        if (refreshInterval) clearInterval(refreshInterval);
+        if (refreshCountdown) clearInterval(refreshCountdown);
+        
+        // Only start refresh if we have in-progress games (for mock mode)
+        if (mockMode) {
+            checkAndStartRefresh();
+        } else {
+            // For real mode, always refresh
+            refreshInterval = setInterval(refreshData, 30000);
+        }
+    }
+    
+    // Check if mock mode has in-progress games
+    async function checkAndStartRefresh() {
+        try {
+            const response = await fetch(`/api/nfl-games/mock/${currentWeek}/${currentSeason}`);
+            const data = await response.json();
+            
+            if (data.success && data.data) {
+                const hasActiveGames = data.data.some(game => 
+                    game.status === 'InProgress' || game.status === 'Halftime'
+                );
+                
+                if (hasActiveGames) {
+                    // Start refresh and countdown
+                    secondsUntilRefresh = 30;
+                    updateRefreshCountdown();
+                    refreshCountdown = setInterval(updateRefreshCountdown, 1000);
+                    refreshInterval = setInterval(refreshData, 30000);
+                } else {
+                    // No active games, stop refreshing
+                    document.getElementById("updatemsg").textContent = "All games complete";
+                }
+            }
+        } catch (error) {
+            console.error('Error checking game status:', error);
+        }
+    }
+    
+    // Update countdown display
+    function updateRefreshCountdown() {
+        secondsUntilRefresh--;
+        if (secondsUntilRefresh <= 0) {
+            secondsUntilRefresh = 30;
+        }
+        
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US', { 
+            hour: 'numeric', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        
+        if (isMockMode) {
+            document.getElementById("updatemsg").innerHTML = `MOCK MODE - Next update in ${secondsUntilRefresh}s`;
+            document.getElementById("updatemsg").style.color = "#ff6600";
+            document.getElementById("updatemsg").style.fontWeight = "bold";
+        } else {
+            document.getElementById("updatemsg").textContent = `Updated ${timeString} - Next in ${secondsUntilRefresh}s`;
+        }
+    }
+    
     // Refresh data
     async function refreshData() {
+        // For mock mode, simulate game progression
+        if (isMockMode && currentWeek) {
+            try {
+                const progressResponse = await fetch(`/api/matchups/mock/simulate-update/${currentWeek}`, {
+                    method: 'POST'
+                });
+                const progressData = await progressResponse.json();
+                
+                if (!progressData.hasActiveGames) {
+                    // Stop refreshing if no more active games
+                    if (refreshInterval) clearInterval(refreshInterval);
+                    if (refreshCountdown) clearInterval(refreshCountdown);
+                    document.getElementById("updatemsg").textContent = "All games complete";
+                    document.getElementById("updatemsg").style.color = "#333";
+                    document.getElementById("updatemsg").style.fontWeight = "normal";
+                }
+            } catch (error) {
+                console.error('Error simulating game update:', error);
+            }
+        }
+        
+        // Refresh all data
         if (currentMatchupId) {
             await loadMatchup(currentMatchupId);
         }
         await loadWeekMatchups();
         await loadNFLGames();
+        
+        // Update last update time
+        updateSyncStatus();
     }
 
     // Highlight NFL game on hover
@@ -981,9 +1079,11 @@
                 statusCell.setAttribute('nowrap', '');
                 statusCell.colSpan = 2;
                 statusCell.title = game.status;
-                // Show game time in PST for scheduled games
+                // Show game time for scheduled and in-progress games
                 if (game.status === 'Scheduled' && game.game_time) {
                     statusCell.textContent = convertToPST(game.game_time);
+                } else if ((game.status === 'InProgress' || game.status === 'Halftime') && game.game_time) {
+                    statusCell.textContent = game.game_time;
                 } else {
                     statusCell.textContent = game.status;
                 }

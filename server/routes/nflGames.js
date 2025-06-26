@@ -15,8 +15,11 @@ router.get('/mock/:week/:season', asyncHandler(async (req, res) => {
     // Load mock week data
     let mockGames = [];
     try {
-        const { getMockGames } = require('../../tests/mockWeeks');
-        const games = getMockGames(weekNum);
+        const { getMockGames, getProgressionState } = require('../../tests/mockWeeks');
+        
+        // Check if we have progression state (live updates)
+        const progressionState = getProgressionState(weekNum);
+        const games = progressionState ? progressionState.games : getMockGames(weekNum);
         
         // Process mock games to match the expected format
         mockGames = games.map(game => {

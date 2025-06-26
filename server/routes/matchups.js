@@ -52,6 +52,40 @@ async function getPlayerOpponent(db, player, week, season, stats) {
 }
 
 // Mock API endpoints for testing (must be first to avoid conflicts)
+
+// Simulate live update for mock games
+router.post('/mock/simulate-update/:week', asyncHandler(async (req, res) => {
+    const { week } = req.params;
+    const weekNum = parseInt(week);
+    
+    if (isNaN(weekNum) || weekNum < 1 || weekNum > 18) {
+        throw new APIError('Week must be between 1 and 18', 400);
+    }
+    
+    // Use the game progression utilities from mockWeeks
+    const { simulateGameProgression, hasInProgressGames } = require('../../tests/mockWeeks');
+    
+    // Check if there are games to update
+    if (!hasInProgressGames(weekNum)) {
+        return res.json({
+            success: true,
+            message: 'No games in progress to update',
+            hasActiveGames: false
+        });
+    }
+    
+    // Simulate progression
+    const updatedState = simulateGameProgression(weekNum);
+    
+    res.json({
+        success: true,
+        message: 'Game progression simulated',
+        updateCount: updatedState.updateCount,
+        hasActiveGames: hasInProgressGames(weekNum),
+        gamesUpdated: updatedState.games.filter(g => g.status === 'InProgress').length
+    });
+}));
+
 // Mock matchups for a specific week/season
 router.get('/mock/:week/:season', asyncHandler(async (req, res) => {
     const { week, season } = req.params;
@@ -60,8 +94,27 @@ router.get('/mock/:week/:season', asyncHandler(async (req, res) => {
     // Load mock week data
     let mockWeekData;
     try {
-        const { getMockWeek } = require('../../tests/mockWeeks');
-        mockWeekData = getMockWeek(weekNum);
+        const { getMockWeek, getProgressionState } = require('../../tests/mockWeeks');
+        
+        // Check if we have progression state (live updates)
+        const progressionState = getProgressionState(weekNum);
+        if (progressionState) {
+            // Use the progressed state
+            mockWeekData = {
+                ...getMockWeek(weekNum),
+                games: progressionState.games,
+                playerStats: progressionState.playerStats,
+                dstStats: progressionState.dstStats,
+                metadata: {
+                    ...getMockWeek(weekNum).metadata,
+                    lastUpdate: progressionState.lastUpdate,
+                    updateCount: progressionState.updateCount
+                }
+            };
+        } else {
+            // Use original mock data
+            mockWeekData = getMockWeek(weekNum);
+        }
     } catch (error) {
         // Fallback to hardcoded data if mock weeks not available
         mockWeekData = null;
@@ -116,14 +169,36 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
     // Load mock week data
     let mockWeekData;
     try {
-        const { getMockWeek } = require('../../tests/mockWeeks');
-        mockWeekData = getMockWeek(weekNum);
+        const { getMockWeek, getProgressionState } = require('../../tests/mockWeeks');
+        
+        // Check if we have progression state (live updates)
+        const progressionState = getProgressionState(weekNum);
+        if (progressionState) {
+            // Use the progressed state
+            mockWeekData = {
+                ...getMockWeek(weekNum),
+                games: progressionState.games,
+                playerStats: progressionState.playerStats,
+                dstStats: progressionState.dstStats,
+                metadata: {
+                    ...getMockWeek(weekNum).metadata,
+                    lastUpdate: progressionState.lastUpdate,
+                    updateCount: progressionState.updateCount
+                }
+            };
+        } else {
+            // Use original mock data
+            mockWeekData = getMockWeek(weekNum);
+        }
     } catch (error) {
         mockWeekData = null;
     }
     
     // For Week 1 (pre-game), all stats should be 0
     const isWeek1PreGame = weekNum === 1 && mockWeekData && mockWeekData.metadata.scenario === "Pre-Game State";
+    
+    // For Week 3, we should use actual player data from the mock week
+    const isWeek3MidGame = weekNum === 3 && mockWeekData && mockWeekData.metadata.scenario === "Mid-Sunday Games";
     
     // Generate deterministic mock players for each team
     const generateTeamStarters = (teamId, teamName) => {
@@ -146,8 +221,99 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
                 game_status: isWeek1PreGame ? 'Scheduled' : 'Final'
             };
             
+            // For Week 3 mid-game, add game time for in-progress games
+            if (isWeek3MidGame && mockWeekData) {
+                // Find a matching game from the mock data
+                const games = mockWeekData.games;
+                const inProgressGames = games.filter(g => g.status === 'InProgress' || g.status === 'Halftime');
+                const scheduledGames = games.filter(g => g.status === 'Scheduled');
+                const finalGames = games.filter(g => g.status === 'Final');
+                
+                // Assign game status based on some pattern
+                if (idx < 6 && inProgressGames.length > idx) {
+                    // First 6 players are in progress games
+                    const game = inProgressGames[idx % inProgressGames.length];
+                    player.game_status = game.status;
+                    player.game_time = game.game_time || null;
+                    player.game_quarter = game.quarter;
+                    player.game_time_remaining = game.time_remaining;
+                } else if (idx < 9 && scheduledGames.length > 0) {
+                    // Next 3 players are scheduled
+                    player.game_status = 'Scheduled';
+                    player.game_time = ['4:05 PM ET', '4:25 PM ET', '8:20 PM ET'][idx % 3];
+                } else {
+                    // Rest are final
+                    player.game_status = 'Final';
+                    player.game_time = null;
+                }
+                
+                // Add some stats for in-progress and final games
+                if (player.game_status !== 'Scheduled') {
+                    switch(pos) {
+                        case 'QB':
+                            player.stats = {
+                                fantasy_points: player.game_status === 'Final' ? 18 + Math.random() * 10 : 12 + Math.random() * 8,
+                                passing_yards: player.game_status === 'Final' ? 200 + Math.floor(Math.random() * 150) : 150 + Math.floor(Math.random() * 100),
+                                passing_tds: Math.floor(Math.random() * 3),
+                                interceptions: Math.floor(Math.random() * 2)
+                            };
+                            break;
+                        case 'RB':
+                            player.stats = {
+                                fantasy_points: player.game_status === 'Final' ? 10 + Math.random() * 15 : 6 + Math.random() * 10,
+                                rushing_yards: player.game_status === 'Final' ? 40 + Math.floor(Math.random() * 100) : 30 + Math.floor(Math.random() * 60),
+                                rushing_tds: Math.floor(Math.random() * 2),
+                                receiving_yards: Math.floor(Math.random() * 40),
+                                receptions: Math.floor(Math.random() * 5)
+                            };
+                            break;
+                        case 'WR':
+                            player.stats = {
+                                fantasy_points: player.game_status === 'Final' ? 8 + Math.random() * 15 : 5 + Math.random() * 10,
+                                receiving_yards: player.game_status === 'Final' ? 30 + Math.floor(Math.random() * 120) : 20 + Math.floor(Math.random() * 80),
+                                receiving_tds: Math.floor(Math.random() * 2),
+                                receptions: 2 + Math.floor(Math.random() * 6)
+                            };
+                            break;
+                        case 'TE':
+                            player.stats = {
+                                fantasy_points: player.game_status === 'Final' ? 6 + Math.random() * 10 : 4 + Math.random() * 8,
+                                receiving_yards: player.game_status === 'Final' ? 20 + Math.floor(Math.random() * 80) : 15 + Math.floor(Math.random() * 60),
+                                receiving_tds: Math.floor(Math.random() * 2),
+                                receptions: 2 + Math.floor(Math.random() * 5)
+                            };
+                            break;
+                        case 'FLEX':
+                            player.position = Math.random() > 0.5 ? 'RB' : 'WR';
+                            player.stats = {
+                                fantasy_points: player.game_status === 'Final' ? 8 + Math.random() * 12 : 5 + Math.random() * 8,
+                                rushing_yards: player.position === 'RB' ? Math.floor(Math.random() * 60) : 0,
+                                receiving_yards: 20 + Math.floor(Math.random() * 50),
+                                receiving_tds: Math.floor(Math.random() * 2),
+                                receptions: 2 + Math.floor(Math.random() * 4)
+                            };
+                            break;
+                        case 'K':
+                            player.stats = {
+                                fantasy_points: player.game_status === 'Final' ? 5 + Math.random() * 8 : 3 + Math.random() * 5,
+                                field_goals_made: Math.floor(Math.random() * 3),
+                                extra_points_made: 1 + Math.floor(Math.random() * 4)
+                            };
+                            break;
+                        case 'DST':
+                            player.stats = {
+                                fantasy_points: player.game_status === 'Final' ? 4 + Math.random() * 10 : 2 + Math.random() * 8,
+                                points_allowed: 14 + Math.floor(Math.random() * 21),
+                                sacks: Math.floor(Math.random() * 4),
+                                interceptions: Math.floor(Math.random() * 2),
+                                fumbles_recovered: Math.floor(Math.random() * 2)
+                            };
+                            break;
+                    }
+                }
+            }
             // For Week 2, add realistic stats and update game status
-            if (!isWeek1PreGame && weekNum === 2) {
+            else if (!isWeek1PreGame && weekNum === 2) {
                 player.game_status = 'Final';
                 player.game_time = null;
                 switch(pos) {
