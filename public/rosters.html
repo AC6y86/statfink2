@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>StatFink Fantasy League - Rosters</title>
+    <link href="/statfink-styles.css" rel="stylesheet" type="text/css" media="all" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            font-family: arial, sans-serif;
+        }
+        
+        .page-header {
+            background-color: #556;
+            color: #fff;
+            font-size: 24px;
+            font-family: arial;
+            font-weight: 900;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid #343443;
+        }
+        
+        .content-wrapper {
+            padding: 20px;
+        }
+        
+        .rosters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 15px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .team-roster {
+            background: #fff;
+            border: 1px solid #556;
+            border-collapse: collapse;
+        }
+        
+        .team-header {
+            background-color: #556;
+            color: #fff;
+            padding: 8px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid #343443;
+        }
+        
+        .roster-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .roster-table th {
+            background-color: #ddd;
+            color: #000;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 5px 8px;
+            text-align: left;
+            border-bottom: 1px solid #556;
+        }
+        
+        .roster-table td {
+            padding: 4px 8px;
+            font-size: 11px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .position-qb { color: #b83535; }
+        .position-rb { color: #2e7d32; }
+        .position-wr { color: #1565c0; }
+        .position-te { color: #e65100; }
+        .position-k { color: #6a1b9a; }
+        .position-def { color: #5d4037; }
+        .position-defense { color: #5d4037; }
+        
+        .status-ir {
+            color: #b83535;
+        }
+        
+        .scoring-player {
+            background-color: #fff3cd;
+        }
+        
+        .row1 {
+            background-color: #fff;
+        }
+        
+        .row2 {
+            background-color: #f0f0f0;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .error {
+            background: #b83535;
+            color: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-size: 12px;
+        }
+        
+        .player-count {
+            font-size: 10px;
+            color: #666;
+            text-align: center;
+            padding: 5px;
+            border-top: 1px solid #556;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header" id="pageHeader">
+        Week X Rosters
+    </div>
+    
+    <div class="content-wrapper">
+        <div id="loadingMessage" class="loading">Loading rosters...</div>
+        <div id="errorMessage" class="error" style="display: none;"></div>
+        
+        <div class="rosters-grid" id="rostersGrid" style="display: none;">
+            <!-- Team rosters will be populated here -->
+        </div>
+    </div>
+    
+    <script>
+        let currentSeason = 2024;
+        let currentWeek = 1;
+        
+        // Initialize the page
+        async function init() {
+            try {
+                // Parse season and week from URL
+                const pathParts = window.location.pathname.split('/');
+                if (pathParts.length >= 4 && pathParts[1] === 'rosters') {
+                    const urlSeason = parseInt(pathParts[2]);
+                    const urlWeek = parseInt(pathParts[3]);
+                    if (!isNaN(urlSeason) && !isNaN(urlWeek)) {
+                        currentSeason = urlSeason;
+                        currentWeek = urlWeek;
+                    }
+                }
+                
+                // Load rosters
+                loadRosters(currentSeason, currentWeek);
+                
+            } catch (error) {
+                console.error('Error initializing:', error);
+                showError('Failed to initialize rosters page');
+            }
+        }
+        
+        // Load rosters for a specific week
+        async function loadRosters(season, week) {
+            showLoading();
+            hideError();
+            
+            try {
+                const response = await fetch(`/api/rosters/${season}/${week}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch rosters');
+                }
+                
+                const data = await response.json();
+                displayRosters(data.data);
+                
+            } catch (error) {
+                console.error('Error loading rosters:', error);
+                showError('Failed to load roster data');
+            }
+        }
+        
+        // Display rosters data
+        function displayRosters(data) {
+            const { season, week, teams } = data;
+            
+            // Update page header
+            document.getElementById('pageHeader').textContent = `Week ${week} Rosters`;
+            
+            // Display team rosters
+            const rostersGrid = document.getElementById('rostersGrid');
+            rostersGrid.innerHTML = '';
+            
+            teams.forEach(team => {
+                const teamDiv = document.createElement('div');
+                teamDiv.className = 'team-roster';
+                
+                // Extract first name from owner_name
+                const firstName = team.owner_name ? team.owner_name.split(' ')[0].replace("'s", '') : team.team_name;
+                
+                // Create team header
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'team-header';
+                headerDiv.textContent = firstName;
+                teamDiv.appendChild(headerDiv);
+                
+                // Create roster table
+                const table = document.createElement('table');
+                table.className = 'roster-table';
+                
+                // Add table header
+                const thead = document.createElement('thead');
+                thead.innerHTML = `
+                    <tr>
+                        <th style="width: 35px;">Pos</th>
+                        <th>Player</th>
+                        <th style="width: 35px;">Team</th>
+                        <th style="width: 40px;">Status</th>
+                    </tr>
+                `;
+                table.appendChild(thead);
+                
+                // Add table body
+                const tbody = document.createElement('tbody');
+                
+                // Group players by position
+                const positions = ['QB', 'RB', 'WR', 'TE', 'K', 'Defense'];
+                let rowIndex = 0;
+                let activeCount = 0;
+                let irCount = 0;
+                
+                positions.forEach(pos => {
+                    const playersAtPosition = team.roster.filter(p => p.position === pos);
+                    
+                    playersAtPosition.forEach(player => {
+                        const row = document.createElement('tr');
+                        row.className = rowIndex % 2 === 0 ? 'row1' : 'row2';
+                        
+                        if (player.is_scoring) {
+                            row.classList.add('scoring-player');
+                        }
+                        
+                        const posClass = `position-${pos.toLowerCase()}`;
+                        const statusClass = player.status === 'IR' ? 'status-ir' : '';
+                        
+                        row.innerHTML = `
+                            <td class="${posClass}">${pos}</td>
+                            <td>${player.name}</td>
+                            <td>${player.team || '-'}</td>
+                            <td class="${statusClass}">${player.status}</td>
+                        `;
+                        
+                        tbody.appendChild(row);
+                        rowIndex++;
+                        
+                        if (player.status === 'IR') {
+                            irCount++;
+                        } else {
+                            activeCount++;
+                        }
+                    });
+                });
+                
+                table.appendChild(tbody);
+                teamDiv.appendChild(table);
+                
+                // Add player count
+                const countDiv = document.createElement('div');
+                countDiv.className = 'player-count';
+                countDiv.innerHTML = `Active: ${activeCount} | IR: ${irCount} | Total: ${team.roster.length}`;
+                teamDiv.appendChild(countDiv);
+                
+                rostersGrid.appendChild(teamDiv);
+            });
+            
+            // Show grid and hide loading
+            document.getElementById('rostersGrid').style.display = 'grid';
+            document.getElementById('loadingMessage').style.display = 'none';
+        }
+        
+        // Helper functions
+        function showLoading() {
+            document.getElementById('loadingMessage').style.display = 'block';
+            document.getElementById('rostersGrid').style.display = 'none';
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('loadingMessage').style.display = 'none';
+        }
+        
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

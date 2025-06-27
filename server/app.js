@@ -239,6 +239,36 @@ app.get('/standings/:week', async (req, res) => {
     }
 });
 
+// Public rosters routes
+app.get('/rosters', async (req, res) => {
+    try {
+        const db = req.app.locals.db;
+        const settings = await db.getLeagueSettings();
+        res.redirect(`/rosters/${settings.season_year}/${settings.current_week}`);
+    } catch (error) {
+        logError('Failed to get league settings for rosters redirect', error);
+        // Fallback to 2024 week 1 if settings can't be retrieved
+        res.redirect('/rosters/2024/1');
+    }
+});
+
+app.get('/rosters/:season/:week', (req, res) => {
+    const { season, week } = req.params;
+    const seasonNum = parseInt(season);
+    const weekNum = parseInt(week);
+    
+    // Basic validation
+    if (isNaN(seasonNum) || seasonNum < 2020 || seasonNum > 2030) {
+        return res.status(400).send('Invalid season. Must be between 2020 and 2030.');
+    }
+    
+    if (isNaN(weekNum) || weekNum < 1 || weekNum > 18) {
+        return res.status(400).send('Invalid week. Must be between 1 and 18.');
+    }
+    
+    res.sendFile(path.join(__dirname, '../public/rosters.html'));
+});
+
 // API Routes
 app.use('/api/teams', require('./routes/teams'));
 app.use('/api/players', require('./routes/players'));
@@ -248,6 +278,7 @@ app.use('/api/league', require('./routes/league'));
 app.use('/api/nfl-games', require('./routes/nflGames'));
 app.use('/api/database', require('./routes/databaseBrowser'));
 app.use('/api/standings', require('./routes/standings'));
+app.use('/api/rosters', require('./routes/rosters'));
 
 // Admin routes
 app.use('/api/admin', require('./routes/admin'));
