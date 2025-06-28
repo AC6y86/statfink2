@@ -29,7 +29,9 @@ class Tank01Service {
         this.loadDailyStats();
         
         // Cache settings
-        this.defaultCacheExpiry = 5 * 60 * 1000; // 5 minutes for current data
+        this.defaultCacheExpiry = 5 * 60 * 1000; // 5 minutes for general data
+        this.liveCacheExpiry = 30 * 1000; // 30 seconds for live games
+        this.scheduledCacheExpiry = 30 * 60 * 1000; // 30 minutes for scheduled games
         this.historicalCacheExpiry = null; // Never expire historical data
         this.currentSeasonYear = new Date().getFullYear();
     }
@@ -127,17 +129,16 @@ class Tank01Service {
     }
 
     // Determine if data should be permanently cached (historical data)
-    isHistoricalData(endpoint, params) {
-        // Box scores and game data from completed seasons
-        if (params.season && parseInt(params.season) < this.currentSeasonYear) {
-            return true;
+    isHistoricalData(endpoint, params, data) {
+        // Box scores from completed games
+        if (endpoint === '/getNFLBoxScore' && data?.body?.gameStatus) {
+            const status = data.body.gameStatus.toLowerCase();
+            return ['final', 'completed', 'final ot'].includes(status);
         }
         
-        // Box scores from past weeks in current season (if game is completed)
-        if (endpoint === '/getNFLBoxScore' && params.gameID) {
-            // Games older than 7 days are considered historical
-            // This is a simplified check - in production you'd check game status
-            return true; // For now, cache all box scores permanently
+        // Games from past seasons
+        if (params.season && parseInt(params.season) < this.currentSeasonYear) {
+            return true;
         }
         
         // Player stats from past weeks
@@ -153,6 +154,37 @@ class Tank01Service {
         }
         
         return false;
+    }
+
+    // Determine appropriate cache duration based on game status
+    getCacheDuration(endpoint, params, data) {
+        // For box scores, check game status
+        if (endpoint === '/getNFLBoxScore' && data?.body?.gameStatus) {
+            const status = data.body.gameStatus.toLowerCase();
+            
+            // Live games - very short cache
+            if (['live', 'in progress', 'halftime'].includes(status)) {
+                return this.liveCacheExpiry;
+            }
+            
+            // Completed games - never expire
+            if (['final', 'completed', 'final ot'].includes(status)) {
+                return this.historicalCacheExpiry;
+            }
+            
+            // Scheduled games - moderate cache
+            if (['scheduled', 'postponed'].includes(status)) {
+                return this.scheduledCacheExpiry;
+            }
+        }
+        
+        // For live scores endpoint - no cache
+        if (endpoint === '/getNFLScores') {
+            return 0; // No caching
+        }
+        
+        // Default cache duration
+        return this.defaultCacheExpiry;
     }
 
     // Get cache from SQLite
@@ -195,8 +227,20 @@ class Tank01Service {
     // Save to SQLite cache
     async setCachedData(cacheKey, endpoint, params, data) {
         try {
-            const isHistorical = this.isHistoricalData(endpoint, params);
-            const expiresAt = isHistorical ? null : new Date(Date.now() + this.defaultCacheExpiry).toISOString();
+            // Determine if historical based on actual data
+            const isHistorical = this.isHistoricalData(endpoint, params, data);
+            
+            // Get appropriate cache duration
+            const cacheDuration = this.getCacheDuration(endpoint, params, data);
+            
+            // Skip caching if duration is 0
+            if (cacheDuration === 0) {
+                logInfo(`Skipping cache for ${cacheKey} (no-cache endpoint)`);
+                return;
+            }
+            
+            const expiresAt = isHistorical ? null : 
+                new Date(Date.now() + cacheDuration).toISOString();
             
             await this.db.run(`
                 INSERT OR REPLACE INTO tank01_cache 
@@ -211,7 +255,7 @@ class Tank01Service {
                 isHistorical ? 1 : 0
             ]);
             
-            logInfo(`Cached data for ${cacheKey} (historical: ${isHistorical})`);
+            logInfo(`Cached data for ${cacheKey} (historical: ${isHistorical}, duration: ${cacheDuration}ms)`);
         } catch (error) {
             logError('Error saving to cache', error);
         }
