@@ -28,16 +28,19 @@
         
         .rosters-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
             gap: 15px;
             max-width: 1400px;
             margin: 0 auto;
+            align-items: start;
         }
         
         .team-roster {
             background: #fff;
             border: 1px solid #556;
             border-collapse: collapse;
+            margin-bottom: 0;
+            position: relative;
         }
         
         .team-header {
@@ -53,6 +56,9 @@
         .roster-table {
             width: 100%;
             border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            position: relative;
         }
         
         .roster-table th {
@@ -63,6 +69,7 @@
             padding: 5px 8px;
             text-align: left;
             border-bottom: 1px solid #556;
+            white-space: nowrap;
         }
         
         .roster-table td {
@@ -70,6 +77,18 @@
             font-size: 11px;
             text-align: left;
             border-bottom: 1px solid #eee;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .roster-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Allow wrapping only in injury description tooltips */
+        .injury-tooltip {
+            white-space: normal !important;
         }
         
         .position-qb { color: #b83535; }
@@ -82,6 +101,49 @@
         
         .status-ir {
             color: #b83535;
+        }
+        
+        .injury-status {
+            font-weight: bold;
+        }
+        
+        .injury-out {
+            color: #b83535;
+        }
+        
+        .injury-questionable {
+            color: #ff9800;
+        }
+        
+        .injury-doubtful {
+            color: #ff5722;
+        }
+        
+        .injury-cell {
+            cursor: help;
+            position: relative;
+            overflow: visible !important;
+        }
+        
+        .injury-tooltip {
+            display: none;
+            position: absolute;
+            background: #333;
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            width: 250px;
+            z-index: 1000;
+            left: 0;
+            top: 100%;
+            margin-top: 2px;
+            white-space: normal;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .injury-cell:hover .injury-tooltip {
+            display: block;
         }
         
         .scoring-player {
@@ -119,6 +181,10 @@
             padding: 5px;
             border-top: 1px solid #556;
             background-color: #f5f5f5;
+            margin: 0;
+            line-height: 1.2;
+            display: block;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -216,9 +282,10 @@
                 thead.innerHTML = `
                     <tr>
                         <th style="width: 35px;">Pos</th>
-                        <th>Player</th>
+                        <th style="max-width: 150px;">Player</th>
                         <th style="width: 35px;">Team</th>
                         <th style="width: 40px;">Status</th>
+                        <th style="width: 85px;">Injury</th>
                     </tr>
                 `;
                 table.appendChild(thead);
@@ -236,6 +303,11 @@
                     const playersAtPosition = team.roster.filter(p => p.position === pos);
                     
                     playersAtPosition.forEach(player => {
+                        // Skip players with no name (potential blank entries)
+                        if (!player.name || player.name.trim() === '') {
+                            return;
+                        }
+                        
                         const row = document.createElement('tr');
                         row.className = rowIndex % 2 === 0 ? 'row1' : 'row2';
                         
@@ -246,11 +318,24 @@
                         const posClass = `position-${pos.toLowerCase()}`;
                         const statusClass = player.status === 'IR' ? 'status-ir' : '';
                         
+                        // Format injury display
+                        let injuryCell = '<td>-</td>';
+                        if (player.injury_designation) {
+                            const injuryClass = getInjuryClass(player.injury_designation);
+                            const tooltip = player.injury_description ? 
+                                `<div class="injury-tooltip">${player.injury_description}</div>` : '';
+                            injuryCell = `<td class="injury-cell">
+                                <span class="injury-status ${injuryClass}">${player.injury_designation}</span>
+                                ${tooltip}
+                            </td>`;
+                        }
+                        
                         row.innerHTML = `
                             <td class="${posClass}">${pos}</td>
-                            <td>${player.name}</td>
+                            <td style="max-width: 150px;" title="${player.name}">${player.name}</td>
                             <td>${player.team || '-'}</td>
                             <td class="${statusClass}">${player.status}</td>
+                            ${injuryCell}
                         `;
                         
                         tbody.appendChild(row);
@@ -270,7 +355,7 @@
                 // Add player count
                 const countDiv = document.createElement('div');
                 countDiv.className = 'player-count';
-                countDiv.innerHTML = `Active: ${activeCount} | IR: ${irCount} | Total: ${team.roster.length}`;
+                countDiv.textContent = `Active: ${activeCount} | IR: ${irCount} | Total: ${team.roster.length}`;
                 teamDiv.appendChild(countDiv);
                 
                 rostersGrid.appendChild(teamDiv);
@@ -296,6 +381,19 @@
         
         function hideError() {
             document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        // Get CSS class for injury designation
+        function getInjuryClass(designation) {
+            const d = designation.toLowerCase();
+            if (d === 'out' || d === 'injured reserve') {
+                return 'injury-out';
+            } else if (d === 'questionable') {
+                return 'injury-questionable';
+            } else if (d === 'doubtful') {
+                return 'injury-doubtful';
+            }
+            return '';
         }
         
         // Initialize on page load

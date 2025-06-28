@@ -122,14 +122,14 @@ class DatabaseManager {
         return this.all('SELECT * FROM nfl_players WHERE position = ? ORDER BY name', [position]);
     }
 
-    async upsertPlayer(playerId, name, position, team, byeWeek) {
+    async upsertPlayer(playerId, name, position, team, byeWeek, injuryDesignation = null, injuryDescription = null, injuryDate = null, injuryReturnDate = null) {
         const playerData = { player_id: playerId, name, position, team, bye_week: byeWeek };
         Validator.validatePlayer(playerData);
         
         return this.run(`
-            INSERT OR REPLACE INTO nfl_players (player_id, name, position, team, bye_week, last_updated)
-            VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-        `, [playerId, name, position, team, byeWeek]);
+            INSERT OR REPLACE INTO nfl_players (player_id, name, position, team, bye_week, injury_designation, injury_description, injury_date, injury_return_date, last_updated)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+        `, [playerId, name, position, team, byeWeek, injuryDesignation, injuryDescription, injuryDate, injuryReturnDate]);
     }
 
     // Bulk player insert for API updates
@@ -143,7 +143,11 @@ class DatabaseManager {
                     player.name, 
                     player.position, 
                     player.team, 
-                    player.bye_week
+                    player.bye_week,
+                    player.injury_designation,
+                    player.injury_description,
+                    player.injury_date,
+                    player.injury_return_date
                 );
             }
             

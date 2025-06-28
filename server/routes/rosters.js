@@ -26,7 +26,7 @@ router.get('/:season/:week', asyncHandler(async (req, res) => {
         ORDER BY t.team_name
     `);
     
-    // Get all rosters for the week
+    // Get all rosters for the week with injury data
     const rosters = await db.all(`
         SELECT 
             r.team_id,
@@ -42,8 +42,13 @@ router.get('/:season/:week', asyncHandler(async (req, res) => {
                 ELSE 'Active'
             END as status,
             r.is_scoring,
-            r.scoring_slot
+            r.scoring_slot,
+            p.injury_designation,
+            p.injury_description,
+            p.injury_date,
+            p.injury_return_date
         FROM weekly_rosters r
+        LEFT JOIN nfl_players p ON r.player_id = p.player_id
         WHERE r.week = ? AND r.season = ?
         ORDER BY 
             r.team_id,

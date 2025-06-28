@@ -16,3 +16,5 @@ Never make new .db files or tables in the db without my permission.
 When we need to update stats for 2024, you can do manually to test, but after always run recalculate2024season.js.
 
 Do not check in code without asking.
+
+To restart and run the server, run 'npm start'.  That will kill a previous instance.

@@ -90,7 +90,11 @@ class PlayerSyncService {
                     name: this.extractPlayerName(player),
                     position: this.normalizePosition(this.extractPosition(player)),
                     team: this.normalizeTeam(this.extractTeam(player)),
-                    bye_week: this.extractByeWeek(player)
+                    bye_week: this.extractByeWeek(player),
+                    injury_designation: this.extractInjuryDesignation(player),
+                    injury_description: this.extractInjuryDescription(player),
+                    injury_date: this.extractInjuryDate(player),
+                    injury_return_date: this.extractInjuryReturnDate(player)
                 };
 
                 // Skip players with missing critical data
@@ -134,6 +138,38 @@ class PlayerSyncService {
     extractByeWeek(player) {
         const bye = player.byeWeek || player.bye_week || player.bye;
         return bye ? parseInt(bye) : null;
+    }
+
+    // Extract injury designation from API response
+    extractInjuryDesignation(player) {
+        if (player.injury && player.injury.designation) {
+            return player.injury.designation || null;
+        }
+        return null;
+    }
+
+    // Extract injury description from API response
+    extractInjuryDescription(player) {
+        if (player.injury && player.injury.description) {
+            return player.injury.description || null;
+        }
+        return null;
+    }
+
+    // Extract injury date from API response
+    extractInjuryDate(player) {
+        if (player.injury && player.injury.injDate) {
+            return player.injury.injDate || null;
+        }
+        return null;
+    }
+
+    // Extract injury return date from API response
+    extractInjuryReturnDate(player) {
+        if (player.injury && player.injury.injReturnDate) {
+            return player.injury.injReturnDate || null;
+        }
+        return null;
     }
 
     // Normalize position names to our standard format
