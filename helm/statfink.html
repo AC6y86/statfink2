@@ -847,7 +847,7 @@
                 <td class="position position-${player.position}">${player.position}</td>
                 <td class="playername" nowrap>${playerName} &nbsp;&nbsp;${player.team}</td>
                 <td class="opp">${player.opp || ''}</td>
-                <td class="status" align="center">${gameStatus}</td>
+                <td class="status" align="center" nowrap>${gameStatus}</td>
                 <td class="${pointsClass}" align="right">${points.toFixed(2)}</td>
             `;
             
@@ -955,7 +955,7 @@
             hours += 12;
             // If it was PM, it becomes AM and vice versa
             const newPeriod = period === 'PM' ? 'AM' : 'PM';
-            return `${hours === 0 ? 12 : hours}:${minutes} ${newPeriod} PST`;
+            return `${hours === 0 ? 12 : hours}:${minutes} ${newPeriod}`;
         }
         
         // Convert back to 12-hour format
@@ -963,7 +963,7 @@
         if (hours > 12) hours -= 12;
         if (hours === 0) hours = 12;
         
-        return `${hours}:${minutes} ${newPeriod} PST`;
+        return `${hours}:${minutes} ${newPeriod}`;
     }
 
     // Format player stats in compact form like original Statfink
