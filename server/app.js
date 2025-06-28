@@ -13,7 +13,7 @@ const PlayerSyncService = require('./services/playerSyncService');
 const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 const HTTPS_PORT = process.env.HTTPS_PORT || 8443;
 
 // Import authentication
@@ -69,7 +69,7 @@ async function initializeServices() {
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' 
         ? ['https://yourdomainhere.com'] 
-        : ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost:8443', 'https://127.0.0.1:8443', 'https://192.168.1.50:8443'],
+        : ['http://localhost:8000', 'http://127.0.0.1:8000', 'https://localhost:8443', 'https://127.0.0.1:8443', 'https://192.168.1.50:8443'],
     credentials: true
 }));
 
@@ -142,6 +142,11 @@ app.get('/dashboard', (req, res) => {
 // Roster management route (before static middleware)
 app.get('/roster', (req, res) => {
     res.sendFile(path.join(__dirname, '../helm/roster.html'));
+});
+
+// Redirect root to /statfink
+app.get('/', (req, res) => {
+    res.redirect('/statfink');
 });
 
 // Statfink matchup viewer routes
