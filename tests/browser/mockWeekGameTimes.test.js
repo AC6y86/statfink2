@@ -3,29 +3,12 @@
  * Tests that game times are actually rendered in the browser
  */
 
-const puppeteer = require('puppeteer');
-
 describe('Mock Week Game Times Browser Test', () => {
-  let browser;
-  let page;
-  const baseUrl = 'http://localhost:3000';
-
-  beforeAll(async () => {
-    browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-  });
-
-  afterAll(async () => {
-    await browser.close();
-  });
+  const baseUrl = 'http://localhost:8000';
 
   beforeEach(async () => {
     // Reset mock game progression state
-    await fetch('http://localhost:3000/api/matchups/mock/reset', { method: 'POST' });
-    
-    page = await browser.newPage();
+    await fetch('http://localhost:8000/api/matchups/mock/reset', { method: 'POST' });
     
     // Enable console logging to debug
     page.on('console', async msg => {
@@ -39,10 +22,6 @@ describe('Mock Week Game Times Browser Test', () => {
     page.on('pageerror', error => {
       console.log('Page error:', error.message);
     });
-  });
-
-  afterEach(async () => {
-    await page.close();
   });
 
   describe('Mock Week 3 In-Progress Games', () => {

@@ -1,10 +1,10 @@
 describe('Fantasy Football App', () => {
   beforeAll(async () => {
-    await page.goto('http://localhost:3000');
+    await page.goto('http://localhost:8000');
   });
 
   test('should load the homepage', async () => {
-    await expect(page.title()).resolves.toMatch('StatFink');
+    await expect(page.title()).resolves.toMatch('Statfink');
   });
 
 

@@ -1,12 +1,10 @@
 module.exports = {
   launch: {
-    headless: true,
+    headless: 'new',
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-web-security',
-      '--disable-features=VizDisplayCompositor'
+      '--disable-dev-shm-usage'
     ]
   }
 };

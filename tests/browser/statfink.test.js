@@ -1,5 +1,5 @@
 describe('StatFink Viewer', () => {
-  const STATFINK_URL = 'http://localhost:3000/statfink/2024/1';
+  const STATFINK_URL = 'http://localhost:8000/statfink/2024/1';
   const WAIT_TIMEOUT = 10000;
 
   beforeAll(async () => {
