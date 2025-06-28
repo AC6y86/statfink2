@@ -628,7 +628,6 @@
         <div class="tabs">
             <button class="tab active" onclick="showTab('status')">Status</button>
             <button class="tab" onclick="showTab('players')">Players</button>
-            <button class="tab" onclick="showTab('teams')">Teams</button>
             <button class="tab" onclick="showTab('rosters')">Rosters</button>
             <button class="tab" onclick="showTab('sync')">Sync</button>
             <button class="tab" onclick="showTab('database')">Database Browser</button>
@@ -752,61 +751,17 @@
             </div>
         </div>
 
-        <!-- Teams Tab -->
-        <div id="teams-tab" class="tab-content">
-            <div class="section">
-                <h2>🏆 Fantasy Teams</h2>
-                <div class="table-container">
-                    <table id="teams-table">
-                        <thead>
-                            <tr>
-                                <th>Team Name</th>
-                                <th>Owner</th>
-                                <th>Wins</th>
-                                <th>Losses</th>
-                                <th>Ties</th>
-                                <th>Total Points</th>
-                                <th>Roster Size</th>
-                            </tr>
-                        </thead>
-                        <tbody id="teams-tbody">
-                            <tr><td colspan="7" class="loading">Loading teams...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
 
         <!-- Rosters Tab -->
         <div id="rosters-tab" class="tab-content">
-            <div class="section">
+            <div class="section" style="text-align: center; padding: 3rem;">
                 <h2>📋 Team Rosters</h2>
-                <div id="roster-week-info" class="sync-status">
-                    <div class="status-indicator status-warning"></div>
-                    <span>Loading week information...</span>
-                </div>
-                <div class="controls">
-                    <select id="roster-team-filter" class="filter-select" onchange="loadRoster()">
-                        <option value="">Select Team</option>
-                    </select>
-                </div>
-
-                <div class="table-container">
-                    <table id="roster-table">
-                        <thead>
-                            <tr>
-                                <th>Player</th>
-                                <th>Position</th>
-                                <th>NFL Team</th>
-                                <th>Roster Position</th>
-                                <th>Bye Week</th>
-                            </tr>
-                        </thead>
-                        <tbody id="roster-tbody">
-                            <tr><td colspan="5" class="loading">Select a team to view roster...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
+                <p style="margin: 2rem 0; color: #666;">
+                    Manage team rosters, add/remove players, and handle injuries
+                </p>
+                <a href="/admin/roster" class="btn" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                    Go to Roster Management →
+                </a>
             </div>
         </div>
 
@@ -1018,34 +973,6 @@
                         </div>
                     </div>
 
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Action</th>
-                                    <th>Description</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Player Sync</strong></td>
-                                    <td>Synchronize NFL players from Tank01 API</td>
-                                    <td><span id="sync-status">Unknown</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Database Health</strong></td>
-                                    <td>Check database connection and integrity</td>
-                                    <td><span id="db-health">Unknown</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>API Health</strong></td>
-                                    <td>Check Tank01 API connectivity</td>
-                                    <td><span id="api-health">Unknown</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
                 
             </div>
@@ -1068,7 +995,6 @@
             const activeTab = document.querySelector('.tab.active').textContent.toLowerCase();
             if (activeTab !== 'status') {
                 loadPlayers();
-                loadTeams();
                 loadTeamFilters();
             }
             
@@ -1110,11 +1036,8 @@
                     loadPlayers();
                     loadTeamFilters();
                 }
-            } else if (tabName === 'teams') {
-                loadTeams();
             } else if (tabName === 'rosters') {
-                loadTeamFilters();
-                refreshRosterInfo();
+                // Rosters tab just shows a link to the roster management page
             } else if (tabName === 'sync') {
                 loadSyncStatus();
             } else if (tabName === 'database') {
@@ -1300,40 +1223,6 @@
         }
 
         // Load teams
-        async function loadTeams() {
-            try {
-                const response = await fetch('/api/teams');
-                const data = await response.json();
-                
-                const tbody = document.getElementById('teams-tbody');
-                tbody.innerHTML = data.data.map(team => `
-                    <tr>
-                        <td><strong>${team.team_name}</strong></td>
-                        <td>${team.owner_name}</td>
-                        <td>${team.wins}</td>
-                        <td>${team.losses}</td>
-                        <td>${team.ties}</td>
-                        <td>${team.total_points.toFixed(1)}</td>
-                        <td><span id="roster-size-${team.team_id}">-</span></td>
-                    </tr>
-                `).join('');
-
-                // Load roster sizes for each team
-                data.data.forEach(async team => {
-                    try {
-                        const rosterRes = await fetch(`/api/teams/${team.team_id}/roster`);
-                        const rosterData = await rosterRes.json();
-                        document.getElementById(`roster-size-${team.team_id}`).textContent = rosterData.data.length;
-                    } catch (error) {
-                        document.getElementById(`roster-size-${team.team_id}`).textContent = 'Error';
-                    }
-                });
-
-            } catch (error) {
-                document.getElementById('teams-tbody').innerHTML = 
-                    '<tr><td colspan="7" class="error">Error loading teams: ' + error.message + '</td></tr>';
-            }
-        }
 
         // Load team filters
         async function loadTeamFilters() {
@@ -1352,128 +1241,12 @@
                 teamFilter.innerHTML = '<option value="">All Teams</option>' + 
                     uniqueTeams.map(team => `<option value="${team}">${team}</option>`).join('');
 
-                // Populate team filter for rosters
-                const rosterTeamFilter = document.getElementById('roster-team-filter');
-                rosterTeamFilter.innerHTML = '<option value="">Select Team</option>' + 
-                    teams.data.map(team => `<option value="${team.team_id}">${team.owner_name}</option>`).join('');
 
             } catch (error) {
                 console.error('Error loading team filters:', error);
             }
         }
 
-        // Load and display current week information for rosters
-        async function loadRosterWeekInfo() {
-            try {
-                const rosterWeekInfo = document.getElementById('roster-week-info');
-                if (!rosterWeekInfo) {
-                    console.error('roster-week-info element not found');
-                    return;
-                }
-                
-                const settingsResponse = await fetch('/api/league/settings');
-                const settingsData = await settingsResponse.json();
-                
-                if (settingsData.success) {
-                    const currentWeek = settingsData.data.current_week;
-                    const currentSeason = settingsData.data.season_year;
-                    
-                    if (currentWeek && currentSeason) {
-                        // Display current week information
-                        rosterWeekInfo.innerHTML = `
-                            <div class="status-indicator status-healthy"></div>
-                            <span><strong>Showing Week ${currentWeek}, ${currentSeason}</strong> - Current roster data</span>
-                        `;
-                    } else {
-                        rosterWeekInfo.innerHTML = `
-                            <div class="status-indicator status-unhealthy"></div>
-                            <span><strong>Week/Season not set</strong> - Cannot display rosters</span>
-                        `;
-                    }
-                } else {
-                    rosterWeekInfo.innerHTML = `
-                        <div class="status-indicator status-unhealthy"></div>
-                        <span><strong>Error loading settings</strong> - Cannot display rosters</span>
-                    `;
-                }
-            } catch (error) {
-                document.getElementById('roster-week-info').innerHTML = `
-                    <div class="status-indicator status-unhealthy"></div>
-                    <span><strong>Connection Error</strong> - Unable to load week information</span>
-                `;
-            }
-        }
-
-        // Refresh roster information
-        async function refreshRosterInfo() {
-            try {
-                await loadRosterWeekInfo();
-                // If a team is selected, reload its roster
-                const selectedTeam = document.getElementById('roster-team-filter').value;
-                if (selectedTeam) {
-                    await loadRoster();
-                }
-            } catch (error) {
-                console.error('Error in refreshRosterInfo:', error);
-                document.getElementById('roster-week-info').innerHTML = `
-                    <div class="status-indicator status-unhealthy"></div>
-                    <span><strong>Error</strong> - Failed to refresh roster info</span>
-                `;
-            }
-        }
-
-        // Load roster for selected team
-        async function loadRoster() {
-            const teamId = document.getElementById('roster-team-filter').value;
-            const tbody = document.getElementById('roster-tbody');
-            
-            if (!teamId) {
-                tbody.innerHTML = '<tr><td colspan="5" class="loading">Select a team to view roster...</td></tr>';
-                return;
-            }
-
-            try {
-                // First get current league settings to determine week and season
-                const settingsResponse = await fetch('/api/league/settings');
-                const settingsData = await settingsResponse.json();
-                
-                let currentWeek = settingsData.success ? settingsData.data.current_week : null;
-                let currentSeason = settingsData.success ? settingsData.data.season_year : null;
-                
-                let response, data;
-                
-                // Get current roster data
-                try {
-                    response = await fetch(`/api/teams/${teamId}/roster`);
-                    data = await response.json();
-                    
-                    if (data.success && data.data && data.data.roster && data.data.roster.length > 0) {
-                        // Use current roster data - access data.data.roster instead of data.roster
-                        tbody.innerHTML = data.data.roster.map(player => `
-                            <tr>
-                                <td><strong>${player.name}</strong></td>
-                                <td><span class="position-badge position-${player.position}">${player.position}</span></td>
-                                <td><span class="team-badge">${player.team}</span></td>
-                                <td>${player.roster_position}</td>
-                                <td>${player.bye_week || 'N/A'}</td>
-                            </tr>
-                        `).join('');
-                        return;
-                    } else {
-                        // No roster data available
-                        tbody.innerHTML = `<tr><td colspan="5" class="error">No roster data found for this team.</td></tr>`;
-                        return;
-                    }
-                } catch (rosterError) {
-                    // Error fetching roster data
-                    tbody.innerHTML = `<tr><td colspan="5" class="error">Error loading roster: ${rosterError.message}</td></tr>`;
-                    return;
-                }
-
-            } catch (error) {
-                tbody.innerHTML = '<tr><td colspan="5" class="error">Error loading roster: ' + error.message + '</td></tr>';
-            }
-        }
 
         // Load database statistics
         async function loadDatabaseStats() {
@@ -1574,30 +1347,6 @@
         }
 
         // Roster Management Functions
-        async function loadTeamsForRoster() {
-            try {
-                console.time('API: /api/teams');
-                const response = await fetch('/api/teams');
-                console.timeEnd('API: /api/teams');
-                const data = await response.json();
-                
-                const teamSelect = document.getElementById('team-select');
-                
-                if (!teamSelect) {
-                    console.error('team-select element not found');
-                    return;
-                }
-                
-                teamSelect.innerHTML = '<option value="">Choose a team...</option>';
-                
-                data.data.forEach(team => {
-                    teamSelect.innerHTML += `<option value="${team.team_id}">${team.team_name} (${team.owner_name})</option>`;
-                });
-            } catch (error) {
-                console.error('loadTeamsForRoster error:', error);
-                showMessage(`Error loading teams: ${error.message}`, 'error');
-            }
-        }
 
         async function loadAvailablePlayers() {
             try {
@@ -2482,18 +2231,38 @@
                     
                     if (status.dailyUpdateInProgress || status.weeklyUpdateInProgress || status.liveUpdateInProgress) {
                         indicatorClass = 'status-warning';
-                        statusHTML = '<strong>Update in progress...</strong>';
+                        statusHTML = '<strong>🔄 Update in progress...</strong><br>';
+                        if (status.dailyUpdateInProgress) statusHTML += '• Daily update running<br>';
+                        if (status.weeklyUpdateInProgress) statusHTML += '• Weekly update running<br>';
+                        if (status.liveUpdateInProgress) statusHTML += '• Live game update running<br>';
                     } else {
-                        statusHTML = '<strong>All systems ready</strong><br>';
+                        statusHTML = '<strong>✅ All systems ready</strong><br><br>';
+                        
+                        // Show last update times
+                        statusHTML += '<strong>Last Update Times:</strong><br>';
                         
                         if (status.lastDailyUpdate) {
-                            statusHTML += `Last daily update: ${new Date(status.lastDailyUpdate).toLocaleString()}<br>`;
+                            const dailyDate = new Date(status.lastDailyUpdate);
+                            const dailyAge = Math.floor((Date.now() - dailyDate) / (1000 * 60 * 60));
+                            statusHTML += `📅 Daily: ${dailyDate.toLocaleString()} <span style="color: #666;">(${dailyAge}h ago)</span><br>`;
+                        } else {
+                            statusHTML += `📅 Daily: <span style="color: #e74c3c;">Never run</span><br>`;
                         }
+                        
                         if (status.lastWeeklyUpdate) {
-                            statusHTML += `Last weekly update: ${new Date(status.lastWeeklyUpdate).toLocaleString()}<br>`;
+                            const weeklyDate = new Date(status.lastWeeklyUpdate);
+                            const weeklyAge = Math.floor((Date.now() - weeklyDate) / (1000 * 60 * 60 * 24));
+                            statusHTML += `📊 Weekly: ${weeklyDate.toLocaleString()} <span style="color: #666;">(${weeklyAge}d ago)</span><br>`;
+                        } else {
+                            statusHTML += `📊 Weekly: <span style="color: #e74c3c;">Never run</span><br>`;
                         }
+                        
                         if (status.lastLiveUpdate) {
-                            statusHTML += `Last live update: ${new Date(status.lastLiveUpdate).toLocaleString()}`;
+                            const liveDate = new Date(status.lastLiveUpdate);
+                            const liveAge = Math.floor((Date.now() - liveDate) / (1000 * 60));
+                            statusHTML += `🏈 Live: ${liveDate.toLocaleString()} <span style="color: #666;">(${liveAge}m ago)</span>`;
+                        } else {
+                            statusHTML += `🏈 Live: <span style="color: #e74c3c;">Never run</span>`;
                         }
                     }
                     

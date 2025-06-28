@@ -149,13 +149,16 @@ app.get('/health', async (req, res) => {
     }
 });
 
-// Dashboard route (before static middleware)
-app.get('/dashboard', (req, res) => {
+// Admin routes (before static middleware)
+app.get('/admin', (req, res) => {
+    res.redirect('/admin/dashboard');
+});
+
+app.get('/admin/dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, '../helm/dashboard.html'));
 });
 
-// Roster management route (before static middleware)
-app.get('/roster', (req, res) => {
+app.get('/admin/roster', (req, res) => {
     res.sendFile(path.join(__dirname, '../helm/roster.html'));
 });
 
@@ -220,7 +223,7 @@ app.get('/2024-season', (req, res) => {
 });
 
 // Database browser route
-app.get('/database-browser', (req, res) => {
+app.get('/admin/database-browser', (req, res) => {
     res.sendFile(path.join(__dirname, '../helm/database-browser.html'));
 });
 
@@ -387,7 +390,7 @@ app.get('*', (req, res) => {
                     <h1>🏈 StatFink Fantasy Football</h1>
                     
                     <div class="dashboard-link">
-                        <a href="/dashboard">📊 View Database Dashboard</a>
+                        <a href="/admin/dashboard">📊 View Database Dashboard</a>
                     </div>
                     
                     <div class="dashboard-link" style="background: linear-gradient(135deg, #4169e1 0%, #1e3a8a 100%);">
@@ -434,7 +437,7 @@ app.get('*', (req, res) => {
                         <code>GET /api/admin/sync/status</code> - Check sync status
                     </div>
                     
-                    <p><strong>New:</strong> <a href="/dashboard">Database Dashboard</a> - View and manage all database contents</p>
+                    <p><strong>New:</strong> <a href="/admin/dashboard">Database Dashboard</a> - View and manage all database contents</p>
                 </div>
             </body>
         </html>

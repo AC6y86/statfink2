@@ -170,12 +170,11 @@
         }
     }
 
-    // Navigate to rosters for the previous week
+    // Navigate to rosters for the current week
     function navigateToRosters() {
         if (currentWeek && currentSeason) {
-            // Go to previous week's rosters (minimum week 1)
-            const previousWeek = Math.max(1, currentWeek - 1);
-            window.location.href = `/rosters/${currentSeason}/${previousWeek}`;
+            // Always show current week's rosters
+            window.location.href = `/rosters/${currentSeason}/${currentWeek}`;
         } else {
             // Fallback to default rosters page
             window.location.href = '/rosters';
@@ -187,10 +186,11 @@
         const standingsButton = document.getElementById('standingsButton');
         const rostersButton = document.getElementById('rostersButton');
         
-        // Hide both buttons for Week 1
+        // Hide only standings button for Week 1
         if (currentWeek === 1) {
             if (standingsButton) standingsButton.style.display = 'none';
-            if (rostersButton) rostersButton.style.display = 'none';
+            // Keep rosters button visible for Week 1
+            if (rostersButton) rostersButton.style.display = 'block';
         } else {
             if (standingsButton) standingsButton.style.display = 'block';
             if (rostersButton) rostersButton.style.display = 'block';

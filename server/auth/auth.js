@@ -107,12 +107,12 @@ function setupAuth(app) {
             <body>
                 <div class="login-container">
                     <h1>🏈 StatFink Login</h1>
-                    ${req.query.error ? '<p class="error">Invalid username or password</p>' : ''}
+                    ${req.query.error ? '<p class="error">Invalid password</p>' : ''}
                     ${req.query.logout ? '<p class="info">You have been logged out</p>' : ''}
                     <form method="POST" action="/login">
                         <input type="hidden" name="_csrf" value="${req.csrfToken()}">
-                        <input type="text" name="username" placeholder="Username" required autocomplete="username">
-                        <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
+                        <input type="hidden" name="username" value="admin">
+                        <input type="password" name="password" placeholder="Password" required autocomplete="current-password" autofocus>
                         <button type="submit">Login</button>
                     </form>
                 </div>
@@ -143,7 +143,7 @@ function setupAuth(app) {
                 req.session.username = username;
                 req.session.regenerated = Date.now();
                 
-                const returnTo = req.session.returnTo || '/helm';
+                const returnTo = req.session.returnTo || 'https://peninsulafootball.com/admin/dashboard';
                 delete req.session.returnTo;
                 res.redirect(returnTo);
             });
@@ -161,8 +161,7 @@ function setupAuth(app) {
     });
     
     app.use('/helm', requireAuth);
-    app.use('/dashboard', requireAuth);
-    app.use('/database-browser', requireAuth);
+    app.use('/admin', requireAuth);
     app.use('/api/admin', requireAuth);
     app.use('/2024-season', requireAuth);
 }
