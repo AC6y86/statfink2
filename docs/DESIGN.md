@@ -1,42 +1,40 @@
-# DESIGN.md
+# StatFink Fantasy Football System Design
 
-# StatFink Fantasy Football Management System Design
-
-> **Implementation Status**: This document reflects the **actual implemented system** as of 2024. StatFink is a single-league fantasy football management application with both internal admin tools and public viewing capabilities.
+> **Implementation Status**: This document reflects the **actual implemented system** as of 2024. StatFink is a production-ready, single-league fantasy football management application with enterprise-grade features including authentication, HTTPS support, real-time scoring, and comprehensive testing.
 
 ## Technology Stack
-- **Backend**: Node.js with Express.js
-- **Database**: SQLite3 with direct sqlite3 npm package
-- **API Integration**: Tank01 NFL API via RapidAPI for live player data and statistics
+
+### Core Technologies
+- **Backend**: Node.js with Express.js 4.x
+- **Database**: SQLite3 with migrations support
+- **API Integration**: Tank01 NFL API via RapidAPI for live data
 - **Frontend**: Vanilla HTML/CSS/JavaScript with modern ES6+ features
-- **Testing**: Jest with comprehensive unit and integration test suites
-- **Server**: Express server with health monitoring and graceful shutdown
-- **Architecture**: Single-league system with admin dashboard and public viewing interface
+- **Testing**: Jest (115+ tests) with Puppeteer for browser testing
+- **Security**: Helmet.js, bcrypt, express-session, express-rate-limit, csurf
+- **HTTPS**: Let's Encrypt and self-signed certificate support
+
+### Architecture Overview
+- **Single-league system** with multi-division support
+- **Session-based authentication** with secure password hashing
+- **Real-time scoring** with automated player selection
+- **Public and protected interfaces** for different user types
+- **Comprehensive API** with RESTful endpoints
+- **Microservices pattern** for business logic separation
 
 ## Database Schema
 
-**Note**: The current implementation uses a simplified single-league approach without user authentication.
+### Enhanced Database Design
+The system uses SQLite3 with a comprehensive schema supporting all fantasy football operations.
 
-### League Configuration
-```sql
-CREATE TABLE league_settings (
-    league_id INTEGER PRIMARY KEY DEFAULT 1,
-    league_name VARCHAR(100) NOT NULL DEFAULT 'StatFink Fantasy League',
-    max_teams INTEGER DEFAULT 12,
-    roster_size INTEGER DEFAULT 16,
-    starting_lineup_size INTEGER DEFAULT 9,
-    scoring_type VARCHAR(20) DEFAULT 'ppr',
-    season_year INTEGER DEFAULT 2024,
-    current_week INTEGER DEFAULT 1
-);
-```
+#### Core Tables
 
-### Teams
+##### Teams
 ```sql
 CREATE TABLE teams (
     team_id INTEGER PRIMARY KEY AUTOINCREMENT,
     team_name VARCHAR(100) NOT NULL,
     owner_name VARCHAR(100) NOT NULL,
+    division VARCHAR(10) DEFAULT 'Odd', -- 'Odd' or 'Even'
     total_points REAL DEFAULT 0,
     wins INTEGER DEFAULT 0,
     losses INTEGER DEFAULT 0,
@@ -44,7 +42,7 @@ CREATE TABLE teams (
 );
 ```
 
-### NFL Players
+##### NFL Players
 ```sql
 CREATE TABLE nfl_players (
     player_id VARCHAR(50) PRIMARY KEY, -- Tank01 API player ID
@@ -52,17 +50,20 @@ CREATE TABLE nfl_players (
     position VARCHAR(10) NOT NULL,
     team VARCHAR(10) NOT NULL,
     bye_week INTEGER,
+    injury_designation VARCHAR(50), -- 'Questionable', 'Doubtful', 'Out', 'IR'
+    injury_description TEXT,
+    injury_return_date DATE,
     last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
-### Fantasy Rosters
+##### Fantasy Rosters
 ```sql
 CREATE TABLE fantasy_rosters (
     roster_id INTEGER PRIMARY KEY AUTOINCREMENT,
     team_id INTEGER NOT NULL,
     player_id VARCHAR(50) NOT NULL,
-    roster_position VARCHAR(20) DEFAULT 'starter', -- 'starter', 'injured_reserve'
+    roster_position VARCHAR(20) DEFAULT 'active', -- 'active', 'injured_reserve'
     acquisition_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (team_id) REFERENCES teams(team_id),
     FOREIGN KEY (player_id) REFERENCES nfl_players(player_id),
@@ -70,9 +71,95 @@ CREATE TABLE fantasy_rosters (
 );
 ```
 
-### Player Stats
+#### Game and Scoring Tables
+
+##### NFL Games
 ```sql
-CREATE TABLE player_stats (
+CREATE TABLE nfl_games (
+    game_id VARCHAR(50) PRIMARY KEY,
+    season INTEGER NOT NULL,
+    week INTEGER NOT NULL,
+    game_date DATE,
+    game_time TIME,
+    home_team VARCHAR(10) NOT NULL,
+    away_team VARCHAR(10) NOT NULL,
+    home_score INTEGER DEFAULT 0,
+    away_score INTEGER DEFAULT 0,
+    quarter VARCHAR(10),
+    time_remaining VARCHAR(10),
+    possession VARCHAR(10),
+    red_zone BOOLEAN DEFAULT 0,
+    is_final BOOLEAN DEFAULT 0,
+    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+##### Weekly Rosters (with Scoring Players)
+```sql
+CREATE TABLE weekly_rosters (
+    weekly_roster_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    team_id INTEGER NOT NULL,
+    player_id VARCHAR(50) NOT NULL,
+    week INTEGER NOT NULL,
+    season INTEGER NOT NULL,
+    roster_position VARCHAR(20) NOT NULL,
+    is_scoring BOOLEAN DEFAULT 0, -- Marks if player counts for scoring
+    scoring_slot INTEGER, -- Position in scoring lineup (1-13)
+    player_name VARCHAR(100) NOT NULL,
+    player_position VARCHAR(10) NOT NULL,
+    player_team VARCHAR(10) NOT NULL,
+    fantasy_points REAL DEFAULT 0,
+    snapshot_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (team_id) REFERENCES teams(team_id),
+    FOREIGN KEY (player_id) REFERENCES nfl_players(player_id),
+    UNIQUE(team_id, player_id, week, season)
+);
+```
+
+##### Matchups (Enhanced)
+```sql
+CREATE TABLE matchups (
+    matchup_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    week INTEGER NOT NULL,
+    season INTEGER NOT NULL,
+    team1_id INTEGER NOT NULL,
+    team2_id INTEGER NOT NULL,
+    team1_points REAL DEFAULT 0,
+    team2_points REAL DEFAULT 0,
+    team1_scoring_points REAL DEFAULT 0, -- Points from scoring players only
+    team2_scoring_points REAL DEFAULT 0,
+    is_complete BOOLEAN DEFAULT 0,
+    winner_id INTEGER,
+    FOREIGN KEY (team1_id) REFERENCES teams(team_id),
+    FOREIGN KEY (team2_id) REFERENCES teams(team_id)
+);
+```
+
+##### Weekly Standings
+```sql
+CREATE TABLE weekly_standings (
+    standing_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    team_id INTEGER NOT NULL,
+    week INTEGER NOT NULL,
+    season INTEGER NOT NULL,
+    wins INTEGER DEFAULT 0,
+    losses INTEGER DEFAULT 0,
+    ties INTEGER DEFAULT 0,
+    weekly_points REAL DEFAULT 0,
+    cumulative_points REAL DEFAULT 0,
+    weekly_rank INTEGER,
+    overall_rank INTEGER,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (team_id) REFERENCES teams(team_id),
+    UNIQUE(team_id, week, season)
+);
+```
+
+#### Player Statistics Tables
+
+##### Weekly Player Stats
+```sql
+CREATE TABLE weekly_player_stats (
     stat_id INTEGER PRIMARY KEY AUTOINCREMENT,
     player_id VARCHAR(50),
     week INTEGER,
@@ -87,6 +174,7 @@ CREATE TABLE player_stats (
     receiving_tds INTEGER DEFAULT 0,
     receptions INTEGER DEFAULT 0,
     fumbles INTEGER DEFAULT 0,
+    two_point_conversions INTEGER DEFAULT 0,
     -- Defensive stats (for DST)
     sacks INTEGER DEFAULT 0,
     def_interceptions INTEGER DEFAULT 0,
@@ -105,366 +193,349 @@ CREATE TABLE player_stats (
     field_goals_50_plus INTEGER DEFAULT 0,
     -- Calculated
     fantasy_points REAL DEFAULT 0,
+    ppr_points REAL DEFAULT 0,
     last_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (player_id) REFERENCES nfl_players(player_id)
-);
-```
-
-### Weekly Matchups
-```sql
-CREATE TABLE matchups (
-    matchup_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    week INTEGER NOT NULL,
-    season INTEGER NOT NULL,
-    team1_id INTEGER NOT NULL,
-    team2_id INTEGER NOT NULL,
-    team1_points REAL DEFAULT 0,
-    team2_points REAL DEFAULT 0,
-    is_complete BOOLEAN DEFAULT 0,
-    FOREIGN KEY (team1_id) REFERENCES teams(team_id),
-    FOREIGN KEY (team2_id) REFERENCES teams(team_id)
-);
-```
-
-### Weekly Roster Snapshots
-```sql
-CREATE TABLE weekly_rosters (
-    weekly_roster_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    team_id INTEGER NOT NULL,
-    player_id VARCHAR(50) NOT NULL,
-    week INTEGER NOT NULL,
-    season INTEGER NOT NULL,
-    roster_position VARCHAR(20) NOT NULL, -- 'starter', 'bench', 'injured_reserve'
-    player_name VARCHAR(100) NOT NULL, -- Denormalized for historical accuracy
-    player_position VARCHAR(10) NOT NULL,
-    player_team VARCHAR(10) NOT NULL,
-    snapshot_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (team_id) REFERENCES teams(team_id),
     FOREIGN KEY (player_id) REFERENCES nfl_players(player_id),
-    UNIQUE(team_id, player_id, week, season)
+    UNIQUE(player_id, week, season)
 );
 ```
 
-### Scoring Rules (PPR by Default)
+##### Scoring Rules
 ```sql
 CREATE TABLE scoring_rules (
     rule_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    stat_type VARCHAR(50) NOT NULL UNIQUE,
-    points_per_unit REAL NOT NULL
+    scoring_system VARCHAR(20) NOT NULL, -- 'PPR' or 'PFL'
+    stat_type VARCHAR(50) NOT NULL,
+    points_per_unit REAL NOT NULL,
+    UNIQUE(scoring_system, stat_type)
 );
 ```
 
 ## Application Architecture
 
-### Actual Directory Structure
+### Directory Structure
 ```
 statfink2/
-├── server/                        # Backend Node.js application
-│   ├── app.js                     # Main Express server with routing
+├── server/
+│   ├── app.js                     # Express server with HTTPS support
+│   ├── auth/                      # Authentication system
+│   │   ├── authMiddleware.js     # Session and CSRF middleware
+│   │   ├── sessionConfig.js      # Session configuration
+│   │   └── generateHash.js       # Password hash utility
 │   ├── database/
-│   │   ├── database.js            # SQLite connection & database manager
-│   │   ├── schema.sql             # Complete database schema
-│   │   ├── validation.js          # Data validation utilities
-│   │   └── migrations/            # Database migration scripts
-│   ├── routes/                    # API route handlers
-│   │   ├── admin.js              # Admin sync and management endpoints
-│   │   ├── databaseBrowser.js    # Database browser API
-│   │   ├── league.js             # League settings and info
-│   │   ├── matchups.js           # Weekly matchup data
-│   │   ├── players.js            # NFL player information
-│   │   ├── rosterHistory.js      # Historical roster snapshots
-│   │   ├── stats.js              # Player statistics
-│   │   └── teams.js              # Team and roster management
-│   ├── services/                  # Business logic services
-│   │   ├── playerSyncService.js  # NFL player synchronization
-│   │   ├── scoringService.js     # Fantasy point calculations
-│   │   ├── statsSyncService.js   # Player stats synchronization
-│   │   └── tank01Service.js      # Tank01 API integration
-│   └── utils/                     # Utility functions
-│       ├── errorHandler.js       # Error handling and logging
-│       ├── importWeeklyRosters.js # Roster import utilities
-│       ├── initializeLeague.js   # League setup script
-│       ├── recalculateFantasyPoints.js # Point recalculation
-│       ├── rosterSnapshot.js     # Weekly roster snapshots
-│       └── validation.js         # Input validation
-├── helm/                          # Frontend web interface
-│   ├── dashboard.html            # Internal admin dashboard
-│   ├── roster.html               # Roster management interface
-│   ├── statfink.html             # Public live matchup viewer
-│   ├── 2024-season.html          # Season navigation page
-│   ├── database-browser.html     # Database browser interface
-│   ├── statfink-styles.css       # Shared styling
-│   └── [image assets]            # Logos and backgrounds
-├── tests/                         # Comprehensive test suite
-│   ├── unit/                     # Unit tests (40 tests)
-│   ├── integration/              # Integration tests (75+ tests)
-│   ├── fixtures/                 # Test data
-│   └── [test utilities]
-├── unused/                        # Legacy scripts and utilities
-├── coverage/                      # Test coverage reports
-├── fantasy_football.db           # SQLite database file
-└── package.json                  # Dependencies and scripts
+│   │   ├── connection.js         # SQLite connection manager
+│   │   ├── schema.sql            # Complete database schema
+│   │   ├── validation.js         # Input validation rules
+│   │   └── migrations/           # Database migrations
+│   ├── routes/                   # API endpoints (10 modules)
+│   │   ├── auth.js              # Authentication routes
+│   │   ├── admin.js             # Admin operations
+│   │   ├── database.js          # Database browser API
+│   │   ├── league.js            # League management
+│   │   ├── matchups.js          # Matchup data
+│   │   ├── nflGames.js          # NFL game tracking
+│   │   ├── players.js           # Player management
+│   │   ├── rosters.js           # Public roster viewing
+│   │   ├── standings.js         # Standings calculations
+│   │   └── teams.js             # Team management
+│   ├── services/                # Business logic (16 services)
+│   │   ├── playerSyncService.js          # NFL player sync
+│   │   ├── statsSyncService.js           # Stats synchronization
+│   │   ├── scoringService.js             # Fantasy scoring
+│   │   ├── nflGamesService.js            # Game tracking
+│   │   ├── standingsService.js           # Standings calculation
+│   │   ├── scoringPlayersService.js      # Scoring player selection
+│   │   ├── rosterHistoryService.js       # Roster snapshots
+│   │   ├── seasonRecalculationOrchestrator.js  # Season recalc
+│   │   ├── individualPlayerScoringService.js   # Player scoring
+│   │   ├── gameScoreService.js           # Game-level scoring
+│   │   ├── teamScoreService.js           # Team scoring
+│   │   ├── dataCleanupService.js         # Data integrity
+│   │   ├── mockDataService.js            # Mock testing data
+│   │   ├── injuryTrackingService.js      # Injury updates
+│   │   ├── tank01Service.js              # Tank01 API client
+│   │   └── validationService.js          # Data validation
+│   └── utils/                   # Utilities
+│       ├── errorHandler.js      # Error handling
+│       ├── logger.js            # Logging service
+│       └── helpers.js           # Helper functions
+├── helm/                        # Protected web interfaces
+│   ├── dashboard.html          # Admin dashboard
+│   ├── database-browser.html   # Database explorer
+│   └── roster.html             # Roster management
+├── public/                     # Public web interfaces
+│   ├── standings.html          # Public standings
+│   ├── rosters.html            # Public rosters
+│   ├── statfink.html           # Classic matchup viewer
+│   ├── login.html              # Authentication
+│   └── mock-weeks-index.html   # Mock testing
+├── tests/                      # Test suite (115+ tests)
+│   ├── unit/                   # Unit tests
+│   ├── integration/            # Integration tests
+│   ├── browser/                # Puppeteer tests
+│   └── mockWeeks/              # Mock test data
+├── utils/                      # Command-line utilities
+│   └── recalculate2024season.js  # Season recalculation
+├── certs/                      # SSL certificates
+└── data/                       # SQLite database files
 ```
 
-### Component Overview
+## Service Architecture
 
-#### Internal Dashboard Components (`/helm/`)
-These are administrative tools for league management:
+### Core Services
 
-1. **Database Dashboard** (`dashboard.html`)
-   - Player database browser with search and filtering
-   - Team and roster overview
-   - League settings management
-   - Admin controls for player/stats synchronization
-   - System health monitoring
-   - Database browser with custom SQL query capability
+#### 1. Authentication Service
+- **Session Management**: Secure cookie-based sessions
+- **Password Security**: Bcrypt hashing with salt rounds
+- **Rate Limiting**: Brute force protection
+- **CSRF Protection**: Token validation
+- **Middleware Chain**: Layered security checks
 
-2. **Roster Management** (`roster.html`)
-   - Add/remove players from team rosters
-   - Move players between active and injured reserve
-   - Visual roster display with player details
-   - Available player selection grouped by position
-
-3. **Database Browser** (`database-browser.html`)
-   - Direct database table exploration
-   - Custom SQL query execution
-   - Table schema viewing
-   - Data export capabilities
-
-#### Public Viewing Interface (`/helm/statfink.html`)
-This is the main interface for league members to view scores:
-
-- **Live Matchup Viewer**: Real-time fantasy football scores
-- **Team Roster Display**: View all team rosters with player stats
-- **Week Navigation**: Browse different weeks of the season
-- **Player Performance**: Detailed statistics and fantasy points
-- **Responsive Design**: Works on desktop and mobile devices
-
-**URL Routes for Public Access:**
-- `/statfink` - Redirects to current week
-- `/statfink/2024/12` - View specific year/week
-- `/statfink/mock` - Testing interface
-
-#### Backend Services Architecture
-
-1. **Tank01Service** (`server/services/tank01Service.js`)
-   - NFL API integration with caching
-   - Player data synchronization
-   - Statistics fetching and transformation
-   - Health monitoring and rate limiting
-
-2. **ScoringService** (`server/services/scoringService.js`)
-   - Fantasy point calculations for all positions
-   - Configurable scoring rules (PPR by default)
-   - Real-time score updates
-
-3. **PlayerSyncService** (`server/services/playerSyncService.js`)
-   - Automated NFL player roster updates
-   - Position and team changes tracking
-   - Injury status monitoring
-
-4. **StatsSyncService** (`server/services/statsSyncService.js`)
-   - Weekly player statistics synchronization
-   - Fantasy point calculation and storage
-   - Batch processing for performance
-
-## Key Features and Implementation
-
-### 1. Live Score Tracking
-- **Real-time Updates**: Tank01 API integration for live NFL statistics
-- **Fantasy Point Calculation**: Configurable PPR scoring system
-- **Weekly Snapshots**: Historical roster tracking for accurate scoring
-- **Matchup Display**: Side-by-side team comparison with live scores
-
-### 2. Roster Management
-- **Admin Interface**: Add/remove players, manage injured reserve
-- **Position Validation**: Enforce roster construction rules
-- **Historical Tracking**: Weekly roster snapshots for record keeping
-- **Availability Tracking**: Players grouped by availability status
-
-### 3. League Administration
-- **Settings Management**: Configure current week, season year, scoring rules
-- **Data Synchronization**: Automated player and statistics updates
-- **Database Management**: Direct database access and query capabilities
-- **Health Monitoring**: System status and API connectivity tracking
-
-### 4. Public Viewing Experience
-- **Statfink Interface**: Clean, responsive matchup viewer
-- **Week Navigation**: Easy browsing of different weeks
-- **Team Details**: Complete roster and player performance display
-- **Mobile Responsive**: Optimized for all device sizes
-
-## Testing Framework
-
-### Test Suite Overview
-StatFink includes a comprehensive testing framework with **115+ tests** across unit and integration categories:
-
-#### Unit Tests (40 tests)
-- **Validation Tests** (16): Data validation rules and input sanitization
-- **Scoring Service Tests** (12): Fantasy point calculations for all positions
-- **Error Handler Tests** (12): Custom error classes and middleware
-- **Speed**: Very fast (< 1 second)
-- **Dependencies**: None (completely isolated)
-
-#### Integration Tests (75+ tests)
-- **Database Tests** (18): CRUD operations, transactions, constraints
-- **Tank01 API Tests** (8 groups): Health checks, player sync, data transformation
-- **Dashboard Tests** (14 groups): Web interface, API integration, admin functions
-- **Roster Management Tests** (17): Player add/drop, position changes, validation
-- **Speed**: Moderate (2-30 seconds depending on server state)
-- **Dependencies**: Running StatFink server
-
-### Test Configuration
+#### 2. Player Sync Service
 ```javascript
-// jest.config.js
-module.exports = {
-  testEnvironment: 'node',
-  testMatch: ['**/tests/**/*.test.js'],
-  collectCoverageFrom: ['server/**/*.js'],
-  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
-  maxWorkers: 2,
-  projects: [
-    {
-      displayName: 'unit',
-      testMatch: ['<rootDir>/tests/unit/**/*.test.js'],
-      testTimeout: 5000
-    },
-    {
-      displayName: 'integration', 
-      testMatch: ['<rootDir>/tests/integration/**/*.test.js'],
-      testTimeout: 15000
-    }
-  ]
-};
+// Responsibilities:
+- Sync NFL players from Tank01 API
+- Update injury statuses
+- Track player team changes
+- Maintain data integrity
+- Handle API rate limits
 ```
 
-### Available Test Commands
-```bash
-# Fast unit tests (recommended for development)
-npm run test:fast        # Silent, fastest (<1 second)
-npm run test:unit        # With output (~1 second)
-
-# Integration tests (require running server)
-npm run test:integration # Server-dependent tests (~30 seconds)
-
-# All tests
-npm test                 # Complete test suite
-
-# Other options
-npm run test:watch       # Watch mode for development
-npm run test:coverage    # Generate coverage report
+#### 3. Scoring Players Service
+```javascript
+// Core Logic:
+- Select top 11 offensive players by projected points
+- Select top 2 DST units
+- Mark players as scoring/non-scoring
+- Update weekly roster records
+- Handle position limits (max 4 RB, etc.)
 ```
 
-## API Endpoints
-
-### Public Endpoints
-- `GET /health` - System health check
-- `GET /statfink` - Redirect to current week matchups
-- `GET /statfink/:year/:week` - View specific week matchups
-- `GET /dashboard` - Admin dashboard interface
-- `GET /roster` - Roster management interface
-
-### Team Management
-- `GET /api/teams` - Get all teams
-- `GET /api/teams/:id` - Get team details
-- `GET /api/teams/:id/roster` - Get team roster
-- `POST /api/teams/:id/roster/add` - Add player to roster
-- `PUT /api/teams/:id/roster/move` - Move player position
-- `DELETE /api/teams/:id/roster/remove` - Remove player from roster
-
-### Player Data
-- `GET /api/players` - Get all NFL players
-- `GET /api/players/available` - Get unrostered players
-- `GET /api/players/position/:position` - Get players by position
-
-### Statistics and Scoring
-- `GET /api/stats/:playerId/:week/:season` - Get player stats
-- `POST /api/admin/sync/stats` - Sync weekly statistics
-- `GET /api/admin/sync/status` - Check sync status
-
-### League Management
-- `GET /api/league/settings` - Get league settings
-- `PUT /api/league/settings` - Update league settings
-- `GET /api/league/standings` - Get current standings
-
-### Matchups
-- `GET /api/matchups/:week/:season` - Get weekly matchups
-
-### Admin Tools
-- `POST /api/admin/sync/players` - Sync NFL players
-- `GET /api/admin/dashboard` - Admin dashboard data
-- `GET /api/database/tables` - Database table information
-- `POST /api/database/query` - Execute custom SQL queries
-
-## Environment Setup
-
-### Installation
-```bash
-git clone <repository-url>
-cd statfink2
-npm install
+#### 4. Standings Service
+```javascript
+// Features:
+- Calculate weekly standings
+- Track cumulative points
+- Determine weekly winners
+- Support division standings
+- Historical standings by week
 ```
 
-### Dependencies
+#### 5. NFL Games Service
+```javascript
+// Capabilities:
+- Track real NFL game scores
+- Support mock game data
+- Update game status in real-time
+- Calculate game impacts on fantasy
+```
+
+#### 6. Season Recalculation Orchestrator
+```javascript
+// Process:
+1. Sync all NFL games for season
+2. Sync player stats for each week
+3. Calculate fantasy points
+4. Determine scoring players
+5. Update team scores
+6. Calculate standings
+7. Maintain data consistency
+```
+
+### Data Flow Architecture
+
+```
+Tank01 API → Player/Stats Sync → Database
+                                    ↓
+                            Scoring Calculation
+                                    ↓
+                            Scoring Players Selection
+                                    ↓
+                            Team Score Aggregation
+                                    ↓
+                            Standings Calculation
+                                    ↓
+                            Web Interface Display
+```
+
+## Security Architecture
+
+### Authentication Flow
+```
+1. User Login → Password Verification (bcrypt)
+2. Session Creation → Secure Cookie Set
+3. Request → Session Validation → CSRF Check
+4. Protected Resource Access
+```
+
+### Security Layers
+1. **HTTPS/SSL**: Encrypted communication
+2. **Helmet.js**: Security headers (XSS, etc.)
+3. **Session Security**: httpOnly, sameSite cookies
+4. **Rate Limiting**: Login attempt throttling
+5. **Input Validation**: Comprehensive sanitization
+6. **SQL Injection Prevention**: Parameterized queries
+
+## API Design
+
+### RESTful Principles
+- Resource-based URLs
+- HTTP methods for actions
+- Consistent response format
+- Proper status codes
+- HATEOAS where applicable
+
+### Response Format
 ```json
 {
-  "dependencies": {
-    "axios": "^1.9.0",
-    "cors": "^2.8.5", 
-    "dotenv": "^16.5.0",
-    "express": "^4.21.2",
-    "node-cron": "^4.1.0",
-    "sqlite3": "^5.1.7"
-  },
-  "devDependencies": {
-    "jest": "^30.0.0",
-    "nodemon": "^3.1.10",
-    "supertest": "^7.1.1"
+  "success": true,
+  "data": {...},
+  "message": "Operation completed",
+  "meta": {
+    "timestamp": "2024-12-28T12:00:00Z",
+    "version": "1.0.0"
   }
 }
 ```
 
-### Environment Variables
-Create `.env` file:
-```
-TANK01_API_KEY=your_tank01_api_key
-PORT=3000
-NODE_ENV=development
+### Error Format
+```json
+{
+  "success": false,
+  "error": {
+    "code": "PLAYER_NOT_FOUND",
+    "message": "Player with ID 123 not found",
+    "status": 404,
+    "details": {...}
+  }
+}
 ```
 
-### Running the Application
+## Testing Strategy
+
+### Test Categories
+
+#### Unit Tests (40+ tests)
+- **Validation**: Input sanitization and rules
+- **Scoring**: Fantasy point calculations
+- **Utilities**: Helper functions
+- **Error Handling**: Custom error classes
+- **No Dependencies**: Pure functions only
+
+#### Integration Tests (75+ tests)
+- **Database**: CRUD operations, constraints
+- **API Endpoints**: Full request/response cycle
+- **Services**: Business logic with dependencies
+- **Tank01 Integration**: API mocking
+- **Authentication**: Session management
+
+#### Browser Tests (Puppeteer)
+- **UI Interactions**: Form submissions
+- **Navigation**: Page routing
+- **Data Display**: Dynamic content
+- **Responsive Design**: Mobile testing
+
+### Test Configuration
+```javascript
+// Parallel test execution
+projects: [
+  { displayName: 'unit', testTimeout: 5000 },
+  { displayName: 'integration', testTimeout: 15000 }
+]
+
+// Coverage targets
+coverageThreshold: {
+  global: {
+    branches: 80,
+    functions: 80,
+    lines: 80,
+    statements: 80
+  }
+}
+```
+
+## Performance Optimizations
+
+### Database
+- **Indexes**: On foreign keys and frequently queried columns
+- **Query Optimization**: Efficient joins and aggregations
+- **Connection Pooling**: Reuse database connections
+- **Batch Operations**: Bulk inserts/updates
+
+### API
+- **Response Caching**: Tank01 API responses cached
+- **Pagination**: Large result sets paginated
+- **Lazy Loading**: Load data as needed
+- **Compression**: Gzip response compression
+
+### Frontend
+- **Minification**: CSS/JS minified in production
+- **Asset Caching**: Browser caching headers
+- **Responsive Images**: Optimized for device size
+- **Code Splitting**: Load features on demand
+
+## Deployment Architecture
+
+### Development
+```
+- Local SQLite database
+- Self-signed SSL certificates
+- Mock data for testing
+- Hot reload with nodemon
+```
+
+### Production
+```
+- Let's Encrypt SSL certificates
+- PM2 process management
+- Database backups
+- Health monitoring
+- Log aggregation
+```
+
+### Environment Configuration
 ```bash
-# Development with auto-restart
-npm run dev
-
-# Production
-npm start
-
-# Initialize league (first time setup)
-npm run init-league
-
-# Run tests
-npm test
-npm run test:unit
-npm run test:integration
+# Production settings
+NODE_ENV=production
+SESSION_SECRET=strong-random-string
+ADMIN_PASSWORD_HASH=bcrypt-hash
+SSL_CERT_PATH=/path/to/cert
+SSL_KEY_PATH=/path/to/key
+TANK01_API_KEY=api-key
 ```
 
-### Database Initialization
-The database schema is automatically created on first run. For manual initialization:
-```bash
-node server/utils/initializeLeague.js
+## Future Architecture Considerations
+
+### Potential Enhancements
+1. **WebSocket Support**: Real-time score updates
+2. **Redis Sessions**: Scalable session storage
+3. **PostgreSQL Migration**: For larger scale
+4. **API Gateway**: Rate limiting and caching
+5. **Microservices**: Service separation
+6. **Container Orchestration**: Kubernetes deployment
+
+### Scalability Path
+```
+Current: Single Server + SQLite
+    ↓
+Phase 1: Load Balancer + PostgreSQL
+    ↓
+Phase 2: Microservices + Redis
+    ↓
+Phase 3: Kubernetes + Cloud Native
 ```
 
 ## System Architecture Summary
 
-StatFink is a **single-league fantasy football management system** designed for simplicity and efficiency:
+StatFink is a **production-ready fantasy football platform** with:
 
-- **Single Database**: SQLite3 for easy deployment and maintenance
-- **No Authentication**: Simplified access model for trusted league environments  
-- **Real-time Data**: Tank01 API integration for live NFL statistics
-- **Dual Interface**: Admin tools for management, public interface for viewing
+- **Enterprise Security**: Authentication, HTTPS, CSRF protection
+- **Real-time Data**: Live NFL statistics and scoring
+- **Automated Intelligence**: Smart scoring player selection
 - **Comprehensive Testing**: 115+ tests ensuring reliability
-- **Performance Optimized**: Efficient database queries with proper indexing
-- **Mobile Responsive**: Works seamlessly across all device types
+- **Performance Optimized**: Efficient queries and caching
+- **User-Friendly**: Public and admin interfaces
+- **Maintainable**: Clean architecture and documentation
+- **Scalable Design**: Clear path for growth
 
-The system is production-ready and optimized for leagues that want a powerful, easy-to-maintain fantasy football tracking solution without the complexity of multi-league or user authentication systems.
+The system demonstrates modern web application best practices while maintaining simplicity for single-league deployments.

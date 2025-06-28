@@ -5,6 +5,7 @@
 ### Prerequisites
 - Node.js (v14+ recommended)
 - Tank01 API key (optional, for live NFL data)
+- SSL certificates (optional, for HTTPS)
 
 ### Setup & Installation
 ```bash
@@ -13,529 +14,709 @@ git clone https://github.com/AC6y86/statfink2.git
 cd statfink2
 npm install
 
-# Configure API key (optional)
+# Configure environment
 cp .env.example .env
-# Edit .env and add: TANK01_API_KEY=your_api_key_here
-
-# Initialize league database
-npm run init-league
-
-# Start the server
-npm start
 ```
 
-### Access Points
+Edit `.env` and configure:
+```bash
+# Required
+TANK01_API_KEY=your_api_key_here
+
+# Authentication (optional but recommended)
+SESSION_SECRET=your-secure-random-string
+ADMIN_PASSWORD_HASH=$2b$10$... # Generate with node server/auth/generateHash.js
+
+# HTTPS/SSL Configuration (optional)
+# Option 1: Let's Encrypt certificates
+SSL_KEY_PATH=/etc/letsencrypt/live/yourdomain.com/privkey.pem
+SSL_CERT_PATH=/etc/letsencrypt/live/yourdomain.com/fullchain.pem
+
+# Option 2: Self-signed certificates
+USE_SELF_SIGNED_CERT=true
+
+# Additional Options
+HTTPS_PORT=8443
+NODE_ENV=production
+```
+
+### Database Initialization
+```bash
+# Initialize league database with 12 teams
+npm run init-league
+
+# Run database migrations
+sqlite3 fantasy_football.db < server/database/migrations/add_nfl_games.sql
+sqlite3 fantasy_football.db < server/database/migrations/add_scoring_players_columns.sql
+sqlite3 fantasy_football.db < server/database/migrations/create_weekly_standings.sql
+sqlite3 fantasy_football.db < server/database/migrations/add_division_to_teams.sql
+sqlite3 fantasy_football.db < server/database/migrations/add_injury_columns.sql
+```
+
+### Authentication Setup
+```bash
+# Generate admin password hash
+node server/auth/generateHash.js
+# Follow prompts to create password hash
+# Add the hash to ADMIN_PASSWORD_HASH in .env
+```
+
+### Start the Server
+```bash
+# Production mode (HTTP + HTTPS if configured)
+npm start
+
+# Development mode with auto-reload
+npm run dev
+```
+
+## 📍 Access Points
+
+### Public Routes (No Authentication Required)
+- **Statfink Classic UI**: http://localhost:3000/statfink
+  - Weekly matchups with live scoring
+  - Navigate seasons/weeks: `/statfink/{year}/{week}`
+  - Mock testing: `/statfink/mock/{week}`
+- **Public Standings**: http://localhost:3000/standings
+  - Current standings: `/standings`
+  - Historical: `/standings/{season}/{week}`
+- **Public Rosters**: http://localhost:3000/rosters
+  - Current rosters: `/rosters`
+  - Historical: `/rosters/{season}/{week}`
+- **2024 Season Archive**: http://localhost:3000/2024-season
+- **Mock Week Testing**: http://localhost:3000/mockWeek
+
+### Protected Routes (Authentication Required)
+- **Login**: http://localhost:3000/login
 - **Main Dashboard**: http://localhost:3000/dashboard
 - **Database Browser**: http://localhost:3000/database-browser
-- **Statfink UI**: http://localhost:3000/statfink
-- **2024 Season**: http://localhost:3000/2024-season
 - **Roster Management**: http://localhost:3000/roster
-- **API Base URL**: http://localhost:3000/api
-- **Health Check**: http://localhost:3000/health
+- **Admin Controls**: Via dashboard interface
 
----
+### HTTPS Access (if configured)
+- **Secure Access**: https://localhost:8443/
+- All routes available via HTTPS with same paths
 
-## 🎮 Web Dashboard Commands
+## 🎮 Web Interface Features
 
-### Main Interface
-Navigate to `http://localhost:3000/dashboard` for the comprehensive web interface.
+### Main Dashboard (`/dashboard`)
+Comprehensive database management interface with:
 
-#### **Available Interfaces:**
-- **Main Dashboard** (`/dashboard`) - Database management and system status
-  - **Overview** - Database statistics and system status
-  - **Players** - Browse and search all NFL players (1,792+ players)
-  - **Teams** - View fantasy teams and standings
-  - **Rosters** - Team roster details with starters/bench/IR
-  - **Stats** - Database statistics and analytics
-  - **Admin** - Player sync and roster management
-- **Database Browser** (`/database-browser`) - Advanced database exploration
-  - **Table Explorer** - Browse all database tables with pagination
-  - **SQL Console** - Execute custom SQL queries
-  - **Schema Viewer** - View table structures and relationships
-- **Statfink UI** (`/statfink`) - Authentic classic interface
-  - **Season Navigation** - Week-by-week roster viewing
-  - **Team Rosters** - Starter designations and team organization
-  - **Authentic Styling** - Classic Statfink branding and layout
-- **2024 Season** (`/2024-season`) - Complete season overview
-  - **Weekly Rosters** - Historical roster data for all 17 weeks
-  - **Team Navigation** - Switch between teams and weeks
-  - **Season Statistics** - Complete 2024 season tracking
+#### Players Tab
+- Browse 1,800+ NFL players
+- Real-time search by name
+- Filter by position (QB, RB, WR, TE, K, DST)
+- Filter by NFL team
+- View injury status and return dates
+- Pagination (50 players per page)
 
-#### **Player Management:**
-- **Search Players** - Real-time search by name
-- **Filter by Position** - QB, RB, WR, TE, K, DST
-- **Filter by Team** - All 32 NFL teams
-- **Pagination** - 50 players per page
+#### Teams Tab
+- View all 12 fantasy teams
+- Current standings with W-L-T records
+- Total points and division info (Odd/Even)
+- Quick roster access links
 
-#### **Roster Management:**
-- **Dedicated Interface** - http://localhost:3000/roster
-- **Select Team** - Choose from 12 fantasy teams
-- **Add Players** - Add available players to roster
-- **Move Players** - Change between starter/injured reserve
-- **Remove Players** - Drop players from roster
-- **Unlimited IR** - Place multiple players on injured reserve
-- **PFL Constraints** - Enforces minimum roster requirements
+#### Admin Tab
+- Sync players from Tank01 API
+- View sync status and statistics
+- Trigger stats synchronization
+- Database health monitoring
+- Injury report summary
 
----
+### Database Browser (`/database-browser`)
+Advanced database exploration tool:
 
-## 🔌 API Endpoints Reference
+#### Features
+- Browse all database tables
+- Execute custom SQL queries
+- View table schemas and row counts
+- Paginated results with search
+- Export query results
+- Real-time data exploration
 
-### Core System Endpoints
+#### Available Tables
+- `teams` - Fantasy teams
+- `nfl_players` - All NFL players with injuries
+- `weekly_rosters` - Historical roster data
+- `weekly_player_stats` - Player statistics
+- `matchups` - Weekly matchups and scores
+- `nfl_games` - Real NFL game data
+- `weekly_standings` - Historical standings
+- And more...
+
+### Roster Management (`/roster`)
+Dedicated interface for managing team rosters:
+
+#### Features
+- Select any of the 12 teams
+- Add/drop players with validation
+- Move players to/from injured reserve
+- View current roster by position
+- Automatic scoring player selection
+- PFL roster constraint enforcement
+- Real-time injury status display
+
+#### Roster Rules
+- Minimum requirements: 2 QB, 5 RB, 6 WR/TE, 2 K, 2 DST
+- Unlimited injured reserve slots
+- Only top 11 offensive + 2 DST players score
+- Active roster limited to 19 players
+
+### Mock Week Testing (`/mockWeek`)
+Comprehensive testing interface for simulating live scoring:
+
+#### Features
+- Select mock weeks 1-18
+- Test live scoring calculations
+- Validate scoring player selection
+- Simulate different game scenarios
+- Useful for integration testing
+
+## 🔌 API Reference
+
+### Authentication
+
+#### Login
+```http
+POST /login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "your_password"
+}
+```
+
+#### Logout
+```http
+POST /logout
+```
+
+#### Check Authentication
+```http
+GET /api/auth/check
+
+Response:
+{
+  "authenticated": true,
+  "username": "admin"
+}
+```
+
+### Core Endpoints
 
 #### Health Check
 ```http
 GET /health
-```
-**Response:** Server health, database status, Tank01 API status
-```json
+
+Response:
 {
   "status": "healthy",
-  "timestamp": "2025-06-10T15:30:00.000Z",
+  "timestamp": "2025-06-28T12:00:00.000Z",
   "version": "1.0.0",
   "services": {
     "database": "connected",
     "tank01": "healthy"
+  },
+  "database": {
+    "players": 1824,
+    "teams": 12,
+    "games": 256
   }
 }
 ```
 
 ### Player Management
 
-#### Get All Players
+#### List All Players
 ```http
 GET /api/players
-```
-**Response:** All NFL players (1,792+ players)
-```json
+GET /api/players?search=allen&position=QB&team=BUF
+
+Response:
 {
   "success": true,
-  "data": [
-    {
-      "player_id": "player123",
-      "name": "Josh Allen",
-      "position": "QB",
-      "team": "BUF",
-      "bye_week": 12,
-      "last_updated": "2025-06-10T12:00:00.000Z"
-    }
-  ],
-  "count": 1792
+  "data": [{
+    "player_id": "00-0034796",
+    "name": "Josh Allen",
+    "position": "QB",
+    "team": "BUF",
+    "bye_week": 12,
+    "injury_designation": null,
+    "injury_description": null,
+    "injury_return_date": null
+  }],
+  "count": 1824
 }
 ```
 
 #### Get Players by Position
 ```http
 GET /api/players/position/{position}
-```
-**Parameters:**
-- `position` - QB, RB, WR, TE, K, DST
 
-**Example:**
-```http
-GET /api/players/position/QB
+Positions: QB, RB, WR, TE, K, DST
 ```
 
-#### Get Available Players (Free Agents)
+#### Get Available Free Agents
 ```http
 GET /api/players/available
 GET /api/players/available/{position}
 ```
-**Response:** Players not on any fantasy roster
+
+#### Get Player Details
+```http
+GET /api/players/{playerId}
+
+Response includes full player info with current stats
+```
 
 ### Team Management
 
-#### Get All Teams
+#### List All Teams
 ```http
 GET /api/teams
-```
-**Response:** All 12 fantasy teams with standings
-```json
+
+Response:
 {
   "success": true,
-  "data": [
-    {
-      "team_id": 1,
-      "team_name": "Team Alpha",
-      "owner_name": "Owner 1",
-      "wins": 0,
-      "losses": 0,
-      "ties": 0,
-      "total_points": 0.0
-    }
-  ],
+  "data": [{
+    "team_id": 1,
+    "team_name": "Team Alpha",
+    "owner_name": "Owner 1",
+    "division": "Odd",
+    "wins": 8,
+    "losses": 6,
+    "ties": 0,
+    "total_points": 1523.45
+  }],
   "count": 12
 }
 ```
 
-#### Get Specific Team
+#### Get Team Details
 ```http
 GET /api/teams/{teamId}
 ```
-**Response:** Team details with full roster
 
 #### Get Team Roster
 ```http
 GET /api/teams/{teamId}/roster
-```
-**Response:** Team roster organized by position
-```json
+
+Response:
 {
   "success": true,
   "data": {
     "roster": [...],
-    "groupedByPosition": {...},
-    "starters": [...],
-    "bench": [...],
-    "injuredReserve": [...]
+    "active": [...],
+    "injuredReserve": [...],
+    "scoringPlayers": [...],
+    "groupedByPosition": {
+      "QB": [...],
+      "RB": [...],
+      "WR": [...],
+      "TE": [...],
+      "K": [...],
+      "DST": [...]
+    }
   }
 }
 ```
 
-### Roster Management
+### Roster Operations
 
 #### Add Player to Roster
 ```http
 POST /api/teams/{teamId}/roster/add
-```
-**Body:**
-```json
-{
-  "playerId": "player123",
-  "rosterPosition": "bench"
-}
-```
-**Valid Positions:** `starter`, `bench`, `injured_reserve`
+Content-Type: application/json
 
-**Response:**
-```json
 {
-  "success": true,
-  "message": "Josh Allen added to Team Alpha",
-  "data": {
-    "team": "Team Alpha",
-    "player": {
-      "id": "player123",
-      "name": "Josh Allen",
-      "position": "QB",
-      "team": "BUF"
-    },
-    "rosterPosition": "bench"
-  }
+  "playerId": "00-0034796",
+  "rosterPosition": "active"
 }
+
+Valid positions: "active", "injured_reserve"
 ```
 
 #### Remove Player from Roster
 ```http
 DELETE /api/teams/{teamId}/roster/remove
-```
-**Body:**
-```json
+Content-Type: application/json
+
 {
-  "playerId": "player123"
+  "playerId": "00-0034796"
 }
 ```
 
-#### Move Player Between Positions
+#### Move Player Position
 ```http
 PUT /api/teams/{teamId}/roster/move
-```
-**Body:**
-```json
+Content-Type: application/json
+
 {
-  "playerId": "player123",
-  "rosterPosition": "starter"
+  "playerId": "00-0034796",
+  "rosterPosition": "injured_reserve"
 }
 ```
 
-**Response:**
-```json
-{
-  "success": true,
-  "message": "Josh Allen moved to starter",
-  "data": {
-    "team": "Team Alpha",
-    "player": {...},
-    "oldPosition": "bench",
-    "newPosition": "starter"
-  }
-}
-```
-
-### League Information
-
-#### Get League Settings
-```http
-GET /api/league
-```
-**Response:** League configuration and scoring rules
+### Matchups & Scoring
 
 #### Get Weekly Matchups
 ```http
 GET /api/matchups/week/{week}
+
+Response includes:
+- Matchup pairings
+- Team scores (total and scoring players only)
+- Individual player scores
 ```
-**Parameters:**
-- `week` - Week number (1-17)
 
 #### Get Player Rankings
 ```http
 GET /api/stats/rankings/{position}
+
+Returns players ranked by fantasy points
 ```
-**Parameters:**
-- `position` - QB, RB, WR, TE, K, DST
 
-### Admin Operations
+### NFL Games
 
-#### Get Admin Dashboard
+#### Get Real NFL Games
+```http
+GET /api/nfl-games/{week}/{season}
+GET /api/nfl-games/current
+
+Response:
+{
+  "success": true,
+  "data": [{
+    "game_id": "2024_01_GB_PHI",
+    "season": 2024,
+    "week": 1,
+    "game_date": "2024-09-06",
+    "home_team": "PHI",
+    "away_team": "GB",
+    "home_score": 34,
+    "away_score": 29,
+    "is_final": true
+  }]
+}
+```
+
+#### Get Mock Games (Testing)
+```http
+GET /api/nfl-games/mock/{week}/{season}
+
+Returns simulated game data for testing
+```
+
+### Standings
+
+#### Get Weekly Standings
+```http
+GET /api/standings/{season}/{week}
+GET /api/standings/current
+
+Response:
+{
+  "success": true,
+  "data": {
+    "standings": [{
+      "team_id": 1,
+      "team_name": "Team Alpha",
+      "division": "Odd",
+      "wins": 8,
+      "losses": 6,
+      "weekly_points": 125.50,
+      "cumulative_points": 1523.45,
+      "rank": 3
+    }],
+    "weeklyWinner": {
+      "team_name": "Team Bravo",
+      "points": 145.25
+    }
+  }
+}
+```
+
+#### Get Season Weekly Winners
+```http
+GET /api/standings/weekly-winners/{season}
+
+Returns list of weekly high scorers
+```
+
+### Public Roster Data
+
+#### Get All Rosters for Week
+```http
+GET /api/rosters/{season}/{week}
+
+Returns all team rosters with scoring players marked
+```
+
+### Database Browser API
+
+#### List All Tables
+```http
+GET /api/database/tables
+
+Response:
+{
+  "success": true,
+  "data": [{
+    "name": "teams",
+    "rowCount": 12,
+    "columns": [...]
+  }]
+}
+```
+
+#### Query Table
+```http
+GET /api/database/table/{tableName}?limit=50&offset=0&search=text
+```
+
+#### Execute SQL Query
+```http
+POST /api/database/query
+Content-Type: application/json
+
+{
+  "query": "SELECT * FROM teams WHERE wins > 5"
+}
+```
+
+### Admin Operations (Auth Required)
+
+#### Admin Dashboard Stats
 ```http
 GET /api/admin/dashboard
-```
-**Response:** Comprehensive admin statistics
 
-#### Check Sync Status
-```http
-GET /api/admin/sync/status
+Response includes:
+- Player counts by position
+- Injury report
+- Tank01 sync status
+- Database statistics
 ```
-**Response:** Tank01 API sync status and last sync time
 
-#### Trigger Player Sync
+#### Sync Players from Tank01
 ```http
 POST /api/admin/sync/players
+
+Response:
+{
+  "success": true,
+  "message": "Players synchronized successfully",
+  "data": {
+    "playersUpdated": 1824,
+    "injuriesUpdated": 45,
+    "duration": "3.2s"
+  }
+}
 ```
-**Response:** Sync results with player count and duration
 
----
+#### Sync Weekly Stats
+```http
+POST /api/admin/sync/stats
+Content-Type: application/json
 
-## 🎯 Common Usage Scenarios
+{
+  "week": 15,
+  "season": 2024
+}
+```
 
-### Scenario 1: Setting Up Team Rosters
+#### Sync NFL Games
+```http
+POST /api/admin/sync/games
+Content-Type: application/json
 
-1. **View Available Players:**
-   ```bash
-   curl http://localhost:3000/api/players/available/QB
-   ```
+{
+  "week": 15,
+  "season": 2024
+}
+```
 
-2. **Add Players to Team:**
-   ```bash
-   curl -X POST http://localhost:3000/api/teams/1/roster/add \
-     -H "Content-Type: application/json" \
-     -d '{"playerId": "josh_allen", "rosterPosition": "starter"}'
-   ```
+## 🛠 Command Line Utilities
 
-3. **Set Starting Lineup:**
-   ```bash
-   curl -X PUT http://localhost:3000/api/teams/1/roster/move \
-     -H "Content-Type: application/json" \
-     -d '{"playerId": "josh_allen", "rosterPosition": "starter"}'
-   ```
-
-### Scenario 2: Managing Injured Reserve
-
-1. **Place Player on IR:**
-   ```bash
-   curl -X PUT http://localhost:3000/api/teams/1/roster/move \
-     -H "Content-Type: application/json" \
-     -d '{"playerId": "injured_player", "rosterPosition": "injured_reserve"}'
-   ```
-
-2. **View IR Players:**
-   ```bash
-   curl http://localhost:3000/api/teams/1/roster
-   ```
-
-### Scenario 3: Player Research
-
-1. **Search by Position:**
-   ```bash
-   curl http://localhost:3000/api/players/position/RB
-   ```
-
-2. **Check Player Rankings:**
-   ```bash
-   curl http://localhost:3000/api/stats/rankings/RB
-   ```
-
-3. **View Team Standings:**
-   ```bash
-   curl http://localhost:3000/api/teams
-   ```
-
----
-
-## 🛠 Command Line Operations
-
-### Development Commands
+### Season Management
 ```bash
-# Start development server with auto-reload
-npm run dev
+# Recalculate entire 2024 season
+node utils/recalculate2024season.js
 
-# Initialize fresh league
-npm run init-league
+# This comprehensive utility:
+# 1. Syncs all NFL games for the season
+# 2. Syncs player stats for each week
+# 3. Calculates fantasy points
+# 4. Determines scoring players (top 11 + 2 DST)
+# 5. Updates team scores
+# 6. Calculates weekly standings
+# 7. Maintains data integrity
+```
 
-# Run all tests
-npm test
+### Database Maintenance
+```bash
+# Add all NFL team defenses
+node server/utils/addTeamDefenses.js
 
-# Run fast unit tests
-npm run test:fast
+# Remove duplicate players
+node server/utils/deduplicatePlayers.js
 
-# Run integration tests (requires server)
-npm run test:integration
+# Import roster from file
+node server/utils/importRoster.js /path/to/roster.txt
 
-# Run tests with coverage
-npm run test:coverage
+# Clean up duplicate teams
+node server/utils/cleanupTeams.js
 
-# Guided test runner
-node tests/test-runner.js help
+# Generate sitemap
+node server/utils/generateSitemap.js
 ```
 
 ### Testing Commands
 ```bash
-# Test specific functionality
-npm run test:integration -- tests/integration/roster.test.js
-npm run test:integration -- tests/integration/dashboard.test.js
-npm run test:integration -- tests/integration/tank01.test.js
+# Run all tests
+npm test
+
+# Fast unit tests (< 1 second)
+npm run test:fast
+
+# Integration tests (requires server)
+npm run test:integration
+
+# Browser tests with Puppeteer
+npm run test:browser
 
 # Watch mode for development
 npm run test:watch
+
+# Coverage report
+npm run test:coverage
+
+# Test specific modules
+npm run test:integration -- tests/integration/standings.test.js
+npm run test:unit -- tests/unit/scoring.test.js
 ```
 
-### Database Operations
+## 🔒 Security Configuration
+
+### HTTPS/SSL Setup
+
+#### Option 1: Let's Encrypt (Production)
+1. Obtain certificates for your domain
+2. Configure in `.env`:
 ```bash
-# Check database status
-curl http://localhost:3000/health
-
-# Get player count
-curl http://localhost:3000/api/players | jq '.count'
-
-# Get team count  
-curl http://localhost:3000/api/teams | jq '.count'
-
-# Sync players from Tank01 API
-curl -X POST http://localhost:3000/api/admin/sync/players
+SSL_KEY_PATH=/etc/letsencrypt/live/yourdomain.com/privkey.pem
+SSL_CERT_PATH=/etc/letsencrypt/live/yourdomain.com/fullchain.pem
 ```
 
-### Database Maintenance Utilities
+#### Option 2: Self-Signed (Development)
+1. Set in `.env`:
 ```bash
-# Add all 32 NFL team defenses
-node server/utils/addTeamDefenses.js
-
-# Clean up duplicate players
-node server/utils/deduplicatePlayers.js
-
-# Import roster from file
-node server/utils/importRoster.js /path/to/roster-file.txt
-
-# Clean up duplicate teams
-node server/utils/cleanupTeams.js
+USE_SELF_SIGNED_CERT=true
 ```
+2. Server will generate certificates automatically
 
----
+### Security Features
+- **Session Management**: Secure session cookies with httpOnly and sameSite
+- **Password Security**: Bcrypt hashing with configurable salt rounds
+- **Rate Limiting**: Protection against brute force attacks on login
+- **CSRF Protection**: Token validation on state-changing requests
+- **Security Headers**: Helmet.js for XSS and other protections
+- **Input Validation**: Comprehensive validation on all inputs
 
-## 🚨 Error Handling
+### Production Deployment Checklist
+- [ ] Set `NODE_ENV=production`
+- [ ] Configure strong `SESSION_SECRET`
+- [ ] Enable HTTPS with valid certificates
+- [ ] Set up admin authentication
+- [ ] Configure firewall rules
+- [ ] Set up database backups
+- [ ] Monitor with `/health` endpoint
+- [ ] Review security headers
+- [ ] Test rate limiting
+- [ ] Verify CSRF protection
 
-### Common Error Responses
+## 📊 Common Usage Patterns
 
-#### 400 Bad Request
+### Initial Setup
+1. Initialize league: `npm run init-league`
+2. Sync NFL players: `POST /api/admin/sync/players`
+3. Import rosters: Use roster management interface
+4. Sync current week stats: `POST /api/admin/sync/stats`
+
+### Weekly Operations
+1. Sync NFL games: `POST /api/admin/sync/games`
+2. Sync player stats: `POST /api/admin/sync/stats`
+3. View standings: `/standings`
+4. Check matchups: `/statfink`
+5. Manage rosters: `/roster`
+
+### Roster Management
+1. Check free agents: `GET /api/players/available`
+2. Add player: `POST /api/teams/{id}/roster/add`
+3. Handle injuries: `PUT /api/teams/{id}/roster/move`
+4. Drop player: `DELETE /api/teams/{id}/roster/remove`
+
+### Testing & Development
+1. Use mock weeks: `/mockWeek`
+2. Test scoring: `/statfink/mock/{week}`
+3. Verify calculations: Check database browser
+4. Run test suite: `npm test`
+
+## 🚨 Troubleshooting
+
+### Common Issues
+
+#### "Cannot find player" errors
+- Run player sync: `POST /api/admin/sync/players`
+- Check for duplicates: `node server/utils/deduplicatePlayers.js`
+
+#### Scoring discrepancies
+- Verify scoring players: Check `is_scoring` in rosters
+- Run recalculation: `node utils/recalculate2024season.js`
+- Check scoring rules: See `SCORING_SYSTEM.md`
+
+#### Authentication issues
+- Verify `SESSION_SECRET` is set
+- Check `ADMIN_PASSWORD_HASH` is correct
+- Clear browser cookies and retry
+
+#### HTTPS not working
+- Verify certificate paths in `.env`
+- Check file permissions on certificates
+- Try self-signed mode for testing
+
+### Error Response Format
 ```json
 {
   "success": false,
-  "message": "Invalid roster position. Must be: starter, bench, or injured_reserve",
-  "status": 400
+  "message": "Descriptive error message",
+  "status": 400,
+  "details": {...}
 }
 ```
-
-#### 404 Not Found
-```json
-{
-  "success": false,
-  "message": "Team not found",
-  "status": 404
-}
-```
-
-#### 500 Server Error
-```json
-{
-  "success": false,
-  "message": "Internal server error",
-  "status": 500
-}
-```
-
-### Roster Management Constraints
-
-- **PFL Roster Requirements:** Teams must maintain minimum players (2 QB, 5 RB, 6 WR/TE, 2 K, 2 DST)
-- **Player Availability:** Players can only be on one roster at a time
-- **Valid Positions:** Only `starter` or `injured_reserve` are allowed
-- **Unlimited IR:** Teams can have multiple players on injured reserve
-- **Position Validation:** All roster positions are validated before operations
-
----
-
-## 📊 Response Formats
-
-All API responses follow a consistent format:
-
-### Success Response
-```json
-{
-  "success": true,
-  "data": {...},
-  "message": "Operation completed successfully"
-}
-```
-
-### Error Response
-```json
-{
-  "success": false,
-  "message": "Error description",
-  "status": 400
-}
-```
-
-### List Response
-```json
-{
-  "success": true,
-  "data": [...],
-  "count": 42
-}
-```
-
----
-
-## 🔒 Security & Deployment
-
-### Network-Only Deployment
-- **No Authentication Required:** Designed for trusted network environments
-- **Admin Functions:** All admin operations accessible without passwords
-- **Local Network:** Recommended for deployment on private networks only
-
-### Production Considerations
-- **Environment Variables:** Configure Tank01 API key in `.env` file
-- **Database Backup:** Regular SQLite database backups recommended
-- **Monitoring:** Use `/health` endpoint for uptime monitoring
-- **Logs:** Server logs provide detailed operation information
-
----
 
 ## 🤝 Support & Development
 
-### Getting Help
-- **Health Check:** Always start with `GET /health` to verify system status
-- **Test Suite:** Run `npm test` to verify all functionality
-- **Logs:** Check console output for detailed error information
-- **Dashboard:** Use web interface for visual management
-
-### Contributing
-- **Test Coverage:** All new features require comprehensive tests
-- **API Consistency:** Follow existing response format patterns
-- **Validation:** Implement proper input validation for all endpoints
-- **Documentation:** Update this file when adding new functionality
-
 ### Development Workflow
-1. **Start Server:** `npm start`
-2. **Run Tests:** `npm run test:fast` for quick feedback
-3. **Access Dashboard:** http://localhost:3000/dashboard
-4. **Test Changes:** `npm test` before committing
-5. **Commit:** Use descriptive commit messages with test status
+1. Start dev server: `npm run dev`
+2. Make changes
+3. Run fast tests: `npm run test:fast`
+4. Test in browser
+5. Run full tests: `npm test`
+6. Commit with descriptive message
+
+### Best Practices
+- Always validate input data
+- Include comprehensive tests
+- Update documentation
+- Follow existing code patterns
+- Handle errors gracefully
+- Log important operations
+- Maintain backwards compatibility
+
+### Getting Help
+- Check `/health` endpoint first
+- Review server logs for errors
+- Run test suite to verify setup
+- Check database with browser tool
+- Verify Tank01 API connectivity
