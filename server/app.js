@@ -80,6 +80,9 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.static(path.join(__dirname, '../helm')));
 
+// Serve Let's Encrypt challenge files
+app.use('/.well-known/acme-challenge', express.static(path.join(__dirname, '../.well-known/acme-challenge')));
+
 // Setup authentication (includes security headers)
 setupAuth(app);
 
@@ -430,10 +433,27 @@ async function startServer() {
         
         // Start HTTPS server if certificates exist
         let httpsServer = null;
-        const certPath = process.env.SSL_CERT || './certs/cert.pem';
-        const keyPath = process.env.SSL_KEY || './certs/key.pem';
+        let certPath = process.env.SSL_CERT || './certs/fullchain.pem';
+        let keyPath = process.env.SSL_KEY || './certs/privkey.pem';
         
-        if (fs.existsSync(certPath) && fs.existsSync(keyPath)) {
+        // Try Let's Encrypt certs first, fall back to self-signed
+        let certExists = false;
+        try {
+            fs.accessSync(certPath, fs.constants.R_OK);
+            fs.accessSync(keyPath, fs.constants.R_OK);
+            certExists = true;
+        } catch {
+            // Fall back to self-signed certs
+            const selfSignedCert = './certs/cert.pem';
+            const selfSignedKey = './certs/key.pem';
+            if (fs.existsSync(selfSignedCert) && fs.existsSync(selfSignedKey)) {
+                certPath = selfSignedCert;
+                keyPath = selfSignedKey;
+                certExists = true;
+            }
+        }
+        
+        if (certExists) {
             const httpsOptions = {
                 cert: fs.readFileSync(certPath),
                 key: fs.readFileSync(keyPath)
@@ -442,7 +462,11 @@ async function startServer() {
             httpsServer = https.createServer(httpsOptions, app);
             httpsServer.listen(HTTPS_PORT, () => {
                 logInfo(`StatFink Fantasy Football HTTPS server running on https://localhost:${HTTPS_PORT}`);
-                logInfo('Note: Using self-signed certificate. Browser will show security warning.');
+                if (certPath.includes('letsencrypt')) {
+                    logInfo('Using Let\'s Encrypt certificate - no browser warnings!');
+                } else {
+                    logInfo('Note: Using self-signed certificate. Browser will show security warning.');
+                }
             });
         } else {
             logInfo('SSL certificates not found. HTTPS server not started.');
