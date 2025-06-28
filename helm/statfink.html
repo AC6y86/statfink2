@@ -5,10 +5,10 @@
     <link href="/statfink-styles.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body onload="read_cont()">
-    <div id="controls" class="controls">
+    <div id="controls" class="controls" style="display: none;">
         <div id="updatemsg" style="display: inline-block; font-size: 11px; color: #333;"></div>
     </div>
-    <div id="lastupdate" class="lastupdate"></div>
+    <div id="lastupdate" class="lastupdate" style="display: none;"></div>
 
     <div id="leaguediv">
         <table class="leaguetable" id="leaguetable" width="250">
@@ -33,6 +33,20 @@
                 </tbody>
                 <tfoot></tfoot>
             </table>
+        </div>
+        <div style="margin-top: 15px; text-align: center;">
+            <button onclick="window.location.href='/standings'" 
+                    onmouseover="this.style.backgroundColor='#b83535'" 
+                    onmouseout="this.style.backgroundColor='#556'" 
+                    style="display: block; width: 200px; margin: 0 auto 8px auto; padding: 10px 25px; cursor: pointer; background-color: #556; color: white; border: 2px solid #343443; font-family: arial; font-size: 14px; font-weight: bold; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: all 0.2s;">
+                🏆 STANDINGS
+            </button>
+            <button onclick="window.location.href='/rosters'" 
+                    onmouseover="this.style.backgroundColor='#b83535'" 
+                    onmouseout="this.style.backgroundColor='#556'" 
+                    style="display: block; width: 200px; margin: 0 auto; padding: 10px 25px; cursor: pointer; background-color: #556; color: white; border: 2px solid #343443; font-family: arial; font-size: 14px; font-weight: bold; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: all 0.2s;">
+                📋 ROSTERS
+            </button>
         </div>
     </div>
     <div id="teams">

@@ -297,7 +297,7 @@ app.use('/api/rosters', require('./routes/rosters'));
 // Admin routes
 app.use('/api/admin', require('./routes/admin'));
 
-// Serve main page for any non-API routes
+// Redirect any unrecognized routes to /statfink
 app.get('*', (req, res) => {
     // If this is an API route, return JSON error instead of HTML
     if (req.path.startsWith('/api/')) {
@@ -306,6 +306,10 @@ app.get('*', (req, res) => {
             message: `API endpoint ${req.path} not found`
         });
     }
+    
+    // Redirect all other unrecognized routes to /statfink
+    res.redirect('/statfink');
+    return; // Don't send HTML below
     
     res.send(`
         <html>
