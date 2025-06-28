@@ -18,3 +18,10 @@ When we need to update stats for 2024, you can do manually to test, but after al
 Do not check in code without asking.
 
 To restart and run the server, run 'npm start'.  That will kill a previous instance.
+
+
+## PERMISSIONS ##
+
+Without asking me you can:
+run npm test
+create files in /tmp
