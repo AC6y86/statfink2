@@ -808,7 +808,7 @@
             `;
             
             // Add stats row like reference site
-            if (statsDisplay && statsDisplay !== '0 Stats') {
+            if (statsDisplay) {
                 const statsRow = tbody.insertRow(-1);
                 statsRow.className = row.className; // Use same class as main row
                 statsRow.id = `t${tableId.slice(-1)}r${rowIndex}combstat`;
