@@ -2,6 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
 const DatabaseManager = require('./database/database');
 const ScoringService = require('./services/scoringService');
 const Tank01Service = require('./services/tank01Service');
@@ -11,6 +14,10 @@ const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const HTTPS_PORT = process.env.HTTPS_PORT || 8443;
+
+// Import authentication
+const { setupAuth } = require('./auth/auth');
 
 // Initialize services
 let db, scoringService, tank01Service, nflGamesService, playerSyncService;
@@ -62,20 +69,19 @@ async function initializeServices() {
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' 
         ? ['https://yourdomainhere.com'] 
-        : ['http://localhost:3000', 'http://127.0.0.1:3000'],
+        : ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost:8443', 'https://127.0.0.1:8443', 'https://192.168.1.50:8443'],
     credentials: true
 }));
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Security headers
-app.use((req, res, next) => {
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader('X-Frame-Options', 'DENY');
-    res.setHeader('X-XSS-Protection', '1; mode=block');
-    next();
-});
+// Serve static files BEFORE setting security headers
+app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../helm')));
+
+// Setup authentication (includes security headers)
+setupAuth(app);
 
 // Logging middleware
 app.use((req, res, next) => {
@@ -283,12 +289,6 @@ app.use('/api/rosters', require('./routes/rosters'));
 // Admin routes
 app.use('/api/admin', require('./routes/admin'));
 
-// Serve static files from public directory for public pages
-app.use(express.static(path.join(__dirname, '../public')));
-
-// Serve static files from helm directory (after specific routes)
-app.use(express.static(path.join(__dirname, '../helm')));
-
 // Serve main page for any non-API routes
 app.get('*', (req, res) => {
     res.send(`
@@ -417,15 +417,39 @@ async function startServer() {
     try {
         await initializeServices();
         
-        const server = app.listen(PORT, () => {
-            logInfo(`StatFink Fantasy Football server running on http://localhost:${PORT}`);
-            logInfo('Available endpoints:', {
-                health: '/health',
-                teams: '/api/teams',
-                players: '/api/players',
-                league: '/api/league',
-                frontend: '/'
+        // Start HTTP server
+        const httpServer = http.createServer(app);
+        httpServer.listen(PORT, () => {
+            logInfo(`StatFink Fantasy Football HTTP server running on http://localhost:${PORT}`);
+        });
+        
+        // Start HTTPS server if certificates exist
+        let httpsServer = null;
+        const certPath = process.env.SSL_CERT || './certs/cert.pem';
+        const keyPath = process.env.SSL_KEY || './certs/key.pem';
+        
+        if (fs.existsSync(certPath) && fs.existsSync(keyPath)) {
+            const httpsOptions = {
+                cert: fs.readFileSync(certPath),
+                key: fs.readFileSync(keyPath)
+            };
+            
+            httpsServer = https.createServer(httpsOptions, app);
+            httpsServer.listen(HTTPS_PORT, () => {
+                logInfo(`StatFink Fantasy Football HTTPS server running on https://localhost:${HTTPS_PORT}`);
+                logInfo('Note: Using self-signed certificate. Browser will show security warning.');
             });
+        } else {
+            logInfo('SSL certificates not found. HTTPS server not started.');
+            logInfo(`To enable HTTPS, place cert.pem and key.pem in ./certs/ or set SSL_CERT and SSL_KEY env vars`);
+        }
+        
+        logInfo('Available endpoints:', {
+            health: '/health',
+            teams: '/api/teams',
+            players: '/api/players',
+            league: '/api/league',
+            frontend: '/'
         });
 
         // Graceful shutdown
@@ -443,7 +467,22 @@ async function startServer() {
                 process.exit(1);
             }, 5000);
             
-            server.close(async () => {
+            const closeServers = (callback) => {
+            let closed = 0;
+            const servers = [httpServer, httpsServer].filter(Boolean);
+            const total = servers.length;
+            
+            servers.forEach(server => {
+                server.close(() => {
+                    closed++;
+                    if (closed === total) {
+                        callback();
+                    }
+                });
+            });
+        };
+        
+        closeServers(async () => {
                 try {
                     if (db) {
                         logInfo('Closing database connection...');

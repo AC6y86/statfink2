@@ -42,3 +42,9 @@ tmp/
 temp/statfink_old/
 statfink_legacy/
 statfink_old/
+
+# SSL Certificates
+certs/
+*.pem
+*.crt
+*.key
