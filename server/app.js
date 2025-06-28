@@ -299,6 +299,14 @@ app.use('/api/admin', require('./routes/admin'));
 
 // Serve main page for any non-API routes
 app.get('*', (req, res) => {
+    // If this is an API route, return JSON error instead of HTML
+    if (req.path.startsWith('/api/')) {
+        return res.status(404).json({
+            error: 'Not Found',
+            message: `API endpoint ${req.path} not found`
+        });
+    }
+    
     res.send(`
         <html>
             <head>

@@ -194,5 +194,49 @@ router.put('/settings', asyncHandler(async (req, res) => {
     });
 }));
 
+// Get sync status
+router.get('/sync-status', asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    
+    try {
+        // Get the latest data information from player_stats
+        const syncStatus = await db.get(`
+            SELECT 
+                MAX(week) as latest_week,
+                COUNT(DISTINCT week) as weeks_synced,
+                COUNT(DISTINCT player_id) as players_synced,
+                MAX(season) as latest_season
+            FROM player_stats
+            WHERE season = 2024
+        `);
+        
+        // For now, use current time as last sync time since we don't track it
+        const lastSyncTime = new Date().toISOString();
+        
+        res.json({
+            success: true,
+            data: {
+                last_sync_time: lastSyncTime,
+                latest_week: syncStatus?.latest_week || 0,
+                weeks_synced: syncStatus?.weeks_synced || 0,
+                players_synced: syncStatus?.players_synced || 0,
+                latest_season: syncStatus?.latest_season || 2024
+            }
+        });
+    } catch (error) {
+        console.error('Error in sync-status:', error);
+        res.json({
+            success: true,
+            data: {
+                last_sync_time: null,
+                latest_week: 0,
+                weeks_synced: 0,
+                players_synced: 0,
+                latest_season: 2024
+            }
+        });
+    }
+}));
+
 
 module.exports = router;

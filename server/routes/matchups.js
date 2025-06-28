@@ -28,24 +28,25 @@ function getOpponentFromGameId(gameId, playerTeam) {
 
 // Helper function to get opponent for any player based on their team
 async function getPlayerOpponent(db, player, week, season, stats) {
-    // If we have stats with game_id, use that
-    if (stats?.game_id && stats?.team) {
-        return getOpponentFromGameId(stats.game_id, stats.team);
-    }
+    // Get the team abbreviation for the player
+    const teamCode = getTeamAbbreviation(player.team);
     
-    // Otherwise, look up the game for this team in this week
-    // Use the team from the roster data (player.team) 
-    const teamCode = getTeamAbbreviation(player.team); // Convert team name to abbreviation
-    
-    // Find any game_id for this team in this week/season
-    const gameInfo = await db.get(`
-        SELECT DISTINCT game_id, team FROM player_stats
-        WHERE team = ? AND week = ? AND season = ?
+    // Look up the game from nfl_games table
+    const game = await db.get(`
+        SELECT home_team, away_team 
+        FROM nfl_games
+        WHERE week = ? AND season = ? 
+        AND (home_team = ? OR away_team = ?)
         LIMIT 1
-    `, [teamCode, week, season]);
+    `, [week, season, teamCode, teamCode]);
     
-    if (gameInfo?.game_id && gameInfo?.team) {
-        return getOpponentFromGameId(gameInfo.game_id, gameInfo.team);
+    if (game) {
+        // Determine if player's team is home or away
+        if (teamCode === game.away_team) {
+            return `@${game.home_team}`; // Playing away - show @ symbol
+        } else if (teamCode === game.home_team) {
+            return game.away_team; // Playing at home - just show opponent team
+        }
     }
     
     return null;
@@ -240,7 +241,7 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
                 name: `${teamName} ${pos}${idx > 0 && positions.slice(0, idx).filter(p => p === pos).length > 0 ? positions.slice(0, idx + 1).filter(p => p === pos).length : ''}`,
                 position: pos,
                 team: pos === 'DST' ? ['BAL', 'KC', 'DAL', 'PHI', 'GB', 'SF'][teamId % 6] : 'TST',
-                opp: pos === 'DST' ? '@OPP' : ['@KC', 'BAL', '@DAL', 'PHI', '@GB', 'SF'][idx % 6],
+                opp: '@OPP', // Will be replaced by actual opponent lookup
                 stats: {
                     fantasy_points: 0
                 },
