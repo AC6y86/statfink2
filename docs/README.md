@@ -140,15 +140,15 @@ npm start
 
 **HTTP Access** (default):
 ```
-http://localhost:3000/dashboard         # Main dashboard (requires auth)
-http://localhost:3000/database-browser  # Database browser (requires auth)
-http://localhost:3000/statfink          # Authentic Statfink UI
-http://localhost:3000/2024-season       # 2024 season overview
-http://localhost:3000/roster            # Roster management (requires auth)
-http://localhost:3000/standings         # Public standings view
-http://localhost:3000/rosters           # Public rosters view
-http://localhost:3000/login            # Authentication login
-http://localhost:3000/mockWeek         # Mock week testing interface
+http://localhost:8000/dashboard         # Main dashboard (requires auth)
+http://localhost:8000/database-browser  # Database browser (requires auth)
+http://localhost:8000/statfink          # Authentic Statfink UI
+http://localhost:8000/2024-season       # 2024 season overview
+http://localhost:8000/roster            # Roster management (requires auth)
+http://localhost:8000/standings         # Public standings view
+http://localhost:8000/rosters           # Public rosters view
+http://localhost:8000/login            # Authentication login
+http://localhost:8000/mockWeek         # Mock week testing interface
 ```
 
 **HTTPS Access** (if configured):
