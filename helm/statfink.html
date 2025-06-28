@@ -35,13 +35,15 @@
             </table>
         </div>
         <div style="margin-top: 15px; text-align: center;">
-            <button onclick="window.location.href='/standings'" 
+            <button id="standingsButton" 
+                    onclick="navigateToStandings()" 
                     onmouseover="this.style.backgroundColor='#b83535'" 
                     onmouseout="this.style.backgroundColor='#556'" 
                     style="display: block; width: 200px; margin: 0 auto 8px auto; padding: 10px 25px; cursor: pointer; background-color: #556; color: white; border: 2px solid #343443; font-family: arial; font-size: 14px; font-weight: bold; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: all 0.2s;">
                 🏆 STANDINGS
             </button>
-            <button onclick="window.location.href='/rosters'" 
+            <button id="rostersButton"
+                    onclick="navigateToRosters()" 
                     onmouseover="this.style.backgroundColor='#b83535'" 
                     onmouseout="this.style.backgroundColor='#556'" 
                     style="display: block; width: 200px; margin: 0 auto; padding: 10px 25px; cursor: pointer; background-color: #556; color: white; border: 2px solid #343443; font-family: arial; font-size: 14px; font-weight: bold; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: all 0.2s;">
@@ -156,6 +158,45 @@
         alert("Injuries feature coming soon!");
     }
 
+    // Navigate to standings for the previous week
+    function navigateToStandings() {
+        if (currentWeek && currentSeason) {
+            // Go to previous week's standings (minimum week 1)
+            const previousWeek = Math.max(1, currentWeek - 1);
+            window.location.href = `/standings/${currentSeason}/${previousWeek}`;
+        } else {
+            // Fallback to default standings page
+            window.location.href = '/standings';
+        }
+    }
+
+    // Navigate to rosters for the previous week
+    function navigateToRosters() {
+        if (currentWeek && currentSeason) {
+            // Go to previous week's rosters (minimum week 1)
+            const previousWeek = Math.max(1, currentWeek - 1);
+            window.location.href = `/rosters/${currentSeason}/${previousWeek}`;
+        } else {
+            // Fallback to default rosters page
+            window.location.href = '/rosters';
+        }
+    }
+
+    // Update standings and rosters button visibility based on current week
+    function updateStandingsButtonVisibility() {
+        const standingsButton = document.getElementById('standingsButton');
+        const rostersButton = document.getElementById('rostersButton');
+        
+        // Hide both buttons for Week 1
+        if (currentWeek === 1) {
+            if (standingsButton) standingsButton.style.display = 'none';
+            if (rostersButton) rostersButton.style.display = 'none';
+        } else {
+            if (standingsButton) standingsButton.style.display = 'block';
+            if (rostersButton) rostersButton.style.display = 'block';
+        }
+    }
+
     // Show defensive TDs (placeholder)
     function showDefensiveTDs() {
         alert("Defensive TDs feature coming soon!");
@@ -268,6 +309,9 @@
                 } else {
                     document.getElementById("fleague").innerHTML = `Week ${currentWeek}`;
                 }
+                
+                // Update standings button visibility based on week
+                updateStandingsButtonVisibility();
             }
 
             // Load matchups for current week
