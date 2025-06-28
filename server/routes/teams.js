@@ -129,7 +129,7 @@ router.get('/:teamId/roster', asyncHandler(async (req, res) => {
         data: {
             roster,
             groupedByPosition: groupedRoster,
-            active: roster.filter(p => p.roster_position === 'starter' || p.roster_position === 'bench'),
+            active: roster.filter(p => p.roster_position === 'active'),
             injured_reserve: roster.filter(p => p.roster_position === 'injured_reserve')
         }
     });
