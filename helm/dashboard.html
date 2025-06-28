@@ -630,6 +630,7 @@
             <button class="tab" onclick="showTab('players')">Players</button>
             <button class="tab" onclick="showTab('teams')">Teams</button>
             <button class="tab" onclick="showTab('rosters')">Rosters</button>
+            <button class="tab" onclick="showTab('sync')">Sync</button>
             <button class="tab" onclick="showTab('database')">Database Browser</button>
             <button class="tab" onclick="showTab('settings')">Settings</button>
         </div>
@@ -809,6 +810,67 @@
             </div>
         </div>
 
+        <!-- Sync Tab -->
+        <div id="sync-tab" class="tab-content">
+            <div class="section">
+                <h2>🔄 Sync Operations</h2>
+                <p>Manually trigger scheduled operations for testing and management</p>
+                
+                <!-- Sync Status Display -->
+                <div id="sync-status-display" class="sync-status">
+                    <div class="status-indicator status-warning"></div>
+                    <span>Loading sync status...</span>
+                </div>
+                
+                <!-- Daily Update Section -->
+                <div class="section">
+                    <h3>📅 Daily Update (6am Tasks)</h3>
+                    <p>Updates game schedule, backs up database, and syncs NFL rosters/injuries</p>
+                    
+                    <div class="controls">
+                        <button class="btn" onclick="runDailyUpdate()" id="daily-update-btn">Run Daily Update</button>
+                    </div>
+                    
+                    <div id="daily-update-results" class="settings-display" style="display: none;">
+                        <h4>Daily Update Results</h4>
+                        <div id="daily-results-content"></div>
+                    </div>
+                </div>
+                
+                <!-- Weekly Update Section -->
+                <div class="section">
+                    <h3>📊 Weekly Update (End of Week Tasks)</h3>
+                    <p>Creates standings and advances to the next week when all games are complete</p>
+                    
+                    <div class="controls">
+                        <button class="btn" onclick="runWeeklyUpdate()" id="weekly-update-btn">Run Weekly Update</button>
+                    </div>
+                    
+                    <div id="weekly-update-results" class="settings-display" style="display: none;">
+                        <h4>Weekly Update Results</h4>
+                        <div id="weekly-results-content"></div>
+                    </div>
+                </div>
+                
+                <!-- Live Game Update Section -->
+                <div class="section">
+                    <h3>🏈 Live Game Update (Every Minute During Games)</h3>
+                    <p>Updates game scores and calculates defensive bonuses when games complete</p>
+                    
+                    <div class="controls">
+                        <button class="btn" onclick="runLiveUpdate()" id="live-update-btn">Run Live Update</button>
+                    </div>
+                    
+                    <div id="live-update-results" class="settings-display" style="display: none;">
+                        <h4>Live Update Results</h4>
+                        <div id="live-results-content"></div>
+                    </div>
+                </div>
+                
+                <div id="sync-messages" class="messages"></div>
+            </div>
+        </div>
+
         <!-- Database Browser Tab -->
         <div id="database-tab" class="tab-content">
             <div class="section">
@@ -916,11 +978,6 @@
                 <div class="section">
                     <h3>⚙️ Admin Controls</h3>
                     
-                    <div class="controls">
-                        <button class="btn" onclick="syncPlayers()">Sync Players</button>
-                        <button class="btn btn-secondary" onclick="checkSyncStatus()">Check Status</button>
-                    </div>
-
                     <div id="admin-messages"></div>
 
                     <!-- Roster Management Section -->
@@ -958,36 +1015,6 @@
 
                         <div id="roster-content" class="roster-display">
                             <p>Select a team to view roster</p>
-                        </div>
-                    </div>
-
-                    <!-- Stats Sync Section -->
-                    <div class="section">
-                        <h4>📊 Player Stats Sync</h4>
-                        <p>Sync player statistics from Tank01 API for weekly fantasy scoring</p>
-                        
-                        <div class="roster-controls">
-                            <div class="form-group">
-                                <label for="stats-week">Week:</label>
-                                <input type="number" id="stats-week" min="1" max="18" placeholder="Week (1-18)">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="stats-season">Season:</label>
-                                <input type="number" id="stats-season" min="2020" max="2030" placeholder="Season year">
-                            </div>
-                            
-                            <div class="form-group">
-                                <button class="btn" onclick="syncWeeklyStats()" id="sync-stats-btn">Sync Weekly Stats</button>
-                                <button class="btn btn-secondary" onclick="checkStatsStatus()">Check Stats Status</button>
-                            </div>
-                        </div>
-
-                        <div id="stats-sync-messages" class="messages"></div>
-                        
-                        <div id="stats-sync-results" class="settings-display" style="display: none;">
-                            <h4>Last Sync Results</h4>
-                            <div id="stats-results-content"></div>
                         </div>
                     </div>
 
@@ -1088,6 +1115,8 @@
             } else if (tabName === 'rosters') {
                 loadTeamFilters();
                 refreshRosterInfo();
+            } else if (tabName === 'sync') {
+                loadSyncStatus();
             } else if (tabName === 'database') {
                 initDatabaseBrowser();
             } else if (tabName === 'settings') {
@@ -2436,6 +2465,281 @@
         // Hide error
         function dbHideError() {
             document.getElementById('db-errorMessage').style.display = 'none';
+        }
+
+        // Sync Tab Functions
+        async function loadSyncStatus() {
+            try {
+                const response = await fetch('/api/admin/scheduler/status');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const status = result.data;
+                    const statusDisplay = document.getElementById('sync-status-display');
+                    
+                    let statusHTML = '';
+                    let indicatorClass = 'status-healthy';
+                    
+                    if (status.dailyUpdateInProgress || status.weeklyUpdateInProgress || status.liveUpdateInProgress) {
+                        indicatorClass = 'status-warning';
+                        statusHTML = '<strong>Update in progress...</strong>';
+                    } else {
+                        statusHTML = '<strong>All systems ready</strong><br>';
+                        
+                        if (status.lastDailyUpdate) {
+                            statusHTML += `Last daily update: ${new Date(status.lastDailyUpdate).toLocaleString()}<br>`;
+                        }
+                        if (status.lastWeeklyUpdate) {
+                            statusHTML += `Last weekly update: ${new Date(status.lastWeeklyUpdate).toLocaleString()}<br>`;
+                        }
+                        if (status.lastLiveUpdate) {
+                            statusHTML += `Last live update: ${new Date(status.lastLiveUpdate).toLocaleString()}`;
+                        }
+                    }
+                    
+                    statusDisplay.innerHTML = `
+                        <div class="status-indicator ${indicatorClass}"></div>
+                        <div>${statusHTML}</div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('sync-status-display').innerHTML = `
+                    <div class="status-indicator status-unhealthy"></div>
+                    <span><strong>Error loading status</strong> - ${error.message}</span>
+                `;
+            }
+        }
+
+        async function runDailyUpdate() {
+            const button = document.getElementById('daily-update-btn');
+            button.disabled = true;
+            button.textContent = 'Running...';
+            
+            showSyncMessage('Starting daily update...', 'info');
+            
+            try {
+                const response = await fetch('/api/admin/scheduler/daily', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSyncMessage(result.message, 'success');
+                    
+                    // Display results
+                    const resultsDiv = document.getElementById('daily-update-results');
+                    const resultsContent = document.getElementById('daily-results-content');
+                    
+                    let resultsHTML = '';
+                    const res = result.data.results;
+                    
+                    resultsHTML += `
+                        <div class="setting-item">
+                            <span class="setting-label">Game Schedule:</span>
+                            <span class="setting-value">${res.gameSchedule ? '✅ Success' : '❌ Failed'}</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Database Backup:</span>
+                            <span class="setting-value">${res.backup ? '✅ Success' : '❌ Failed'}</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Roster Update:</span>
+                            <span class="setting-value">${res.rosters ? '✅ Success' : '❌ Failed'}</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Duration:</span>
+                            <span class="setting-value">${result.data.duration}ms</span>
+                        </div>
+                    `;
+                    
+                    if (res.errors && res.errors.length > 0) {
+                        resultsHTML += '<div class="error" style="margin-top: 1rem;">Errors:<ul>';
+                        res.errors.forEach(error => {
+                            resultsHTML += `<li>${error}</li>`;
+                        });
+                        resultsHTML += '</ul></div>';
+                    }
+                    
+                    resultsContent.innerHTML = resultsHTML;
+                    resultsDiv.style.display = 'block';
+                    
+                    // Refresh status
+                    loadSyncStatus();
+                } else {
+                    showSyncMessage(`Daily update failed: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                showSyncMessage(`Error: ${error.message}`, 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Run Daily Update';
+            }
+        }
+
+        async function runWeeklyUpdate() {
+            const button = document.getElementById('weekly-update-btn');
+            button.disabled = true;
+            button.textContent = 'Running...';
+            
+            showSyncMessage('Starting weekly update...', 'info');
+            
+            try {
+                const response = await fetch('/api/admin/scheduler/weekly', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSyncMessage(result.message, 'success');
+                    
+                    // Display results
+                    const resultsDiv = document.getElementById('weekly-update-results');
+                    const resultsContent = document.getElementById('weekly-results-content');
+                    
+                    let resultsHTML = '';
+                    const res = result.data.results;
+                    
+                    resultsHTML += `
+                        <div class="setting-item">
+                            <span class="setting-label">Standings:</span>
+                            <span class="setting-value">${res.standings ? '✅ Success' : '❌ Failed'}</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Week Advance:</span>
+                            <span class="setting-value">${res.weekAdvance ? '✅ Success' : '❌ Failed'}</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Duration:</span>
+                            <span class="setting-value">${result.data.duration}ms</span>
+                        </div>
+                    `;
+                    
+                    if (result.data.gamesStatus) {
+                        resultsHTML += `
+                            <div class="setting-item">
+                                <span class="setting-label">Games Status:</span>
+                                <span class="setting-value">${result.data.gamesStatus.completedGames}/${result.data.gamesStatus.totalGames} complete</span>
+                            </div>
+                        `;
+                    }
+                    
+                    if (res.errors && res.errors.length > 0) {
+                        resultsHTML += '<div class="error" style="margin-top: 1rem;">Errors:<ul>';
+                        res.errors.forEach(error => {
+                            resultsHTML += `<li>${error}</li>`;
+                        });
+                        resultsHTML += '</ul></div>';
+                    }
+                    
+                    resultsContent.innerHTML = resultsHTML;
+                    resultsDiv.style.display = 'block';
+                    
+                    // Refresh status
+                    loadSyncStatus();
+                } else {
+                    showSyncMessage(`Weekly update failed: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                showSyncMessage(`Error: ${error.message}`, 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Run Weekly Update';
+            }
+        }
+
+        async function runLiveUpdate() {
+            const button = document.getElementById('live-update-btn');
+            button.disabled = true;
+            button.textContent = 'Running...';
+            
+            showSyncMessage('Starting live game update...', 'info');
+            
+            try {
+                const response = await fetch('/api/admin/scheduler/live', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSyncMessage(result.message, 'success');
+                    
+                    // Display results
+                    const resultsDiv = document.getElementById('live-update-results');
+                    const resultsContent = document.getElementById('live-results-content');
+                    
+                    let resultsHTML = '';
+                    const res = result.data.results;
+                    
+                    resultsHTML += `
+                        <div class="setting-item">
+                            <span class="setting-label">Game Scores:</span>
+                            <span class="setting-value">${res.gameScores ? '✅ Success' : '❌ Failed'}</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Games In Progress:</span>
+                            <span class="setting-value">${res.gamesInProgress}</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Defensive Bonuses:</span>
+                            <span class="setting-value">${res.defensiveBonuses ? '✅ Calculated' : '⏸️ Not needed'}</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Duration:</span>
+                            <span class="setting-value">${result.data.duration}ms</span>
+                        </div>
+                    `;
+                    
+                    if (res.errors && res.errors.length > 0) {
+                        resultsHTML += '<div class="error" style="margin-top: 1rem;">Errors:<ul>';
+                        res.errors.forEach(error => {
+                            resultsHTML += `<li>${error}</li>`;
+                        });
+                        resultsHTML += '</ul></div>';
+                    }
+                    
+                    resultsContent.innerHTML = resultsHTML;
+                    resultsDiv.style.display = 'block';
+                    
+                    // Refresh status
+                    loadSyncStatus();
+                } else {
+                    showSyncMessage(`Live update failed: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                showSyncMessage(`Error: ${error.message}`, 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Run Live Update';
+            }
+        }
+
+        function showSyncMessage(message, type) {
+            const messagesContainer = document.getElementById('sync-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+            
+            messagesContainer.innerHTML = '';
+            messagesContainer.appendChild(messageDiv);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.parentNode.removeChild(messageDiv);
+                }
+            }, 5000);
         }
 
     </script>

@@ -10,6 +10,8 @@ const ScoringService = require('./services/scoringService');
 const Tank01Service = require('./services/tank01Service');
 const NFLGamesService = require('./services/nflGamesService');
 const PlayerSyncService = require('./services/playerSyncService');
+const StandingsService = require('./services/standingsService');
+const SchedulerService = require('./services/schedulerService');
 const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
 
 const app = express();
@@ -20,7 +22,7 @@ const HTTPS_PORT = process.env.HTTPS_PORT || 8443;
 const { setupAuth } = require('./auth/auth');
 
 // Initialize services
-let db, scoringService, tank01Service, nflGamesService, playerSyncService;
+let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService;
 
 async function initializeServices() {
     try {
@@ -50,6 +52,14 @@ async function initializeServices() {
         playerSyncService = new PlayerSyncService(db, tank01Service);
         logInfo('Player sync service initialized');
         
+        // Initialize standings service
+        standingsService = new StandingsService(db);
+        logInfo('Standings service initialized');
+        
+        // Initialize scheduler service
+        schedulerService = new SchedulerService(db, nflGamesService, playerSyncService, scoringService, standingsService);
+        logInfo('Scheduler service initialized');
+        
         
         // Make services available to routes
         app.locals.db = db;
@@ -57,6 +67,8 @@ async function initializeServices() {
         app.locals.tank01Service = tank01Service;
         app.locals.nflGamesService = nflGamesService;
         app.locals.playerSyncService = playerSyncService;
+        app.locals.standingsService = standingsService;
+        app.locals.schedulerService = schedulerService;
         
         logInfo('Services initialized successfully');
     } catch (error) {

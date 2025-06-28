@@ -403,4 +403,92 @@ router.get('/cache/entries/:endpoint', requireAdmin, asyncHandler(async (req, re
     });
 }));
 
+// Scheduler endpoints
+router.post('/scheduler/daily', requireAdmin, asyncHandler(async (req, res) => {
+    const schedulerService = req.app.locals.schedulerService;
+    
+    if (!schedulerService) {
+        throw new APIError('Scheduler service not available', 500);
+    }
+    
+    const result = await schedulerService.performDailyUpdate();
+    
+    if (result.success) {
+        res.json({
+            success: true,
+            message: result.message,
+            data: result
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: result.message,
+            data: result
+        });
+    }
+}));
+
+router.post('/scheduler/weekly', requireAdmin, asyncHandler(async (req, res) => {
+    const schedulerService = req.app.locals.schedulerService;
+    
+    if (!schedulerService) {
+        throw new APIError('Scheduler service not available', 500);
+    }
+    
+    const result = await schedulerService.performWeeklyUpdate();
+    
+    if (result.success) {
+        res.json({
+            success: true,
+            message: result.message,
+            data: result
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: result.message,
+            data: result
+        });
+    }
+}));
+
+router.post('/scheduler/live', requireAdmin, asyncHandler(async (req, res) => {
+    const schedulerService = req.app.locals.schedulerService;
+    
+    if (!schedulerService) {
+        throw new APIError('Scheduler service not available', 500);
+    }
+    
+    const result = await schedulerService.performLiveGameUpdate();
+    
+    if (result.success) {
+        res.json({
+            success: true,
+            message: result.message,
+            data: result
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: result.message,
+            data: result
+        });
+    }
+}));
+
+router.get('/scheduler/status', requireAdmin, asyncHandler(async (req, res) => {
+    const schedulerService = req.app.locals.schedulerService;
+    
+    if (!schedulerService) {
+        throw new APIError('Scheduler service not available', 500);
+    }
+    
+    const status = schedulerService.getStatus();
+    
+    res.json({
+        success: true,
+        data: status
+    });
+}));
+
 module.exports = router;
