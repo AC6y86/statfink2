@@ -787,13 +787,22 @@
             
             row.innerHTML = `
                 <td class="position position-${player.position}">${player.position}</td>
-                <td class="playername" nowrap>${playerName} &nbsp;&nbsp;${player.team}<br>
-                    <span style="font-size: 10px; color: #000; margin-top: 3px; display: block;">${statsDisplay}</span>
-                </td>
+                <td class="playername" nowrap>${playerName} &nbsp;&nbsp;${player.team}</td>
+                <td class="opp">${player.opp || ''}</td>
                 <td class="status" align="center">${gameStatus}</td>
-                <td class="opp">${player.opp || '@OPP'}</td>
                 <td class="${pointsClass}" align="right">${points.toFixed(2)}</td>
             `;
+            
+            // Add stats row like reference site
+            if (statsDisplay && statsDisplay !== '0 Stats') {
+                const statsRow = tbody.insertRow(-1);
+                statsRow.className = row.className; // Use same class as main row
+                statsRow.id = `t${tableId.slice(-1)}r${rowIndex}combstat`;
+                const statsCell = statsRow.insertCell(0);
+                statsCell.colSpan = 5;
+                statsCell.style.fontSize = 'smaller';
+                statsCell.innerHTML = statsDisplay;
+            }
             
             rowIndex++;
         });
