@@ -11,6 +11,8 @@ node_modules/
 *.sqlite
 *.sqlite3
 test_*.db
+fantasy_football.db-shm
+fantasy_football.db-wal
 
 # Logs
 logs/
