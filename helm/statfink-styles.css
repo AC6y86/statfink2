@@ -60,7 +60,7 @@
 .nfl2status { color: #000; font-size: 8px; font-family: arial; background-image: url(cellbg.png);  cursor: pointer; text-align: center; padding: 2px 3px;}
 .nfl1pts { font-weight: bold; color: #000; font-size: 11px; font-family: arial; background-image: url(cellbg2.png); cursor: pointer; padding: 3px 3px;}
 .nfl2pts { font-weight: bold; color: #000; font-size: 11px; font-family: arial; background-image: url(cellbg.png); cursor: pointer; padding: 3px 3px;}
-.status { white-space: nowrap; font-size: 10px; }
+.status { white-space: nowrap; font-size: 11px; }
 .nflhl { color: #fff; font-size: 11px; font-family: arial; background-image: url(hlcellbg.png); cursor: pointer; padding: 3px 3px;}
 .nflhlpts { font-weight: bold; color: #fff; font-size: 11px; font-family: arial; background-image: url(hlcellbg.png); cursor: pointer; padding: 3px 3px;}
 .nflhlstatus { color: #fff; font-size: 8px; font-family: arial; background-image: url(hlcellbg.png); cursor: pointer; text-align: center; padding: 2px 3px;}
