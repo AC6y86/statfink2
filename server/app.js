@@ -1,3 +1,7 @@
+console.log('Starting app.js from:', __dirname);
+console.log('Process CWD:', process.cwd());
+console.log('NODE_ENV:', process.env.NODE_ENV);
+
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
@@ -5,6 +9,9 @@ const cors = require('cors');
 const https = require('https');
 const http = require('http');
 const fs = require('fs');
+
+console.log('About to load DatabaseManager...');
+
 const DatabaseManager = require('./database/database');
 const ScoringService = require('./services/scoringService');
 const Tank01Service = require('./services/tank01Service');

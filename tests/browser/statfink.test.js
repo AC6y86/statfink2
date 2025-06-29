@@ -339,19 +339,27 @@ describe('StatFink Viewer', () => {
 
       // Find all defensive players
       const defenseStats = await page.$$eval('#team0 tbody tr, #team1 tbody tr', rows => {
-        const defRows = rows.filter(row => {
-          const position = row.querySelector('.position')?.textContent.trim();
-          return position === 'DST' || position === 'DEF';
-        });
-
-        return defRows.map(row => {
-          const span = row.querySelector('.playername span');
-          return {
-            team: row.querySelector('.playername')?.textContent.split('\n')[0].trim(),
-            stats: span ? span.textContent : null,
-            position: row.querySelector('.position')?.textContent.trim()
-          };
-        });
+        const defRows = [];
+        
+        // Find rows with defensive positions
+        for (let i = 0; i < rows.length; i++) {
+          const position = rows[i].querySelector('.position')?.textContent.trim();
+          if (position === 'DST' || position === 'DEF') {
+            // Stats are in the next row (combstat row)
+            const statsRow = rows[i + 1];
+            const statsText = statsRow && statsRow.id?.includes('combstat') 
+              ? statsRow.querySelector('td')?.textContent.trim()
+              : null;
+            
+            defRows.push({
+              team: rows[i].querySelector('.playername')?.textContent.split('\n')[0].trim(),
+              stats: statsText,
+              position: position
+            });
+          }
+        }
+        
+        return defRows;
       });
 
       // Should have at least 2 defensive players (one per team)

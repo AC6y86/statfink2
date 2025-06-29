@@ -8,13 +8,20 @@ const { getTeamAbbreviation } = require('../utils/teamMappings');
 class DatabaseManager {
     constructor() {
         const dbPath = process.env.DATABASE_PATH || './fantasy_football.db';
+        const absolutePath = path.resolve(dbPath);
         
-        this.db = new sqlite3.Database(dbPath, (err) => {
+        console.log('Database path:', dbPath);
+        console.log('Absolute path:', absolutePath);
+        console.log('Current working directory:', process.cwd());
+        console.log('Database file exists:', fs.existsSync(absolutePath));
+        
+        this.db = new sqlite3.Database(absolutePath, (err) => {
             if (err) {
                 console.error('Error opening database:', err);
+                console.error('Database path was:', absolutePath);
                 throw new DatabaseError('Failed to connect to database', 'connect');
             } else {
-                console.log('Connected to SQLite database');
+                console.log('Connected to SQLite database at:', absolutePath);
                 this.initializeDatabase();
             }
         });
@@ -26,6 +33,15 @@ class DatabaseManager {
 
     initializeDatabase() {
         const schemaPath = path.join(__dirname, 'schema.sql');
+        
+        console.log('Initializing database with schema from:', schemaPath);
+        console.log('NODE_ENV:', process.env.NODE_ENV);
+        
+        // In production, skip schema initialization to preserve data
+        if (process.env.NODE_ENV === 'production') {
+            console.log('Production mode: Skipping schema initialization');
+            return;
+        }
         
         try {
             const schema = fs.readFileSync(schemaPath, 'utf8');
@@ -187,7 +203,8 @@ class DatabaseManager {
                 p.bye_week,
                 r.snapshot_date as acquisition_date,
                 r.is_scoring,
-                r.scoring_slot
+                r.scoring_slot,
+                r.ir_date
             FROM weekly_rosters r
             LEFT JOIN nfl_players p ON r.player_id = p.player_id
             WHERE r.team_id = ? AND r.week = ? AND r.season = ?
@@ -266,11 +283,21 @@ class DatabaseManager {
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
         
-        return this.run(`
-            UPDATE weekly_rosters 
-            SET roster_position = ?
-            WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
-        `, [rosterPosition, teamId, playerId, latestWeek.week, currentSeason]);
+        // If moving to IR, set the ir_date
+        if (rosterPosition === 'injured_reserve') {
+            return this.run(`
+                UPDATE weekly_rosters 
+                SET roster_position = ?, ir_date = CURRENT_TIMESTAMP
+                WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+            `, [rosterPosition, teamId, playerId, latestWeek.week, currentSeason]);
+        } else {
+            // If moving off IR, clear the ir_date
+            return this.run(`
+                UPDATE weekly_rosters 
+                SET roster_position = ?, ir_date = NULL
+                WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+            `, [rosterPosition, teamId, playerId, latestWeek.week, currentSeason]);
+        }
     }
 
     // Check if a player is available

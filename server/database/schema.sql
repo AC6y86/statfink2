@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS weekly_rosters (
     player_position VARCHAR(10) NOT NULL, -- Denormalized for historical accuracy
     player_team VARCHAR(10) NOT NULL, -- Denormalized for historical accuracy
     snapshot_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ir_date DATETIME DEFAULT NULL, -- Date when player was moved to IR
     FOREIGN KEY (team_id) REFERENCES teams(team_id),
     FOREIGN KEY (player_id) REFERENCES nfl_players(player_id),
     UNIQUE(team_id, player_id, week, season)
