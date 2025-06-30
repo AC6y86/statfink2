@@ -17,7 +17,7 @@ When we need to update stats for 2024, you can do manually to test, but after al
 
 Do not check in code without asking.
 
-To restart and run the server (without PM2), run 'npm start'.  That will kill a previous instance.
+To restart the server run 'pm2 restart statfink2'.
 
 
 ## PERMISSIONS ##
