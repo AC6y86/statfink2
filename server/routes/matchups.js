@@ -544,6 +544,15 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
             const playerTeam = getTeamAbbreviation(player.team);
             const opponent = await getPlayerOpponent(db, player, matchup.week, matchup.season, stats);
             
+            // Get game information from nfl_games table
+            const gameInfo = await db.get(`
+                SELECT game_time, status, quarter, time_remaining 
+                FROM nfl_games
+                WHERE week = ? AND season = ? 
+                AND (home_team = ? OR away_team = ?)
+                LIMIT 1
+            `, [matchup.week, matchup.season, playerTeam, playerTeam]);
+            
             return {
                 player_id: player.player_id,
                 name: player.name,
@@ -553,7 +562,11 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
                 is_scoring: player.is_scoring === 1,
                 scoring_slot: player.scoring_slot,
                 stats: stats || { fantasy_points: 0 },
-                opp: opponent || '@OPP'
+                opp: opponent || '@OPP',
+                game_time: gameInfo?.game_time || null,
+                game_status: gameInfo?.status || 'Final',
+                game_quarter: gameInfo?.quarter || null,
+                game_time_remaining: gameInfo?.time_remaining || null
             };
         })
     );
@@ -571,6 +584,15 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
             const playerTeam = getTeamAbbreviation(player.team);
             const opponent = await getPlayerOpponent(db, player, matchup.week, matchup.season, stats);
             
+            // Get game information from nfl_games table
+            const gameInfo = await db.get(`
+                SELECT game_time, status, quarter, time_remaining 
+                FROM nfl_games
+                WHERE week = ? AND season = ? 
+                AND (home_team = ? OR away_team = ?)
+                LIMIT 1
+            `, [matchup.week, matchup.season, playerTeam, playerTeam]);
+            
             return {
                 player_id: player.player_id,
                 name: player.name,
@@ -580,7 +602,11 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
                 is_scoring: player.is_scoring === 1,
                 scoring_slot: player.scoring_slot,
                 stats: stats || { fantasy_points: 0 },
-                opp: opponent || '@OPP'
+                opp: opponent || '@OPP',
+                game_time: gameInfo?.game_time || null,
+                game_status: gameInfo?.status || 'Final',
+                game_quarter: gameInfo?.quarter || null,
+                game_time_remaining: gameInfo?.time_remaining || null
             };
         })
     );

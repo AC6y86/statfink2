@@ -804,8 +804,8 @@
         headerRow.innerHTML = `
             <td>Pos</td>
             <td>Player</td>
-            <td align="right" nowrap>Game Status</td>
             <td class="opp">Opp</td>
+            <td align="center" nowrap>Game Status</td>
             <td align="right">FanPts</td>
         `;
         
@@ -843,9 +843,12 @@
             // Add stat-changed class to points ONLY if fantasy_points changed
             const pointsClass = playerChangedStats.includes('fantasy_points') ? 'points fanpts stat-changed' : 'points fanpts';
             
+            // For defenses, don't show team code after name since it's redundant
+            const displayName = player.position === 'DEF' ? playerName : `${playerName} &nbsp;&nbsp;${player.team}`;
+            
             row.innerHTML = `
                 <td class="position position-${player.position}">${player.position}</td>
-                <td class="playername" nowrap>${playerName} &nbsp;&nbsp;${player.team}</td>
+                <td class="playername" nowrap>${displayName}</td>
                 <td class="opp">${player.opp || ''}</td>
                 <td class="status" align="center" nowrap>${gameStatus}</td>
                 <td class="${pointsClass}" align="right">${points.toFixed(2)}</td>
@@ -935,9 +938,15 @@
     
     // Convert ET time to PST
     function convertToPST(etTime) {
-        // Simple conversion - subtract 3 hours
-        const match = etTime.match(/(\d+):(\d+) (AM|PM) ET/);
-        if (!match) return etTime;
+        // Handle both "4:25p" and "4:25 PM ET" formats
+        let match = etTime.match(/(\d+):(\d+) (AM|PM) ET/);
+        if (!match) {
+            // Try simpler format like "4:25p" or "1:00p"
+            match = etTime.match(/(\d+):(\d+)([ap])/i);
+            if (!match) return etTime;
+            // Convert 'p' to 'PM' and 'a' to 'AM'
+            match[3] = match[3].toUpperCase() === 'P' ? 'PM' : 'AM';
+        }
         
         let hours = parseInt(match[1]);
         const minutes = match[2];

@@ -74,7 +74,7 @@ router.get('/:week/:season', asyncHandler(async (req, res) => {
     
     // Get all games for the week from nfl_games table
     const games = await db.all(`
-        SELECT game_id, home_team, away_team, home_score, away_score, status, game_date
+        SELECT game_id, home_team, away_team, home_score, away_score, status, game_date, game_time
         FROM nfl_games
         WHERE week = ? AND season = ?
         ORDER BY game_date, game_id
@@ -114,6 +114,7 @@ router.get('/:week/:season', asyncHandler(async (req, res) => {
                 home_score: game.home_score || 0,
                 away_score: game.away_score || 0,
                 status: game.status || 'Final',
+                game_time: game.game_time || null,
                 game_url: cbsUrl
             });
         } catch (err) {
