@@ -1,5 +1,8 @@
 const fs = require('fs').promises;
 const path = require('path');
+const { exec } = require('child_process');
+const { promisify } = require('util');
+const execAsync = promisify(exec);
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 
 class SchedulerService {
@@ -323,11 +326,11 @@ class SchedulerService {
     }
 
     /**
-     * Backup the database file
+     * Backup the database file using SQLite3's .backup command
      */
     async backupDatabase() {
         try {
-            const sourcePath = path.join(__dirname, '../../statfink.db');
+            const sourcePath = path.join(__dirname, '../../fantasy_football.db');
             const backupDir = '/home/joepaley/backups';
             
             // Ensure backup directory exists
@@ -337,8 +340,14 @@ class SchedulerService {
             const date = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
             const backupPath = path.join(backupDir, `fantasy_football_${date}.db`);
             
-            // Copy the database file
-            await fs.copyFile(sourcePath, backupPath);
+            // Use SQLite3's .backup command for a safe, consistent backup
+            const command = `sqlite3 "${sourcePath}" ".backup '${backupPath}'"`;
+            
+            const { stdout, stderr } = await execAsync(command);
+            
+            if (stderr) {
+                throw new Error(`SQLite backup error: ${stderr}`);
+            }
             
             logInfo(`Database backed up to ${backupPath}`);
             

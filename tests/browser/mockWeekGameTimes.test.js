@@ -126,7 +126,7 @@ describe('Mock Week Game Times Browser Test', () => {
       // Verify the function works correctly
       expect(testResult[0].output).toBe('3Q 12:45');
       expect(testResult[1].output).toBe('Halftime');
-      expect(testResult[2].output).toContain('PST');
+      expect(testResult[2].output).toBe('1:25 PM'); // 4:25 PM ET converted to PST
       expect(testResult[3].output).toBe('Final');
     });
 
