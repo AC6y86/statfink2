@@ -391,7 +391,7 @@ class SchedulerService {
 
             // Update the week in league_settings
             await this.db.run(
-                'UPDATE league_settings SET current_week = ? WHERE id = 1',
+                'UPDATE league_settings SET current_week = ? WHERE league_id = 1',
                 [newWeek]
             );
 
@@ -418,7 +418,7 @@ class SchedulerService {
     async getCurrentSettings() {
         try {
             const settings = await this.db.get(
-                'SELECT current_week, season_year FROM league_settings WHERE id = 1'
+                'SELECT current_week, season_year FROM league_settings WHERE league_id = 1'
             );
             return settings || {};
         } catch (error) {
