@@ -70,7 +70,7 @@ The project is a **complete full-stack fantasy football application** with enter
 - **Mock Data Service**: Comprehensive mock week testing data
 
 ### Fantasy Football Features ✅
-- **Dual Scoring Systems**: Both PPR and PFL-specific scoring rules
+- **PFL Scoring System**: PFL-specific scoring rules (no PPR)
 - **Scoring Players Logic**: Top 11 offensive + 2 DST players per team
 - **League Management**: 12-team league with division support
 - **PFL Roster Constraints**: Min requirements (2 QB, 5 RB, 6 WR/TE, 2 K, 2 DST)

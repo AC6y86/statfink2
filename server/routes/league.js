@@ -75,7 +75,7 @@ router.get('/scoring', asyncHandler(async (req, res) => {
         data: {
             rules,
             groupedRules,
-            scoringType: 'PPR'
+            scoringType: 'PFL'
         }
     });
 }));

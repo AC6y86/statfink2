@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS league_settings (
     max_teams INTEGER DEFAULT 12,
     roster_size INTEGER DEFAULT 16,
     starting_lineup_size INTEGER DEFAULT 9,
-    scoring_type VARCHAR(20) DEFAULT 'ppr',
+    scoring_type VARCHAR(20) DEFAULT 'pfl',
     season_year INTEGER DEFAULT 2024,
     current_week INTEGER DEFAULT 1
 );
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS matchups (
     FOREIGN KEY (team2_id) REFERENCES teams(team_id)
 );
 
--- Scoring Rules (PPR by default)
+-- Scoring Rules (PFL by default)
 CREATE TABLE IF NOT EXISTS scoring_rules (
     rule_id INTEGER PRIMARY KEY AUTOINCREMENT,
     stat_type VARCHAR(50) NOT NULL UNIQUE,
