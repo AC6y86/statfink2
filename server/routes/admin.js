@@ -491,4 +491,18 @@ router.get('/scheduler/status', requireAdmin, asyncHandler(async (req, res) => {
     });
 }));
 
+// Debug endpoint to undo weekly update
+router.post('/debug/undo-weekly-update', requireAdmin, asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const { undoWeeklyUpdate } = require('../utils/undoWeeklyUpdate');
+    
+    const result = await undoWeeklyUpdate(db);
+    
+    if (result.success) {
+        res.json(result);
+    } else {
+        res.status(500).json(result);
+    }
+}));
+
 module.exports = router;

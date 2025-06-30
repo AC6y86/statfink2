@@ -22,6 +22,27 @@ class SchedulerService {
         this.dailyUpdateInProgress = false;
         this.weeklyUpdateInProgress = false;
         this.liveUpdateInProgress = false;
+        
+        // Load timestamps from database on initialization
+        this.loadTimestampsFromDB();
+    }
+    
+    async loadTimestampsFromDB() {
+        try {
+            const timestamps = await this.db.getSchedulerTimestamps();
+            if (timestamps) {
+                this.lastDailyUpdate = timestamps.last_daily_update ? new Date(timestamps.last_daily_update) : null;
+                this.lastWeeklyUpdate = timestamps.last_weekly_update ? new Date(timestamps.last_weekly_update) : null;
+                this.lastLiveUpdate = timestamps.last_live_update ? new Date(timestamps.last_live_update) : null;
+                logInfo('Loaded scheduler timestamps from database', {
+                    lastDailyUpdate: this.lastDailyUpdate,
+                    lastWeeklyUpdate: this.lastWeeklyUpdate,
+                    lastLiveUpdate: this.lastLiveUpdate
+                });
+            }
+        } catch (error) {
+            logWarn('Could not load scheduler timestamps from database', error);
+        }
     }
 
     /**
@@ -93,6 +114,7 @@ class SchedulerService {
             }
 
             this.lastDailyUpdate = new Date();
+            await this.db.updateSchedulerTimestamp('daily');
             const duration = Date.now() - startTime;
 
             logInfo('Daily update completed', {
@@ -196,6 +218,7 @@ class SchedulerService {
             }
 
             this.lastWeeklyUpdate = new Date();
+            await this.db.updateSchedulerTimestamp('weekly');
             const duration = Date.now() - startTime;
 
             logInfo('Weekly update completed', {
@@ -296,6 +319,7 @@ class SchedulerService {
             }
 
             this.lastLiveUpdate = new Date();
+            await this.db.updateSchedulerTimestamp('live');
             const duration = Date.now() - startTime;
 
             logInfo('Live game update completed', {

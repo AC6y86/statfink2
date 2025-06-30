@@ -528,6 +528,32 @@ class DatabaseManager {
         );
     }
 
+    // Scheduler timestamp methods
+    async getSchedulerTimestamps() {
+        return this.get(`
+            SELECT last_daily_update, last_weekly_update, last_live_update 
+            FROM league_settings 
+            WHERE league_id = 1
+        `);
+    }
+
+    async updateSchedulerTimestamp(type) {
+        const columnMap = {
+            'daily': 'last_daily_update',
+            'weekly': 'last_weekly_update',
+            'live': 'last_live_update'
+        };
+        
+        const column = columnMap[type];
+        if (!column) {
+            throw new Error(`Invalid timestamp type: ${type}`);
+        }
+        
+        return this.run(
+            `UPDATE league_settings SET ${column} = CURRENT_TIMESTAMP WHERE league_id = 1`
+        );
+    }
+
     // Scoring rules
     async getScoringRules() {
         return this.all('SELECT * FROM scoring_rules ORDER BY stat_type');
