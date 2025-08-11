@@ -156,6 +156,16 @@ app.get('/health', async (req, res) => {
     }
 });
 
+// Redirect /draft to Google Sheets
+app.get('/draft', (req, res) => {
+    res.redirect(301, 'https://docs.google.com/spreadsheets/d/1KnT8u76sPBYVCU1KsbCar3ea2zoX82KGLzt-5PY3kio/edit?gid=0#gid=0');
+});
+
+// Redirect /board to Google Apps Script board view
+app.get('/board', (req, res) => {
+    res.redirect(301, 'https://script.google.com/macros/s/AKfycbwa1ro-cTgDPeNCSZa5rqUy5gMHJMp0aD5UCQcYJ4GLk_Ucpfypx90BeLsNbGbczKaCFA/exec?view=board');
+});
+
 // Admin routes (before static middleware)
 app.get('/admin', (req, res) => {
     res.redirect('/admin/dashboard');
