@@ -873,6 +873,7 @@
                         <!-- Daily Update -->
                         <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
                             <h4 style="margin-top: 0; color: #495057;">Daily Update</h4>
+                            <p style="font-size: 0.85em; color: #17a2b8; margin: 5px 0;">📋 Updates game schedule, backs up database, syncs rosters & injuries</p>
                             <p class="current-schedule" id="daily-current" style="color: #6c757d; font-size: 0.9em;">Currently: 3:00 AM PST</p>
                             <div style="margin: 10px 0;">
                                 <label style="display: block; margin-bottom: 5px;">Time (PST):</label>
@@ -886,6 +887,7 @@
                         <!-- Sunday Games -->
                         <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
                             <h4 style="margin-top: 0; color: #495057;">Sunday Games</h4>
+                            <p style="font-size: 0.85em; color: #17a2b8; margin: 5px 0;">🏈 Updates live game scores hourly during Sunday games</p>
                             <p class="current-schedule" id="sunday-current" style="color: #6c757d; font-size: 0.9em;">Currently: 10:00 AM - 8:00 PM PST</p>
                             <div style="margin: 10px 0;">
                                 <label style="display: block; margin-bottom: 5px;">Start (PST):</label>
@@ -894,11 +896,13 @@
                                 <input type="time" id="sunday-end" value="20:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
                             </div>
                             <button class="btn btn-sm" onclick="updateSchedule('sunday')" style="padding: 5px 15px; font-size: 0.9em;">Update</button>
+                            <p class="next-run" id="sunday-next" style="color: #28a745; font-size: 0.85em; margin-top: 10px;">Next run: Loading...</p>
                         </div>
                         
                         <!-- Monday Night Football -->
                         <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
                             <h4 style="margin-top: 0; color: #495057;">Monday Night Football</h4>
+                            <p style="font-size: 0.85em; color: #17a2b8; margin: 5px 0;">🌙 Updates scores hourly during Monday night games</p>
                             <p class="current-schedule" id="monday-current" style="color: #6c757d; font-size: 0.9em;">Currently: 5:00 PM - 8:00 PM PST</p>
                             <div style="margin: 10px 0;">
                                 <label style="display: block; margin-bottom: 5px;">Start (PST):</label>
@@ -907,11 +911,13 @@
                                 <input type="time" id="monday-end" value="20:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
                             </div>
                             <button class="btn btn-sm" onclick="updateSchedule('monday')" style="padding: 5px 15px; font-size: 0.9em;">Update</button>
+                            <p class="next-run" id="monday-next" style="color: #28a745; font-size: 0.85em; margin-top: 10px;">Next run: Loading...</p>
                         </div>
                         
                         <!-- Thursday Night Football -->
                         <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
                             <h4 style="margin-top: 0; color: #495057;">Thursday Night Football</h4>
+                            <p style="font-size: 0.85em; color: #17a2b8; margin: 5px 0;">🎯 Updates scores hourly during Thursday night games</p>
                             <p class="current-schedule" id="thursday-current" style="color: #6c757d; font-size: 0.9em;">Currently: 5:00 PM - 8:00 PM PST</p>
                             <div style="margin: 10px 0;">
                                 <label style="display: block; margin-bottom: 5px;">Start (PST):</label>
@@ -920,11 +926,13 @@
                                 <input type="time" id="thursday-end" value="20:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
                             </div>
                             <button class="btn btn-sm" onclick="updateSchedule('thursday')" style="padding: 5px 15px; font-size: 0.9em;">Update</button>
+                            <p class="next-run" id="thursday-next" style="color: #28a745; font-size: 0.85em; margin-top: 10px;">Next run: Loading...</p>
                         </div>
                         
                         <!-- Weekly Update -->
                         <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
                             <h4 style="margin-top: 0; color: #495057;">Weekly Update</h4>
+                            <p style="font-size: 0.85em; color: #17a2b8; margin: 5px 0;">📊 Creates standings & advances week after all games complete</p>
                             <p class="current-schedule" id="weekly-current" style="color: #6c757d; font-size: 0.9em;">Currently: Tuesday at 3:00 AM PST</p>
                             <div style="margin: 10px 0;">
                                 <label style="display: block; margin-bottom: 5px;">Day & Time (PST):</label>
@@ -937,6 +945,7 @@
                             </div>
                             <button class="btn btn-sm" onclick="updateSchedule('weekly')" style="padding: 5px 15px; font-size: 0.9em;">Update</button>
                             <p class="last-run" id="weekly-last" style="color: #6c757d; font-size: 0.85em; margin-top: 10px;">Last run: Loading...</p>
+                            <p class="next-run" id="weekly-next" style="color: #28a745; font-size: 0.85em;">Next run: Loading...</p>
                         </div>
                     </div>
                 </div>
@@ -2451,7 +2460,21 @@
         // Sync Tab Functions
         async function loadSyncStatus() {
             try {
-                const response = await fetch('/api/admin/scheduler/status');
+                const response = await fetch('/api/admin/scheduler/status', {
+                    credentials: 'same-origin'
+                });
+                
+                // Check if we got redirected to login
+                if (!response.ok || response.redirected) {
+                    window.location.href = '/login';
+                    return;
+                }
+                
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Session expired - please login again');
+                }
+                
                 const result = await response.json();
                 
                 if (result.success) {
@@ -2738,7 +2761,9 @@
         // Load current cron schedules and display in PST
         async function loadCronSchedules() {
             try {
-                const response = await fetch('/api/admin/scheduler/schedules');
+                const response = await fetch('/api/admin/scheduler/schedules', {
+                    credentials: 'same-origin'
+                });
                 const result = await response.json();
                 
                 if (result.success) {
@@ -2749,7 +2774,16 @@
                         const dailyCron = schedules['statfink2-daily'];
                         const pstTime = parseCronToPST(dailyCron);
                         document.getElementById('daily-current').textContent = `Currently: ${pstTime}`;
-                        document.getElementById('daily-time').value = pstTime.replace(' PST', '').replace(' AM', '').replace(' PM', '');
+                        
+                        // Convert to 24-hour format for time input
+                        const parts = dailyCron.split(' ');
+                        const minutes = parts[0];
+                        const hours = parseInt(parts[1]);
+                        let pstHours = hours - 7; // UTC-7 for PDT
+                        if (pstHours < 0) pstHours += 24;
+                        
+                        const timeValue = `${pstHours.toString().padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+                        document.getElementById('daily-time').value = timeValue;
                     }
                     
                     // Load status for last run times
@@ -2766,8 +2800,9 @@
             const minutes = parts[0];
             const hours = parseInt(parts[1]);
             
-            // Convert UTC to PST (UTC-8)
-            let pstHours = hours - 8;
+            // Convert UTC to PDT (UTC-7 during daylight time, UTC-8 standard)
+            // We're currently in PDT (summer)
+            let pstHours = hours - 7;
             if (pstHours < 0) pstHours += 24;
             
             const ampm = pstHours >= 12 ? 'PM' : 'AM';
@@ -2779,7 +2814,9 @@
         // Load scheduler status for last run times
         async function loadSchedulerStatus() {
             try {
-                const response = await fetch('/api/admin/scheduler/status');
+                const response = await fetch('/api/admin/scheduler/status', {
+                    credentials: 'same-origin'
+                });
                 const result = await response.json();
                 
                 if (result.success) {
@@ -2825,14 +2862,68 @@
         // Update next run times
         function updateNextRunTimes() {
             const now = new Date();
+            const currentDay = now.getUTCDay();
+            const currentHour = now.getUTCHours();
             
-            // Daily update (3am PST)
+            // Daily update (3am PDT = 10am UTC)
             const nextDaily = new Date();
-            nextDaily.setHours(11, 0, 0, 0); // 11am UTC = 3am PST
+            nextDaily.setUTCHours(10, 0, 0, 0);
             if (nextDaily <= now) {
-                nextDaily.setDate(nextDaily.getDate() + 1);
+                nextDaily.setUTCDate(nextDaily.getUTCDate() + 1);
             }
             document.getElementById('daily-next').textContent = `Next run: ${formatDatePST(nextDaily)}`;
+            
+            // Sunday games (10am PDT Sunday = 5pm UTC Sunday)
+            const nextSunday = new Date();
+            const daysUntilSunday = (7 - currentDay) % 7 || (currentDay === 0 && currentHour >= 17 ? 7 : 0);
+            nextSunday.setUTCDate(nextSunday.getUTCDate() + daysUntilSunday);
+            nextSunday.setUTCHours(17, 0, 0, 0);
+            if (nextSunday <= now) {
+                nextSunday.setUTCDate(nextSunday.getUTCDate() + 7);
+            }
+            const sundayNext = document.getElementById('sunday-next');
+            if (sundayNext) {
+                sundayNext.textContent = `Next run: ${formatDatePST(nextSunday)}`;
+            }
+            
+            // Monday Night Football (5pm PDT Monday = 12am UTC Tuesday)
+            const nextMonday = new Date();
+            const daysUntilTuesday = currentDay <= 2 ? 2 - currentDay : 9 - currentDay;
+            nextMonday.setUTCDate(nextMonday.getUTCDate() + daysUntilTuesday);
+            nextMonday.setUTCHours(0, 0, 0, 0);
+            if (nextMonday <= now) {
+                nextMonday.setUTCDate(nextMonday.getUTCDate() + 7);
+            }
+            const mondayNext = document.getElementById('monday-next');
+            if (mondayNext) {
+                mondayNext.textContent = `Next run: ${formatDatePST(nextMonday)}`;
+            }
+            
+            // Thursday Night Football (5pm PDT Thursday = 12am UTC Friday)
+            const nextThursday = new Date();
+            const daysUntilFriday = currentDay <= 5 ? 5 - currentDay : 12 - currentDay;
+            nextThursday.setUTCDate(nextThursday.getUTCDate() + daysUntilFriday);
+            nextThursday.setUTCHours(0, 0, 0, 0);
+            if (nextThursday <= now) {
+                nextThursday.setUTCDate(nextThursday.getUTCDate() + 7);
+            }
+            const thursdayNext = document.getElementById('thursday-next');
+            if (thursdayNext) {
+                thursdayNext.textContent = `Next run: ${formatDatePST(nextThursday)}`;
+            }
+            
+            // Weekly update (3am PDT Tuesday = 10am UTC Tuesday)
+            const nextWeekly = new Date();
+            const daysUntilWeeklyTuesday = currentDay <= 2 ? 2 - currentDay : 9 - currentDay;
+            nextWeekly.setUTCDate(nextWeekly.getUTCDate() + daysUntilWeeklyTuesday);
+            nextWeekly.setUTCHours(10, 0, 0, 0);
+            if (nextWeekly <= now && currentDay === 2) {
+                nextWeekly.setUTCDate(nextWeekly.getUTCDate() + 7);
+            }
+            const weeklyNext = document.getElementById('weekly-next');
+            if (weeklyNext) {
+                weeklyNext.textContent = `Next run: ${formatDatePST(nextWeekly)}`;
+            }
         }
         
         // Update schedule
@@ -2935,7 +3026,9 @@
         // Update real-time scoring status display
         async function updateRealTimeStatus() {
             try {
-                const response = await fetch('/api/admin/scheduler/realtime/status');
+                const response = await fetch('/api/admin/scheduler/realtime/status', {
+                    credentials: 'same-origin'
+                });
                 const result = await response.json();
                 
                 if (result.success) {
@@ -2975,6 +3068,9 @@
             setTimeout(() => {
                 updateRealTimeStatus();
                 loadCronSchedules();
+                updateNextRunTimes();
+                // Update next run times every minute
+                setInterval(updateNextRunTimes, 60000);
             }, 100);
         }
 
