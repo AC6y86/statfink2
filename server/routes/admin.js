@@ -491,6 +491,100 @@ router.get('/scheduler/status', requireAdmin, asyncHandler(async (req, res) => {
     });
 }));
 
+// Get current cron schedules
+router.get('/scheduler/schedules', requireAdmin, asyncHandler(async (req, res) => {
+    const PM2ConfigUpdater = require('../utils/pm2ConfigUpdater');
+    const updater = new PM2ConfigUpdater();
+    
+    try {
+        const schedules = await updater.getCurrentSchedules();
+        res.json({
+            success: true,
+            data: schedules
+        });
+    } catch (error) {
+        throw new APIError('Failed to get current schedules', 500);
+    }
+}));
+
+// Update cron schedule
+router.post('/scheduler/update-schedule', requireAdmin, asyncHandler(async (req, res) => {
+    const { taskName, scheduleConfig } = req.body;
+    
+    if (!taskName || !scheduleConfig) {
+        throw new APIError('Task name and schedule configuration are required', 400);
+    }
+    
+    const PM2ConfigUpdater = require('../utils/pm2ConfigUpdater');
+    const updater = new PM2ConfigUpdater();
+    
+    try {
+        const result = await updater.updateSchedule(taskName, scheduleConfig);
+        res.json({
+            success: true,
+            data: result
+        });
+    } catch (error) {
+        throw new APIError(`Failed to update schedule: ${error.message}`, 500);
+    }
+}));
+
+// Enable real-time scoring
+router.post('/scheduler/realtime/enable', requireAdmin, asyncHandler(async (req, res) => {
+    const schedulerService = req.app.locals.schedulerService;
+    const { interval = 5 } = req.body; // Default 5 minutes
+    
+    if (!schedulerService) {
+        throw new APIError('Scheduler service not available', 500);
+    }
+    
+    schedulerService.enableRealTimeScoring(interval);
+    
+    res.json({
+        success: true,
+        message: `Real-time scoring enabled with ${interval} minute interval`,
+        data: {
+            enabled: true,
+            interval: interval
+        }
+    });
+}));
+
+// Disable real-time scoring
+router.post('/scheduler/realtime/disable', requireAdmin, asyncHandler(async (req, res) => {
+    const schedulerService = req.app.locals.schedulerService;
+    
+    if (!schedulerService) {
+        throw new APIError('Scheduler service not available', 500);
+    }
+    
+    schedulerService.disableRealTimeScoring();
+    
+    res.json({
+        success: true,
+        message: 'Real-time scoring disabled',
+        data: {
+            enabled: false
+        }
+    });
+}));
+
+// Get real-time scoring status
+router.get('/scheduler/realtime/status', requireAdmin, asyncHandler(async (req, res) => {
+    const schedulerService = req.app.locals.schedulerService;
+    
+    if (!schedulerService) {
+        throw new APIError('Scheduler service not available', 500);
+    }
+    
+    const status = schedulerService.getRealTimeStatus();
+    
+    res.json({
+        success: true,
+        data: status
+    });
+}));
+
 // Debug endpoint to undo weekly update
 router.post('/debug/undo-weekly-update', requireAdmin, asyncHandler(async (req, res) => {
     const db = req.app.locals.db;

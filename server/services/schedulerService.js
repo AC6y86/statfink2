@@ -23,6 +23,11 @@ class SchedulerService {
         this.weeklyUpdateInProgress = false;
         this.liveUpdateInProgress = false;
         
+        // Real-time scoring properties
+        this.realTimeInterval = null;
+        this.realTimeIntervalMinutes = 5;
+        this.realTimeEnabled = false;
+        
         // Load timestamps from database on initialization
         this.loadTimestampsFromDB();
     }
@@ -449,6 +454,61 @@ class SchedulerService {
             logError('Failed to get current settings', error);
             return {};
         }
+    }
+    
+    /**
+     * Enable real-time scoring with specified interval
+     * @param {number} intervalMinutes - Interval in minutes between updates
+     */
+    enableRealTimeScoring(intervalMinutes = 5) {
+        // Clear existing interval if any
+        if (this.realTimeInterval) {
+            clearInterval(this.realTimeInterval);
+        }
+        
+        this.realTimeIntervalMinutes = intervalMinutes;
+        this.realTimeEnabled = true;
+        
+        logInfo(`Enabling real-time scoring with ${intervalMinutes} minute interval`);
+        
+        // Set up the interval
+        this.realTimeInterval = setInterval(async () => {
+            logInfo('Real-time scoring interval triggered');
+            try {
+                await this.performLiveGameUpdate();
+            } catch (error) {
+                logError('Real-time scoring update failed', error);
+            }
+        }, intervalMinutes * 60 * 1000);
+        
+        // Run immediately
+        this.performLiveGameUpdate().catch(error => {
+            logError('Initial real-time scoring update failed', error);
+        });
+    }
+    
+    /**
+     * Disable real-time scoring
+     */
+    disableRealTimeScoring() {
+        if (this.realTimeInterval) {
+            clearInterval(this.realTimeInterval);
+            this.realTimeInterval = null;
+        }
+        
+        this.realTimeEnabled = false;
+        logInfo('Real-time scoring disabled');
+    }
+    
+    /**
+     * Get real-time scoring status
+     */
+    getRealTimeStatus() {
+        return {
+            enabled: this.realTimeEnabled,
+            interval: this.realTimeIntervalMinutes,
+            nextUpdate: this.realTimeInterval ? new Date(Date.now() + (this.realTimeIntervalMinutes * 60 * 1000)) : null
+        };
     }
 
     /**

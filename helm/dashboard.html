@@ -285,6 +285,81 @@
         .status-healthy { background: #28a745; }
         .status-unhealthy { background: #dc3545; }
         .status-warning { background: #ffc107; }
+        
+        /* Toggle switch styles */
+        .toggle-switch input:checked + .slider {
+            background-color: #667eea;
+        }
+        
+        .toggle-switch input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        /* Pulse animation for real-time indicator */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* Small button style */
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        /* Message styles */
+        #sync-messages {
+            margin-bottom: 1rem;
+        }
+        
+        #sync-messages .message {
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            animation: slideIn 0.3s ease;
+        }
+        
+        #sync-messages .message.success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        #sync-messages .message.error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        #sync-messages .message.info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
         .tabs {
             display: flex;
@@ -769,7 +844,10 @@
         <div id="sync-tab" class="tab-content">
             <div class="section">
                 <h2>🔄 Sync Operations</h2>
-                <p>Manually trigger scheduled operations for testing and management</p>
+                <p>Manage automated schedules and real-time scoring updates</p>
+                
+                <!-- Messages Container -->
+                <div id="sync-messages"></div>
                 
                 <!-- Sync Status Display -->
                 <div id="sync-status-display" class="sync-status">
@@ -777,49 +855,157 @@
                     <span>Loading sync status...</span>
                 </div>
                 
-                <!-- Daily Update Section -->
-                <div class="section">
-                    <h3>📅 Daily Update (6am Tasks)</h3>
-                    <p>Updates game schedule, backs up database, and syncs NFL rosters/injuries</p>
-                    
-                    <div class="controls">
-                        <button class="btn" onclick="runDailyUpdate()" id="daily-update-btn">Run Daily Update</button>
+                <!-- Current Time Display -->
+                <div style="background: #e7f3ff; border: 1px solid #0066cc; padding: 10px 15px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>Current Time (PST):</strong> <span id="current-pst-time" style="font-size: 1.1em; font-weight: 500;">--:-- AM</span>
                     </div>
-                    
-                    <div id="daily-update-results" class="settings-display" style="display: none;">
-                        <h4>Daily Update Results</h4>
-                        <div id="daily-results-content"></div>
+                    <div>
+                        <strong>Date:</strong> <span id="current-pst-date">--</span>
                     </div>
                 </div>
                 
-                <!-- Weekly Update Section -->
-                <div class="section">
-                    <h3>📊 Weekly Update (End of Week Tasks)</h3>
-                    <p>Creates standings and advances to the next week when all games are complete</p>
+                <!-- Automated Schedule Settings -->
+                <div class="section" style="background: #f8f9fa; border: 2px solid #dee2e6;">
+                    <h3>📅 Automated Schedule Settings <span style="font-size: 0.8em; color: #6c757d;">(All times in PST)</span></h3>
                     
-                    <div class="controls">
-                        <button class="btn" onclick="runWeeklyUpdate()" id="weekly-update-btn">Run Weekly Update</button>
-                    </div>
-                    
-                    <div id="weekly-update-results" class="settings-display" style="display: none;">
-                        <h4>Weekly Update Results</h4>
-                        <div id="weekly-results-content"></div>
+                    <div class="schedule-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <!-- Daily Update -->
+                        <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
+                            <h4 style="margin-top: 0; color: #495057;">Daily Update</h4>
+                            <p class="current-schedule" id="daily-current" style="color: #6c757d; font-size: 0.9em;">Currently: 3:00 AM PST</p>
+                            <div style="margin: 10px 0;">
+                                <label style="display: block; margin-bottom: 5px;">Time (PST):</label>
+                                <input type="time" id="daily-time" value="03:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px;">
+                            </div>
+                            <button class="btn btn-sm" onclick="updateSchedule('daily')" style="padding: 5px 15px; font-size: 0.9em;">Update</button>
+                            <p class="last-run" id="daily-last" style="color: #6c757d; font-size: 0.85em; margin-top: 10px;">Last run: Loading...</p>
+                            <p class="next-run" id="daily-next" style="color: #28a745; font-size: 0.85em;">Next run: Loading...</p>
+                        </div>
+                        
+                        <!-- Sunday Games -->
+                        <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
+                            <h4 style="margin-top: 0; color: #495057;">Sunday Games</h4>
+                            <p class="current-schedule" id="sunday-current" style="color: #6c757d; font-size: 0.9em;">Currently: 10:00 AM - 8:00 PM PST</p>
+                            <div style="margin: 10px 0;">
+                                <label style="display: block; margin-bottom: 5px;">Start (PST):</label>
+                                <input type="time" id="sunday-start" value="10:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%; margin-bottom: 10px;">
+                                <label style="display: block; margin-bottom: 5px;">End (PST):</label>
+                                <input type="time" id="sunday-end" value="20:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
+                            </div>
+                            <button class="btn btn-sm" onclick="updateSchedule('sunday')" style="padding: 5px 15px; font-size: 0.9em;">Update</button>
+                        </div>
+                        
+                        <!-- Monday Night Football -->
+                        <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
+                            <h4 style="margin-top: 0; color: #495057;">Monday Night Football</h4>
+                            <p class="current-schedule" id="monday-current" style="color: #6c757d; font-size: 0.9em;">Currently: 5:00 PM - 8:00 PM PST</p>
+                            <div style="margin: 10px 0;">
+                                <label style="display: block; margin-bottom: 5px;">Start (PST):</label>
+                                <input type="time" id="monday-start" value="17:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%; margin-bottom: 10px;">
+                                <label style="display: block; margin-bottom: 5px;">End (PST):</label>
+                                <input type="time" id="monday-end" value="20:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
+                            </div>
+                            <button class="btn btn-sm" onclick="updateSchedule('monday')" style="padding: 5px 15px; font-size: 0.9em;">Update</button>
+                        </div>
+                        
+                        <!-- Thursday Night Football -->
+                        <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
+                            <h4 style="margin-top: 0; color: #495057;">Thursday Night Football</h4>
+                            <p class="current-schedule" id="thursday-current" style="color: #6c757d; font-size: 0.9em;">Currently: 5:00 PM - 8:00 PM PST</p>
+                            <div style="margin: 10px 0;">
+                                <label style="display: block; margin-bottom: 5px;">Start (PST):</label>
+                                <input type="time" id="thursday-start" value="17:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%; margin-bottom: 10px;">
+                                <label style="display: block; margin-bottom: 5px;">End (PST):</label>
+                                <input type="time" id="thursday-end" value="20:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
+                            </div>
+                            <button class="btn btn-sm" onclick="updateSchedule('thursday')" style="padding: 5px 15px; font-size: 0.9em;">Update</button>
+                        </div>
+                        
+                        <!-- Weekly Update -->
+                        <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
+                            <h4 style="margin-top: 0; color: #495057;">Weekly Update</h4>
+                            <p class="current-schedule" id="weekly-current" style="color: #6c757d; font-size: 0.9em;">Currently: Tuesday at 3:00 AM PST</p>
+                            <div style="margin: 10px 0;">
+                                <label style="display: block; margin-bottom: 5px;">Day & Time (PST):</label>
+                                <select id="weekly-day" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%; margin-bottom: 10px;">
+                                    <option value="2" selected>Tuesday</option>
+                                    <option value="3">Wednesday</option>
+                                    <option value="4">Thursday</option>
+                                </select>
+                                <input type="time" id="weekly-time" value="03:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
+                            </div>
+                            <button class="btn btn-sm" onclick="updateSchedule('weekly')" style="padding: 5px 15px; font-size: 0.9em;">Update</button>
+                            <p class="last-run" id="weekly-last" style="color: #6c757d; font-size: 0.85em; margin-top: 10px;">Last run: Loading...</p>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Live Game Update Section -->
+                <!-- Real-Time Scoring Control -->
+                <div class="section" style="background: #fff3cd; border: 2px solid #ffc107;">
+                    <h3>⚡ Real-Time Scoring Mode</h3>
+                    <p style="color: #856404;">Enable continuous updates during live games</p>
+                    
+                    <div class="realtime-controls" style="display: flex; align-items: center; gap: 20px; margin-top: 15px;">
+                        <div class="toggle-container" style="display: flex; align-items: center; gap: 10px;">
+                            <label class="toggle-switch" style="position: relative; display: inline-block; width: 60px; height: 34px;">
+                                <input type="checkbox" id="realtime-toggle" onchange="toggleRealTimeScoring()" style="opacity: 0; width: 0; height: 0;">
+                                <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;"></span>
+                            </label>
+                            <span id="realtime-status" style="font-weight: bold;">Disabled</span>
+                            <div id="realtime-indicator" class="status-indicator" style="width: 12px; height: 12px; border-radius: 50%; background-color: #dc3545;"></div>
+                        </div>
+                        
+                        <div class="realtime-settings">
+                            <label>Update Interval: 
+                                <select id="realtime-interval" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    <option value="1">Every minute</option>
+                                    <option value="5" selected>Every 5 minutes</option>
+                                    <option value="10">Every 10 minutes</option>
+                                    <option value="15">Every 15 minutes</option>
+                                </select>
+                            </label>
+                        </div>
+                        
+                        <button class="btn" onclick="runLiveUpdate()" style="background: #28a745;">Run Once Now</button>
+                    </div>
+                    
+                    <div id="realtime-next-update" style="margin-top: 10px; color: #856404; font-size: 0.9em;"></div>
+                </div>
+                
+                <!-- Manual Update Sections -->
                 <div class="section">
-                    <h3>🏈 Live Game Update (Every Minute During Games)</h3>
-                    <p>Updates game scores and calculates defensive bonuses when games complete</p>
+                    <h3>🔧 Manual Updates</h3>
+                    <p>Manually trigger updates for testing or immediate processing</p>
                     
-                    <div class="controls">
-                        <button class="btn" onclick="runLiveUpdate()" id="live-update-btn">Run Live Update</button>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <!-- Daily Update -->
+                        <div style="border: 1px solid #dee2e6; padding: 15px; border-radius: 8px;">
+                            <h4 style="margin-top: 0;">📅 Daily Update</h4>
+                            <p style="font-size: 0.9em; color: #6c757d;">Game schedule, backups, roster sync</p>
+                            <button class="btn" onclick="runDailyUpdate()" id="daily-update-btn">Run Daily Update</button>
+                        </div>
+                        
+                        <!-- Weekly Update -->
+                        <div style="border: 1px solid #dee2e6; padding: 15px; border-radius: 8px;">
+                            <h4 style="margin-top: 0;">📊 Weekly Update</h4>
+                            <p style="font-size: 0.9em; color: #6c757d;">Standings and week advancement</p>
+                            <button class="btn" onclick="runWeeklyUpdate()" id="weekly-update-btn">Run Weekly Update</button>
+                        </div>
+                        
+                        <!-- Live Update -->
+                        <div style="border: 1px solid #dee2e6; padding: 15px; border-radius: 8px;">
+                            <h4 style="margin-top: 0;">🏈 Live Update</h4>
+                            <p style="font-size: 0.9em; color: #6c757d;">Game scores and defensive bonuses</p>
+                            <button class="btn" onclick="runLiveUpdate()" id="live-update-btn">Run Live Update</button>
+                        </div>
                     </div>
-                    
-                    <div id="live-update-results" class="settings-display" style="display: none;">
-                        <h4>Live Update Results</h4>
-                        <div id="live-results-content"></div>
-                    </div>
+                </div>
+                
+                <!-- Update Results -->
+                <div id="update-results" class="settings-display" style="display: none; margin-top: 20px;">
+                    <h4>Update Results</h4>
+                    <div id="update-results-content"></div>
                 </div>
                 
                 <div id="sync-messages" class="messages"></div>
@@ -1247,6 +1433,52 @@
             }
         }
 
+
+        // Update current PST time
+        function updatePSTTime() {
+            // Create a date formatter for Pacific Time
+            const formatter = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'America/Los_Angeles',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long',
+                hour: 'numeric',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+            
+            const now = new Date();
+            const parts = formatter.formatToParts(now);
+            
+            // Extract parts
+            const timeParts = {};
+            parts.forEach(part => {
+                if (part.type !== 'literal') {
+                    timeParts[part.type] = part.value;
+                }
+            });
+            
+            // Format time string
+            const timeString = `${timeParts.hour}:${timeParts.minute}:${timeParts.second} ${timeParts.dayPeriod}`;
+            const dateString = `${timeParts.weekday}, ${timeParts.month} ${timeParts.day}, ${timeParts.year}`;
+            
+            // Update display
+            const timeElement = document.getElementById('current-pst-time');
+            const dateElement = document.getElementById('current-pst-date');
+            
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+            if (dateElement) {
+                dateElement.textContent = dateString;
+            }
+        }
+        
+        // Start updating time when page loads
+        setInterval(updatePSTTime, 1000);
+        updatePSTTime(); // Initial update
 
         // Load database statistics
         async function loadDatabaseStats() {
@@ -2425,9 +2657,11 @@
         }
 
         async function runLiveUpdate() {
-            const button = document.getElementById('live-update-btn');
-            button.disabled = true;
-            button.textContent = 'Running...';
+            const buttons = document.querySelectorAll('#live-update-btn, button[onclick="runLiveUpdate()"]');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.textContent = 'Running...';
+            });
             
             showSyncMessage('Starting live game update...', 'info');
             
@@ -2445,8 +2679,8 @@
                     showSyncMessage(result.message, 'success');
                     
                     // Display results
-                    const resultsDiv = document.getElementById('live-update-results');
-                    const resultsContent = document.getElementById('live-results-content');
+                    const resultsDiv = document.getElementById('update-results');
+                    const resultsContent = document.getElementById('update-results-content');
                     
                     let resultsHTML = '';
                     const res = result.data.results;
@@ -2489,9 +2723,259 @@
             } catch (error) {
                 showSyncMessage(`Error: ${error.message}`, 'error');
             } finally {
-                button.disabled = false;
-                button.textContent = 'Run Live Update';
+                buttons.forEach(btn => {
+                    btn.disabled = false;
+                    // Restore original text based on button context
+                    if (btn.style.background === 'rgb(40, 167, 69)') {
+                        btn.textContent = 'Run Once Now';
+                    } else {
+                        btn.textContent = 'Run Live Update';
+                    }
+                });
             }
+        }
+        
+        // Load current cron schedules and display in PST
+        async function loadCronSchedules() {
+            try {
+                const response = await fetch('/api/admin/scheduler/schedules');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const schedules = result.data;
+                    
+                    // Parse and display schedules in PST
+                    if (schedules['statfink2-daily']) {
+                        const dailyCron = schedules['statfink2-daily'];
+                        const pstTime = parseCronToPST(dailyCron);
+                        document.getElementById('daily-current').textContent = `Currently: ${pstTime}`;
+                        document.getElementById('daily-time').value = pstTime.replace(' PST', '').replace(' AM', '').replace(' PM', '');
+                    }
+                    
+                    // Load status for last run times
+                    loadSchedulerStatus();
+                }
+            } catch (error) {
+                console.error('Error loading cron schedules:', error);
+            }
+        }
+        
+        // Parse UTC cron expression to PST time
+        function parseCronToPST(cronExpression) {
+            const parts = cronExpression.split(' ');
+            const minutes = parts[0];
+            const hours = parseInt(parts[1]);
+            
+            // Convert UTC to PST (UTC-8)
+            let pstHours = hours - 8;
+            if (pstHours < 0) pstHours += 24;
+            
+            const ampm = pstHours >= 12 ? 'PM' : 'AM';
+            const displayHours = pstHours === 0 ? 12 : (pstHours > 12 ? pstHours - 12 : pstHours);
+            
+            return `${displayHours}:${minutes.padStart(2, '0')} ${ampm} PST`;
+        }
+        
+        // Load scheduler status for last run times
+        async function loadSchedulerStatus() {
+            try {
+                const response = await fetch('/api/admin/scheduler/status');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const status = result.data;
+                    
+                    // Update last run times
+                    if (status.lastDailyUpdate) {
+                        const date = new Date(status.lastDailyUpdate);
+                        document.getElementById('daily-last').textContent = `Last run: ${formatDatePST(date)}`;
+                    } else {
+                        document.getElementById('daily-last').textContent = 'Last run: Never';
+                    }
+                    
+                    if (status.lastWeeklyUpdate) {
+                        const date = new Date(status.lastWeeklyUpdate);
+                        document.getElementById('weekly-last').textContent = `Last run: ${formatDatePST(date)}`;
+                    } else {
+                        document.getElementById('weekly-last').textContent = 'Last run: Never';
+                    }
+                    
+                    // Calculate next run times
+                    updateNextRunTimes();
+                }
+            } catch (error) {
+                console.error('Error loading scheduler status:', error);
+            }
+        }
+        
+        // Format date to PST
+        function formatDatePST(date) {
+            const options = {
+                timeZone: 'America/Los_Angeles',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            };
+            return date.toLocaleString('en-US', options);
+        }
+        
+        // Update next run times
+        function updateNextRunTimes() {
+            const now = new Date();
+            
+            // Daily update (3am PST)
+            const nextDaily = new Date();
+            nextDaily.setHours(11, 0, 0, 0); // 11am UTC = 3am PST
+            if (nextDaily <= now) {
+                nextDaily.setDate(nextDaily.getDate() + 1);
+            }
+            document.getElementById('daily-next').textContent = `Next run: ${formatDatePST(nextDaily)}`;
+        }
+        
+        // Update schedule
+        async function updateSchedule(taskName) {
+            let scheduleConfig = {};
+            
+            switch(taskName) {
+                case 'daily':
+                    const dailyTime = document.getElementById('daily-time').value;
+                    scheduleConfig = { time: dailyTime };
+                    break;
+                    
+                case 'sunday':
+                    const sundayStart = document.getElementById('sunday-start').value;
+                    const sundayEnd = document.getElementById('sunday-end').value;
+                    scheduleConfig = { startTime: sundayStart, endTime: sundayEnd };
+                    break;
+                    
+                case 'monday':
+                    const mondayStart = document.getElementById('monday-start').value;
+                    const mondayEnd = document.getElementById('monday-end').value;
+                    scheduleConfig = { startTime: mondayStart, endTime: mondayEnd };
+                    break;
+                    
+                case 'thursday':
+                    const thursdayStart = document.getElementById('thursday-start').value;
+                    const thursdayEnd = document.getElementById('thursday-end').value;
+                    scheduleConfig = { startTime: thursdayStart, endTime: thursdayEnd };
+                    break;
+                    
+                case 'weekly':
+                    const weeklyDay = document.getElementById('weekly-day').value;
+                    const weeklyTime = document.getElementById('weekly-time').value;
+                    scheduleConfig = { dayOfWeek: weeklyDay, time: weeklyTime };
+                    break;
+            }
+            
+            try {
+                const response = await fetch('/api/admin/scheduler/update-schedule', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ taskName, scheduleConfig })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSyncMessage(`Schedule updated for ${taskName}`, 'success');
+                    loadCronSchedules(); // Reload to show new times
+                } else {
+                    showSyncMessage(`Failed to update schedule: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                showSyncMessage(`Error updating schedule: ${error.message}`, 'error');
+            }
+        }
+        
+        // Real-time scoring toggle
+        async function toggleRealTimeScoring() {
+            const enabled = document.getElementById('realtime-toggle').checked;
+            const interval = document.getElementById('realtime-interval').value;
+            
+            try {
+                let response;
+                if (enabled) {
+                    response = await fetch('/api/admin/scheduler/realtime/enable', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ interval: parseInt(interval) })
+                    });
+                } else {
+                    response = await fetch('/api/admin/scheduler/realtime/disable', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    updateRealTimeStatus();
+                    showSyncMessage(result.message, 'success');
+                } else {
+                    showSyncMessage(`Failed to toggle real-time scoring: ${result.error}`, 'error');
+                    // Reset toggle if failed
+                    document.getElementById('realtime-toggle').checked = !enabled;
+                }
+            } catch (error) {
+                showSyncMessage(`Error toggling real-time scoring: ${error.message}`, 'error');
+                document.getElementById('realtime-toggle').checked = !enabled;
+            }
+        }
+        
+        // Update real-time scoring status display
+        async function updateRealTimeStatus() {
+            try {
+                const response = await fetch('/api/admin/scheduler/realtime/status');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const status = result.data;
+                    const statusText = document.getElementById('realtime-status');
+                    const indicator = document.getElementById('realtime-indicator');
+                    const nextUpdateDiv = document.getElementById('realtime-next-update');
+                    const toggle = document.getElementById('realtime-toggle');
+                    
+                    if (status.enabled) {
+                        statusText.textContent = 'Enabled';
+                        statusText.style.color = '#28a745';
+                        indicator.style.backgroundColor = '#28a745';
+                        indicator.style.animation = 'pulse 2s infinite';
+                        toggle.checked = true;
+                        
+                        if (status.nextUpdate) {
+                            const nextDate = new Date(status.nextUpdate);
+                            nextUpdateDiv.textContent = `Next automatic update: ${formatDatePST(nextDate)}`;
+                        }
+                    } else {
+                        statusText.textContent = 'Disabled';
+                        statusText.style.color = '#dc3545';
+                        indicator.style.backgroundColor = '#dc3545';
+                        indicator.style.animation = 'none';
+                        toggle.checked = false;
+                        nextUpdateDiv.textContent = '';
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating real-time status:', error);
+            }
+        }
+        
+        // Initialize real-time status on page load
+        if (document.getElementById('sync-tab')) {
+            setTimeout(() => {
+                updateRealTimeStatus();
+                loadCronSchedules();
+            }, 100);
         }
 
         function showSyncMessage(message, type) {
