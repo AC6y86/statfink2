@@ -5,8 +5,12 @@ async function checkAndRunWeeklyUpdate() {
     try {
         console.log(`[${new Date().toISOString()}] Checking if weekly update needed...`);
         
-        // First check the scheduler status
-        const statusResponse = await axios.get('http://localhost:8000/api/admin/scheduler/status');
+        // First check the scheduler status using internal endpoint
+        const statusResponse = await axios.get('http://localhost:8000/api/internal/scheduler/status', {
+            headers: {
+                'X-Internal-Token': 'statfink-internal-cron'
+            }
+        });
         const status = statusResponse.data.data;
         
         // Check if we've already run the weekly update recently (within 24 hours)
@@ -21,8 +25,11 @@ async function checkAndRunWeeklyUpdate() {
         }
         
         // Try to run the weekly update
-        const response = await axios.post('http://localhost:8000/api/admin/scheduler/weekly', {}, {
-            headers: { 'Content-Type': 'application/json' },
+        const response = await axios.post('http://localhost:8000/api/internal/scheduler/weekly', {}, {
+            headers: { 
+                'Content-Type': 'application/json',
+                'X-Internal-Token': 'statfink-internal-cron'
+            },
             timeout: 300000 // 5 minute timeout
         });
         
@@ -35,6 +42,10 @@ async function checkAndRunWeeklyUpdate() {
         process.exit(0);
     } catch (error) {
         console.error(`[${new Date().toISOString()}] Weekly update check failed:`, error.message);
+        if (error.response) {
+            console.error(`Response status: ${error.response.status}`);
+            console.error(`Response data:`, error.response.data);
+        }
         process.exit(1);
     }
 }

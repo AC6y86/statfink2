@@ -329,6 +329,9 @@ app.use('/api/rosters', require('./routes/rosters'));
 // Admin routes
 app.use('/api/admin', require('./routes/admin'));
 
+// Internal routes (localhost-only, for cron jobs)
+app.use('/api/internal', require('./routes/internal'));
+
 // Redirect any unrecognized routes to /statfink
 app.get('*', (req, res) => {
     // If this is an API route, return JSON error instead of HTML

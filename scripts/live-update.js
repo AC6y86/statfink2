@@ -5,8 +5,11 @@ async function runLiveUpdate() {
     try {
         console.log(`[${new Date().toISOString()}] Starting live game update...`);
         
-        const response = await axios.post('http://localhost:8000/api/admin/scheduler/live', {}, {
-            headers: { 'Content-Type': 'application/json' },
+        const response = await axios.post('http://localhost:8000/api/internal/scheduler/live', {}, {
+            headers: { 
+                'Content-Type': 'application/json',
+                'X-Internal-Token': 'statfink-internal-cron'
+            },
             timeout: 60000 // 1 minute timeout
         });
         
@@ -14,6 +17,10 @@ async function runLiveUpdate() {
         process.exit(0);
     } catch (error) {
         console.error(`[${new Date().toISOString()}] Live update failed:`, error.message);
+        if (error.response) {
+            console.error(`Response status: ${error.response.status}`);
+            console.error(`Response data:`, error.response.data);
+        }
         process.exit(1);
     }
 }
