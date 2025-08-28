@@ -993,6 +993,9 @@
                             <h4 style="margin-top: 0;">📅 Daily Update</h4>
                             <p style="font-size: 0.9em; color: #6c757d;">Game schedule, backups, roster sync</p>
                             <button class="btn" onclick="runDailyUpdate()" id="daily-update-btn">Run Daily Update</button>
+                            <div id="daily-update-results" style="display: none; margin-top: 10px;">
+                                <div id="daily-results-content"></div>
+                            </div>
                         </div>
                         
                         <!-- Weekly Update -->
@@ -1000,6 +1003,9 @@
                             <h4 style="margin-top: 0;">📊 Weekly Update</h4>
                             <p style="font-size: 0.9em; color: #6c757d;">Standings and week advancement</p>
                             <button class="btn" onclick="runWeeklyUpdate()" id="weekly-update-btn">Run Weekly Update</button>
+                            <div id="weekly-update-results" style="display: none; margin-top: 10px;">
+                                <div id="weekly-results-content"></div>
+                            </div>
                         </div>
                         
                         <!-- Live Update -->
@@ -1007,6 +1013,9 @@
                             <h4 style="margin-top: 0;">🏈 Live Update</h4>
                             <p style="font-size: 0.9em; color: #6c757d;">Game scores and defensive bonuses</p>
                             <button class="btn" onclick="runLiveUpdate()" id="live-update-btn">Run Live Update</button>
+                            <div id="live-update-results" style="display: none; margin-top: 10px;">
+                                <div id="live-results-content"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2558,6 +2567,11 @@
                     const resultsDiv = document.getElementById('daily-update-results');
                     const resultsContent = document.getElementById('daily-results-content');
                     
+                    if (!resultsDiv || !resultsContent) {
+                        console.error('Results elements not found');
+                        return;
+                    }
+                    
                     let resultsHTML = '';
                     const res = result.data.results;
                     
@@ -2627,6 +2641,11 @@
                     // Display results
                     const resultsDiv = document.getElementById('weekly-update-results');
                     const resultsContent = document.getElementById('weekly-results-content');
+                    
+                    if (!resultsDiv || !resultsContent) {
+                        console.error('Weekly results elements not found');
+                        return;
+                    }
                     
                     let resultsHTML = '';
                     const res = result.data.results;
