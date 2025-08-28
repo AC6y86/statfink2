@@ -87,41 +87,63 @@ function setupAuth(app) {
     
     const csrfProtection = csrf();
     
-    app.get('/login', csrfProtection, (req, res) => {
-        res.send(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Login - StatFink</title>
-                <style>
-                    body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
-                    .login-container { max-width: 400px; margin: 100px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-                    h1 { color: #2c3e50; text-align: center; }
-                    input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-                    button { width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-                    button:hover { background: #764ba2; }
-                    .error { color: #e74c3c; text-align: center; margin: 10px 0; }
-                    .info { color: #3498db; text-align: center; margin: 10px 0; }
-                </style>
-            </head>
-            <body>
-                <div class="login-container">
-                    <h1>🏈 StatFink Login</h1>
-                    ${req.query.error ? '<p class="error">Invalid password</p>' : ''}
-                    ${req.query.logout ? '<p class="info">You have been logged out</p>' : ''}
-                    <form method="POST" action="/login">
-                        <input type="hidden" name="_csrf" value="${req.csrfToken()}">
-                        <input type="hidden" name="username" value="admin">
-                        <input type="password" name="password" placeholder="Password" required autocomplete="current-password" autofocus>
-                        <button type="submit">Login</button>
-                    </form>
-                </div>
-            </body>
-            </html>
-        `);
+    app.get('/login', (req, res, next) => {
+        // Wrap csrfProtection to handle errors
+        csrfProtection(req, res, (err) => {
+            const loginHTML = (csrfToken = '') => `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Login - StatFink</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
+                        .login-container { max-width: 400px; margin: 100px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                        h1 { color: #2c3e50; text-align: center; }
+                        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+                        button { width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+                        button:hover { background: #764ba2; }
+                        .error { color: #e74c3c; text-align: center; margin: 10px 0; }
+                        .info { color: #3498db; text-align: center; margin: 10px 0; }
+                        .warning { color: #f39c12; text-align: center; margin: 10px 0; font-size: 14px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="login-container">
+                        <h1>🏈 StatFink Login</h1>
+                        ${req.query.error ? '<p class="error">Invalid password</p>' : ''}
+                        ${req.query.logout ? '<p class="info">You have been logged out</p>' : ''}
+                        ${req.query.csrf ? '<p class="warning">Session expired. Please try again.</p>' : ''}
+                        <form method="POST" action="/login">
+                            ${csrfToken ? `<input type="hidden" name="_csrf" value="${csrfToken}">` : ''}
+                            <input type="hidden" name="username" value="admin">
+                            <input type="password" name="password" placeholder="Password" required autocomplete="current-password" autofocus>
+                            <button type="submit">Login</button>
+                        </form>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            if (err) {
+                // If CSRF token generation fails, redirect to login with warning
+                console.error('CSRF token generation failed:', err.message);
+                return res.redirect('/login?csrf=1');
+            }
+            
+            // Normal case - CSRF token generated successfully
+            res.send(loginHTML(req.csrfToken()));
+        });
     });
     
-    app.post('/login', loginLimiter, csrfProtection, async (req, res) => {
+    app.post('/login', loginLimiter, async (req, res) => {
+        // Handle CSRF validation with error handling
+        csrfProtection(req, res, async (err) => {
+            if (err) {
+                console.error('CSRF validation failed on login:', err.message);
+                return res.redirect('/login?csrf=1');
+            }
+            
+            // Continue with login logic
         const { username, password } = req.body;
         
         try {
@@ -152,6 +174,7 @@ function setupAuth(app) {
             console.error('Login error:', error);
             res.redirect('/login?error=1');
         }
+        });
     });
     
     app.get('/logout', (req, res) => {
