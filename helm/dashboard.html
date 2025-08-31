@@ -701,16 +701,16 @@
     <div class="container">
         <!-- Navigation Tabs -->
         <div class="tabs">
-            <button class="tab active" onclick="showTab('status')">Status</button>
+            <button class="tab active" onclick="showTab('sync')">Sync</button>
+            <button class="tab" onclick="showTab('status')">Status</button>
             <button class="tab" onclick="showTab('players')">Players</button>
             <button class="tab" onclick="showTab('rosters')">Rosters</button>
-            <button class="tab" onclick="showTab('sync')">Sync</button>
             <button class="tab" onclick="showTab('database')">Database Browser</button>
             <button class="tab" onclick="showTab('settings')">Settings</button>
         </div>
 
         <!-- Status Tab -->
-        <div id="status-tab" class="tab-content active">
+        <div id="status-tab" class="tab-content">
             <div class="section">
                 <h2>📊 League Status</h2>
                 
@@ -841,7 +841,7 @@
         </div>
 
         <!-- Sync Tab -->
-        <div id="sync-tab" class="tab-content">
+        <div id="sync-tab" class="tab-content active">
             <div class="section">
                 <h2>🔄 Sync Operations</h2>
                 <p>Manage automated schedules and real-time scoring updates</p>
@@ -1191,16 +1191,19 @@
 
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
-            // Load status tab content on startup
-            loadOverviewStats();
-            loadSystemStatus();
-            
-            // Only load other data if not on status tab
-            const activeTab = document.querySelector('.tab.active').textContent.toLowerCase();
-            if (activeTab !== 'status') {
-                loadPlayers();
-                loadTeamFilters();
+            // Check URL hash and show appropriate tab
+            let tabToShow = 'sync'; // Default to sync tab
+            if (window.location.hash) {
+                const hash = window.location.hash.substring(1);
+                // Validate the hash corresponds to a valid tab
+                const validTabs = ['sync', 'status', 'players', 'rosters', 'database', 'settings'];
+                if (validTabs.includes(hash)) {
+                    tabToShow = hash;
+                }
             }
+            
+            // Show the appropriate tab without updating hash (since we're reading from it)
+            showTab(tabToShow, false);
             
             // Set up search functionality
             const playerSearch = document.getElementById('player-search');
@@ -1211,9 +1214,18 @@
             if (positionFilter) positionFilter.addEventListener('change', filterPlayers);
             if (teamFilter) teamFilter.addEventListener('change', filterPlayers);
         });
+        
+        // Handle browser back/forward navigation
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            const validTabs = ['sync', 'status', 'players', 'rosters', 'database', 'settings'];
+            if (validTabs.includes(hash)) {
+                showTab(hash, false);
+            }
+        });
 
         // Tab switching
-        function showTab(tabName) {
+        function showTab(tabName, updateHash = true) {
             // Hide all tab contents
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
@@ -1227,8 +1239,18 @@
             // Show selected tab content
             document.getElementById(tabName + '-tab').classList.add('active');
             
-            // Add active class to clicked tab
-            event.target.classList.add('active');
+            // Add active class to corresponding tab button
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.textContent.toLowerCase().replace(' ', '-') === tabName || 
+                    (tab.textContent === 'Database Browser' && tabName === 'database')) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Update URL hash if requested
+            if (updateHash) {
+                window.location.hash = tabName;
+            }
 
             // Load data for specific tabs
             if (tabName === 'status') {

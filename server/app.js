@@ -167,12 +167,41 @@ app.get('/board', (req, res) => {
 });
 
 // Admin routes (before static middleware)
+app.get('/helm', (req, res) => {
+    res.redirect('/admin');
+});
+
 app.get('/admin', (req, res) => {
     res.redirect('/admin/dashboard');
 });
 
 app.get('/admin/dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, '../helm/dashboard.html'));
+});
+
+// Direct routes to specific dashboard tabs
+app.get('/admin/sync', (req, res) => {
+    res.redirect('/admin/dashboard#sync');
+});
+
+app.get('/admin/status', (req, res) => {
+    res.redirect('/admin/dashboard#status');
+});
+
+app.get('/admin/players', (req, res) => {
+    res.redirect('/admin/dashboard#players');
+});
+
+app.get('/admin/rosters', (req, res) => {
+    res.redirect('/admin/dashboard#rosters');
+});
+
+app.get('/admin/database', (req, res) => {
+    res.redirect('/admin/dashboard#database');
+});
+
+app.get('/admin/settings', (req, res) => {
+    res.redirect('/admin/dashboard#settings');
 });
 
 app.get('/admin/roster', (req, res) => {
