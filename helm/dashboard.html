@@ -3056,17 +3056,34 @@
                     const indicator = document.getElementById('realtime-indicator');
                     const nextUpdateDiv = document.getElementById('realtime-next-update');
                     const toggle = document.getElementById('realtime-toggle');
+                    const intervalSelect = document.getElementById('realtime-interval');
                     
                     if (status.enabled) {
-                        statusText.textContent = 'Enabled';
+                        // Show different text based on source
+                        if (status.source === 'scheduled') {
+                            statusText.textContent = 'Enabled (Scheduled)';
+                            toggle.checked = false; // Don't check the toggle for scheduled updates
+                        } else if (status.source === 'manual') {
+                            statusText.textContent = 'Enabled (Manual)';
+                            toggle.checked = true;
+                        }
                         statusText.style.color = '#28a745';
                         indicator.style.backgroundColor = '#28a745';
                         indicator.style.animation = 'pulse 2s infinite';
-                        toggle.checked = true;
                         
-                        if (status.nextUpdate) {
+                        // Show the actual interval
+                        if (status.interval) {
+                            intervalSelect.value = status.interval.toString();
+                        }
+                        
+                        // Show next update or last update
+                        if (status.source === 'scheduled' && status.lastUpdate) {
+                            const lastDate = new Date(status.lastUpdate);
+                            const nextDate = new Date(lastDate.getTime() + 60000); // Add 1 minute
+                            nextUpdateDiv.textContent = `Updates every minute during games. Next: ${formatDatePST(nextDate)}`;
+                        } else if (status.nextUpdate) {
                             const nextDate = new Date(status.nextUpdate);
-                            nextUpdateDiv.textContent = `Next automatic update: ${formatDatePST(nextDate)}`;
+                            nextUpdateDiv.textContent = `Next manual update: ${formatDatePST(nextDate)}`;
                         }
                     } else {
                         statusText.textContent = 'Disabled';

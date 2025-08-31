@@ -104,7 +104,7 @@ router.post('/scheduler/live', asyncHandler(async (req, res) => {
     }
     
     logInfo('Internal live update triggered');
-    const result = await schedulerService.performLiveScoring();
+    const result = await schedulerService.performLiveGameUpdate();
     
     if (result.success) {
         res.json({

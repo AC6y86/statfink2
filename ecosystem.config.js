@@ -27,7 +27,7 @@ module.exports = {
       name: 'statfink2-daily',
       script: './scripts/daily-update.js',
       cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 10 * * *', // 10am UTC = 3am PDT (Pacific Daylight Time)
+      cron_restart: '0 14 * * *', // 10am UTC = 3am PDT (Pacific Daylight Time)
       autorestart: false,
       watch: false,
       time: true
@@ -36,7 +36,7 @@ module.exports = {
       name: 'statfink2-live-sunday',
       script: './scripts/live-update.js',
       cwd: '/home/joepaley/statfink2',
-      cron_restart: '* 17-23 * * 0', // Every minute 5pm-11pm UTC Sunday = 10am-4pm PDT
+      cron_restart: '* 17-23 * * 0', // Every minute 5pm-11pm UTC Sunday = 10am-4pm PST
       autorestart: false,
       watch: false,
       time: true
@@ -45,7 +45,7 @@ module.exports = {
       name: 'statfink2-live-sunday-late',
       script: './scripts/live-update.js',
       cwd: '/home/joepaley/statfink2',
-      cron_restart: '* 0-3 * * 1', // Every minute 12am-3am UTC Monday = 5pm-8pm PDT Sunday
+      cron_restart: '* 0-4 * * 1', // Every minute 12am-3am UTC Monday = 5pm-8pm PDT Sunday
       autorestart: false,
       watch: false,
       time: true
@@ -54,7 +54,7 @@ module.exports = {
       name: 'statfink2-live-monday',
       script: './scripts/live-update.js',
       cwd: '/home/joepaley/statfink2',
-      cron_restart: '* 0-3 * * 2', // Every minute 12am-3am UTC Tuesday = 5pm-8pm PDT Monday
+      cron_restart: '* 1-4 * * 2', // Every minute 12am-3am UTC Tuesday = 5pm-8pm PDT Monday
       autorestart: false,
       watch: false,
       time: true

@@ -504,10 +504,18 @@ class SchedulerService {
      * Get real-time scoring status
      */
     getRealTimeStatus() {
+        // Check if cron job ran recently (within 90 seconds)
+        const cronIsActive = this.lastLiveUpdate && 
+            (Date.now() - this.lastLiveUpdate.getTime() < 90000);
+        
         return {
-            enabled: this.realTimeEnabled,
-            interval: this.realTimeIntervalMinutes,
-            nextUpdate: this.realTimeInterval ? new Date(Date.now() + (this.realTimeIntervalMinutes * 60 * 1000)) : null
+            enabled: this.realTimeEnabled || cronIsActive,
+            interval: cronIsActive ? 1 : this.realTimeIntervalMinutes,
+            nextUpdate: this.realTimeInterval ? 
+                new Date(Date.now() + (this.realTimeIntervalMinutes * 60 * 1000)) : null,
+            source: cronIsActive ? 'scheduled' : 
+                (this.realTimeEnabled ? 'manual' : 'disabled'),
+            lastUpdate: this.lastLiveUpdate
         };
     }
 
