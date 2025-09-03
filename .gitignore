@@ -50,3 +50,10 @@ certs/
 *.pem
 *.crt
 *.key
+
+# Credential and authentication files
+roster_moves/credentials.json
+roster_moves/token.json
+roster_moves/last_check.json
+**/credentials.json
+**/token.json

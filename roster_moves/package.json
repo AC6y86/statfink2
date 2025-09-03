@@ -1,0 +1,19 @@
+{
+  "name": "roster-moves-email-monitor",
+  "version": "1.0.0",
+  "description": "Gmail monitoring service for fantasy football roster moves",
+  "main": "emailMonitor.js",
+  "scripts": {
+    "setup": "node authSetup.js",
+    "start": "node runMonitor.js",
+    "check-once": "node emailMonitor.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "googleapis": "^128.0.0",
+    "@google-cloud/local-auth": "^3.0.0",
+    "sqlite3": "^5.1.6"
+  },
+  "author": "",
+  "license": "ISC"
+}
