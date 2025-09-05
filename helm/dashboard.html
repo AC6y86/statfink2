@@ -884,51 +884,6 @@
                             <p class="next-run" id="daily-next" style="color: #28a745; font-size: 0.85em;">Next run: Loading...</p>
                         </div>
                         
-                        <!-- Sunday Games -->
-                        <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
-                            <h4 style="margin-top: 0; color: #495057;">Sunday Games</h4>
-                            <p style="font-size: 0.85em; color: #17a2b8; margin: 5px 0;">🏈 Updates live game scores every minute during Sunday games</p>
-                            <p class="current-schedule" id="sunday-current" style="color: #6c757d; font-size: 0.9em;">Currently: 10:00 AM - 8:00 PM PST</p>
-                            <div style="margin: 10px 0;">
-                                <label style="display: block; margin-bottom: 5px;">Start (PST):</label>
-                                <input type="time" id="sunday-start" value="10:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%; margin-bottom: 10px;">
-                                <label style="display: block; margin-bottom: 5px;">End (PST):</label>
-                                <input type="time" id="sunday-end" value="20:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
-                            </div>
-                            <button class="btn btn-sm" onclick="updateSchedule('sunday')" style="padding: 5px 15px; font-size: 0.9em;">Update</button>
-                            <p class="next-run" id="sunday-next" style="color: #28a745; font-size: 0.85em; margin-top: 10px;">Next run: Loading...</p>
-                        </div>
-                        
-                        <!-- Monday Night Football -->
-                        <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
-                            <h4 style="margin-top: 0; color: #495057;">Monday Night Football</h4>
-                            <p style="font-size: 0.85em; color: #17a2b8; margin: 5px 0;">🌙 Updates scores every minute during Monday night games</p>
-                            <p class="current-schedule" id="monday-current" style="color: #6c757d; font-size: 0.9em;">Currently: 5:00 PM - 8:00 PM PST</p>
-                            <div style="margin: 10px 0;">
-                                <label style="display: block; margin-bottom: 5px;">Start (PST):</label>
-                                <input type="time" id="monday-start" value="17:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%; margin-bottom: 10px;">
-                                <label style="display: block; margin-bottom: 5px;">End (PST):</label>
-                                <input type="time" id="monday-end" value="20:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
-                            </div>
-                            <button class="btn btn-sm" onclick="updateSchedule('monday')" style="padding: 5px 15px; font-size: 0.9em;">Update</button>
-                            <p class="next-run" id="monday-next" style="color: #28a745; font-size: 0.85em; margin-top: 10px;">Next run: Loading...</p>
-                        </div>
-                        
-                        <!-- Thursday Night Football -->
-                        <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
-                            <h4 style="margin-top: 0; color: #495057;">Thursday Night Football</h4>
-                            <p style="font-size: 0.85em; color: #17a2b8; margin: 5px 0;">🎯 Updates scores every minute during Thursday night games</p>
-                            <p class="current-schedule" id="thursday-current" style="color: #6c757d; font-size: 0.9em;">Currently: 5:00 PM - 8:00 PM PST</p>
-                            <div style="margin: 10px 0;">
-                                <label style="display: block; margin-bottom: 5px;">Start (PST):</label>
-                                <input type="time" id="thursday-start" value="17:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%; margin-bottom: 10px;">
-                                <label style="display: block; margin-bottom: 5px;">End (PST):</label>
-                                <input type="time" id="thursday-end" value="20:00" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
-                            </div>
-                            <button class="btn btn-sm" onclick="updateSchedule('thursday')" style="padding: 5px 15px; font-size: 0.9em;">Update</button>
-                            <p class="next-run" id="thursday-next" style="color: #28a745; font-size: 0.85em; margin-top: 10px;">Next run: Loading...</p>
-                        </div>
-                        
                         <!-- Weekly Update -->
                         <div class="schedule-item" style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
                             <h4 style="margin-top: 0; color: #495057;">Weekly Update</h4>
@@ -950,36 +905,19 @@
                     </div>
                 </div>
                 
-                <!-- Real-Time Scoring Control -->
-                <div class="section" style="background: #fff3cd; border: 2px solid #ffc107;">
-                    <h3>⚡ Real-Time Scoring Mode</h3>
-                    <p style="color: #856404;">Enable continuous updates during live games</p>
+                <!-- Live Scoring Updates -->
+                <div class="section" style="background: #d4edda; border: 2px solid #28a745;">
+                    <h3>⚡ Live Scoring Updates</h3>
+                    <p style="color: #155724;">Continuous scoring updates run automatically every minute during NFL games</p>
                     
-                    <div class="realtime-controls" style="display: flex; align-items: center; gap: 20px; margin-top: 15px;">
-                        <div class="toggle-container" style="display: flex; align-items: center; gap: 10px;">
-                            <label class="toggle-switch" style="position: relative; display: inline-block; width: 60px; height: 34px;">
-                                <input type="checkbox" id="realtime-toggle" onchange="toggleRealTimeScoring()" style="opacity: 0; width: 0; height: 0;">
-                                <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;"></span>
-                            </label>
-                            <span id="realtime-status" style="font-weight: bold;">Disabled</span>
-                            <div id="realtime-indicator" class="status-indicator" style="width: 12px; height: 12px; border-radius: 50%; background-color: #dc3545;"></div>
-                        </div>
+                    <div style="margin-top: 15px;">
+                        <p style="font-weight: bold; color: #155724;">✅ Always Active - Updates every minute, 24/7</p>
+                        <p style="font-size: 0.9em; color: #155724; margin-top: 5px;">The system automatically detects when games are in progress and updates scores accordingly.</p>
                         
-                        <div class="realtime-settings">
-                            <label>Update Interval: 
-                                <select id="realtime-interval" style="padding: 5px; border: 1px solid #ced4da; border-radius: 4px;">
-                                    <option value="1">Every minute</option>
-                                    <option value="5" selected>Every 5 minutes</option>
-                                    <option value="10">Every 10 minutes</option>
-                                    <option value="15">Every 15 minutes</option>
-                                </select>
-                            </label>
+                        <div style="margin-top: 15px;">
+                            <button class="btn" onclick="runLiveUpdate()" style="background: #28a745;">Run Manual Update Now</button>
                         </div>
-                        
-                        <button class="btn" onclick="runLiveUpdate()" style="background: #28a745;">Run Once Now</button>
                     </div>
-                    
-                    <div id="realtime-next-update" style="margin-top: 10px; color: #856404; font-size: 0.9em;"></div>
                 </div>
                 
                 <!-- Manual Update Sections -->
@@ -1015,6 +953,16 @@
                             <button class="btn" onclick="runLiveUpdate()" id="live-update-btn">Run Live Update</button>
                             <div id="live-update-results" style="display: none; margin-top: 10px;">
                                 <div id="live-results-content"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Force Sync Current Week Games -->
+                        <div style="border: 1px solid #dee2e6; padding: 15px; border-radius: 8px;">
+                            <h4 style="margin-top: 0;">🔄 Force Sync Games</h4>
+                            <p style="font-size: 0.9em; color: #6c757d;">Sync current week games (smart)</p>
+                            <button class="btn" onclick="forceSyncCurrentWeekGames()" id="force-sync-games-btn">Force Sync Games</button>
+                            <div id="force-sync-results" style="display: none; margin-top: 10px;">
+                                <div id="force-sync-results-content"></div>
                             </div>
                         </div>
                     </div>
@@ -2799,6 +2747,74 @@
             }
         }
         
+        // Force sync current week games (smart sync - only non-completed games)
+        async function forceSyncCurrentWeekGames() {
+            const button = document.getElementById('force-sync-games-btn');
+            button.disabled = true;
+            button.textContent = 'Syncing...';
+            
+            const resultsDiv = document.getElementById('force-sync-results');
+            const resultsContent = document.getElementById('force-sync-results-content');
+            
+            try {
+                const response = await fetch('/api/admin/sync/games/current-week', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    resultsContent.innerHTML = `
+                        <div style="color: #28a745; margin-top: 10px;">
+                            ✅ ${result.message}
+                            <div style="font-size: 0.9em; margin-top: 10px;">
+                                <div>Week ${data.week}, Season ${data.season}</div>
+                                <div>Total games: ${data.totalGames}</div>
+                                <div>Updated: ${data.gamesUpdated} games</div>
+                                <div>Skipped: ${data.gamesSkipped} completed games</div>
+                                <div>API calls made: ${data.apiCallsMade}</div>
+                            </div>
+                        </div>
+                    `;
+                    resultsDiv.style.display = 'block';
+                    
+                    showSyncMessage(result.message, 'success');
+                    
+                    // Refresh status after successful sync
+                    setTimeout(() => {
+                        loadSyncStatus();
+                    }, 1000);
+                } else {
+                    resultsContent.innerHTML = `
+                        <div style="color: #dc3545; margin-top: 10px;">
+                            ❌ ${result.message || result.error}
+                        </div>
+                    `;
+                    resultsDiv.style.display = 'block';
+                    
+                    showSyncMessage(`Force sync failed: ${result.message || result.error}`, 'error');
+                }
+                
+            } catch (error) {
+                resultsContent.innerHTML = `
+                    <div style="color: #dc3545; margin-top: 10px;">
+                        ❌ Error: ${error.message}
+                    </div>
+                `;
+                resultsDiv.style.display = 'block';
+                
+                showSyncMessage(`Error running force sync: ${error.message}`, 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Force Sync Games';
+            }
+        }
+        
         // Load current cron schedules and display in PST
         async function loadCronSchedules() {
             try {
@@ -3024,107 +3040,12 @@
             }
         }
         
-        // Real-time scoring toggle
-        async function toggleRealTimeScoring() {
-            const enabled = document.getElementById('realtime-toggle').checked;
-            const interval = document.getElementById('realtime-interval').value;
-            
-            try {
-                let response;
-                if (enabled) {
-                    response = await fetch('/api/admin/scheduler/realtime/enable', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ interval: parseInt(interval) })
-                    });
-                } else {
-                    response = await fetch('/api/admin/scheduler/realtime/disable', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                }
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    updateRealTimeStatus();
-                    showSyncMessage(result.message, 'success');
-                } else {
-                    showSyncMessage(`Failed to toggle real-time scoring: ${result.error}`, 'error');
-                    // Reset toggle if failed
-                    document.getElementById('realtime-toggle').checked = !enabled;
-                }
-            } catch (error) {
-                showSyncMessage(`Error toggling real-time scoring: ${error.message}`, 'error');
-                document.getElementById('realtime-toggle').checked = !enabled;
-            }
-        }
+        // Removed real-time scoring toggle functions (now always-on)
+        // The system runs continuously every minute via PM2
         
-        // Update real-time scoring status display
-        async function updateRealTimeStatus() {
-            try {
-                const response = await fetch('/api/admin/scheduler/realtime/status', {
-                    credentials: 'same-origin'
-                });
-                const result = await response.json();
-                
-                if (result.success) {
-                    const status = result.data;
-                    const statusText = document.getElementById('realtime-status');
-                    const indicator = document.getElementById('realtime-indicator');
-                    const nextUpdateDiv = document.getElementById('realtime-next-update');
-                    const toggle = document.getElementById('realtime-toggle');
-                    const intervalSelect = document.getElementById('realtime-interval');
-                    
-                    if (status.enabled) {
-                        // Show different text based on source
-                        if (status.source === 'scheduled') {
-                            statusText.textContent = 'Enabled (Scheduled)';
-                            toggle.checked = false; // Don't check the toggle for scheduled updates
-                        } else if (status.source === 'manual') {
-                            statusText.textContent = 'Enabled (Manual)';
-                            toggle.checked = true;
-                        }
-                        statusText.style.color = '#28a745';
-                        indicator.style.backgroundColor = '#28a745';
-                        indicator.style.animation = 'pulse 2s infinite';
-                        
-                        // Show the actual interval
-                        if (status.interval) {
-                            intervalSelect.value = status.interval.toString();
-                        }
-                        
-                        // Show next update or last update
-                        if (status.source === 'scheduled' && status.lastUpdate) {
-                            const lastDate = new Date(status.lastUpdate);
-                            const nextDate = new Date(lastDate.getTime() + 60000); // Add 1 minute
-                            nextUpdateDiv.textContent = `Updates every minute during games. Next: ${formatDatePST(nextDate)}`;
-                        } else if (status.nextUpdate) {
-                            const nextDate = new Date(status.nextUpdate);
-                            nextUpdateDiv.textContent = `Next manual update: ${formatDatePST(nextDate)}`;
-                        }
-                    } else {
-                        statusText.textContent = 'Disabled';
-                        statusText.style.color = '#dc3545';
-                        indicator.style.backgroundColor = '#dc3545';
-                        indicator.style.animation = 'none';
-                        toggle.checked = false;
-                        nextUpdateDiv.textContent = '';
-                    }
-                }
-            } catch (error) {
-                console.error('Error updating real-time status:', error);
-            }
-        }
-        
-        // Initialize real-time status on page load
+        // Initialize sync tab on page load (cron schedules only)
         if (document.getElementById('sync-tab')) {
             setTimeout(() => {
-                updateRealTimeStatus();
                 loadCronSchedules();
                 updateNextRunTimes();
                 // Update next run times every minute

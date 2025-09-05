@@ -32,40 +32,17 @@ module.exports = {
       watch: false,
       time: true
     },
+    // Continuous live update process - runs every minute 24/7
+    // Replaces all the time-windowed live update processes
     {
-      name: 'statfink2-live-sunday',
-      script: './scripts/live-update.js',
+      name: 'statfink2-live-continuous',
+      script: './scripts/live-update-continuous.js',
       cwd: '/home/joepaley/statfink2',
-      cron_restart: '* 17-23 * * 0', // Every minute 5pm-11pm UTC Sunday = 10am-4pm PST
-      autorestart: false,
+      instances: 1,
+      exec_mode: 'fork',
+      autorestart: true,
       watch: false,
-      time: true
-    },
-    {
-      name: 'statfink2-live-sunday-late',
-      script: './scripts/live-update.js',
-      cwd: '/home/joepaley/statfink2',
-      cron_restart: '* 0-4 * * 1', // Every minute 12am-3am UTC Monday = 5pm-8pm PDT Sunday
-      autorestart: false,
-      watch: false,
-      time: true
-    },
-    {
-      name: 'statfink2-live-monday',
-      script: './scripts/live-update.js',
-      cwd: '/home/joepaley/statfink2',
-      cron_restart: '* 1-4 * * 2', // Every minute 12am-3am UTC Tuesday = 5pm-8pm PDT Monday
-      autorestart: false,
-      watch: false,
-      time: true
-    },
-    {
-      name: 'statfink2-live-thursday',
-      script: './scripts/live-update.js',
-      cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 1-4 * * 5', // Every minute 12am-6am UTC Friday = 5pm-11pm PDT Thursday
-      autorestart: false,
-      watch: false,
+      max_memory_restart: '500M',
       time: true
     },
     {
