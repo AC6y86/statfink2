@@ -1,4 +1,5 @@
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
+const { normalizeTeamCode } = require('../utils/teamNormalization');
 
 class NFLGamesService {
     constructor(db, tank01Service, scoringService = null) {
@@ -199,8 +200,8 @@ class NFLGamesService {
             gameID,
             week,
             season,
-            home.toUpperCase(),
-            away.toUpperCase(),
+            normalizeTeamCode(home),
+            normalizeTeamCode(away),
             homeScore,
             awayScore,
             gameDate,

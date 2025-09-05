@@ -1,5 +1,6 @@
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 const ScoringPlayParserService = require('./scoringPlayParserService');
+const { normalizeTeamCode, getDefensePlayerId } = require('../utils/teamNormalization');
 
 class DSTManagementService {
     constructor(db, tank01Service = null) {
@@ -159,7 +160,7 @@ class DSTManagementService {
                 const homeYards = parseInt(dstData.away?.ydsAllowed || 0);  // Away DST's yards allowed
                 
                 await this.insertDSTStats(
-                    `DEF_${awayTeam}`,
+                    getDefensePlayerId(awayTeam),
                     week,
                     gameId,
                     dstData.away,
@@ -177,7 +178,7 @@ class DSTManagementService {
                 const awayYards = parseInt(dstData.home?.ydsAllowed || 0);  // Home DST's yards allowed
                 
                 await this.insertDSTStats(
-                    `DEF_${homeTeam}`,
+                    getDefensePlayerId(homeTeam),
                     week,
                     gameId,
                     dstData.home,
