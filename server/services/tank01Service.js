@@ -262,10 +262,10 @@ class Tank01Service {
     }
 
     // Generic request method with error handling and caching
-    async makeRequest(endpoint, params = {}, cacheKey = null) {
+    async makeRequest(endpoint, params = {}, cacheKey = null, bypassCache = false) {
         try {
-            // Check cache first
-            if (cacheKey) {
+            // Check cache first (unless bypassing)
+            if (cacheKey && !bypassCache) {
                 const cachedData = await this.getCachedData(cacheKey);
                 if (cachedData) {
                     return cachedData;
@@ -419,14 +419,14 @@ class Tank01Service {
     }
 
     // Get NFL games for a specific week (correct Tank01 endpoint)
-    async getNFLGamesForWeek(week, season) {
+    async getNFLGamesForWeek(week, season, bypassCache = false) {
         try {
             const cacheKey = `gamesForWeek_${week}_${season}`;
             const data = await this.makeRequest('/getNFLGamesForWeek', {
                 week: week.toString(),
                 seasonType: 'reg',
                 season: season.toString()
-            }, cacheKey);
+            }, cacheKey, bypassCache);
 
             if (!data || !data.body) {
                 throw new Error('Invalid games response from Tank01 API');
@@ -447,7 +447,7 @@ class Tank01Service {
     }
 
     // Get NFL box score for a specific game (correct Tank01 endpoint)
-    async getNFLBoxScore(gameID) {
+    async getNFLBoxScore(gameID, bypassCache = false) {
         try {
             const cacheKey = `boxscore_${gameID}`;
             const data = await this.makeRequest('/getNFLBoxScore', {
@@ -481,7 +481,7 @@ class Tank01Service {
                 idpSacks: '0',
                 idpPassDeflections: '0',
                 idpFumblesRecovered: '0'
-            }, cacheKey);
+            }, cacheKey, bypassCache);
 
             if (!data || !data.body) {
                 throw new Error('Invalid box score response from Tank01 API');

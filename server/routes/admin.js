@@ -287,7 +287,7 @@ router.post('/sync/force', requireAdmin, asyncHandler(async (req, res) => {
     });
 }));
 
-// Force sync current week games (smart sync - only non-completed games)
+// Force sync current week games (full sync - all games with cache bypass)
 router.post('/sync/games/current-week', requireAdmin, asyncHandler(async (req, res) => {
     const nflGamesService = req.app.locals.nflGamesService;
     const tank01Service = req.app.locals.tank01Service;
@@ -307,10 +307,10 @@ router.post('/sync/games/current-week', requireAdmin, asyncHandler(async (req, r
         const currentWeek = settings.current_week;
         const currentSeason = settings.season_year;
         
-        logInfo(`Starting smart sync for week ${currentWeek}, season ${currentSeason}`);
+        logInfo(`Starting full sync (with cache bypass) for week ${currentWeek}, season ${currentSeason}`);
         
-        // First, get the list of games for the week (1 API call)
-        const gamesData = await tank01Service.getNFLGamesForWeek(currentWeek, currentSeason);
+        // First, get the list of games for the week (1 API call, bypassing cache)
+        const gamesData = await tank01Service.getNFLGamesForWeek(currentWeek, currentSeason, true);
         
         if (!gamesData || typeof gamesData !== 'object') {
             throw new APIError('No games data received from Tank01 API', 500);
@@ -339,64 +339,67 @@ router.post('/sync/games/current-week', requireAdmin, asyncHandler(async (req, r
         for (const game of games) {
             const existingStatus = existingGameMap.get(game.gameID);
             
-            // Determine if we need to update this game
-            const isCompleted = existingStatus && 
-                (existingStatus.toLowerCase().includes('final') || 
-                 existingStatus.toLowerCase() === 'completed');
-            
-            if (isCompleted) {
-                gamesSkipped++;
-                results.push({
-                    gameID: game.gameID,
-                    action: 'skipped',
-                    reason: 'Game already completed',
-                    status: existingStatus
-                });
-                logInfo(`Skipping completed game ${game.gameID} (status: ${existingStatus})`);
-            } else {
-                // Update this game - it's either new, scheduled, or in progress
-                try {
-                    // First update the game info
-                    await nflGamesService.upsertGame(game, currentWeek, currentSeason);
+            // Always update all games in full sync mode
+            try {
+                // First update the game info
+                await nflGamesService.upsertGame(game, currentWeek, currentSeason);
                     
-                    // Then fetch fresh boxscore data
-                    logInfo(`Fetching fresh boxscore for game ${game.gameID}`);
-                    const boxScore = await tank01Service.getNFLBoxScore(game.gameID);
-                    apiCallsMade++;
+                // Use updateGameFromAPI which handles both scores AND player stats
+                logInfo(`Updating game and player stats for ${game.gameID} (bypassing cache)`);
+                const updated = await nflGamesService.updateGameFromAPI(game.gameID, true); // Pass bypassCache flag
+                apiCallsMade++;
                     
-                    if (boxScore) {
-                        // Update scores from boxscore
-                        const homeScore = boxScore.homePoints || 0;
-                        const awayScore = boxScore.awayPoints || 0;
-                        const gameStatus = boxScore.gameStatus || game.gameStatus || 'Scheduled';
-                        
-                        await db.run(`
-                            UPDATE nfl_games 
-                            SET home_score = ?, away_score = ?, status = ?
-                            WHERE game_id = ?
-                        `, [homeScore, awayScore, gameStatus, game.gameID]);
-                        
-                        gamesUpdated++;
-                        results.push({
-                            gameID: game.gameID,
-                            action: 'updated',
-                            status: gameStatus,
-                            scores: `${awayScore}-${homeScore}`
-                        });
-                        logInfo(`Updated game ${game.gameID}: ${gameStatus} (${awayScore}-${homeScore})`);
-                    }
-                } catch (gameError) {
-                    logError(`Failed to update game ${game.gameID}:`, gameError);
+                if (updated) {
+                    // Get the updated game info for the response
+                    const updatedGame = await db.get(`
+                        SELECT home_score, away_score, status 
+                        FROM nfl_games 
+                        WHERE game_id = ?
+                    `, [game.gameID]);
+                    
+                    gamesUpdated++;
                     results.push({
                         gameID: game.gameID,
-                        action: 'error',
-                        error: gameError.message
+                        action: 'updated',
+                        status: updatedGame.status,
+                        scores: `${updatedGame.away_score}-${updatedGame.home_score}`,
+                        playerStatsUpdated: true
+                    });
+                    logInfo(`Updated game ${game.gameID}: ${updatedGame.status} (${updatedGame.away_score}-${updatedGame.home_score}) with player stats`);
+                } else {
+                    results.push({
+                        gameID: game.gameID,
+                        action: 'failed',
+                        reason: 'Failed to update from API'
                     });
                 }
+            } catch (gameError) {
+                logError(`Failed to update game ${game.gameID}:`, gameError);
+                results.push({
+                    gameID: game.gameID,
+                    action: 'error',
+                    error: gameError.message
+                });
             }
         }
         
-        const message = `Smart sync completed: ${gamesUpdated} games updated, ${gamesSkipped} completed games skipped`;
+        // Recalculate team scores after updating player stats
+        let teamScoresUpdated = false;
+        let teamsUpdated = 0;
+        try {
+            const teamScoreService = req.app.locals.teamScoreService;
+            if (teamScoreService) {
+                logInfo('Recalculating team scores after player stats update...');
+                const teamScoreResult = await teamScoreService.recalculateTeamScores(currentWeek, currentSeason);
+                teamScoresUpdated = teamScoreResult.success;
+                teamsUpdated = teamScoreResult.teamsUpdated || 0;
+                logInfo(`Team scores recalculated: ${teamsUpdated} teams updated`);
+            }
+        } catch (teamScoreError) {
+            logError('Failed to recalculate team scores:', teamScoreError);
+        }
+        
+        const message = `Full sync completed: ${gamesUpdated} games updated, ${teamsUpdated} team scores recalculated`;
         logInfo(message);
         
         res.json({
@@ -409,7 +412,9 @@ router.post('/sync/games/current-week', requireAdmin, asyncHandler(async (req, r
                 gamesUpdated,
                 gamesSkipped,
                 apiCallsMade,
-                results
+                results,
+                teamScoresUpdated,
+                teamsUpdated
             }
         });
         

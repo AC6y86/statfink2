@@ -272,9 +272,9 @@ class NFLGamesService {
     /**
      * Update a specific game from Tank01 API
      */
-    async updateGameFromAPI(gameId) {
+    async updateGameFromAPI(gameId, bypassCache = false) {
         try {
-            const boxScore = await this.tank01Service.getNFLBoxScore(gameId);
+            const boxScore = await this.tank01Service.getNFLBoxScore(gameId, bypassCache);
             
             if (!boxScore || !boxScore.gameID) {
                 logWarn(`No valid box score data for game ${gameId}`);

@@ -958,9 +958,9 @@
                         
                         <!-- Force Sync Current Week Games -->
                         <div style="border: 1px solid #dee2e6; padding: 15px; border-radius: 8px;">
-                            <h4 style="margin-top: 0;">🔄 Force Sync Games</h4>
-                            <p style="font-size: 0.9em; color: #6c757d;">Sync current week games (smart)</p>
-                            <button class="btn" onclick="forceSyncCurrentWeekGames()" id="force-sync-games-btn">Force Sync Games</button>
+                            <h4 style="margin-top: 0;">🔄 Full Sync Games</h4>
+                            <p style="font-size: 0.9em; color: #6c757d;">Force refresh ALL games for current week (bypasses cache)</p>
+                            <button class="btn" onclick="forceSyncCurrentWeekGames()" id="force-sync-games-btn">Full Sync Games (Force Refresh)</button>
                             <div id="force-sync-results" style="display: none; margin-top: 10px;">
                                 <div id="force-sync-results-content"></div>
                             </div>
@@ -2747,7 +2747,7 @@
             }
         }
         
-        // Force sync current week games (smart sync - only non-completed games)
+        // Force sync current week games (full sync - all games with cache bypass)
         async function forceSyncCurrentWeekGames() {
             const button = document.getElementById('force-sync-games-btn');
             button.disabled = true;
@@ -2775,9 +2775,9 @@
                             <div style="font-size: 0.9em; margin-top: 10px;">
                                 <div>Week ${data.week}, Season ${data.season}</div>
                                 <div>Total games: ${data.totalGames}</div>
-                                <div>Updated: ${data.gamesUpdated} games</div>
-                                <div>Skipped: ${data.gamesSkipped} completed games</div>
+                                <div>Updated: ${data.gamesUpdated} games with player stats</div>
                                 <div>API calls made: ${data.apiCallsMade}</div>
+                                ${data.teamScoresUpdated ? `<div>✅ Team scores recalculated: ${data.teamsUpdated} teams</div>` : ''}
                             </div>
                         </div>
                     `;
@@ -2811,7 +2811,7 @@
                 showSyncMessage(`Error running force sync: ${error.message}`, 'error');
             } finally {
                 button.disabled = false;
-                button.textContent = 'Force Sync Games';
+                button.textContent = 'Full Sync Games (Force Refresh)';
             }
         }
         
