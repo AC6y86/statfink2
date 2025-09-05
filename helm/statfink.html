@@ -924,14 +924,17 @@
         return details.join(', ') || 'No stats';
     }
 
-    // Get player game status (show time if not started, game time if in progress, Final if complete)
+    // Get player game status (show time if not started, game status if in progress, Final if complete)
     function getPlayerGameStatus(player) {
         if (player.game_status === 'Scheduled' && player.game_time) {
             // Convert ET to PST
             return convertToPST(player.game_time);
-        } else if ((player.game_status === 'InProgress' || player.game_status === 'Halftime') && player.game_time) {
-            // Show game time for in-progress games (e.g. "3Q 12:45" or "Halftime")
-            return player.game_time;
+        } else if (player.game_status === 'Halftime') {
+            // Show "Halftime" for halftime
+            return 'Halftime';
+        } else if (player.game_status && player.game_status !== 'Scheduled') {
+            // For live games, show the actual game status (e.g. "Q2 12:45", "Final", etc.)
+            return player.game_status;
         }
         return player.game_status || 'Final';
     }
