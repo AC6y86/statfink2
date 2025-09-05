@@ -6,12 +6,14 @@ const execAsync = promisify(exec);
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 
 class SchedulerService {
-    constructor(db, nflGamesService, playerSyncService, scoringService, standingsService) {
+    constructor(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService) {
         this.db = db;
         this.nflGamesService = nflGamesService;
         this.playerSyncService = playerSyncService;
         this.scoringService = scoringService;
         this.standingsService = standingsService;
+        this.teamScoreService = teamScoreService;
+        this.scoringPlayersService = scoringPlayersService;
         
         // Track last run times
         this.lastDailyUpdate = null;
@@ -299,6 +301,40 @@ class SchedulerService {
             } catch (error) {
                 logError('Failed to update game scores', error);
                 results.errors.push(`Game scores: ${error.message}`);
+            }
+
+            // 1b. Recalculate team scores for matchups
+            try {
+                if (this.teamScoreService) {
+                    const teamScoresResult = await this.teamScoreService.recalculateTeamScores(
+                        currentSettings.current_week,
+                        currentSettings.season_year
+                    );
+                    results.teamScoresUpdated = teamScoresResult.success;
+                    if (teamScoresResult.success) {
+                        logInfo(`Updated team scores for ${teamScoresResult.teamsUpdated} teams`);
+                    }
+                }
+            } catch (error) {
+                logError('Failed to update team scores', error);
+                results.errors.push(`Team scores: ${error.message}`);
+            }
+
+            // 1c. Calculate scoring players and update scoring_points
+            try {
+                if (this.scoringPlayersService) {
+                    const scoringPlayersResult = await this.scoringPlayersService.calculateScoringPlayers(
+                        currentSettings.current_week,
+                        currentSettings.season_year
+                    );
+                    results.scoringPlayersUpdated = scoringPlayersResult.success;
+                    if (scoringPlayersResult.success) {
+                        logInfo(`Updated scoring players: ${scoringPlayersResult.playersMarked} players marked as scoring`);
+                    }
+                }
+            } catch (error) {
+                logError('Failed to update scoring players', error);
+                results.errors.push(`Scoring players: ${error.message}`);
             }
 
             // 2. Check if all games are complete and calculate defensive bonuses

@@ -19,6 +19,8 @@ const NFLGamesService = require('./services/nflGamesService');
 const PlayerSyncService = require('./services/playerSyncService');
 const StandingsService = require('./services/standingsService');
 const SchedulerService = require('./services/schedulerService');
+const TeamScoreService = require('./services/teamScoreService');
+const ScoringPlayersService = require('./services/scoringPlayersService');
 const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
 
 const app = express();
@@ -29,7 +31,7 @@ const HTTPS_PORT = process.env.HTTPS_PORT || 8443;
 const { setupAuth } = require('./auth/auth');
 
 // Initialize services
-let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService;
+let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService;
 
 async function initializeServices() {
     try {
@@ -48,12 +50,15 @@ async function initializeServices() {
             logError('Tank01 API key not found in environment variables');
         }
         
-        // Initialize NFL Games service
-        nflGamesService = new NFLGamesService(db, tank01Service);
+        // Initialize scoring service first (without nflGamesService)
+        scoringService = new ScoringService(db);
+        
+        // Initialize NFL Games service with scoring service
+        nflGamesService = new NFLGamesService(db, tank01Service, scoringService);
         logInfo('NFL Games service initialized');
         
-        // Initialize scoring service with NFL Games service
-        scoringService = new ScoringService(db, nflGamesService);
+        // Set the circular reference
+        scoringService.setNFLGamesService(nflGamesService);
         
         // Initialize player sync service
         playerSyncService = new PlayerSyncService(db, tank01Service);
@@ -63,8 +68,16 @@ async function initializeServices() {
         standingsService = new StandingsService(db);
         logInfo('Standings service initialized');
         
+        // Initialize team score service
+        teamScoreService = new TeamScoreService(db);
+        logInfo('Team score service initialized');
+        
+        // Initialize scoring players service
+        scoringPlayersService = new ScoringPlayersService(db);
+        logInfo('Scoring players service initialized');
+        
         // Initialize scheduler service
-        schedulerService = new SchedulerService(db, nflGamesService, playerSyncService, scoringService, standingsService);
+        schedulerService = new SchedulerService(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService);
         logInfo('Scheduler service initialized');
         
         
@@ -75,6 +88,8 @@ async function initializeServices() {
         app.locals.nflGamesService = nflGamesService;
         app.locals.playerSyncService = playerSyncService;
         app.locals.standingsService = standingsService;
+        app.locals.teamScoreService = teamScoreService;
+        app.locals.scoringPlayersService = scoringPlayersService;
         app.locals.schedulerService = schedulerService;
         
         logInfo('Services initialized successfully');
@@ -164,6 +179,16 @@ app.get('/draft', (req, res) => {
 // Redirect /board to Google Apps Script board view
 app.get('/board', (req, res) => {
     res.redirect(301, 'https://script.google.com/macros/s/AKfycbwa1ro-cTgDPeNCSZa5rqUy5gMHJMp0aD5UCQcYJ4GLk_Ucpfypx90BeLsNbGbczKaCFA/exec?view=board');
+});
+
+// Redirect /cards to Google Apps Script cards view
+app.get('/cards', (req, res) => {
+    res.redirect(301, 'https://script.google.com/macros/s/AKfycbx0mhtv3PX5HF_RRzRl7t2rzUNV4KOgrJamPXFGvCItu7h4HIl3ov9hEMg4aHl5Nj7Xgg/exec?view=cards');
+});
+
+// Redirect /c to cards view (shortcut)
+app.get('/c', (req, res) => {
+    res.redirect(301, 'https://script.google.com/macros/s/AKfycbx0mhtv3PX5HF_RRzRl7t2rzUNV4KOgrJamPXFGvCItu7h4HIl3ov9hEMg4aHl5Nj7Xgg/exec?view=cards');
 });
 
 // Admin routes (before static middleware)

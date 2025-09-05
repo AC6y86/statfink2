@@ -1,12 +1,17 @@
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 
 class NFLGamesService {
-    constructor(db, tank01Service) {
+    constructor(db, tank01Service, scoringService = null) {
         this.db = db;
         this.tank01Service = tank01Service;
+        this.scoringService = scoringService;
         this.syncInProgress = false;
         this.lastSyncTime = null;
         this.liveUpdateInterval = null;
+    }
+    
+    setScoringService(scoringService) {
+        this.scoringService = scoringService;
     }
 
     /**
@@ -212,13 +217,15 @@ class NFLGamesService {
         try {
             logInfo('Starting live scores update');
 
-            // Get all games that are currently live or scheduled for today (PDT)
-            // Convert YYYYMMDD integer format to proper date for comparison
+            // Get all games that are currently live or recently scheduled
             const liveGames = await this.db.all(`
                 SELECT game_id, week, season, home_team, away_team, status
                 FROM nfl_games 
-                WHERE (status LIKE '%Live%' OR status LIKE '%Progress%' OR status = 'Scheduled' OR status = 'Halftime')
-                  AND date(substr(game_date,1,4) || '-' || substr(game_date,5,2) || '-' || substr(game_date,7,2)) = date('now', '-7 hours')
+                WHERE status LIKE '%Q1%' OR status LIKE '%Q2%' OR status LIKE '%Q3%' OR status LIKE '%Q4%' 
+                   OR status LIKE '%OT%' OR status = 'Halftime'
+                   OR status LIKE '%Live%' OR status LIKE '%Progress%'
+                   OR (status = 'Scheduled' AND 
+                       date(substr(game_date,1,4) || '-' || substr(game_date,5,2) || '-' || substr(game_date,7,2)) = date('now', '-7 hours'))
                 ORDER BY game_date
             `);
 
@@ -240,8 +247,8 @@ class NFLGamesService {
                 }
             }
 
-            logInfo(`Live scores update completed: ${gamesUpdated} games updated`);
-            return { success: true, gamesUpdated, liveGames: gamesUpdated };
+            logInfo(`Live scores update completed: ${gamesUpdated} games updated out of ${liveGames.length} live games`);
+            return { success: true, gamesUpdated, liveGames: liveGames.length };
 
         } catch (error) {
             logError('Failed to update live scores:', error);
@@ -362,6 +369,33 @@ class NFLGamesService {
                     const kicking = stats.Kicking || {};
                     const defense = stats.Defense || {};
                     
+                    // Build stats object for our scoring calculation
+                    const playerStatsObj = {
+                        passing_yards: parseInt(passing.passYds) || 0,
+                        passing_tds: parseInt(passing.passTD) || 0,
+                        interceptions: parseInt(passing.int) || 0,
+                        rushing_yards: parseInt(rushing.rushYds) || 0,
+                        rushing_tds: parseInt(rushing.rushTD) || 0,
+                        receiving_yards: parseInt(receiving.recYds) || 0,
+                        receiving_tds: parseInt(receiving.recTD) || 0,
+                        receptions: parseInt(receiving.receptions) || 0,
+                        field_goals_made: parseInt(kicking.fgMade) || 0,
+                        field_goals_attempted: parseInt(kicking.fgAttempts) || 0,
+                        extra_points_made: parseInt(kicking.xpMade) || 0,
+                        fumbles: parseInt(stats.fumbles) || 0,
+                        position: stats.position || '',
+                        // Add two-point conversions if available
+                        two_point_conversions_pass: parseInt(passing.passingTwoPointConversion) || 0,
+                        two_point_conversions_run: parseInt(rushing.rushingTwoPointConversion) || 0,
+                        two_point_conversions_rec: parseInt(receiving.receivingTwoPointConversion) || 0
+                    };
+                    
+                    // Calculate fantasy points using our scoring service
+                    let fantasyPoints = 0;
+                    if (this.scoringService) {
+                        fantasyPoints = await this.scoringService.calculateFantasyPoints(playerStatsObj);
+                    }
+                    
                     // Prepare stats for insertion (only using existing columns)
                     await this.db.run(`
                         INSERT OR REPLACE INTO player_stats (
@@ -380,19 +414,19 @@ class NFLGamesService {
                         gameInfo.week,
                         gameInfo.season,
                         gameId,
-                        parseInt(passing.passYds) || 0,
-                        parseInt(passing.passTD) || 0,
-                        parseInt(passing.int) || 0,
-                        parseInt(rushing.rushYds) || 0,
-                        parseInt(rushing.rushTD) || 0,
-                        parseInt(receiving.recYds) || 0,
-                        parseInt(receiving.recTD) || 0,
-                        parseInt(receiving.receptions) || 0,
-                        parseInt(kicking.fgMade) || 0,
-                        parseInt(kicking.fgAttempts) || 0,
-                        parseInt(kicking.xpMade) || 0,
-                        parseInt(stats.fumbles) || 0,
-                        parseFloat(stats.fantasyPoints) || 0,
+                        playerStatsObj.passing_yards,
+                        playerStatsObj.passing_tds,
+                        playerStatsObj.interceptions,
+                        playerStatsObj.rushing_yards,
+                        playerStatsObj.rushing_tds,
+                        playerStatsObj.receiving_yards,
+                        playerStatsObj.receiving_tds,
+                        playerStatsObj.receptions,
+                        playerStatsObj.field_goals_made,
+                        playerStatsObj.field_goals_attempted,
+                        playerStatsObj.extra_points_made,
+                        playerStatsObj.fumbles,
+                        fantasyPoints,  // Use our calculated value instead of Tank01's
                         stats.longName || '',
                         stats.teamAbv || '',
                         stats.position || ''
