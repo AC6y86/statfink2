@@ -300,17 +300,17 @@ describe('Mock Week Game Times API Tests', () => {
       // Find specific in-progress players
       const teamAQB = team1.starters.find(p => p.name === 'Team A QB');
       expect(teamAQB).toBeDefined();
-      expect(teamAQB.game_status).toBe('InProgress');
+      expect(teamAQB.game_status).toBe('3Q 12:45');
       expect(teamAQB.game_time).toBe('3Q 12:45');
       
       const teamARB = team1.starters.find(p => p.name === 'Team A RB');
       expect(teamARB).toBeDefined();
-      expect(teamARB.game_status).toBe('InProgress');
+      expect(teamARB.game_status).toBe('3Q 8:22');
       expect(teamARB.game_time).toBe('3Q 8:22');
       
       // Check all in-progress players have proper game_time
       const allPlayers = [...team1.starters, ...team2.starters];
-      const inProgressPlayers = allPlayers.filter(p => p.game_status === 'InProgress');
+      const inProgressPlayers = allPlayers.filter(p => /\d[Q] \d{1,2}:\d{2}/.test(p.game_status));
       
       inProgressPlayers.forEach(player => {
         expect(player.game_time).toBeDefined();

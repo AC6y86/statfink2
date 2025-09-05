@@ -256,10 +256,11 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
                 // Assign game status based on player index
                 if (idx < 6) {
                     // First 6 players are in progress games with specific expected times
-                    player.game_status = 'InProgress';
                     // Use the specific game times the tests expect
                     const gameTimes = ['3Q 12:45', '3Q 8:22', '3Q 5:30', '3Q 10:15', '3Q 3:45', '3Q 14:20'];
                     player.game_time = gameTimes[idx % gameTimes.length];
+                    // For in-progress games, game_status should contain the formatted time (like real games)
+                    player.game_status = player.game_time;
                     player.game_quarter = '3rd';
                     player.game_time_remaining = player.game_time.split(' ')[1];
                 } else if (idx < 9) {

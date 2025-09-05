@@ -1027,6 +1027,9 @@
         } else if (player.game_status === 'Halftime') {
             // Show "Halftime" for halftime
             return 'Halftime';
+        } else if (player.game_status === 'InProgress' && player.game_time) {
+            // Handle old format where game_status is 'InProgress' and time is in game_time
+            return player.game_time;
         } else if (player.game_status && player.game_status !== 'Scheduled') {
             // For live games, show the actual game status (e.g. "Q2 12:45", "Final", etc.)
             return player.game_status;

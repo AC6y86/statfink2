@@ -33,14 +33,14 @@ describe('Mock Week Frontend Integration', () => {
       ];
       
       const inProgressCount = allPlayers.filter(p => 
-        p.game_status === 'InProgress'
+        /\d[Q] \d{1,2}:\d{2}/.test(p.game_status)
       ).length;
       
       expect(inProgressCount).toBeGreaterThan(0); // Should have some in-progress games
       
       // Verify all in-progress players have game times
       allPlayers
-        .filter(p => p.game_status === 'InProgress')
+        .filter(p => /\d[Q] \d{1,2}:\d{2}/.test(p.game_status))
         .forEach(player => {
           expect(player.game_time).toMatch(/\d[Q] \d{1,2}:\d{2}/);
         });
@@ -140,7 +140,7 @@ describe('Mock Week Frontend Integration', () => {
       
       const week3States = {
         scheduled: week3Players.filter(p => p.game_status === 'Scheduled').length,
-        inProgress: week3Players.filter(p => p.game_status === 'InProgress').length,
+        inProgress: week3Players.filter(p => /\d[Q] \d{1,2}:\d{2}/.test(p.game_status)).length,
         halftime: week3Players.filter(p => p.game_status === 'Halftime').length,
         final: week3Players.filter(p => p.game_status === 'Final').length
       };
