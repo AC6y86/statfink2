@@ -212,12 +212,13 @@ class NFLGamesService {
         try {
             logInfo('Starting live scores update');
 
-            // Get all games that are currently live or scheduled for today
+            // Get all games that are currently live or scheduled for today (PDT)
+            // Convert YYYYMMDD integer format to proper date for comparison
             const liveGames = await this.db.all(`
                 SELECT game_id, week, season, home_team, away_team, status
                 FROM nfl_games 
-                WHERE status IN ('Live', 'In Progress', 'Scheduled', 'Halftime')
-                  AND date(game_date) = date('now')
+                WHERE (status LIKE '%Live%' OR status LIKE '%Progress%' OR status = 'Scheduled' OR status = 'Halftime')
+                  AND date(substr(game_date,1,4) || '-' || substr(game_date,5,2) || '-' || substr(game_date,7,2)) = date('now', '-7 hours')
                 ORDER BY game_date
             `);
 
@@ -240,7 +241,7 @@ class NFLGamesService {
             }
 
             logInfo(`Live scores update completed: ${gamesUpdated} games updated`);
-            return { success: true, gamesUpdated };
+            return { success: true, gamesUpdated, liveGames: gamesUpdated };
 
         } catch (error) {
             logError('Failed to update live scores:', error);
@@ -288,12 +289,100 @@ class NFLGamesService {
                 WHERE game_id = ?
             `, [homeScore, awayScore, gameStatus, quarter, gameTimeLeft, gameId]);
 
+            // Extract and save player stats if available
+            if (boxScore.playerStats) {
+                logInfo(`Found playerStats for game ${gameId}, processing ${Object.keys(boxScore.playerStats).length} players`);
+                await this.updatePlayerStatsFromBoxScore(gameId, boxScore.playerStats);
+            } else {
+                logInfo(`No playerStats found in boxScore for game ${gameId}`);
+            }
+
             logInfo(`Updated game ${gameId}: ${gameStatus} (${awayScore}-${homeScore})`);
             return true;
 
         } catch (error) {
             logError(`Failed to update game ${gameId} from API:`, error);
             return false;
+        }
+    }
+
+    /**
+     * Update player stats from box score data
+     */
+    async updatePlayerStatsFromBoxScore(gameId, playerStats) {
+        try {
+            // Parse game info to get week and season
+            const gameInfo = await this.db.get(`
+                SELECT week, season FROM nfl_games WHERE game_id = ?
+            `, [gameId]);
+            
+            if (!gameInfo) {
+                logWarn(`Game ${gameId} not found in database`);
+                return;
+            }
+
+            let statsCount = 0;
+            
+            // Process each player's stats
+            for (const [playerId, stats] of Object.entries(playerStats)) {
+                try {
+                    // Skip if not a valid stats object
+                    if (!stats || typeof stats !== 'object') {
+                        continue;
+                    }
+                    
+                    // Extract all statistical categories
+                    const passing = stats.Passing || {};
+                    const rushing = stats.Rushing || {};
+                    const receiving = stats.Receiving || {};
+                    const kicking = stats.Kicking || {};
+                    const defense = stats.Defense || {};
+                    
+                    // Prepare stats for insertion (only using existing columns)
+                    await this.db.run(`
+                        INSERT OR REPLACE INTO player_stats (
+                            player_id, week, season, game_id,
+                            passing_yards, passing_tds, interceptions,
+                            rushing_yards, rushing_tds,
+                            receiving_yards, receiving_tds, receptions,
+                            field_goals_made, field_goals_attempted, extra_points_made,
+                            fumbles,
+                            fantasy_points,
+                            player_name, team, position,
+                            last_updated
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                    `, [
+                        playerId,
+                        gameInfo.week,
+                        gameInfo.season,
+                        gameId,
+                        parseInt(passing.passYds) || 0,
+                        parseInt(passing.passTD) || 0,
+                        parseInt(passing.int) || 0,
+                        parseInt(rushing.rushYds) || 0,
+                        parseInt(rushing.rushTD) || 0,
+                        parseInt(receiving.recYds) || 0,
+                        parseInt(receiving.recTD) || 0,
+                        parseInt(receiving.receptions) || 0,
+                        parseInt(kicking.fgMade) || 0,
+                        parseInt(kicking.fgAttempts) || 0,
+                        parseInt(kicking.xpMade) || 0,
+                        parseInt(stats.fumbles) || 0,
+                        parseFloat(stats.fantasyPoints) || 0,
+                        stats.longName || '',
+                        stats.teamAbv || '',
+                        stats.position || ''
+                    ]);
+                    
+                    statsCount++;
+                } catch (error) {
+                    logError(`Failed to update stats for player ${playerId}:`, error);
+                }
+            }
+            
+            logInfo(`Updated ${statsCount} player stats for game ${gameId}`);
+        } catch (error) {
+            logError(`Failed to update player stats from box score:`, error);
         }
     }
 

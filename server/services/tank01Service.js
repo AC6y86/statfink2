@@ -162,8 +162,8 @@ class Tank01Service {
         if (endpoint === '/getNFLBoxScore' && data?.body?.gameStatus) {
             const status = data.body.gameStatus.toLowerCase();
             
-            // Live games - very short cache
-            if (['live', 'in progress', 'halftime'].includes(status)) {
+            // Live games - very short cache (check for various live status formats)
+            if (status.includes('live') || status.includes('progress') || status.includes('halftime')) {
                 return this.liveCacheExpiry;
             }
             
