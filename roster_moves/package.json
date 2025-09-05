@@ -7,13 +7,16 @@
     "setup": "node authSetup.js",
     "start": "node runMonitor.js",
     "check-once": "node emailMonitor.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest ./tests"
   },
   "dependencies": {
-    "googleapis": "^128.0.0",
     "@google-cloud/local-auth": "^3.0.0",
+    "googleapis": "^128.0.0",
     "sqlite3": "^5.1.6"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^30.1.3"
+  }
 }

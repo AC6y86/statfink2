@@ -547,7 +547,7 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
             
             // Get game information from nfl_games table
             const gameInfo = await db.get(`
-                SELECT game_time, status, quarter, time_remaining 
+                SELECT game_time, game_time_epoch, status, quarter, time_remaining 
                 FROM nfl_games
                 WHERE week = ? AND season = ? 
                 AND (home_team = ? OR away_team = ?)
@@ -565,6 +565,7 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
                 stats: stats || { fantasy_points: 0 },
                 opp: opponent || '@OPP',
                 game_time: gameInfo?.game_time || null,
+                game_time_epoch: gameInfo?.game_time_epoch || null,
                 game_status: gameInfo?.status || 'Final',
                 game_quarter: gameInfo?.quarter || null,
                 game_time_remaining: gameInfo?.time_remaining || null
@@ -587,7 +588,7 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
             
             // Get game information from nfl_games table
             const gameInfo = await db.get(`
-                SELECT game_time, status, quarter, time_remaining 
+                SELECT game_time, game_time_epoch, status, quarter, time_remaining 
                 FROM nfl_games
                 WHERE week = ? AND season = ? 
                 AND (home_team = ? OR away_team = ?)
@@ -605,6 +606,7 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
                 stats: stats || { fantasy_points: 0 },
                 opp: opponent || '@OPP',
                 game_time: gameInfo?.game_time || null,
+                game_time_epoch: gameInfo?.game_time_epoch || null,
                 game_status: gameInfo?.status || 'Final',
                 game_quarter: gameInfo?.quarter || null,
                 game_time_remaining: gameInfo?.time_remaining || null

@@ -1,5 +1,5 @@
 const express = require('express');
-const { asyncHandler, APIError } = require('../utils/errorHandler');
+const { asyncHandler, APIError, logInfo, logError } = require('../utils/errorHandler');
 const router = express.Router();
 
 // No admin authentication required - network-only access
@@ -285,6 +285,142 @@ router.post('/sync/force', requireAdmin, asyncHandler(async (req, res) => {
         message: 'Force sync initiated',
         data: result
     });
+}));
+
+// Force sync current week games (smart sync - only non-completed games)
+router.post('/sync/games/current-week', requireAdmin, asyncHandler(async (req, res) => {
+    const nflGamesService = req.app.locals.nflGamesService;
+    const tank01Service = req.app.locals.tank01Service;
+    const db = req.app.locals.db;
+    
+    if (!nflGamesService) {
+        throw new APIError('NFL Games service not available', 500);
+    }
+    
+    if (!tank01Service) {
+        throw new APIError('Tank01 service not available', 500);
+    }
+    
+    try {
+        // Get current week and season from league settings
+        const settings = await db.get('SELECT * FROM league_settings WHERE league_id = 1');
+        const currentWeek = settings.current_week;
+        const currentSeason = settings.season_year;
+        
+        logInfo(`Starting smart sync for week ${currentWeek}, season ${currentSeason}`);
+        
+        // First, get the list of games for the week (1 API call)
+        const gamesData = await tank01Service.getNFLGamesForWeek(currentWeek, currentSeason);
+        
+        if (!gamesData || typeof gamesData !== 'object') {
+            throw new APIError('No games data received from Tank01 API', 500);
+        }
+        
+        // Extract games from Tank01 response format
+        const allValues = Object.values(gamesData);
+        const games = allValues.filter(game => game && typeof game === 'object' && game.gameID);
+        
+        logInfo(`Found ${games.length} total games for week ${currentWeek}`);
+        
+        // Check existing game statuses in database
+        const existingGames = await db.all(
+            'SELECT game_id, status FROM nfl_games WHERE week = ? AND season = ?',
+            [currentWeek, currentSeason]
+        );
+        
+        const existingGameMap = new Map(existingGames.map(g => [g.game_id, g.status]));
+        
+        let gamesUpdated = 0;
+        let gamesSkipped = 0;
+        let apiCallsMade = 1; // Already made one for the games list
+        const results = [];
+        
+        // Process each game
+        for (const game of games) {
+            const existingStatus = existingGameMap.get(game.gameID);
+            
+            // Determine if we need to update this game
+            const isCompleted = existingStatus && 
+                (existingStatus.toLowerCase().includes('final') || 
+                 existingStatus.toLowerCase() === 'completed');
+            
+            if (isCompleted) {
+                gamesSkipped++;
+                results.push({
+                    gameID: game.gameID,
+                    action: 'skipped',
+                    reason: 'Game already completed',
+                    status: existingStatus
+                });
+                logInfo(`Skipping completed game ${game.gameID} (status: ${existingStatus})`);
+            } else {
+                // Update this game - it's either new, scheduled, or in progress
+                try {
+                    // First update the game info
+                    await nflGamesService.upsertGame(game, currentWeek, currentSeason);
+                    
+                    // Then fetch fresh boxscore data
+                    logInfo(`Fetching fresh boxscore for game ${game.gameID}`);
+                    const boxScore = await tank01Service.getNFLBoxScore(game.gameID);
+                    apiCallsMade++;
+                    
+                    if (boxScore) {
+                        // Update scores from boxscore
+                        const homeScore = boxScore.homePoints || 0;
+                        const awayScore = boxScore.awayPoints || 0;
+                        const gameStatus = boxScore.gameStatus || game.gameStatus || 'Scheduled';
+                        
+                        await db.run(`
+                            UPDATE nfl_games 
+                            SET home_score = ?, away_score = ?, status = ?
+                            WHERE game_id = ?
+                        `, [homeScore, awayScore, gameStatus, game.gameID]);
+                        
+                        gamesUpdated++;
+                        results.push({
+                            gameID: game.gameID,
+                            action: 'updated',
+                            status: gameStatus,
+                            scores: `${awayScore}-${homeScore}`
+                        });
+                        logInfo(`Updated game ${game.gameID}: ${gameStatus} (${awayScore}-${homeScore})`);
+                    }
+                } catch (gameError) {
+                    logError(`Failed to update game ${game.gameID}:`, gameError);
+                    results.push({
+                        gameID: game.gameID,
+                        action: 'error',
+                        error: gameError.message
+                    });
+                }
+            }
+        }
+        
+        const message = `Smart sync completed: ${gamesUpdated} games updated, ${gamesSkipped} completed games skipped`;
+        logInfo(message);
+        
+        res.json({
+            success: true,
+            message,
+            data: {
+                week: currentWeek,
+                season: currentSeason,
+                totalGames: games.length,
+                gamesUpdated,
+                gamesSkipped,
+                apiCallsMade,
+                results
+            }
+        });
+        
+    } catch (error) {
+        logError('Failed to sync current week games:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to sync current week games',
+            error: error.message
+        });
+    }
 }));
 
 // Debug endpoint to inspect Tank01 API data

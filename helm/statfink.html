@@ -919,8 +919,15 @@
             row.className = rowIndex % 2 ? "playerrow2" : "playerrow1";
             row.id = `t${tableId.slice(-1)}r${rowIndex}`;
             
+            // Format defense names consistently
+            let basePlayerName = player.name;
+            if (player.position === 'DEF' || player.position === 'DST') {
+                // For defenses, just use the team abbreviation
+                basePlayerName = player.team;
+            }
+            
             // Add asterisk if player is scoring AND has points (no bold for player name)
-            const playerName = (isScoring && points > 0) ? `*${player.name}` : player.name;
+            const playerName = (isScoring && points > 0) ? `*${basePlayerName}` : basePlayerName;
             
             // Get the game status before building the HTML
             const gameStatus = getPlayerGameStatus(player);
@@ -1022,8 +1029,8 @@
     // Get player game status (show time if not started, game status if in progress, Final if complete)
     function getPlayerGameStatus(player) {
         if (player.game_status === 'Scheduled' && player.game_time) {
-            // Convert ET to PST
-            return convertToPST(player.game_time);
+            // Convert ET to PST, include epoch time if available for day of week
+            return convertToPST(player.game_time, player.game_time_epoch);
         } else if (player.game_status === 'Halftime') {
             // Show "Halftime" for halftime
             return 'Halftime';
@@ -1038,7 +1045,7 @@
     }
     
     // Convert ET time to PST
-    function convertToPST(etTime) {
+    function convertToPST(etTime, epochTime = null) {
         // Handle both "4:25p" and "4:25 PM ET" formats
         let match = etTime.match(/(\d+):(\d+) (AM|PM) ET/);
         if (!match) {
@@ -1065,7 +1072,16 @@
             hours += 12;
             // If it was PM, it becomes AM and vice versa
             const newPeriod = period === 'PM' ? 'AM' : 'PM';
-            return `${hours === 0 ? 12 : hours}:${minutes} ${newPeriod}`;
+            const timeStr = `${hours === 0 ? 12 : hours}:${minutes} ${newPeriod}`;
+            
+            // If we have epoch time, add day of week
+            if (epochTime) {
+                const date = new Date(epochTime * 1000);
+                const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                const dayName = days[date.getDay()];
+                return `${dayName} ${timeStr}`;
+            }
+            return timeStr;
         }
         
         // Convert back to 12-hour format
@@ -1073,7 +1089,17 @@
         if (hours > 12) hours -= 12;
         if (hours === 0) hours = 12;
         
-        return `${hours}:${minutes} ${newPeriod}`;
+        const timeStr = `${hours}:${minutes} ${newPeriod}`;
+        
+        // If we have epoch time, add day of week
+        if (epochTime) {
+            const date = new Date(epochTime * 1000);
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const dayName = days[date.getDay()];
+            return `${dayName} ${timeStr}`;
+        }
+        
+        return timeStr;
     }
 
     // Format player stats in compact form like original Statfink
@@ -1418,7 +1444,19 @@
                 statusCell.title = game.status;
                 // Show game time for scheduled and in-progress games
                 if (game.status === 'Scheduled' && game.game_time) {
-                    statusCell.textContent = convertToPST(game.game_time);
+                    const timeWithDay = convertToPST(game.game_time, game.game_time_epoch);
+                    // If it includes a day, split it into two lines for the scoreboard
+                    if (game.game_time_epoch && timeWithDay.includes(' ')) {
+                        const parts = timeWithDay.split(' ');
+                        if (parts.length >= 3) {
+                            // Format as "Sunday\n10:00 AM"
+                            statusCell.innerHTML = parts[0] + '<br>' + parts.slice(1).join(' ');
+                        } else {
+                            statusCell.textContent = timeWithDay;
+                        }
+                    } else {
+                        statusCell.textContent = timeWithDay;
+                    }
                 } else if ((game.status === 'InProgress' || game.status === 'Halftime') && game.game_time) {
                     statusCell.textContent = game.game_time;
                 } else {

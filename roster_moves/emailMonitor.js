@@ -172,6 +172,25 @@ class GmailRosterMonitor {
       return null;
     }
     
+    // Check for past tense or discussion context that indicates this isn't an actual move
+    const excludePatterns = [
+      /that\s+(?:pickup|add|drop|claim)/i,
+      /(?:his|her|their)\s+(?:pickup|add|drop|claim)/i,
+      /(?:congrats|great|nice|good)\s+(?:pickup|add|move)/i,
+      /(?:pickup|add|drop|claim).*(?:paid off|worked out|helped|won)/i,
+      /(?:picked up|added|dropped|claimed|acquired).*(?:last|yesterday|previously)/i,
+      // Uncertain/thinking patterns - but NOT injury-based conditions
+      /thinking about|considering/i,
+      /might\s+(?:add|drop|pick)/i,  // "might add" is uncertain
+      /maybe\s+(?:I'll|I will)/i  // "maybe I'll" is uncertain
+    ];
+    
+    for (const pattern of excludePatterns) {
+      if (pattern.test(latestBody)) {
+        return null;
+      }
+    }
+    
     const actions = {
       adds: [],
       drops: [],
@@ -191,8 +210,13 @@ class GmailRosterMonitor {
       });
     };
     
-    const addMatches = latestBody.matchAll(/(?:add|pickup|pick up|claim|acquire)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?(?:\s+[A-Z][a-z]+)?)/gi);
-    for (const match of addMatches) {
+    // Updated patterns requiring intent indicators
+    // Pattern 1: "I'll/I will/I'm" + verb + player
+    const intentAddPattern = /(?:I'll|I will|I'm|I am)\s+(?:add|pickup|pick\s+up|claim|acquire)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?(?:\s+[A-Z][a-z]+)?)/gi;
+    // Pattern 2: Verb without subject but clear intent (start of line or after punctuation)
+    const simpleAddPattern = /(?:^|\n|\.\s+|Also\s+)(?:add|pickup|pick\s+up|claim|acquire)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?(?:\s+[A-Z][a-z]+)?)/gi;
+    
+    for (const match of [...latestBody.matchAll(intentAddPattern), ...latestBody.matchAll(simpleAddPattern)]) {
       const playerName = match[1].trim();
       const player = this.findPlayer(playerName, players);
       if (player) {
@@ -200,8 +224,10 @@ class GmailRosterMonitor {
       }
     }
     
-    const dropMatches = latestBody.matchAll(/(?:drop|release|cut|waive)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?(?:\s+[A-Z][a-z]+)?)/gi);
-    for (const match of dropMatches) {
+    const intentDropPattern = /(?:I'll|I will|I'm|I am)\s+(?:drop|release|cut|waive)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?(?:\s+[A-Z][a-z]+)?)/gi;
+    const simpleDropPattern = /(?:^|\n|\.\s+|Also\s+)(?:drop|release|cut|waive)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?(?:\s+[A-Z][a-z]+)?)/gi;
+    
+    for (const match of [...latestBody.matchAll(intentDropPattern), ...latestBody.matchAll(simpleDropPattern)]) {
       const playerName = match[1].trim();
       const player = this.findPlayer(playerName, players);
       if (player) {
@@ -209,7 +235,7 @@ class GmailRosterMonitor {
       }
     }
     
-    const irMatches = latestBody.matchAll(/(?:IR|injured reserve|place on IR)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?(?:\s+[A-Z][a-z]+)?)/gi);
+    const irMatches = latestBody.matchAll(/(?:place on IR|IR|injured reserve)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?(?:\s+[A-Z][a-z]+)?)/gi);
     for (const match of irMatches) {
       const playerName = match[1].trim();
       const player = this.findPlayer(playerName, players);
@@ -238,6 +264,22 @@ class GmailRosterMonitor {
     
     if (!hasActions) {
       return null;
+    }
+    
+    // Validate roster rule: adds must equal drops unless IR moves balance it
+    // League rule: Each team must maintain 19 players
+    const netChange = actions.adds.length - actions.drops.length + 
+                      actions.fromIR.length - actions.toIR.length;
+    
+    // If there's a net change and we have adds, this violates the 19 player rule
+    if (netChange !== 0) {
+      // Exception: Allow if it's only IR moves (no adds/drops)
+      if (actions.adds.length === 0 && actions.drops.length === 0) {
+        // Pure IR move is OK (moving to/from IR)
+      } else {
+        // Invalid roster move - would violate 19 player limit
+        return null;
+      }
     }
     
     return {

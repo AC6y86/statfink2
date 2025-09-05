@@ -166,6 +166,7 @@ class NFLGamesService {
             away = '',
             gameDate = null,
             gameTime = null,
+            gameTime_epoch = null,
             gameStatus = 'Scheduled',
             quarter = null,
             gameTimeLeft = null,
@@ -185,12 +186,15 @@ class NFLGamesService {
             awayScore = parseInt(gameData.awayScore) || 0;
         }
 
+        // Parse epoch timestamp to integer if it's a string
+        const epochTime = gameTime_epoch ? parseInt(parseFloat(gameTime_epoch)) : null;
+
         await this.db.run(`
             INSERT OR REPLACE INTO nfl_games (
                 game_id, week, season, home_team, away_team,
-                home_score, away_score, game_date, game_time,
+                home_score, away_score, game_date, game_time, game_time_epoch,
                 status, quarter, time_remaining, venue, last_updated
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
         `, [
             gameID,
             week,
@@ -201,6 +205,7 @@ class NFLGamesService {
             awayScore,
             gameDate,
             gameTime,
+            epochTime,
             gameStatus || 'Scheduled',
             quarter,
             gameTimeLeft,
@@ -218,16 +223,24 @@ class NFLGamesService {
             logInfo('Starting live scores update');
 
             // Get all games that are currently live or recently scheduled
+            // Check for games that are either:
+            // 1. Currently in progress (based on status)
+            // 2. Scheduled to start within the game window (using epoch time)
+            const currentEpoch = Math.floor(Date.now() / 1000);
+            const gameWindowStart = currentEpoch - 900; // 15 minutes before current time
+            const gameWindowEnd = currentEpoch + (3.5 * 3600); // 3.5 hours after current time
+            
             const liveGames = await this.db.all(`
-                SELECT game_id, week, season, home_team, away_team, status
+                SELECT game_id, week, season, home_team, away_team, status, game_time_epoch
                 FROM nfl_games 
                 WHERE status LIKE '%Q1%' OR status LIKE '%Q2%' OR status LIKE '%Q3%' OR status LIKE '%Q4%' 
                    OR status LIKE '%OT%' OR status = 'Halftime'
                    OR status LIKE '%Live%' OR status LIKE '%Progress%'
                    OR (status = 'Scheduled' AND 
-                       date(substr(game_date,1,4) || '-' || substr(game_date,5,2) || '-' || substr(game_date,7,2)) = date('now', '-7 hours'))
-                ORDER BY game_date
-            `);
+                       game_time_epoch IS NOT NULL AND
+                       game_time_epoch BETWEEN ? AND ?)
+                ORDER BY game_time_epoch
+            `, [gameWindowStart, gameWindowEnd]);
 
             if (liveGames.length === 0) {
                 logInfo('No live games to update');
@@ -308,7 +321,7 @@ class NFLGamesService {
                 } else if (quarter) {
                     gameStatus = quarter;
                 }
-            } else if (gameStatus && gameStatus.toLowerCase() === 'final') {
+            } else if (gameStatus && (gameStatus.toLowerCase() === 'final' || gameStatus.toLowerCase() === 'completed')) {
                 gameStatus = 'Final';
             }
 

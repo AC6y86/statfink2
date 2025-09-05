@@ -8,6 +8,8 @@ This document tracks all URL redirects configured for peninsulafootball.com.
 |------|------------|------|---------|
 | `/draft` | https://docs.google.com/spreadsheets/d/1KnT8u76sPBYVCU1KsbCar3ea2zoX82KGLzt-5PY3kio/edit?gid=0#gid=0 | 301 (Permanent) | Fantasy Football Draft Sheet |
 | `/board` | https://script.google.com/macros/s/AKfycbwa1ro-cTgDPeNCSZa5rqUy5gMHJMp0aD5UCQcYJ4GLk_Ucpfypx90BeLsNbGbczKaCFA/exec?view=board | 301 (Permanent) | Draft Board View |
+| `/cards` | https://script.google.com/macros/s/AKfycbx0mhtv3PX5HF_RRzRl7t2rzUNV4KOgrJamPXFGvCItu7h4HIl3ov9hEMg4aHl5Nj7Xgg/exec?view=cards | 301 (Permanent) | Cards View |
+| `/c` | https://script.google.com/macros/s/AKfycbx0mhtv3PX5HF_RRzRl7t2rzUNV4KOgrJamPXFGvCItu7h4HIl3ov9hEMg4aHl5Nj7Xgg/exec?view=cards | 301 (Permanent) | Cards View (shortcut) |
 
 ## How to Add New Redirects
 
