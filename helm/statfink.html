@@ -846,9 +846,16 @@
             // For defenses, don't show team code after name since it's redundant
             const displayName = player.position === 'DEF' ? playerName : `${playerName} &nbsp;&nbsp;${player.team}`;
             
+            // Check if game is currently in progress
+            const isGameInProgress = gameStatus && (
+                gameStatus.includes('Q1') || gameStatus.includes('Q2') || 
+                gameStatus.includes('Q3') || gameStatus.includes('Q4') || 
+                gameStatus.includes('OT') || gameStatus === 'Halftime'
+            );
+            
             row.innerHTML = `
                 <td class="position position-${player.position}">${player.position}</td>
-                <td class="playername" nowrap>${displayName}</td>
+                <td class="${isGameInProgress ? 'playername playernameinprogress' : 'playername'}" nowrap>${displayName}</td>
                 <td class="opp">${player.opp || ''}</td>
                 <td class="status" align="center" nowrap>${gameStatus}</td>
                 <td class="${pointsClass}" align="right">${points.toFixed(2)}</td>
