@@ -276,10 +276,34 @@ class NFLGamesService {
                 awayScore = parseInt(boxScore.lineScore.away.totalPts) || 0;
             }
 
-            // Extract other game data
-            const gameStatus = boxScore.gameStatus || 'Scheduled';
+            // Extract other game data and format status properly
+            let gameStatus = boxScore.gameStatus || 'Scheduled';
             const quarter = boxScore.currentPeriod || null;
             const gameTimeLeft = boxScore.gameClock || null;
+            
+            // Format status to show quarter and time instead of generic "Live - In Progress"
+            if (quarter && quarter.toLowerCase().includes('half')) {
+                // It's halftime
+                gameStatus = 'Halftime';
+            } else if (gameStatus && gameStatus.toLowerCase().includes('halftime')) {
+                gameStatus = 'Halftime';
+            } else if (gameStatus && gameStatus.toLowerCase().includes('live')) {
+                if (quarter && gameTimeLeft) {
+                    // Format as "Q2 13:00" style
+                    // Extract just numbers from quarter (e.g., "2nd" -> "2", "3rd" -> "3")
+                    let quarterDisplay = quarter;
+                    if (quarter.match(/^[1-4]/)) {
+                        quarterDisplay = quarter.charAt(0);
+                    } else if (quarter.toLowerCase() === 'ot' || quarter.toLowerCase().includes('overtime')) {
+                        quarterDisplay = 'OT';
+                    }
+                    gameStatus = `Q${quarterDisplay} ${gameTimeLeft}`;
+                } else if (quarter) {
+                    gameStatus = quarter;
+                }
+            } else if (gameStatus && gameStatus.toLowerCase() === 'final') {
+                gameStatus = 'Final';
+            }
 
             // Update game in database
             await this.db.run(`
