@@ -542,7 +542,10 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
                 WHERE player_id = ? AND week = ? AND season = ?
             `, [player.player_id, matchup.week, matchup.season]);
             
-            const playerTeam = getTeamAbbreviation(player.team);
+            // For defenses, extract team code from player_id (e.g., DEF_PHI -> PHI)
+            const playerTeam = (player.position === 'DST' || player.position === 'DEF') 
+                ? player.player_id.replace('DEF_', '') 
+                : getTeamAbbreviation(player.team);
             const opponent = await getPlayerOpponent(db, player, matchup.week, matchup.season, stats);
             
             // Get game information from nfl_games table
@@ -583,7 +586,10 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
                 WHERE player_id = ? AND week = ? AND season = ?
             `, [player.player_id, matchup.week, matchup.season]);
             
-            const playerTeam = getTeamAbbreviation(player.team);
+            // For defenses, extract team code from player_id (e.g., DEF_PHI -> PHI)
+            const playerTeam = (player.position === 'DST' || player.position === 'DEF') 
+                ? player.player_id.replace('DEF_', '') 
+                : getTeamAbbreviation(player.team);
             const opponent = await getPlayerOpponent(db, player, matchup.week, matchup.season, stats);
             
             // Get game information from nfl_games table
