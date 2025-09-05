@@ -95,6 +95,7 @@
     var currentSeason = null;
     var showDetails = false;
     var currentMatchupData = null;
+    var remainingPlayersCache = {}; // Cache for remaining players count
 
     // Initialize layout
     if (view == 0) {
@@ -320,13 +321,31 @@
             // Load NFL games
             await loadNFLGames();
             
-            // If specific matchup requested, load it
+            // Load all matchup details to populate remaining players count
+            const matchupRows = document.getElementById("leaguetable").getElementsByTagName("tbody")[0].rows;
+            const matchupIds = [];
+            for (let i = 1; i < matchupRows.length; i++) {
+                const row = matchupRows[i];
+                const matchupId = row.getAttribute('data-matchup-id');
+                if (matchupId) {
+                    const id = parseInt(matchupId);
+                    if (!matchupIds.includes(id)) {
+                        matchupIds.push(id);
+                    }
+                }
+            }
+            
+            // Load counts for all matchups in parallel (much faster)
+            await Promise.all(matchupIds.map(matchupId => loadMatchupCountsOnly(matchupId)));
+            
+            // If specific matchup requested, load it again to display
             if (urlData.matchup) {
                 currentMatchupId = parseInt(urlData.matchup);
                 await loadMatchup(currentMatchupId);
-            } else if (matchup === 0 && document.getElementById("leaguetable").rows.length > 1) {
+            } else if (matchupIds.length > 0) {
                 // Load first matchup by default
-                document.getElementById("leaguetable").rows[1].click();
+                currentMatchupId = matchupIds[0];
+                await loadMatchup(currentMatchupId);
             }
 
             // Start refresh interval (30 seconds)
@@ -364,14 +383,18 @@
                     const row1 = tbody.insertRow(-1);
                     row1.className = index % 2 ? "matchuprow2" : "matchuprow1";
                     row1.id = `lm${index}r0`;
+                    row1.setAttribute('data-matchup-id', matchup.matchup_id);
+                    row1.setAttribute('data-team', 'team1');
                     row1.onclick = () => selectMatchup(matchup.matchup_id);
                     row1.onmouseover = matchupmouseover;
                     row1.onmouseout = matchupmouseout;
                     
                     const team1Cell = row1.insertCell(0);
-                    // For mock week 1 pre-game, all 11 players haven't started
-                    const playersRemaining = (isMockMode && currentWeek === 1 && !matchup.is_complete) ? 11 : 0;
-                    team1Cell.textContent = `${matchup.team1_owner} (${playersRemaining})`;
+                    // Use cached count if available, otherwise don't show count
+                    const team1Remaining = remainingPlayersCache[`${matchup.matchup_id}_team1`];
+                    team1Cell.textContent = team1Remaining !== undefined 
+                        ? `${matchup.team1_owner} (${team1Remaining})`
+                        : matchup.team1_owner;
                     team1Cell.nowrap = true;
                     
                     const score1Cell = row1.insertCell(1);
@@ -384,13 +407,18 @@
                     const row2 = tbody.insertRow(-1);
                     row2.className = index % 2 ? "matchuprow2" : "matchuprow1";
                     row2.id = `lm${index}r1`;
+                    row2.setAttribute('data-matchup-id', matchup.matchup_id);
+                    row2.setAttribute('data-team', 'team2');
                     row2.onclick = () => selectMatchup(matchup.matchup_id);
                     row2.onmouseover = matchupmouseover;
                     row2.onmouseout = matchupmouseout;
                     
                     const team2Cell = row2.insertCell(0);
-                    // Use same players remaining count as team1
-                    team2Cell.textContent = `${matchup.team2_owner} (${playersRemaining})`;
+                    // Use cached count if available, otherwise don't show count
+                    const team2Remaining = remainingPlayersCache[`${matchup.matchup_id}_team2`];
+                    team2Cell.textContent = team2Remaining !== undefined 
+                        ? `${matchup.team2_owner} (${team2Remaining})`
+                        : matchup.team2_owner;
                     team2Cell.nowrap = true;
                     
                     const score2Cell = row2.insertCell(1);
@@ -559,6 +587,41 @@
         return changes;
     }
 
+    // Load matchup data only for counting remaining players (without displaying)
+    async function loadMatchupCountsOnly(matchupId) {
+        try {
+            // Check if we're in mock mode
+            const isMockMode = window.location.pathname.includes('/statfink/mock');
+            const apiUrl = isMockMode 
+                ? `/api/matchups/mock-game/${matchupId}?week=${currentWeek}&season=${currentSeason}`
+                : `/api/matchups/game/${matchupId}`;
+            
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            
+            if (data.success) {
+                const matchup = data.data.matchup;
+                
+                // Calculate players not started yet
+                const team1Remaining = data.data.team1.starters.filter(p => 
+                    p.game_status === 'Scheduled' || (!p.game_status && !matchup.is_complete)
+                ).length;
+                const team2Remaining = data.data.team2.starters.filter(p => 
+                    p.game_status === 'Scheduled' || (!p.game_status && !matchup.is_complete)
+                ).length;
+                
+                // Cache the remaining players count for the left bar
+                remainingPlayersCache[`${matchup.matchup_id}_team1`] = team1Remaining;
+                remainingPlayersCache[`${matchup.matchup_id}_team2`] = team2Remaining;
+                
+                // Update the left bar display for this matchup
+                updateLeftBarMatchup(matchup.matchup_id, matchup.team1_owner, team1Remaining, matchup.team2_owner, team2Remaining);
+            }
+        } catch (error) {
+            console.error('Error loading matchup counts:', error);
+        }
+    }
+
     // Load matchup details
     async function loadMatchup(matchupId) {
         try {
@@ -598,6 +661,24 @@
         }
     }
 
+    // Update left bar matchup display with remaining players count
+    function updateLeftBarMatchup(matchupId, team1Owner, team1Remaining, team2Owner, team2Remaining) {
+        // Find the matchup rows in the left bar using data attributes
+        const tbody = document.getElementById("leaguetable").getElementsByTagName("tbody")[0];
+        const rows = tbody.querySelectorAll(`tr[data-matchup-id="${matchupId}"]`);
+        
+        rows.forEach(row => {
+            const team = row.getAttribute('data-team');
+            const cell = row.cells[0];
+            
+            if (team === 'team1') {
+                cell.textContent = `${team1Owner} (${team1Remaining})`;
+            } else if (team === 'team2') {
+                cell.textContent = `${team2Owner} (${team2Remaining})`;
+            }
+        });
+    }
+
     // Display matchup data
     function displayMatchup(data, changedStats = { team1: {}, team2: {} }) {
         const matchup = data.matchup;
@@ -613,6 +694,13 @@
         // Update team headers
         document.getElementById("fteam0").innerHTML = `${matchup.team1_owner} (${team1Remaining})`;
         document.getElementById("fteam1").innerHTML = `${matchup.team2_owner} (${team2Remaining})`;
+        
+        // Cache the remaining players count for the left bar
+        remainingPlayersCache[`${matchup.matchup_id}_team1`] = team1Remaining;
+        remainingPlayersCache[`${matchup.matchup_id}_team2`] = team2Remaining;
+        
+        // Update the left bar display for this matchup
+        updateLeftBarMatchup(matchup.matchup_id, matchup.team1_owner, team1Remaining, matchup.team2_owner, team2Remaining);
         
         // Build team tables and get scoring totals
         const team1ScoringTotal = displayTeamRoster("team0", data.team1.starters, matchup.team1_name, changedStats.team1);
