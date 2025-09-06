@@ -57,3 +57,4 @@ roster_moves/token.json
 roster_moves/last_check.json
 **/credentials.json
 **/token.json
+server/config/sheets-token.json

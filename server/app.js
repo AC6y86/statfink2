@@ -391,6 +391,7 @@ app.use('/api/nfl-games', require('./routes/nflGames'));
 app.use('/api/database', require('./routes/databaseBrowser'));
 app.use('/api/standings', require('./routes/standings'));
 app.use('/api/rosters', require('./routes/rosters'));
+app.use('/api/export', require('./routes/export'));
 
 // Admin routes
 app.use('/api/admin', require('./routes/admin'));
