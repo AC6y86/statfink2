@@ -2,10 +2,11 @@ const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 const { normalizeTeamCode } = require('../utils/teamNormalization');
 
 class NFLGamesService {
-    constructor(db, tank01Service, scoringService = null) {
+    constructor(db, tank01Service, scoringService = null, dstManagementService = null) {
         this.db = db;
         this.tank01Service = tank01Service;
         this.scoringService = scoringService;
+        this.dstManagementService = dstManagementService;
         this.syncInProgress = false;
         this.lastSyncTime = null;
         this.liveUpdateInterval = null;
@@ -13,6 +14,10 @@ class NFLGamesService {
     
     setScoringService(scoringService) {
         this.scoringService = scoringService;
+    }
+    
+    setDstManagementService(dstManagementService) {
+        this.dstManagementService = dstManagementService;
     }
 
     /**
@@ -338,6 +343,43 @@ class NFLGamesService {
                 await this.updatePlayerStatsFromBoxScore(gameId, boxScore.playerStats);
             } else {
                 logInfo(`No playerStats found in boxScore for game ${gameId}`);
+            }
+
+            // Extract and save DST stats if available
+            if (boxScore.DST && this.dstManagementService) {
+                logInfo(`Found DST data for game ${gameId}, processing defensive stats`);
+                try {
+                    // Get game info for DST processing
+                    const gameInfo = await this.db.get(`
+                        SELECT week, season, home_team, away_team, 
+                               home_score, away_score, game_id
+                        FROM nfl_games 
+                        WHERE game_id = ?
+                    `, [gameId]);
+                    
+                    if (gameInfo) {
+                        // Process DST stats using the dstManagementService
+                        await this.dstManagementService.processDSTStats(
+                            boxScore.DST,
+                            {
+                                home: gameInfo.home_team,
+                                away: gameInfo.away_team,
+                                homePts: gameInfo.home_score,
+                                awayPts: gameInfo.away_score,
+                                teamIDHome: boxScore.teamIDHome,
+                                teamIDAway: boxScore.teamIDAway
+                            },
+                            gameInfo.week,
+                            gameInfo.game_id,
+                            gameInfo.season
+                        );
+                        logInfo(`DST stats updated for game ${gameId}`);
+                    }
+                } catch (error) {
+                    logError(`Failed to process DST stats for game ${gameId}:`, error);
+                }
+            } else if (!boxScore.DST) {
+                logInfo(`No DST data found in boxScore for game ${gameId}`);
             }
 
             logInfo(`Updated game ${gameId}: ${gameStatus} (${awayScore}-${homeScore})`);

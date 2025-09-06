@@ -22,6 +22,7 @@ const SchedulerService = require('./services/schedulerService');
 const TeamScoreService = require('./services/teamScoreService');
 const ScoringPlayersService = require('./services/scoringPlayersService');
 const WeeklyReportService = require('./services/weeklyReportService');
+const DSTManagementService = require('./services/dstManagementService');
 const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
 
 const app = express();
@@ -32,7 +33,7 @@ const HTTPS_PORT = process.env.HTTPS_PORT || 8443;
 const { setupAuth } = require('./auth/auth');
 
 // Initialize services
-let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService, weeklyReportService;
+let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService, weeklyReportService, dstManagementService;
 
 async function initializeServices() {
     try {
@@ -54,8 +55,12 @@ async function initializeServices() {
         // Initialize scoring service first (without nflGamesService)
         scoringService = new ScoringService(db);
         
-        // Initialize NFL Games service with scoring service
-        nflGamesService = new NFLGamesService(db, tank01Service, scoringService);
+        // Initialize DST Management service
+        dstManagementService = new DSTManagementService(db, tank01Service);
+        logInfo('DST Management service initialized');
+        
+        // Initialize NFL Games service with scoring service and DST management service
+        nflGamesService = new NFLGamesService(db, tank01Service, scoringService, dstManagementService);
         logInfo('NFL Games service initialized');
         
         // Set the circular reference
@@ -97,6 +102,7 @@ async function initializeServices() {
         app.locals.scoringPlayersService = scoringPlayersService;
         app.locals.weeklyReportService = weeklyReportService;
         app.locals.schedulerService = schedulerService;
+        app.locals.dstManagementService = dstManagementService;
         
         logInfo('Services initialized successfully');
     } catch (error) {
