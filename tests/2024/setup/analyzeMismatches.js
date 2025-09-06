@@ -54,21 +54,6 @@ async function analyzeMismatches() {
         }
     }
     
-    // Check scoring rules
-    console.log('\n\nChecking current scoring rules...\n');
-    await new Promise((resolve) => {
-        db.all('SELECT * FROM scoring_rules ORDER BY rule_id', (err, rules) => {
-            if (err) {
-                console.error('Error:', err);
-            } else {
-                rules.forEach(rule => {
-                    console.log(`${rule.rule_name}: ${rule.points_value} points`);
-                });
-            }
-            resolve();
-        });
-    });
-    
     db.close();
 }
 

@@ -3,27 +3,6 @@ const { ValidationError } = require('../../server/database/validation');
 
 // Mock database
 const mockDb = {
-  getScoringRules: jest.fn().mockResolvedValue([
-    { stat_type: 'passing_yards', points_per_unit: 0.04 },
-    { stat_type: 'passing_tds', points_per_unit: 4 },
-    { stat_type: 'interceptions', points_per_unit: -2 },
-    { stat_type: 'rushing_yards', points_per_unit: 0.1 },
-    { stat_type: 'rushing_tds', points_per_unit: 6 },
-    { stat_type: 'receiving_yards', points_per_unit: 0.1 },
-    { stat_type: 'receiving_tds', points_per_unit: 6 },
-    { stat_type: 'receptions', points_per_unit: 1 },
-    { stat_type: 'fumbles', points_per_unit: -2 },
-    { stat_type: 'sacks', points_per_unit: 1 },
-    { stat_type: 'def_interceptions', points_per_unit: 2 },
-    { stat_type: 'fumbles_recovered', points_per_unit: 2 },
-    { stat_type: 'def_touchdowns', points_per_unit: 6 },
-    { stat_type: 'safeties', points_per_unit: 2 },
-    { stat_type: 'extra_points_made', points_per_unit: 1 },
-    { stat_type: 'field_goals_0_39', points_per_unit: 3 },
-    { stat_type: 'field_goals_40_49', points_per_unit: 4 },
-    { stat_type: 'field_goals_50_plus', points_per_unit: 5 },
-    { stat_type: 'field_goals_missed', points_per_unit: -1 }
-  ]),
   get: jest.fn(),
   all: jest.fn()
 };

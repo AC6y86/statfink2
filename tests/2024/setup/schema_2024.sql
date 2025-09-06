@@ -96,14 +96,6 @@ CREATE TABLE IF NOT EXISTS matchups (
     FOREIGN KEY (team2_id) REFERENCES teams(team_id)
 );
 
--- Scoring Rules (PFL by default)
-CREATE TABLE IF NOT EXISTS scoring_rules (
-    rule_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    stat_type VARCHAR(50) NOT NULL UNIQUE,
-    points_per_unit REAL NOT NULL
-);
-
--- Custom scoring rules will be inserted separately
 
 -- Weekly Roster Snapshots for Historical Tracking
 CREATE TABLE IF NOT EXISTS weekly_rosters (

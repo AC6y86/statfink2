@@ -19,16 +19,16 @@ class StatsFetcher {
         try {
             const cached = await this.db.get(`
                 SELECT 
-                    player_id,
-                    player_name,
-                    data,
-                    last_updated
+                    cache_key as player_id,
+                    cache_key as player_name,
+                    response_data as data,
+                    created_at as last_updated
                 FROM tank01_cache
-                WHERE player_id = ?
-                AND data LIKE ?
-                ORDER BY last_updated DESC
+                WHERE cache_key LIKE ?
+                AND response_data LIKE ?
+                ORDER BY created_at DESC
                 LIMIT 1
-            `, [playerId, `%"week":${week}%"season":${season}%`]);
+            `, [`%${playerId}%`, `%"week":${week}%"season":${season}%`]);
             
             if (cached && cached.data) {
                 try {

@@ -55,27 +55,59 @@ router.get('/standings', asyncHandler(async (req, res) => {
     });
 }));
 
-// Get scoring rules
+// Get scoring rules (hardcoded from SCORING_SYSTEM.md)
 router.get('/scoring', asyncHandler(async (req, res) => {
-    const db = req.app.locals.db;
-    const rules = await db.getScoringRules();
-    
-    // Group rules by category for better organization
-    const groupedRules = {
-        passing: rules.filter(r => r.stat_type.startsWith('passing')),
-        rushing: rules.filter(r => r.stat_type.startsWith('rushing')),
-        receiving: rules.filter(r => r.stat_type.startsWith('receiving') || r.stat_type === 'receptions'),
-        defense: rules.filter(r => r.stat_type.startsWith('def_') || r.stat_type === 'sacks' || r.stat_type === 'safeties'),
-        kicking: rules.filter(r => r.stat_type.includes('field_goal') || r.stat_type.includes('extra_point')),
-        misc: rules.filter(r => !['passing', 'rushing', 'receiving', 'def_', 'field_goal', 'extra_point', 'sacks', 'safeties', 'receptions'].some(prefix => r.stat_type.startsWith(prefix) || r.stat_type.includes(prefix)))
+    // Return the PFL scoring system as defined in docs/SCORING_SYSTEM.md
+    const scoringSystem = {
+        touchdowns: {
+            pass: { points: 5, description: "Touchdown Pass (by any player)" },
+            score: { points: 8, description: "Touchdown Scored (by any player)" }
+        },
+        twoPointConversions: {
+            pass: { points: 2, description: "Two Point Conversion Pass (by any player)" },
+            score: { points: 2, description: "Two Point Conversion Scored (by any player)" }
+        },
+        passingYards: [
+            { yards: 175, points: 6 },
+            { yards: 250, points: 9 },
+            { yards: 325, points: 12 },
+            { yards: 400, points: 15 }
+        ],
+        receivingYards: [
+            { yards: 50, points: 3 },
+            { yards: 75, points: 6 },
+            { yards: 100, points: 9 },
+            { yards: 150, points: 12 },
+            { yards: 200, points: 15 }
+        ],
+        rushingYards: [
+            { yards: 50, points: 3 },
+            { yards: 75, points: 6 },
+            { yards: 100, points: 9 },
+            { yards: 150, points: 12 },
+            { yards: 200, points: 15 }
+        ],
+        kicking: {
+            fieldGoal: { points: 2, description: "Field goals (distance doesn't matter)" },
+            extraPoint: { points: 0.5, description: "Extra points" }
+        },
+        defense: {
+            touchdown: { points: 8, description: "Defensive/Special Teams Touchdown" },
+            leastPointsAllowed: { points: 5, description: "Team with least points allowed" },
+            leastYardsAllowed: { points: 5, description: "Team with least yards allowed" },
+            safety: { points: 2, description: "Safety" }
+        },
+        returns: {
+            kickOrPunt: { points: 20, description: "Kick or Punt Return Touchdown" }
+        }
     };
     
     res.json({
         success: true,
         data: {
-            rules,
-            groupedRules,
-            scoringType: 'PFL'
+            scoringSystem,
+            scoringType: 'PFL',
+            description: 'Points For League (PFL) Scoring System'
         }
     });
 }));

@@ -554,15 +554,6 @@ class DatabaseManager {
         );
     }
 
-    // Scoring rules
-    async getScoringRules() {
-        return this.all('SELECT * FROM scoring_rules ORDER BY stat_type');
-    }
-
-    async getScoringRule(statType) {
-        return this.get('SELECT * FROM scoring_rules WHERE stat_type = ?', [statType]);
-    }
-
     // Calculate team's total points for a week
     async calculateTeamWeeklyPoints(teamId, week, season) {
         const result = await this.get(`

@@ -103,38 +103,6 @@ CREATE TABLE IF NOT EXISTS matchups (
     FOREIGN KEY (team2_id) REFERENCES teams(team_id)
 );
 
--- Scoring Rules (PFL by default)
-CREATE TABLE IF NOT EXISTS scoring_rules (
-    rule_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    stat_type VARCHAR(50) NOT NULL UNIQUE,
-    points_per_unit REAL NOT NULL
-);
-
--- Insert default PFL scoring rules
-INSERT OR IGNORE INTO scoring_rules (stat_type, points_per_unit) VALUES 
-    -- Offensive scoring
-    ('passing_yards', 0.04),
-    ('passing_tds', 4),
-    ('interceptions', -2),
-    ('rushing_yards', 0.1),
-    ('rushing_tds', 6),
-    ('receiving_yards', 0.1),
-    ('receiving_tds', 6),
-    ('fumbles', -2),
-    -- Defensive scoring
-    ('sacks', 1),
-    ('def_interceptions', 2),
-    ('fumbles_recovered', 2),
-    ('def_touchdowns', 6),
-    ('safeties', 2),
-    -- Kicking scoring
-    ('extra_points_made', 1),
-    ('field_goals_0_39', 3),
-    ('field_goals_40_49', 4),
-    ('field_goals_50_plus', 5),
-    ('field_goals_missed', -1);
-
-
 -- Tank01 API Cache
 CREATE TABLE IF NOT EXISTS tank01_cache (
     cache_key VARCHAR(255) PRIMARY KEY,

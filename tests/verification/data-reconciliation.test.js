@@ -162,12 +162,12 @@ describe(`Data Reconciliation (${getTestDescription()})`, () => {
             for (const player of rosterPlayers) {
                 // Check if player exists in Tank01 cache
                 const tank01Player = await db.get(`
-                    SELECT player_id, player_name
+                    SELECT cache_key as player_id, cache_key as player_name
                     FROM tank01_cache
-                    WHERE player_id = ?
-                    OR LOWER(REPLACE(player_name, ' ', '')) = LOWER(REPLACE(?, ' ', ''))
+                    WHERE cache_key LIKE ?
+                    OR cache_key LIKE ?
                     LIMIT 1
-                `, [player.player_id, player.player_name]);
+                `, [`%${player.player_id}%`, `%${player.player_name}%`]);
                 
                 if (!tank01Player) {
                     // Also check nfl_players table
@@ -343,7 +343,7 @@ describe(`Data Reconciliation (${getTestDescription()})`, () => {
             // Save metrics to file
             const metricsFile = path.join(reportDir, 'data-quality-metrics.json');
             await fs.writeFile(metricsFile, JSON.stringify({
-                season: currentSeason,
+                season: season,
                 metrics: metrics,
                 details: {
                     id_breakdown: idConsistency,

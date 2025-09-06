@@ -4,22 +4,10 @@ class ScoringService {
     constructor(db, nflGamesService = null) {
         this.db = db;
         this.nflGamesService = nflGamesService;
-        this.scoringRules = null;
     }
     
     setNFLGamesService(nflGamesService) {
         this.nflGamesService = nflGamesService;
-    }
-
-    async loadScoringRules() {
-        if (!this.scoringRules) {
-            const rules = await this.db.getScoringRules();
-            this.scoringRules = {};
-            rules.forEach(rule => {
-                this.scoringRules[rule.stat_type] = rule.points_per_unit;
-            });
-        }
-        return this.scoringRules;
     }
 
     async calculateFantasyPoints(playerStats) {
