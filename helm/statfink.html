@@ -603,12 +603,12 @@
             if (data.success) {
                 const matchup = data.data.matchup;
                 
-                // Calculate players not started yet
+                // Calculate players not started yet (including in-progress games)
                 const team1Remaining = data.data.team1.starters.filter(p => 
-                    p.game_status === 'Scheduled' || (!p.game_status && !matchup.is_complete)
+                    p.game_status !== 'Final' && p.game_status !== undefined
                 ).length;
                 const team2Remaining = data.data.team2.starters.filter(p => 
-                    p.game_status === 'Scheduled' || (!p.game_status && !matchup.is_complete)
+                    p.game_status !== 'Final' && p.game_status !== undefined
                 ).length;
                 
                 // Cache the remaining players count for the left bar
@@ -684,12 +684,12 @@
     function displayMatchup(data, changedStats = { team1: {}, team2: {} }) {
         const matchup = data.matchup;
         
-        // Calculate players not started yet
+        // Calculate players not started yet (including in-progress games)
         const team1Remaining = data.team1.starters.filter(p => 
-            p.game_status === 'Scheduled' || (!p.game_status && !matchup.is_complete)
+            p.game_status !== 'Final' && p.game_status !== undefined
         ).length;
         const team2Remaining = data.team2.starters.filter(p => 
-            p.game_status === 'Scheduled' || (!p.game_status && !matchup.is_complete)
+            p.game_status !== 'Final' && p.game_status !== undefined
         ).length;
         
         // Update team headers
@@ -943,9 +943,9 @@
             const displayName = player.position === 'DEF' ? playerName : `${playerName} &nbsp;&nbsp;${player.team}`;
             
             // Check if game is currently in progress (anything that's not Final or Scheduled)
-            const isGameInProgress = gameStatus && 
-                gameStatus !== 'Final' && 
-                gameStatus !== 'Scheduled';
+            const isGameInProgress = player.game_status && 
+                player.game_status !== 'Final' && 
+                player.game_status !== 'Scheduled';
             
             row.innerHTML = `
                 <td class="position position-${player.position}">${player.position}</td>

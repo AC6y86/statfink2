@@ -234,9 +234,7 @@ class NFLGamesService {
             const liveGames = await this.db.all(`
                 SELECT game_id, week, season, home_team, away_team, status, game_time_epoch
                 FROM nfl_games 
-                WHERE status LIKE '%Q1%' OR status LIKE '%Q2%' OR status LIKE '%Q3%' OR status LIKE '%Q4%' 
-                   OR status LIKE '%OT%' OR status = 'Halftime'
-                   OR status LIKE '%Live%' OR status LIKE '%Progress%'
+                WHERE (status != 'Final' AND status != 'Scheduled')
                    OR (status = 'Scheduled' AND 
                        game_time_epoch IS NOT NULL AND
                        game_time_epoch BETWEEN ? AND ?)
