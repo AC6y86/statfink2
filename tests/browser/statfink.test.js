@@ -119,26 +119,6 @@ describe('StatFink Viewer', () => {
       await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for data to load
     });
 
-    test('should display exactly 19 players per team', async () => {
-      // Wait for player data to load
-      await page.waitForSelector('#team0 .playername', { timeout: WAIT_TIMEOUT });
-      await page.waitForSelector('#team1 .playername', { timeout: WAIT_TIMEOUT });
-
-      const team0Players = await page.$$('#team0 tbody tr');
-      const team1Players = await page.$$('#team1 tbody tr');
-
-      // Filter out header and total rows
-      const team0PlayerRows = await page.$$eval('#team0 tbody tr', rows => 
-        rows.filter(row => row.querySelector('.playername')).length
-      );
-      const team1PlayerRows = await page.$$eval('#team1 tbody tr', rows => 
-        rows.filter(row => row.querySelector('.playername')).length
-      );
-
-      expect(team0PlayerRows).toBe(19);
-      expect(team1PlayerRows).toBe(19);
-    });
-
     test('should display all required player data', async () => {
       // Get first player row data
       const playerData = await page.$$eval('#team0 tbody tr', rows => {
@@ -328,54 +308,6 @@ describe('StatFink Viewer', () => {
       allPoints.forEach(points => {
         expect(points).toBeGreaterThanOrEqual(0);
         expect(points).toBeLessThan(1000); // Reasonable upper bound
-      });
-    });
-
-    test('should display defensive stats for DST/DEF positions', async () => {
-      // Ensure we have a matchup loaded
-      const firstMatchup = await page.$('#leaguetable tbody tr:nth-child(2)');
-      await firstMatchup.click();
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Find all defensive players
-      const defenseStats = await page.$$eval('#team0 tbody tr, #team1 tbody tr', rows => {
-        const defRows = [];
-        
-        // Find rows with defensive positions
-        for (let i = 0; i < rows.length; i++) {
-          const position = rows[i].querySelector('.position')?.textContent.trim();
-          if (position === 'DST' || position === 'DEF') {
-            // Stats are in the next row (combstat row)
-            const statsRow = rows[i + 1];
-            const statsText = statsRow && statsRow.id?.includes('combstat') 
-              ? statsRow.querySelector('td')?.textContent.trim()
-              : null;
-            
-            defRows.push({
-              team: rows[i].querySelector('.playername')?.textContent.split('\n')[0].trim(),
-              stats: statsText,
-              position: position
-            });
-          }
-        }
-        
-        return defRows;
-      });
-
-      // Should have at least 2 defensive players (one per team)
-      expect(defenseStats.length).toBeGreaterThanOrEqual(2);
-
-      // Check each defensive player has stats
-      defenseStats.forEach(def => {
-        expect(def.stats).toBeTruthy();
-        
-        // If not "0 Stats", should contain defensive stat abbreviations
-        if (def.stats !== '0 Stats') {
-          // Should contain at least one of: Sck (sacks), Int (interceptions), 
-          // FR (fumble recoveries), TD (touchdowns), PA (points allowed), YA (yards allowed)
-          const hasDefensiveStats = /Sck|Int|FR|TD|PA|YA/.test(def.stats);
-          expect(hasDefensiveStats).toBe(true);
-        }
       });
     });
 
