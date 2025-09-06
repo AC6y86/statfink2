@@ -740,4 +740,46 @@ router.post('/debug/undo-weekly-update', requireAdmin, asyncHandler(async (req, 
     }
 }));
 
+// Generate weekly report
+router.post('/weekly-report/generate', requireAdmin, asyncHandler(async (req, res) => {
+    const weeklyReportService = req.app.locals.weeklyReportService;
+    const { week, season } = req.body;
+    
+    if (!weeklyReportService) {
+        throw new APIError('Weekly report service not initialized', 500);
+    }
+    
+    // Use current week/season if not provided
+    let reportWeek = week;
+    let reportSeason = season;
+    
+    if (!reportWeek || !reportSeason) {
+        const db = req.app.locals.db;
+        const settings = await db.get(
+            'SELECT current_week, season_year FROM league_settings WHERE league_id = 1'
+        );
+        reportWeek = reportWeek || settings.current_week;
+        reportSeason = reportSeason || settings.season_year;
+    }
+    
+    const result = await weeklyReportService.generateWeeklyReport(reportWeek, reportSeason);
+    
+    if (result.success) {
+        res.json({
+            success: true,
+            message: result.message,
+            filepath: result.filepath,
+            filename: result.filename,
+            week: reportWeek,
+            season: reportSeason,
+            validation: result.validation
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: result.message
+        });
+    }
+}));
+
 module.exports = router;

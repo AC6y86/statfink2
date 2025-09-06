@@ -6,7 +6,7 @@ const execAsync = promisify(exec);
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 
 class SchedulerService {
-    constructor(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService) {
+    constructor(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService) {
         this.db = db;
         this.nflGamesService = nflGamesService;
         this.playerSyncService = playerSyncService;
@@ -14,6 +14,7 @@ class SchedulerService {
         this.standingsService = standingsService;
         this.teamScoreService = teamScoreService;
         this.scoringPlayersService = scoringPlayersService;
+        this.weeklyReportService = weeklyReportService;
         
         // Track last run times
         this.lastDailyUpdate = null;
@@ -70,6 +71,7 @@ class SchedulerService {
             gameSchedule: false,
             backup: false,
             rosters: false,
+            weeklyReport: false,
             errors: []
         };
 
@@ -118,6 +120,28 @@ class SchedulerService {
             } catch (error) {
                 logError('Failed to update rosters', error);
                 results.errors.push(`Rosters: ${error.message}`);
+            }
+
+            // 4. Generate weekly report
+            try {
+                const currentSettings = await this.getCurrentSettings();
+                if (currentSettings.current_week && currentSettings.season_year) {
+                    const reportResult = await this.weeklyReportService.generateWeeklyReport(
+                        currentSettings.current_week,
+                        currentSettings.season_year
+                    );
+                    results.weeklyReport = reportResult.success;
+                    if (!reportResult.success) {
+                        results.errors.push(`Weekly report: ${reportResult.message}`);
+                    } else {
+                        logInfo(`Weekly report saved to ${reportResult.filepath}`);
+                    }
+                } else {
+                    results.errors.push('Weekly report: Week/season not set');
+                }
+            } catch (error) {
+                logError('Failed to generate weekly report', error);
+                results.errors.push(`Weekly report: ${error.message}`);
             }
 
             this.lastDailyUpdate = new Date();

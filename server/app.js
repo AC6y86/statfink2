@@ -21,6 +21,7 @@ const StandingsService = require('./services/standingsService');
 const SchedulerService = require('./services/schedulerService');
 const TeamScoreService = require('./services/teamScoreService');
 const ScoringPlayersService = require('./services/scoringPlayersService');
+const WeeklyReportService = require('./services/weeklyReportService');
 const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
 
 const app = express();
@@ -31,7 +32,7 @@ const HTTPS_PORT = process.env.HTTPS_PORT || 8443;
 const { setupAuth } = require('./auth/auth');
 
 // Initialize services
-let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService;
+let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService, weeklyReportService;
 
 async function initializeServices() {
     try {
@@ -76,8 +77,12 @@ async function initializeServices() {
         scoringPlayersService = new ScoringPlayersService(db);
         logInfo('Scoring players service initialized');
         
+        // Initialize weekly report service
+        weeklyReportService = new WeeklyReportService(db);
+        logInfo('Weekly report service initialized');
+        
         // Initialize scheduler service
-        schedulerService = new SchedulerService(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService);
+        schedulerService = new SchedulerService(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService);
         logInfo('Scheduler service initialized');
         
         
@@ -90,6 +95,7 @@ async function initializeServices() {
         app.locals.standingsService = standingsService;
         app.locals.teamScoreService = teamScoreService;
         app.locals.scoringPlayersService = scoringPlayersService;
+        app.locals.weeklyReportService = weeklyReportService;
         app.locals.schedulerService = schedulerService;
         
         logInfo('Services initialized successfully');

@@ -427,7 +427,8 @@
                     score2Cell.className = "fanpts";
                     score2Cell.nowrap = true;
                     
-                    if (index === 0) {
+                    // Only set default matchup if none is currently selected
+                    if (!currentMatchupId && index === 0) {
                         currentMatchupId = matchup.matchup_id;
                     }
                 });
@@ -941,12 +942,10 @@
             // For defenses, don't show team code after name since it's redundant
             const displayName = player.position === 'DEF' ? playerName : `${playerName} &nbsp;&nbsp;${player.team}`;
             
-            // Check if game is currently in progress
-            const isGameInProgress = gameStatus && (
-                gameStatus.includes('Q1') || gameStatus.includes('Q2') || 
-                gameStatus.includes('Q3') || gameStatus.includes('Q4') || 
-                gameStatus.includes('OT') || gameStatus === 'Halftime'
-            );
+            // Check if game is currently in progress (anything that's not Final or Scheduled)
+            const isGameInProgress = gameStatus && 
+                gameStatus !== 'Final' && 
+                gameStatus !== 'Scheduled';
             
             row.innerHTML = `
                 <td class="position position-${player.position}">${player.position}</td>
@@ -1040,6 +1039,10 @@
         } else if (player.game_status && player.game_status !== 'Scheduled') {
             // For live games, show the actual game status (e.g. "Q2 12:45", "Final", etc.)
             return player.game_status;
+        }
+        // If no game_status, check if player has stats to determine if game was played
+        if (!player.stats || Object.keys(player.stats || {}).length === 0) {
+            return player.game_time || 'TBD';
         }
         return player.game_status || 'Final';
     }
@@ -1162,7 +1165,10 @@
                 if ((stats.sacks || 0) > 0) details.push(wrapIfChanged(`${stats.sacks} Sck`, 'sacks'));
                 if ((stats.def_interceptions || 0) > 0) details.push(wrapIfChanged(`${stats.def_interceptions} Int`, 'def_interceptions'));
                 if ((stats.fumbles_recovered || 0) > 0) details.push(wrapIfChanged(`${stats.fumbles_recovered} FR`, 'fumbles_recovered'));
-                if ((stats.def_touchdowns || 0) > 0) details.push(wrapIfChanged(`${stats.def_touchdowns} TD`, 'def_touchdowns'));
+                // Calculate total defensive TDs from breakdown fields
+                const defTDs = (stats.def_int_return_tds || 0) + (stats.def_fumble_return_tds || 0) + (stats.def_blocked_return_tds || 0);
+                if (defTDs > 0) details.push(wrapIfChanged(`${defTDs} TD`, ['def_int_return_tds', 'def_fumble_return_tds', 'def_blocked_return_tds']));
+                if ((stats.safeties || 0) > 0) details.push(wrapIfChanged(`${stats.safeties} Sfty`, 'safeties'));
                 if (stats.points_allowed !== undefined) details.push(wrapIfChanged(`${stats.points_allowed} PtsAllw`, 'points_allowed'));
                 if (stats.yards_allowed !== undefined) details.push(wrapIfChanged(`${stats.yards_allowed} YdsAllw`, 'yards_allowed'));
                 break;
@@ -1287,6 +1293,9 @@
     
     // Refresh data
     async function refreshData() {
+        // Store current matchup before refresh
+        const preservedMatchupId = currentMatchupId;
+        
         // For mock mode, simulate game progression
         if (isMockMode && currentWeek) {
             try {
@@ -1308,11 +1317,18 @@
             }
         }
         
-        // Refresh all data
+        // Refresh matchup list
+        await loadWeekMatchups();
+        
+        // Restore the preserved matchup ID
+        currentMatchupId = preservedMatchupId;
+        
+        // Refresh current matchup and NFL games
         if (currentMatchupId) {
             await loadMatchup(currentMatchupId);
+            // Ensure URL stays in sync
+            updateUrlWithMatchup(currentMatchupId);
         }
-        await loadWeekMatchups();
         await loadNFLGames();
         
         // Update last update time

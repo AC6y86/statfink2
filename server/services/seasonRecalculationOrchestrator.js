@@ -269,8 +269,12 @@ class SeasonRecalculationOrchestrator {
                 
                 // Collect DST stats for later processing
                 let gameDstStats = null;
+                // DST data is directly on the boxscore object from Tank01
                 if (game.DST) {
                     gameDstStats = { DST: game.DST, game, week, gameId, season: this.season };
+                } else {
+                    // Log if DST data is missing for debugging
+                    logWarn(`No DST data found for game ${gameId} in week ${week}`);
                 }
                 
                 return { stats: gameStats, dstStats: gameDstStats };
