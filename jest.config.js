@@ -33,6 +33,11 @@ module.exports = {
       testMatch: ['<rootDir>/tests/browser/**/*.test.js'],
       preset: 'jest-puppeteer',
       testTimeout: 30000
+    },
+    {
+      displayName: 'verification',
+      testMatch: ['<rootDir>/tests/verification/**/*.test.js'],
+      testTimeout: 15000
     }
   ]
 };
