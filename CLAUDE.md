@@ -43,3 +43,5 @@ create files in /tmp
 - NEVER run `npm start` when PM2 is running (it will kill the PM2 process)
 - Always check if PM2 is running before starting development: `pm2 status`
 - If you need to restart the server in production, use `pm2 restart statfink2` NOT `npm start`
+- remember it is the 2025 season
+- remember whenever committing, include the fantasy football db
