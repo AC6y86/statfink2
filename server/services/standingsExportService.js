@@ -3,6 +3,88 @@ const { logInfo, logError } = require('../utils/errorHandler');
 class StandingsExportService {
     constructor(db) {
         this.db = db;
+        
+        // NFL team abbreviation mapping
+        this.nflTeamAbbr = {
+            'Arizona Cardinals': 'Cardinals',
+            'Atlanta Falcons': 'Falcons',
+            'Baltimore Ravens': 'Ravens',
+            'Buffalo Bills': 'Bills',
+            'Carolina Panthers': 'Panthers',
+            'Chicago Bears': 'Bears',
+            'Cincinnati Bengals': 'Bengals',
+            'Cleveland Browns': 'Browns',
+            'Dallas Cowboys': 'Cowboys',
+            'Denver Broncos': 'Broncos',
+            'Detroit Lions': 'Lions',
+            'Green Bay Packers': 'Packers',
+            'Houston Texans': 'Texans',
+            'Indianapolis Colts': 'Colts',
+            'Jacksonville Jaguars': 'Jaguars',
+            'Kansas City Chiefs': 'Chiefs',
+            'Las Vegas Raiders': 'Raiders',
+            'Los Angeles Chargers': 'Chargers',
+            'Los Angeles Rams': 'Rams',
+            'Miami Dolphins': 'Dolphins',
+            'Minnesota Vikings': 'Vikings',
+            'New England Patriots': 'Patriots',
+            'New Orleans Saints': 'Saints',
+            'New York Giants': 'Giants',
+            'New York Jets': 'Jets',
+            'Philadelphia Eagles': 'Eagles',
+            'Pittsburgh Steelers': 'Steelers',
+            'San Francisco 49ers': '49ers',
+            'Seattle Seahawks': 'Seahawks',
+            'Tampa Bay Buccaneers': 'Buccaneers',
+            'Tennessee Titans': 'Titans',
+            'Washington Commanders': 'Commanders'
+        };
+    }
+    
+    /**
+     * Get NFL team abbreviation
+     */
+    getNFLTeamAbbr(teamName) {
+        if (!teamName) return '';
+        
+        // Check if it's already an abbreviation or short name
+        if (this.nflTeamAbbr[teamName]) {
+            return this.nflTeamAbbr[teamName];
+        }
+        
+        // Check for common abbreviations
+        const abbr = {
+            'ARI': 'Cardinals', 'ATL': 'Falcons', 'BAL': 'Ravens', 'BUF': 'Bills',
+            'CAR': 'Panthers', 'CHI': 'Bears', 'CIN': 'Bengals', 'CLE': 'Browns',
+            'DAL': 'Cowboys', 'DEN': 'Broncos', 'DET': 'Lions', 'GB': 'Packers',
+            'HOU': 'Texans', 'IND': 'Colts', 'JAX': 'Jaguars', 'KC': 'Chiefs',
+            'LAC': 'Chargers', 'LAR': 'Rams', 'LV': 'Raiders', 'MIA': 'Dolphins',
+            'MIN': 'Vikings', 'NE': 'Patriots', 'NO': 'Saints', 'NYG': 'Giants',
+            'NYJ': 'Jets', 'PHI': 'Eagles', 'PIT': 'Steelers', 'SF': '49ers',
+            'SEA': 'Seahawks', 'TB': 'Buccaneers', 'TEN': 'Titans', 'WAS': 'Commanders'
+        };
+        
+        if (abbr[teamName]) {
+            return abbr[teamName];
+        }
+        
+        // Return as-is if not found
+        return teamName;
+    }
+    
+    /**
+     * Format player name with team
+     */
+    formatPlayerName(name, team, isDefense = false) {
+        if (!name) return '';
+        
+        // For defense/DST, just return the team name
+        if (isDefense) {
+            return this.getNFLTeamAbbr(name) || name;
+        }
+        
+        const teamAbbr = this.getNFLTeamAbbr(team);
+        return teamAbbr ? `${name}(${teamAbbr})` : name;
     }
 
     /**
@@ -353,6 +435,138 @@ class StandingsExportService {
         `, [season]);
         
         return weeks.map(w => w.week);
+    }
+    
+    /**
+     * Get data formatted for horizontal grid export (new format)
+     */
+    async getHorizontalGridData(week, season) {
+        try {
+            logInfo(`Collecting horizontal grid data for Week ${week}, Season ${season}`);
+            
+            // Get all 12 teams ordered by team_id
+            const teams = await this.db.all(`
+                SELECT t.team_id, t.owner_name, t.team_name,
+                       ws.wins, ws.losses, ws.ties,
+                       ws.points_for_week as weeklyPoints,
+                       ws.cumulative_points as cumulativePoints
+                FROM teams t
+                LEFT JOIN weekly_standings ws ON t.team_id = ws.team_id 
+                    AND ws.week = ? AND ws.season = ?
+                ORDER BY t.team_id
+            `, [week, season]);
+            
+            // Get matchup results for opponent/result display
+            const matchups = await this.getMatchupResults(week, season);
+            
+            // Add matchup info to each team
+            teams.forEach(team => {
+                const matchup = matchups.find(m => 
+                    m.team1_id === team.team_id || m.team2_id === team.team_id
+                );
+                
+                if (matchup) {
+                    const isTeam1 = matchup.team1_id === team.team_id;
+                    const teamPoints = isTeam1 ? matchup.team1_points : matchup.team2_points;
+                    const oppPoints = isTeam1 ? matchup.team2_points : matchup.team1_points;
+                    const oppName = isTeam1 ? matchup.team2_name : matchup.team1_name;
+                    
+                    team.opponent = oppName;
+                    team.opponentScore = oppPoints;
+                    team.weekResult = teamPoints > oppPoints ? 'Win' : teamPoints < oppPoints ? 'Loss' : 'Tie';
+                    team.record = `${team.wins || 0}-${team.losses || 0}${team.ties > 0 ? `-${team.ties}` : ''}`;
+                }
+            });
+            
+            // Get all rostered players (excluding IR)
+            const players = await this.db.all(`
+                SELECT 
+                    wr.player_id,
+                    wr.player_name,
+                    wr.player_position,
+                    wr.player_team,
+                    wr.team_id,
+                    t.owner_name,
+                    wr.is_scoring,
+                    wr.roster_position,
+                    COALESCE(ps.fantasy_points, 0) as fantasy_points,
+                    ps.interceptions,
+                    ps.fumbles
+                FROM weekly_rosters wr
+                JOIN teams t ON wr.team_id = t.team_id
+                LEFT JOIN player_stats ps ON wr.player_id = ps.player_id 
+                    AND ps.week = wr.week AND ps.season = wr.season
+                WHERE wr.week = ? AND wr.season = ? 
+                    AND wr.roster_position != 'injured_reserve'
+                ORDER BY 
+                    wr.team_id,
+                    CASE wr.player_position 
+                        WHEN 'QB' THEN 1 
+                        WHEN 'RB' THEN 2 
+                        WHEN 'WR' THEN 3 
+                        WHEN 'TE' THEN 4 
+                        WHEN 'K' THEN 5
+                        WHEN 'DST' THEN 6
+                        WHEN 'Defense' THEN 6
+                        ELSE 7 
+                    END,
+                    wr.is_scoring DESC,
+                    ps.fantasy_points DESC NULLS LAST,
+                    wr.player_name
+            `, [week, season]);
+            
+            // Group players by team and position
+            const teamRosters = {};
+            teams.forEach(team => {
+                teamRosters[team.team_id] = {
+                    owner_name: team.owner_name,
+                    QB: [],
+                    RB: [],
+                    WR: [], // Will include TEs
+                    K: [],
+                    DST: []
+                };
+            });
+            
+            players.forEach(player => {
+                let position = player.player_position;
+                
+                // Map Defense to DST
+                if (position === 'Defense') position = 'DST';
+                
+                // Put TEs in WR group
+                if (position === 'TE') position = 'WR';
+                
+                if (teamRosters[player.team_id] && teamRosters[player.team_id][position]) {
+                    // Format player data
+                    const playerData = {
+                        name: position === 'DST' ? 
+                            this.formatPlayerName(player.player_name, player.player_team, true) : 
+                            this.formatPlayerName(player.player_name, player.player_team, false),
+                        isScoring: player.is_scoring === 1,
+                        points: player.fantasy_points || 0,
+                        // Check if player played this week - null points or certain stats indicate didn't play
+                        didPlay: player.fantasy_points !== null && (player.fantasy_points > 0 || 
+                                 player.interceptions > 0 || player.fumbles > 0),
+                        position: player.player_position // Keep original for TE identification
+                    };
+                    
+                    teamRosters[player.team_id][position].push(playerData);
+                }
+            });
+            
+            return {
+                week,
+                season,
+                teams,
+                teamRosters,
+                matchups
+            };
+            
+        } catch (error) {
+            logError('Error getting horizontal grid data:', error);
+            throw error;
+        }
     }
 }
 

@@ -40,14 +40,13 @@ router.post('/standings/sheet', asyncHandler(async (req, res) => {
         // Extract spreadsheet ID from URL if needed
         const spreadsheetId = googleSheets.extractSpreadsheetId(sheetId);
         
-        // Collect data
+        // Collect data using new horizontal grid format
         logInfo(`Collecting data for Week ${weekNum}, Season ${seasonNum}`);
-        const exportData = await exportService.getWeeklyExportData(weekNum, seasonNum);
-        const gridData = await exportService.getRosteredPlayersGrid(weekNum, seasonNum);
+        const gridData = await exportService.getHorizontalGridData(weekNum, seasonNum);
         
-        // Write to Google Sheets
+        // Write to Google Sheets using new format
         logInfo(`Writing to Google Sheets: ${spreadsheetId}`);
-        await googleSheets.writeWeeklyData(spreadsheetId, weekNum, seasonNum, exportData, gridData);
+        await googleSheets.writeWeeklyData(spreadsheetId, weekNum, seasonNum, null, gridData);
         
         res.json({
             success: true,
@@ -105,9 +104,8 @@ router.post('/standings/sheet/all', asyncHandler(async (req, res) => {
         const results = [];
         for (const week of weeks) {
             logInfo(`Exporting Week ${week}...`);
-            const exportData = await exportService.getWeeklyExportData(week, seasonNum);
-            const gridData = await exportService.getRosteredPlayersGrid(week, seasonNum);
-            await googleSheets.writeWeeklyData(spreadsheetId, week, seasonNum, exportData, gridData);
+            const gridData = await exportService.getHorizontalGridData(week, seasonNum);
+            await googleSheets.writeWeeklyData(spreadsheetId, week, seasonNum, null, gridData);
             results.push(week);
         }
         

@@ -97,7 +97,7 @@ class GoogleSheetsExportService {
                                 title: tabName,
                                 gridProperties: {
                                     rowCount: 500,
-                                    columnCount: 26
+                                    columnCount: 30
                                 }
                             }
                         }
@@ -115,13 +115,15 @@ class GoogleSheetsExportService {
     }
 
     /**
-     * Write weekly standings data to sheet tabs (creates 2 tabs per week)
+     * Write weekly data to Google Sheets (new format with 2 tabs)
      */
     async writeWeeklyData(spreadsheetId, weekNumber, season, standingsData, gridData) {
         try {
-            // Create two tabs for the week
-            await this.writeStatsTab(spreadsheetId, weekNumber, season, gridData);
-            await this.writeSummaryTab(spreadsheetId, weekNumber, season, standingsData);
+            // Tab 1: Week X - Detailed player grid
+            await this.writeWeekTab(spreadsheetId, weekNumber, season, gridData);
+            
+            // Tab 2: Week X Summary - Simple three-table view
+            await this.writeSummaryTab(spreadsheetId, weekNumber, season, gridData);
             
             logInfo(`Successfully wrote Week ${weekNumber} data to Google Sheet`);
             return true;
@@ -132,62 +134,195 @@ class GoogleSheetsExportService {
     }
 
     /**
-     * Write the stats tab (Week X Stats) - Grid format with all rostered players
+     * Write Tab 1: "Week X" - Detailed player grid
      */
-    async writeStatsTab(spreadsheetId, weekNumber, season, gridData) {
-        const tabName = `Week ${weekNumber} Stats`;
+    async writeWeekTab(spreadsheetId, weekNumber, season, gridData) {
+        const tabName = `Week ${weekNumber}`;
         await this.getOrCreateTab(spreadsheetId, tabName);
         
         const rows = [];
+        const { teams, teamRosters } = gridData;
         
-        // Header
-        rows.push([`WEEK ${weekNumber} STATS`]);
-        rows.push([]);
-        
-        // Column headers: Player | Team | Pos | Owner1 | Owner2 | ... | Owner12
-        const headerRow = ['Player', 'Team', 'Pos'];
-        gridData.teams.forEach(owner => headerRow.push(owner));
+        // Header row: Empty | Owner1 | PTS | Owner2 | PTS | ...
+        const headerRow = [''];
+        teams.forEach(team => {
+            headerRow.push(team.owner_name, 'PTS');
+        });
         rows.push(headerRow);
         
-        // Process each position group
-        const positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DST'];
+        // Helper to format points
+        const formatPoints = (player) => {
+            if (!player) return '';
+            // Show 'X' for players who didn't play
+            if (!player.didPlay) return 'X';
+            // Format points - whole numbers without decimal, others with .1
+            const pointStr = player.points % 1 === 0 ? 
+                player.points.toString() : 
+                player.points.toFixed(1);
+            // Add asterisk for scoring players
+            return player.isScoring ? `*${pointStr}` : pointStr;
+        };
         
-        positions.forEach(position => {
-            const players = gridData.positionGroups[position] || [];
-            
-            players.forEach(player => {
-                const row = [
-                    player.name,
-                    player.nfl_team || '-',
-                    position === 'DST' ? 'D' : position
-                ];
-                
-                // Add points for each owner column
-                gridData.teams.forEach(owner => {
-                    if (player.owner_name === owner) {
-                        // This player belongs to this owner
-                        let pointsDisplay = '';
-                        if (player.fantasyPoints === 0) {
-                            pointsDisplay = 'X';
-                        } else {
-                            // Add asterisk for scoring players
-                            const prefix = player.isScoring ? '*' : '';
-                            pointsDisplay = prefix + player.fantasyPoints.toFixed(1);
-                        }
-                        row.push(pointsDisplay);
-                    } else {
-                        // Empty cell for other owners
-                        row.push('');
-                    }
-                });
-                
-                rows.push(row);
+        // QB Section (3 rows typical, 4 max)
+        const maxQBs = 3;
+        for (let i = 0; i < maxQBs; i++) {
+            const row = ['QB'];
+            teams.forEach(team => {
+                const roster = teamRosters[team.team_id];
+                const player = roster.QB[i];
+                if (player) {
+                    row.push(player.name, formatPoints(player));
+                } else {
+                    row.push('', '');
+                }
             });
-            
-            // Add empty row between position groups (except after last)
-            if (position !== 'DST' && players.length > 0) {
-                rows.push([]);
-            }
+            rows.push(row);
+        }
+        
+        // Empty separator rows between QB and RB (3-4 rows)
+        for (let i = 0; i < 4; i++) {
+            rows.push(Array(headerRow.length).fill(''));
+        }
+        
+        // RB Section (5-6 rows)
+        const maxRBs = 6;
+        for (let i = 0; i < maxRBs; i++) {
+            const row = ['RB'];
+            teams.forEach(team => {
+                const roster = teamRosters[team.team_id];
+                const player = roster.RB[i];
+                if (player) {
+                    row.push(player.name, formatPoints(player));
+                } else {
+                    row.push('', '');
+                }
+            });
+            rows.push(row);
+        }
+        
+        // Empty separator rows between RB and WR (3-4 rows)
+        for (let i = 0; i < 4; i++) {
+            rows.push(Array(headerRow.length).fill(''));
+        }
+        
+        // WR Section (includes TEs) (6-7 rows)
+        const maxWRs = 7;
+        for (let i = 0; i < maxWRs; i++) {
+            const row = ['WR'];
+            teams.forEach(team => {
+                const roster = teamRosters[team.team_id];
+                const player = roster.WR[i];
+                if (player) {
+                    // Note position if it's a TE mixed in WR section
+                    row.push(player.name, formatPoints(player));
+                } else {
+                    row.push('', '');
+                }
+            });
+            rows.push(row);
+        }
+        
+        // Empty separator rows between WR and K (2 rows)
+        for (let i = 0; i < 2; i++) {
+            rows.push(Array(headerRow.length).fill(''));
+        }
+        
+        // K Section (1-2 rows)
+        const maxKs = 2;
+        for (let i = 0; i < maxKs; i++) {
+            const row = ['K'];
+            teams.forEach(team => {
+                const roster = teamRosters[team.team_id];
+                const player = roster.K[i];
+                if (player) {
+                    row.push(player.name, formatPoints(player));
+                } else {
+                    row.push('', '');
+                }
+            });
+            rows.push(row);
+        }
+        
+        // Empty separator row between K and DEF (1 row)
+        rows.push(Array(headerRow.length).fill(''));
+        
+        // DEF Section (1-2 rows)
+        const maxDEFs = 2;
+        for (let i = 0; i < maxDEFs; i++) {
+            const row = ['DEF'];
+            teams.forEach(team => {
+                const roster = teamRosters[team.team_id];
+                const player = roster.DST[i];
+                if (player) {
+                    // Defense names should just be team name (e.g., "Chiefs", "49ers")
+                    row.push(player.name, formatPoints(player));
+                } else {
+                    row.push('', '');
+                }
+            });
+            rows.push(row);
+        }
+        
+        // Empty separator row between DEF and summary (1 row)
+        rows.push(Array(headerRow.length).fill(''));
+        
+        // Summary rows
+        // WK. row
+        const wkRow = ['WK.'];
+        teams.forEach(team => {
+            wkRow.push(team.weeklyPoints ? team.weeklyPoints.toFixed(1) : '0', '');
+        });
+        rows.push(wkRow);
+        
+        // CUM row
+        const cumRow = ['CUM'];
+        teams.forEach(team => {
+            const cumPoints = team.cumulativePoints || 0;
+            const displayPoints = cumPoints % 1 === 0 ? cumPoints.toString() : cumPoints.toFixed(2);
+            cumRow.push(displayPoints, '');
+        });
+        rows.push(cumRow);
+        
+        // Opponent(Score) row
+        const oppRow = [''];
+        teams.forEach(team => {
+            const oppDisplay = team.opponent ? 
+                `${team.opponent}(${team.opponentScore ? team.opponentScore.toFixed(1) : '0'})` : '';
+            oppRow.push(oppDisplay, '');
+        });
+        rows.push(oppRow);
+        
+        // Win/Loss row
+        const resultRow = [''];
+        teams.forEach(team => {
+            resultRow.push(team.weekResult || '', '');
+        });
+        rows.push(resultRow);
+        
+        // Record row
+        const recordRow = [''];
+        teams.forEach(team => {
+            recordRow.push(team.record || '0-0', '');
+        });
+        rows.push(recordRow);
+        
+        // Many empty rows (~20)
+        for (let i = 0; i < 20; i++) {
+            rows.push(Array(headerRow.length).fill(''));
+        }
+        
+        // Bottom standings table
+        rows.push(['Team', 'Week', 'Total', 'Record']);
+        teams.forEach(team => {
+            rows.push([
+                team.owner_name,
+                team.weeklyPoints ? team.weeklyPoints.toFixed(1) : '0',
+                team.cumulativePoints ? 
+                    (team.cumulativePoints % 1 === 0 ? 
+                        team.cumulativePoints.toString() : 
+                        team.cumulativePoints.toFixed(2)) : '0',
+                team.record || '0-0'
+            ]);
         });
         
         // Write to sheet
@@ -198,202 +333,80 @@ class GoogleSheetsExportService {
             resource: { values: rows }
         });
         
-        // Apply formatting
-        await this.applyStatsFormatting(spreadsheetId, tabName);
+        // Apply basic formatting
+        await this.applyWeekTabFormatting(spreadsheetId, tabName);
     }
 
     /**
-     * Write the summary tab (Week X Summary) - League Standings format
+     * Write Tab 2: "Week X Summary" - Simple three-table view
      */
-    async writeSummaryTab(spreadsheetId, weekNumber, season, standingsData) {
+    async writeSummaryTab(spreadsheetId, weekNumber, season, gridData) {
         const tabName = `Week ${weekNumber} Summary`;
         await this.getOrCreateTab(spreadsheetId, tabName);
         
         const rows = [];
+        const { teams } = gridData;
         
-        // Header
-        rows.push([`WEEK ${weekNumber} LEAGUE STANDINGS`]);
+        // Start with empty row (per spec)
         rows.push([]);
         
+        // Headers for three tables - exactly as specified
+        rows.push([
+            'Team', 'Points This Week', '',
+            'Team', 'Overall Points', '',
+            'Standings', ''
+        ]);
+        
         // Sort teams for each table
-        const teams = standingsData.teams;
-        
-        // Create three side-by-side tables
-        // Headers for all three tables
-        rows.push([
-            'CUMULATIVE POINTS', '', '', '',
-            'WEEK POINTS', '', '', '',
-            'STANDINGS', '', '', ''
-        ]);
-        rows.push([
-            'Rank', 'Team', 'Owner', 'Points', '',
-            'Rank', 'Team', 'Owner', 'Points', '',
-            'Rank', 'Team', 'Owner', 'Record'
-        ]);
-        
-        // Sort teams for each category
-        const cumulativeSort = [...teams].sort((a, b) => 
-            (b.cumulativePoints || 0) - (a.cumulativePoints || 0)
-        );
-        
+        // Table 1: Weekly points (highest to lowest)
         const weeklySort = [...teams].sort((a, b) => 
             (b.weeklyPoints || 0) - (a.weeklyPoints || 0)
         );
         
+        // Table 2: Overall/cumulative points (highest to lowest)
+        const overallSort = [...teams].sort((a, b) => 
+            (b.cumulativePoints || 0) - (a.cumulativePoints || 0)
+        );
+        
+        // Table 3: Standings by win-loss record (best record first)
         const standingsSort = [...teams].sort((a, b) => {
             const aWins = a.wins || 0;
             const bWins = b.wins || 0;
+            const aLosses = a.losses || 0;
+            const bLosses = b.losses || 0;
+            
+            // Sort by wins first
             if (aWins !== bWins) return bWins - aWins;
+            // Then by fewer losses
+            if (aLosses !== bLosses) return aLosses - bLosses;
+            // Tiebreaker: cumulative points
             return (b.cumulativePoints || 0) - (a.cumulativePoints || 0);
         });
         
-        // Add data rows (12 teams)
+        // Add 12 data rows (one for each team)
         for (let i = 0; i < 12; i++) {
-            const cumTeam = cumulativeSort[i];
             const weekTeam = weeklySort[i];
-            const standTeam = standingsSort[i];
+            const overallTeam = overallSort[i];
+            const standingTeam = standingsSort[i];
             
             rows.push([
-                // Cumulative Points column
-                i + 1,
-                cumTeam ? cumTeam.team_name : '',
-                cumTeam ? cumTeam.owner_name : '',
-                cumTeam ? (cumTeam.cumulativePoints || 0).toFixed(1) : '',
-                '',
-                // Week Points column
-                i + 1,
-                weekTeam ? weekTeam.team_name : '',
+                // Column 1-2: Weekly points ranking
                 weekTeam ? weekTeam.owner_name : '',
                 weekTeam ? (weekTeam.weeklyPoints || 0).toFixed(1) : '',
-                '',
-                // Standings column
-                i + 1,
-                standTeam ? standTeam.team_name : '',
-                standTeam ? standTeam.owner_name : '',
-                standTeam ? `${standTeam.wins || 0}-${standTeam.losses || 0}${(standTeam.ties || 0) > 0 ? `-${standTeam.ties}` : ''}` : ''
+                '', // Empty column for spacing
+                // Column 4-5: Overall points ranking
+                overallTeam ? overallTeam.owner_name : '',
+                overallTeam ? 
+                    (overallTeam.cumulativePoints != null ? 
+                        (overallTeam.cumulativePoints % 1 === 0 ? 
+                            overallTeam.cumulativePoints.toString() : 
+                            overallTeam.cumulativePoints.toFixed(2)) : '0') : '',
+                '', // Empty column for spacing
+                // Column 7-8: Standings (Win-Loss record)
+                standingTeam ? standingTeam.owner_name : '',
+                standingTeam ? (standingTeam.record || '0-0') : ''
             ]);
         }
-        
-        // Add some space
-        rows.push([]);
-        rows.push([]);
-        rows.push([]);
-        
-        // Add matchup results section
-        rows.push(['WEEK ' + weekNumber + ' MATCHUP RESULTS']);
-        rows.push(['Team 1', '', 'Score', 'Team 2', '', 'Score', 'Winner']);
-        
-        standingsData.matchups.forEach(matchup => {
-            const winner = matchup.team1_points > matchup.team2_points ? matchup.team1_name :
-                         matchup.team1_points < matchup.team2_points ? matchup.team2_name : 'TIE';
-            rows.push([
-                matchup.team1_name,
-                '',
-                (matchup.team1_points || 0).toFixed(1),
-                matchup.team2_name,
-                '',
-                (matchup.team2_points || 0).toFixed(1),
-                winner
-            ]);
-        });
-        
-        // Add detailed rosters section
-        rows.push([]);
-        rows.push([]);
-        rows.push(['TEAM ROSTERS']);
-        rows.push([]);
-        
-        // Display teams in 3 columns format (4 rows of 3 teams)
-        const rosterTeams = [...teams].sort((a, b) => {
-            const aWins = a.wins || 0;
-            const bWins = b.wins || 0;
-            if (aWins !== bWins) return bWins - aWins;
-            return (b.weeklyPoints || 0) - (a.weeklyPoints || 0);
-        });
-        
-        for (let i = 0; i < rosterTeams.length; i += 3) {
-            const teamGroup = rosterTeams.slice(i, i + 3);
-            
-            // Team headers
-            const teamHeaderRow = [];
-            teamGroup.forEach(team => {
-                teamHeaderRow.push(
-                    team.team_name,
-                    `${team.wins || 0}-${team.losses || 0}`,
-                    (team.weeklyPoints || 0).toFixed(1)
-                );
-                teamHeaderRow.push(''); // Separator
-            });
-            rows.push(teamHeaderRow);
-            
-            // Column headers
-            const headerRow = [];
-            teamGroup.forEach(team => {
-                headerRow.push('Player', 'Pos', 'Pts');
-                headerRow.push(''); // Separator
-            });
-            rows.push(headerRow);
-            
-            // Player rows (19 players each)
-            for (let playerIdx = 0; playerIdx < 19; playerIdx++) {
-                const playerRow = [];
-                teamGroup.forEach(team => {
-                    const player = team.roster[playerIdx];
-                    if (player) {
-                        let position = player.position;
-                        if (position === 'Defense' || position === 'DST') {
-                            position = 'D';
-                        }
-                        if (player.status === 'IR') {
-                            position = `IR-${position}`;
-                        }
-                        
-                        // Mark scoring players with asterisk
-                        const playerName = player.isScoring ? `*${player.name}` : player.name;
-                        
-                        playerRow.push(
-                            playerName,
-                            position,
-                            (player.fantasyPoints || 0).toFixed(1)
-                        );
-                    } else {
-                        playerRow.push('', '', '');
-                    }
-                    playerRow.push(''); // Separator
-                });
-                rows.push(playerRow);
-            }
-            
-            // Total row
-            const totalRow = [];
-            teamGroup.forEach(team => {
-                const total = team.roster.reduce((sum, p) => sum + (p.fantasyPoints || 0), 0);
-                const scoringTotal = team.roster
-                    .filter(p => p.isScoring)
-                    .reduce((sum, p) => sum + (p.fantasyPoints || 0), 0);
-                totalRow.push('TOTAL', '', total.toFixed(1));
-                totalRow.push(''); // Separator
-            });
-            rows.push(totalRow);
-            
-            // Scoring total row
-            const scoringRow = [];
-            teamGroup.forEach(team => {
-                const scoringTotal = team.roster
-                    .filter(p => p.isScoring)
-                    .reduce((sum, p) => sum + (p.fantasyPoints || 0), 0);
-                scoringRow.push('SCORING', '', scoringTotal.toFixed(1));
-                scoringRow.push(''); // Separator
-            });
-            rows.push(scoringRow);
-            
-            // Add space between team groups
-            rows.push([]);
-            rows.push([]);
-        }
-        
-        // Add note about scoring players
-        rows.push(['* = Scoring Player']);
         
         // Write to sheet
         await this.sheets.spreadsheets.values.update({
@@ -403,101 +416,14 @@ class GoogleSheetsExportService {
             resource: { values: rows }
         });
         
-        // Apply formatting
-        await this.applySummaryFormatting(spreadsheetId, tabName);
+        // Apply basic formatting
+        await this.applySummaryTabFormatting(spreadsheetId, tabName);
     }
 
     /**
-     * Apply formatting to the stats tab
+     * Apply formatting to Week tab
      */
-    async applyStatsFormatting(spreadsheetId, tabName) {
-        try {
-            const response = await this.sheets.spreadsheets.get({
-                spreadsheetId,
-                ranges: [`${tabName}!A1:Z1000`],
-                fields: 'sheets(properties,data)'
-            });
-            
-            const sheet = response.data.sheets.find(s => s.properties.title === tabName);
-            if (!sheet) return;
-            
-            const sheetId = sheet.properties.sheetId;
-            const requests = [];
-            
-            // Format header row
-            requests.push({
-                repeatCell: {
-                    range: {
-                        sheetId,
-                        startRowIndex: 0,
-                        endRowIndex: 1
-                    },
-                    cell: {
-                        userEnteredFormat: {
-                            textFormat: {
-                                fontSize: 14,
-                                bold: true
-                            },
-                            horizontalAlignment: 'CENTER'
-                        }
-                    },
-                    fields: 'userEnteredFormat(textFormat,horizontalAlignment)'
-                }
-            });
-            
-            // Format column headers
-            requests.push({
-                repeatCell: {
-                    range: {
-                        sheetId,
-                        startRowIndex: 2,
-                        endRowIndex: 3
-                    },
-                    cell: {
-                        userEnteredFormat: {
-                            textFormat: {
-                                bold: true
-                            },
-                            horizontalAlignment: 'CENTER',
-                            backgroundColor: {
-                                red: 0.95,
-                                green: 0.95,
-                                blue: 0.95
-                            }
-                        }
-                    },
-                    fields: 'userEnteredFormat(textFormat,horizontalAlignment,backgroundColor)'
-                }
-            });
-            
-            // Auto-resize columns
-            requests.push({
-                autoResizeDimensions: {
-                    dimensions: {
-                        sheetId,
-                        dimension: 'COLUMNS',
-                        startIndex: 0,
-                        endIndex: 15
-                    }
-                }
-            });
-            
-            if (requests.length > 0) {
-                await this.sheets.spreadsheets.batchUpdate({
-                    spreadsheetId,
-                    resource: { requests }
-                });
-            }
-        } catch (error) {
-            logError('Error applying stats formatting:', error);
-            // Continue even if formatting fails
-        }
-    }
-
-    /**
-     * Apply formatting to the summary tab
-     */
-    async applySummaryFormatting(spreadsheetId, tabName) {
+    async applyWeekTabFormatting(spreadsheetId, tabName) {
         try {
             const response = await this.sheets.spreadsheets.get({
                 spreadsheetId,
@@ -510,62 +436,73 @@ class GoogleSheetsExportService {
             const sheetId = sheet.properties.sheetId;
             
             const requests = [
-                // Bold and larger font for main title
+                // Bold header row
                 {
                     repeatCell: {
                         range: {
                             sheetId,
                             startRowIndex: 0,
-                            endRowIndex: 1,
-                            startColumnIndex: 0,
-                            endColumnIndex: 14
+                            endRowIndex: 1
                         },
                         cell: {
                             userEnteredFormat: {
                                 textFormat: {
-                                    fontSize: 16,
                                     bold: true
-                                }
-                            }
-                        },
-                        fields: 'userEnteredFormat.textFormat'
-                    }
-                },
-                // Bold section headers (standings tables)
-                {
-                    repeatCell: {
-                        range: {
-                            sheetId,
-                            startRowIndex: 2,
-                            endRowIndex: 3,
-                            startColumnIndex: 0,
-                            endColumnIndex: 14
-                        },
-                        cell: {
-                            userEnteredFormat: {
-                                textFormat: {
-                                    bold: true,
-                                    fontSize: 12
                                 },
-                                backgroundColor: {
-                                    red: 0.95,
-                                    green: 0.95,
-                                    blue: 0.95
-                                }
+                                horizontalAlignment: 'CENTER'
                             }
                         },
-                        fields: 'userEnteredFormat.textFormat,userEnteredFormat.backgroundColor'
+                        fields: 'userEnteredFormat(textFormat,horizontalAlignment)'
                     }
                 },
-                // Bold table headers
+                // Auto-resize columns
+                {
+                    autoResizeDimensions: {
+                        dimensions: {
+                            sheetId,
+                            dimension: 'COLUMNS',
+                            startIndex: 0,
+                            endIndex: 26
+                        }
+                    }
+                }
+            ];
+            
+            await this.sheets.spreadsheets.batchUpdate({
+                spreadsheetId,
+                resource: { requests }
+            });
+            
+            logInfo('Applied formatting to Week tab');
+        } catch (error) {
+            logError('Error applying Week tab formatting:', error);
+            // Non-critical error, continue
+        }
+    }
+
+    /**
+     * Apply formatting to Summary tab
+     */
+    async applySummaryTabFormatting(spreadsheetId, tabName) {
+        try {
+            const response = await this.sheets.spreadsheets.get({
+                spreadsheetId,
+                fields: 'sheets.properties'
+            });
+            
+            const sheet = response.data.sheets.find(s => s.properties.title === tabName);
+            if (!sheet) return;
+            
+            const sheetId = sheet.properties.sheetId;
+            
+            const requests = [
+                // Bold header row
                 {
                     repeatCell: {
                         range: {
                             sheetId,
-                            startRowIndex: 3,
-                            endRowIndex: 4,
-                            startColumnIndex: 0,
-                            endColumnIndex: 14
+                            startRowIndex: 1,
+                            endRowIndex: 2
                         },
                         cell: {
                             userEnteredFormat: {
@@ -584,7 +521,7 @@ class GoogleSheetsExportService {
                             sheetId,
                             dimension: 'COLUMNS',
                             startIndex: 0,
-                            endIndex: 14
+                            endIndex: 8
                         }
                     }
                 }
@@ -595,13 +532,12 @@ class GoogleSheetsExportService {
                 resource: { requests }
             });
             
-            logInfo('Applied formatting to standings sheet');
+            logInfo('Applied formatting to Summary tab');
         } catch (error) {
-            logError('Error applying formatting:', error);
+            logError('Error applying Summary tab formatting:', error);
             // Non-critical error, continue
         }
     }
-
 
     /**
      * Extract spreadsheet ID from various input formats
