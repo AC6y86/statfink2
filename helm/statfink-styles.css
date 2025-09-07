@@ -143,10 +143,22 @@ td[colspan="5"] {
     line-height: 1.4;
 }
 
+/* Add spacing before totals row to fix DEF entry spacing */
+.totalsrow {
+    margin-top: 8px;
+}
+
+/* Ensure proper spacing for last player row (typically DEF) */
+.playerrow1:last-of-type td,
+.playerrow2:last-of-type td {
+    padding-bottom: 8px;
+}
+
 /* Position column styling */
 .position {
     font-weight: normal;
     width: 30px;
+    padding-right: 8px;
 }
 
 /* Team tables width */
