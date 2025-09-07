@@ -158,3 +158,15 @@ td[colspan="5"] {
 .stat-changed {
     font-weight: bold !important;
 }
+
+/* Score change indicators */
+.score-changed {
+    font-weight: bold !important;
+}
+
+.score-delta {
+    color: #2e7d32;
+    font-size: 0.85em;
+    font-weight: bold;
+    margin-left: 3px;
+}
