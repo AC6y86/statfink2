@@ -373,6 +373,9 @@
             const data = await response.json();
             
             if (data.success) {
+                // Save scores and get deltas
+                const scoreData = saveTeamScores(data.data);
+                
                 const tbody = document.getElementById("leaguetable").getElementsByTagName("tbody")[0];
                 
                 // Keep the header row
@@ -401,9 +404,19 @@
                     team1Cell.nowrap = true;
                     
                     const score1Cell = row1.insertCell(1);
-                    score1Cell.textContent = matchup.team1_points.toFixed(2);
+                    const matchupScoreData = scoreData?.matchups?.[matchup.matchup_id];
+                    const team1Delta = matchupScoreData?.team1_delta || 0;
+                    const team1Changed = matchupScoreData?.team1_lastChanged && 
+                        (Date.now() - matchupScoreData.team1_lastChanged <= 2 * 60 * 1000);
+                    
+                    if (team1Changed && Math.abs(team1Delta) > 0.01) {
+                        score1Cell.innerHTML = `${matchup.team1_points.toFixed(2)} <span class="score-delta">${team1Delta > 0 ? '+' : ''}${team1Delta.toFixed(2)}</span>`;
+                        score1Cell.className = "fanpts score-changed";
+                    } else {
+                        score1Cell.textContent = matchup.team1_points.toFixed(2);
+                        score1Cell.className = "fanpts";
+                    }
                     score1Cell.align = "right";
-                    score1Cell.className = "fanpts";
                     score1Cell.nowrap = true;
                     
                     // Team 2 row
@@ -425,9 +438,18 @@
                     team2Cell.nowrap = true;
                     
                     const score2Cell = row2.insertCell(1);
-                    score2Cell.textContent = matchup.team2_points.toFixed(2);
+                    const team2Delta = matchupScoreData?.team2_delta || 0;
+                    const team2Changed = matchupScoreData?.team2_lastChanged && 
+                        (Date.now() - matchupScoreData.team2_lastChanged <= 2 * 60 * 1000);
+                    
+                    if (team2Changed && Math.abs(team2Delta) > 0.01) {
+                        score2Cell.innerHTML = `${matchup.team2_points.toFixed(2)} <span class="score-delta">${team2Delta > 0 ? '+' : ''}${team2Delta.toFixed(2)}</span>`;
+                        score2Cell.className = "fanpts score-changed";
+                    } else {
+                        score2Cell.textContent = matchup.team2_points.toFixed(2);
+                        score2Cell.className = "fanpts";
+                    }
                     score2Cell.align = "right";
-                    score2Cell.className = "fanpts";
                     score2Cell.nowrap = true;
                     
                     // Only set default matchup if none is currently selected
@@ -503,23 +525,91 @@
         const ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
         
         keys.forEach(key => {
-            if (key.startsWith('statfink_stats_')) {
+            if (key.startsWith('statfink_stats_') || key.startsWith('statfink_scores_')) {
                 try {
                     const data = JSON.parse(localStorage.getItem(key));
                     if (data && data.timestamp) {
                         const age = now - data.timestamp;
                         if (age > ONE_DAY) {
                             localStorage.removeItem(key);
-                            console.log(`Removed old stats cache: ${key} (${Math.round(age / 3600000)} hours old)`);
+                            console.log(`Removed old cache: ${key} (${Math.round(age / 3600000)} hours old)`);
                         }
                     }
                 } catch (e) {
                     // If we can't parse it, remove it
                     localStorage.removeItem(key);
-                    console.log(`Removed invalid stats cache: ${key}`);
+                    console.log(`Removed invalid cache: ${key}`);
                 }
             }
         });
+    }
+
+    // Storage key for team scores
+    function getScoresStorageKey() {
+        return `statfink_scores_${currentWeek}_${currentSeason}`;
+    }
+    
+    // Save team scores with change tracking
+    function saveTeamScores(matchups) {
+        const storageKey = getScoresStorageKey();
+        const previousData = getTeamScores();
+        const now = Date.now();
+        
+        const scoresToSave = {
+            timestamp: now,
+            matchups: {}
+        };
+        
+        matchups.forEach(matchup => {
+            const prevMatchup = previousData?.matchups?.[matchup.matchup_id];
+            
+            scoresToSave.matchups[matchup.matchup_id] = {
+                team1_points: matchup.team1_points,
+                team2_points: matchup.team2_points,
+                team1_delta: 0,
+                team2_delta: 0,
+                team1_lastChanged: prevMatchup?.team1_lastChanged || null,
+                team2_lastChanged: prevMatchup?.team2_lastChanged || null
+            };
+            
+            // Calculate deltas and update change timestamps
+            if (prevMatchup) {
+                const team1Delta = matchup.team1_points - prevMatchup.team1_points;
+                const team2Delta = matchup.team2_points - prevMatchup.team2_points;
+                
+                if (Math.abs(team1Delta) > 0.01) {
+                    scoresToSave.matchups[matchup.matchup_id].team1_delta = team1Delta;
+                    scoresToSave.matchups[matchup.matchup_id].team1_lastChanged = now;
+                } else if (prevMatchup.team1_lastChanged) {
+                    // Preserve previous delta if still within 2-minute window
+                    const timeSinceChange = now - prevMatchup.team1_lastChanged;
+                    if (timeSinceChange <= 2 * 60 * 1000) {
+                        scoresToSave.matchups[matchup.matchup_id].team1_delta = prevMatchup.team1_delta;
+                    }
+                }
+                
+                if (Math.abs(team2Delta) > 0.01) {
+                    scoresToSave.matchups[matchup.matchup_id].team2_delta = team2Delta;
+                    scoresToSave.matchups[matchup.matchup_id].team2_lastChanged = now;
+                } else if (prevMatchup.team2_lastChanged) {
+                    // Preserve previous delta if still within 2-minute window
+                    const timeSinceChange = now - prevMatchup.team2_lastChanged;
+                    if (timeSinceChange <= 2 * 60 * 1000) {
+                        scoresToSave.matchups[matchup.matchup_id].team2_delta = prevMatchup.team2_delta;
+                    }
+                }
+            }
+        });
+        
+        localStorage.setItem(storageKey, JSON.stringify(scoresToSave));
+        return scoresToSave;
+    }
+    
+    // Get team scores from localStorage
+    function getTeamScores() {
+        const storageKey = getScoresStorageKey();
+        const saved = localStorage.getItem(storageKey);
+        return saved ? JSON.parse(saved) : null;
     }
 
     // Save current stats to localStorage with change timestamps
@@ -1465,12 +1555,45 @@
         const tbody = document.getElementById('nfltable').getElementsByTagName('tbody')[0];
         tbody.innerHTML = ''; // Clear existing content
         
+        // Sort games by: Live games first, then upcoming (soonest first), then finished
+        const sortedGames = [...games].sort((a, b) => {
+            // Categorize games
+            const isLiveA = a.status !== 'Final' && a.status !== 'Scheduled';
+            const isLiveB = b.status !== 'Final' && b.status !== 'Scheduled';
+            const isScheduledA = a.status === 'Scheduled';
+            const isScheduledB = b.status === 'Scheduled';
+            const isFinalA = a.status === 'Final';
+            const isFinalB = b.status === 'Final';
+            
+            // Live games come first
+            if (isLiveA && !isLiveB) return -1;
+            if (!isLiveA && isLiveB) return 1;
+            
+            // Then scheduled games (sorted by time)
+            if (isScheduledA && !isScheduledB) return -1;
+            if (!isScheduledA && isScheduledB) return 1;
+            
+            // If both are scheduled, sort by epoch time (soonest first)
+            if (isScheduledA && isScheduledB) {
+                const timeA = a.game_time_epoch || 0;
+                const timeB = b.game_time_epoch || 0;
+                return timeA - timeB;
+            }
+            
+            // Final games come last
+            if (isFinalA && !isFinalB) return 1;
+            if (!isFinalA && isFinalB) return -1;
+            
+            // Otherwise keep original order
+            return 0;
+        });
+        
         // Group games into rows (4 games per row)
         const gamesPerRow = 4;
         const rows = [];
         
-        for (let i = 0; i < games.length; i += gamesPerRow) {
-            rows.push(games.slice(i, i + gamesPerRow));
+        for (let i = 0; i < sortedGames.length; i += gamesPerRow) {
+            rows.push(sortedGames.slice(i, i + gamesPerRow));
         }
         
         // Create table rows with exact HTML structure
@@ -1555,7 +1678,10 @@
                     } else {
                         statusCell.textContent = timeWithDay;
                     }
-                } else if ((game.status === 'InProgress' || game.status === 'Halftime') && game.game_time) {
+                } else if (game.status === 'Halftime') {
+                    // Always show "Halftime" for halftime games
+                    statusCell.textContent = 'Halftime';
+                } else if (game.status === 'InProgress' && game.game_time) {
                     statusCell.textContent = game.game_time;
                 } else {
                     statusCell.textContent = game.status;

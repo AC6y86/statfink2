@@ -281,7 +281,7 @@ class NFLGamesService {
             const boxScore = await this.tank01Service.getNFLBoxScore(gameId, bypassCache);
             
             if (!boxScore || !boxScore.gameID) {
-                logWarn(`No valid box score data for game ${gameId}`);
+                // No box score data yet - this is normal for games that haven't started
                 return false;
             }
 
@@ -330,12 +330,26 @@ class NFLGamesService {
             }
 
             // Update game in database
-            await this.db.run(`
-                UPDATE nfl_games 
-                SET home_score = ?, away_score = ?, status = ?, 
-                    quarter = ?, time_remaining = ?, last_updated = CURRENT_TIMESTAMP
-                WHERE game_id = ?
-            `, [homeScore, awayScore, gameStatus, quarter, gameTimeLeft, gameId]);
+            // For live games (not scheduled), we clear game_time to avoid confusion with kickoff time
+            const isLiveGame = gameStatus !== 'Scheduled' && gameStatus !== 'Final';
+            
+            if (isLiveGame) {
+                // Clear game_time for live games, keep time_remaining for actual game clock
+                await this.db.run(`
+                    UPDATE nfl_games 
+                    SET home_score = ?, away_score = ?, status = ?, 
+                        quarter = ?, time_remaining = ?, game_time = NULL, last_updated = CURRENT_TIMESTAMP
+                    WHERE game_id = ?
+                `, [homeScore, awayScore, gameStatus, quarter, gameTimeLeft, gameId]);
+            } else {
+                // Keep game_time for scheduled and final games
+                await this.db.run(`
+                    UPDATE nfl_games 
+                    SET home_score = ?, away_score = ?, status = ?, 
+                        quarter = ?, time_remaining = ?, last_updated = CURRENT_TIMESTAMP
+                    WHERE game_id = ?
+                `, [homeScore, awayScore, gameStatus, quarter, gameTimeLeft, gameId]);
+            }
 
             // Extract and save player stats if available
             if (boxScore.playerStats) {
