@@ -289,6 +289,9 @@
     // Main initialization
     async function read_cont() {
         try {
+            // Clean up old localStorage entries on page load
+            cleanupOldStats();
+            
             // Parse URL for year/week/mode
             const urlData = parseUrl();
             
@@ -492,30 +495,93 @@
         });
         console.log('Cleared all statfink stats from localStorage');
     }
+    
+    // Clean up old localStorage entries (older than 24 hours)
+    function cleanupOldStats() {
+        const keys = Object.keys(localStorage);
+        const now = Date.now();
+        const ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+        
+        keys.forEach(key => {
+            if (key.startsWith('statfink_stats_')) {
+                try {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    if (data && data.timestamp) {
+                        const age = now - data.timestamp;
+                        if (age > ONE_DAY) {
+                            localStorage.removeItem(key);
+                            console.log(`Removed old stats cache: ${key} (${Math.round(age / 3600000)} hours old)`);
+                        }
+                    }
+                } catch (e) {
+                    // If we can't parse it, remove it
+                    localStorage.removeItem(key);
+                    console.log(`Removed invalid stats cache: ${key}`);
+                }
+            }
+        });
+    }
 
-    // Save current stats to localStorage
-    function saveCurrentStats(matchupId, data) {
+    // Save current stats to localStorage with change timestamps
+    function saveCurrentStats(matchupId, data, changedStats) {
         const storageKey = getStorageKey(matchupId);
+        const previousData = getPreviousStats(matchupId);
+        const now = Date.now();
+        
         const statsToSave = {
-            timestamp: Date.now(),
+            timestamp: now,
             team1: {},
             team2: {}
         };
 
-        // Save team1 stats
+        // Save team1 stats with change timestamps
         data.team1.starters.forEach(player => {
+            const prevPlayer = previousData?.team1?.[player.player_id];
+            const playerChanges = changedStats?.team1?.[player.player_id] || [];
+            
             statsToSave.team1[player.player_id] = {
                 name: player.name,
-                stats: player.stats || {}
+                stats: player.stats || {},
+                lastChanged: {}
             };
+            
+            // Track when each stat last changed
+            if (player.stats) {
+                Object.keys(player.stats).forEach(stat => {
+                    if (playerChanges.includes(stat)) {
+                        // This stat just changed
+                        statsToSave.team1[player.player_id].lastChanged[stat] = now;
+                    } else if (prevPlayer?.lastChanged?.[stat]) {
+                        // Preserve previous change time
+                        statsToSave.team1[player.player_id].lastChanged[stat] = prevPlayer.lastChanged[stat];
+                    }
+                });
+            }
         });
 
-        // Save team2 stats
+        // Save team2 stats with change timestamps
         data.team2.starters.forEach(player => {
+            const prevPlayer = previousData?.team2?.[player.player_id];
+            const playerChanges = changedStats?.team2?.[player.player_id] || [];
+            
             statsToSave.team2[player.player_id] = {
                 name: player.name,
-                stats: player.stats || {}
+                stats: player.stats || {},
+                lastChanged: {}
             };
+            
+            // Track when each stat last changed
+            if (player.stats) {
+                Object.keys(player.stats).forEach(stat => {
+                    if (playerChanges.includes(stat)) {
+                        // This stat just changed
+                        statsToSave.team2[player.player_id].lastChanged[stat] = now;
+                    } else if (prevPlayer?.lastChanged?.[stat]) {
+                        // Preserve previous change time
+                        statsToSave.team2[player.player_id].lastChanged[stat] = prevPlayer.lastChanged[stat];
+                    }
+                });
+            }
         });
 
         localStorage.setItem(storageKey, JSON.stringify(statsToSave));
@@ -528,12 +594,14 @@
         return saved ? JSON.parse(saved) : null;
     }
 
-    // Compare stats and return changed players
+    // Compare stats and return changed players (with 2-minute window)
     function compareStats(currentData, previousStats) {
         // If no previous stats exist, return empty (nothing is "changed" on first load)
         if (!previousStats || !previousStats.timestamp) return { team1: {}, team2: {} };
 
         const changes = { team1: {}, team2: {} };
+        const now = Date.now();
+        const TWO_MINUTES = 2 * 60 * 1000; // 2 minutes in milliseconds
 
         // Compare team1
         currentData.team1.starters.forEach(player => {
@@ -546,11 +614,18 @@
                     const currentValue = player.stats[stat];
                     const previousValue = prevPlayer.stats[stat];
                     
-                    // Only mark as changed if:
-                    // 1. The stat existed before (not undefined)
-                    // 2. The value actually changed
+                    // Check if value changed
                     if (previousValue !== undefined && currentValue !== previousValue) {
+                        // Value just changed - mark as bold
                         changedStats.push(stat);
+                    } else if (prevPlayer.lastChanged && prevPlayer.lastChanged[stat]) {
+                        // Value hasn't changed - check if it should still be bold
+                        const timeSinceChange = now - prevPlayer.lastChanged[stat];
+                        if (timeSinceChange <= TWO_MINUTES) {
+                            // Still within 2-minute window - keep bold
+                            changedStats.push(stat);
+                        }
+                        // If > 2 minutes, don't add to changedStats (unbold)
                     }
                 });
                 
@@ -571,11 +646,18 @@
                     const currentValue = player.stats[stat];
                     const previousValue = prevPlayer.stats[stat];
                     
-                    // Only mark as changed if:
-                    // 1. The stat existed before (not undefined)
-                    // 2. The value actually changed
+                    // Check if value changed
                     if (previousValue !== undefined && currentValue !== previousValue) {
+                        // Value just changed - mark as bold
                         changedStats.push(stat);
+                    } else if (prevPlayer.lastChanged && prevPlayer.lastChanged[stat]) {
+                        // Value hasn't changed - check if it should still be bold
+                        const timeSinceChange = now - prevPlayer.lastChanged[stat];
+                        if (timeSinceChange <= TWO_MINUTES) {
+                            // Still within 2-minute window - keep bold
+                            changedStats.push(stat);
+                        }
+                        // If > 2 minutes, don't add to changedStats (unbold)
                     }
                 });
                 
@@ -651,7 +733,7 @@
                 }
                 
                 // Save current stats for next comparison
-                saveCurrentStats(matchupId, data.data);
+                saveCurrentStats(matchupId, data.data, changedStats);
                 
                 currentMatchupData = data.data;
                 displayMatchup(data.data, changedStats);

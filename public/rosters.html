@@ -174,6 +174,11 @@
             font-size: 12px;
         }
         
+        /* Bold styling for changed rosters */
+        .roster-changed {
+            font-weight: bold !important;
+        }
+        
         .player-count {
             font-size: 10px;
             color: #666;
@@ -206,9 +211,155 @@
         let currentSeason = 2024;
         let currentWeek = 1;
         
+        // Storage key for roster data
+        function getStorageKey(season, week) {
+            return `statfink_rosters_${season}_${week}`;
+        }
+        
+        // Clean up old localStorage entries (older than 24 hours)
+        function cleanupOldRosters() {
+            const keys = Object.keys(localStorage);
+            const now = Date.now();
+            const ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+            
+            keys.forEach(key => {
+                if (key.startsWith('statfink_rosters_')) {
+                    try {
+                        const data = JSON.parse(localStorage.getItem(key));
+                        if (data && data.timestamp) {
+                            const age = now - data.timestamp;
+                            if (age > ONE_DAY) {
+                                localStorage.removeItem(key);
+                                console.log(`Removed old roster cache: ${key} (${Math.round(age / 3600000)} hours old)`);
+                            }
+                        }
+                    } catch (e) {
+                        // If we can't parse it, remove it
+                        localStorage.removeItem(key);
+                        console.log(`Removed invalid roster cache: ${key}`);
+                    }
+                }
+            });
+        }
+        
+        // Get previous roster data from localStorage
+        function getPreviousRosters(season, week) {
+            const storageKey = getStorageKey(season, week);
+            const saved = localStorage.getItem(storageKey);
+            return saved ? JSON.parse(saved) : null;
+        }
+        
+        // Save current roster data with change timestamps
+        function saveCurrentRosters(season, week, teams, changedPlayers) {
+            const storageKey = getStorageKey(season, week);
+            const previousData = getPreviousRosters(season, week);
+            const now = Date.now();
+            
+            const dataToSave = {
+                timestamp: now,
+                teams: {}
+            };
+            
+            teams.forEach(team => {
+                dataToSave.teams[team.team_id] = {
+                    roster: {},
+                    lastChanged: {}
+                };
+                
+                team.roster.forEach(player => {
+                    // Create a simplified player object for comparison
+                    const playerData = {
+                        name: player.name,
+                        position: player.position,
+                        team: player.team,
+                        status: player.status,
+                        injury_designation: player.injury_designation
+                    };
+                    
+                    dataToSave.teams[team.team_id].roster[player.player_id] = playerData;
+                    
+                    // Track when this player changed
+                    const teamChanges = changedPlayers[team.team_id] || [];
+                    if (teamChanges.includes(player.player_id)) {
+                        // Player just changed
+                        dataToSave.teams[team.team_id].lastChanged[player.player_id] = now;
+                    } else if (previousData?.teams?.[team.team_id]?.lastChanged?.[player.player_id]) {
+                        // Preserve previous change time
+                        dataToSave.teams[team.team_id].lastChanged[player.player_id] = 
+                            previousData.teams[team.team_id].lastChanged[player.player_id];
+                    }
+                });
+            });
+            
+            localStorage.setItem(storageKey, JSON.stringify(dataToSave));
+        }
+        
+        // Compare rosters and return changed players (with 2-minute window)
+        function compareRosters(currentTeams, previousData) {
+            if (!previousData || !previousData.timestamp) return {};
+            
+            const changes = {};
+            const now = Date.now();
+            const TWO_MINUTES = 2 * 60 * 1000; // 2 minutes in milliseconds
+            
+            currentTeams.forEach(team => {
+                const prevTeam = previousData.teams?.[team.team_id];
+                if (!prevTeam) return;
+                
+                const teamChanges = [];
+                
+                // Check each current player
+                team.roster.forEach(player => {
+                    const prevPlayer = prevTeam.roster[player.player_id];
+                    
+                    // Check if player is new or changed
+                    const hasChanged = !prevPlayer || 
+                        prevPlayer.status !== player.status ||
+                        prevPlayer.injury_designation !== player.injury_designation ||
+                        prevPlayer.team !== player.team;
+                    
+                    if (hasChanged) {
+                        // Player just changed - mark as bold
+                        teamChanges.push(player.player_id);
+                    } else if (prevTeam.lastChanged?.[player.player_id]) {
+                        // Player hasn't changed - check if it should still be bold
+                        const timeSinceChange = now - prevTeam.lastChanged[player.player_id];
+                        if (timeSinceChange <= TWO_MINUTES) {
+                            // Still within 2-minute window - keep bold
+                            teamChanges.push(player.player_id);
+                        }
+                        // If > 2 minutes, don't add to teamChanges (unbold)
+                    }
+                });
+                
+                // Check for removed players (within 2-minute window)
+                Object.keys(prevTeam.roster).forEach(playerId => {
+                    if (!team.roster.find(p => p.player_id === playerId)) {
+                        // Player was removed - check if removal should still be noted
+                        if (prevTeam.lastChanged?.[playerId]) {
+                            const timeSinceChange = now - prevTeam.lastChanged[playerId];
+                            if (timeSinceChange <= TWO_MINUTES) {
+                                // Recent removal - could add a note if needed
+                                console.log(`Player ${playerId} recently removed from team ${team.team_id}`);
+                            }
+                        }
+                    }
+                });
+                
+                if (teamChanges.length > 0) {
+                    changes[team.team_id] = teamChanges;
+                }
+            });
+            
+            return changes;
+        }
+        
         // Initialize the page
         async function init() {
             try {
+                // Clean up old localStorage entries on page load
+                cleanupOldRosters();
+                
                 // Parse season and week from URL
                 const pathParts = window.location.pathname.split('/');
                 if (pathParts.length >= 4 && pathParts[1] === 'rosters') {
@@ -241,7 +392,26 @@
                 }
                 
                 const data = await response.json();
-                displayRosters(data.data);
+                
+                // Get previous roster data before saving new ones
+                const previousRosters = getPreviousRosters(season, week);
+                
+                // Compare rosters to find changes
+                const changedPlayers = compareRosters(data.data.teams, previousRosters);
+                
+                // Debug logging
+                if (previousRosters) {
+                    console.log('Previous rosters found, comparing changes...');
+                    console.log('Changed players:', changedPlayers);
+                } else {
+                    console.log('No previous rosters found - first load');
+                }
+                
+                // Display rosters with change highlighting
+                displayRosters(data.data, changedPlayers);
+                
+                // Save current rosters for next comparison
+                saveCurrentRosters(season, week, data.data.teams, changedPlayers);
                 
             } catch (error) {
                 console.error('Error loading rosters:', error);
@@ -250,7 +420,7 @@
         }
         
         // Display rosters data
-        function displayRosters(data) {
+        function displayRosters(data, changedPlayers = {}) {
             const { season, week, teams } = data;
             
             // Update page header
@@ -315,8 +485,15 @@
                             row.classList.add('scoring-player');
                         }
                         
+                        // Check if this player has changed
+                        const teamChanges = changedPlayers[team.team_id] || [];
+                        const isChanged = teamChanges.includes(player.player_id);
+                        
                         const posClass = `position-${pos.toLowerCase()}`;
                         const statusClass = player.status === 'IR' ? 'status-ir' : '';
+                        
+                        // Add roster-changed class to player name if changed
+                        const nameClass = isChanged ? 'roster-changed' : '';
                         
                         // Format injury display
                         let injuryCell = '<td>-</td>';
@@ -332,7 +509,7 @@
                         
                         row.innerHTML = `
                             <td class="${posClass}">${pos}</td>
-                            <td style="max-width: 150px;" title="${player.name}">${player.name}</td>
+                            <td class="${nameClass}" style="max-width: 150px;" title="${player.name}">${player.name}</td>
                             <td>${player.team || '-'}</td>
                             <td class="${statusClass}">${player.status}</td>
                             ${injuryCell}
