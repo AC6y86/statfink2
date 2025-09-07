@@ -29,6 +29,9 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 const HTTPS_PORT = process.env.HTTPS_PORT || 8443;
 
+// Trust proxy - required for rate limiting when behind nginx/reverse proxy
+app.set('trust proxy', true);
+
 // Import authentication
 const { setupAuth } = require('./auth/auth');
 
