@@ -690,6 +690,61 @@
             color: #6c757d;
             font-style: italic;
         }
+
+        /* Traffic Counter Styles */
+        .traffic-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .traffic-stat {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .traffic-stat h4 {
+            margin: 0;
+            color: #667eea;
+            font-size: 1.8rem;
+        }
+
+        .traffic-stat p {
+            margin: 0.25rem 0 0 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .active-visitors {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .active-visitors h3 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .active-visitors p {
+            margin: 0.25rem 0 0 0;
+            opacity: 0.9;
+        }
+
+        .popular-pages {
+            margin-top: 1rem;
+        }
+
+        .popular-pages table {
+            width: 100%;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -703,6 +758,7 @@
         <div class="tabs">
             <button class="tab active" onclick="showTab('sync')">Sync</button>
             <button class="tab" onclick="showTab('status')">Status</button>
+            <button class="tab" onclick="showTab('traffic')">Traffic</button>
             <button class="tab" onclick="showTab('players')">Players</button>
             <button class="tab" onclick="showTab('rosters')">Rosters</button>
             <button class="tab" onclick="showTab('database')">Database Browser</button>
@@ -753,6 +809,83 @@
                 <h2>📊 Database Statistics</h2>
                 <div id="db-stats" class="quick-stats">
                     <!-- Stats will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Traffic Tab -->
+        <div id="traffic-tab" class="tab-content">
+            <div class="section">
+                <h2>📊 Traffic Statistics</h2>
+                
+                <div class="active-visitors" id="active-visitors">
+                    <h3 id="active-count">-</h3>
+                    <p>Active Visitors (last 5 minutes)</p>
+                </div>
+                
+                <div class="traffic-stats">
+                    <div class="traffic-stat">
+                        <h4 id="visits-today">-</h4>
+                        <p>Visits Today</p>
+                    </div>
+                    <div class="traffic-stat">
+                        <h4 id="visitors-today">-</h4>
+                        <p>Unique Visitors Today</p>
+                    </div>
+                    <div class="traffic-stat">
+                        <h4 id="total-visits">-</h4>
+                        <p>Total Visits (30 days)</p>
+                    </div>
+                    <div class="traffic-stat">
+                        <h4 id="total-visitors">-</h4>
+                        <p>Unique Visitors (30 days)</p>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <select id="traffic-days" class="filter-select" onchange="loadTrafficStats()">
+                        <option value="7">Last 7 days</option>
+                        <option value="30" selected>Last 30 days</option>
+                        <option value="90">Last 90 days</option>
+                    </select>
+                    <button class="btn" onclick="loadTrafficStats()">Refresh</button>
+                    <button class="btn btn-secondary" onclick="cleanupTraffic()">Cleanup Old Data</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🔥 Popular Pages</h2>
+                <div class="popular-pages">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th>Visits</th>
+                                <th>Unique Visitors</th>
+                            </tr>
+                        </thead>
+                        <tbody id="popular-pages-tbody">
+                            <tr><td colspan="3" class="loading">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>⏰ Recent Activity</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Page</th>
+                                <th>Referrer</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-activity-tbody">
+                            <tr><td colspan="3" class="loading">Loading...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -1191,7 +1324,7 @@
             if (window.location.hash) {
                 const hash = window.location.hash.substring(1);
                 // Validate the hash corresponds to a valid tab
-                const validTabs = ['sync', 'status', 'players', 'rosters', 'database', 'settings'];
+                const validTabs = ['sync', 'status', 'traffic', 'players', 'rosters', 'database', 'settings'];
                 if (validTabs.includes(hash)) {
                     tabToShow = hash;
                 }
@@ -1270,6 +1403,14 @@
                 loadTeamsForRoster();
                 loadAvailablePlayers();
                 loadCurrentWeekForStats();
+            } else if (tabName === 'traffic') {
+                loadTrafficStats();
+                loadRealTimeVisitors();
+                // Set up auto-refresh for real-time visitors
+                if (window.trafficInterval) {
+                    clearInterval(window.trafficInterval);
+                }
+                window.trafficInterval = setInterval(loadRealTimeVisitors, 30000); // Refresh every 30 seconds
             }
         }
 
@@ -1349,6 +1490,97 @@
         }
 
         // Load players data
+        // Traffic statistics functions
+        async function loadTrafficStats() {
+            try {
+                const days = document.getElementById('traffic-days').value || 30;
+                const response = await fetch(`/api/admin/traffic/stats?days=${days}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const stats = result.data;
+                    
+                    // Update overall stats
+                    document.getElementById('visits-today').textContent = stats.today?.visits_today || 0;
+                    document.getElementById('visitors-today').textContent = stats.today?.visitors_today || 0;
+                    document.getElementById('total-visits').textContent = stats.overall?.total_visits || 0;
+                    document.getElementById('total-visitors').textContent = stats.overall?.unique_visitors || 0;
+                    
+                    // Update popular pages
+                    const popularPagesBody = document.getElementById('popular-pages-tbody');
+                    if (stats.popularPages && stats.popularPages.length > 0) {
+                        popularPagesBody.innerHTML = stats.popularPages.map(page => `
+                            <tr>
+                                <td>${page.path}</td>
+                                <td>${page.visits}</td>
+                                <td>${page.unique_visitors}</td>
+                            </tr>
+                        `).join('');
+                    } else {
+                        popularPagesBody.innerHTML = '<tr><td colspan="3" class="loading">No data available</td></tr>';
+                    }
+                    
+                    // Update recent activity
+                    const recentActivityBody = document.getElementById('recent-activity-tbody');
+                    if (stats.recentActivity && stats.recentActivity.length > 0) {
+                        recentActivityBody.innerHTML = stats.recentActivity.map(activity => {
+                            const time = new Date(activity.timestamp).toLocaleString();
+                            const referrer = activity.referer || 'Direct';
+                            return `
+                                <tr>
+                                    <td>${time}</td>
+                                    <td>${activity.path}</td>
+                                    <td>${referrer}</td>
+                                </tr>
+                            `;
+                        }).join('');
+                    } else {
+                        recentActivityBody.innerHTML = '<tr><td colspan="3" class="loading">No recent activity</td></tr>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading traffic stats:', error);
+                showMessage('Failed to load traffic statistics', 'error');
+            }
+        }
+        
+        async function loadRealTimeVisitors() {
+            try {
+                const response = await fetch('/api/admin/traffic/realtime');
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('active-count').textContent = result.data.activeVisitors || 0;
+                }
+            } catch (error) {
+                console.error('Error loading real-time visitors:', error);
+            }
+        }
+        
+        async function cleanupTraffic() {
+            if (!confirm('This will delete traffic data older than 90 days. Continue?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/admin/traffic/cleanup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    showMessage('Traffic data cleanup completed', 'success');
+                    loadTrafficStats();
+                } else {
+                    showMessage('Cleanup failed: ' + result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error cleaning up traffic:', error);
+                showMessage('Failed to cleanup traffic data', 'error');
+            }
+        }
+
         async function loadPlayers() {
             try {
                 const response = await fetch('/api/players');

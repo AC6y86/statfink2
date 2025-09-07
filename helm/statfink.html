@@ -139,6 +139,33 @@
         if (row2) row2.className = originalClass;
     }
 
+    // Format long player names to use first initial
+    function formatPlayerName(fullName, maxLength = 18) {
+        if (!fullName || fullName.length <= maxLength) {
+            return fullName;
+        }
+        
+        // Split name into parts
+        const parts = fullName.trim().split(/\s+/);
+        
+        // If single word name, return as is (shouldn't truncate)
+        if (parts.length === 1) {
+            return fullName;
+        }
+        
+        // Get first name and convert to initial
+        const firstName = parts[0];
+        const firstInitial = firstName.charAt(0).toUpperCase() + '.';
+        
+        // Reconstruct with initial + rest of name
+        const restOfName = parts.slice(1).join(' ');
+        const shortened = firstInitial + ' ' + restOfName;
+        
+        // If still too long, return the shortened version anyway
+        // (better than truncating with ellipsis)
+        return shortened;
+    }
+    
     // Toggle details view
     function toggleDetails() {
         showDetails = !showDetails;
@@ -1163,6 +1190,9 @@
             if (player.position === 'DEF' || player.position === 'DST') {
                 // For defenses, just use the team abbreviation
                 basePlayerName = player.team;
+            } else {
+                // For regular players, format long names
+                basePlayerName = formatPlayerName(basePlayerName);
             }
             
             // Add asterisk if player is scoring AND has points (no bold for player name)
@@ -1190,6 +1220,9 @@
             // For defenses, don't show team code after name since it's redundant
             const displayName = player.position === 'DEF' ? playerName : `${playerName} &nbsp;&nbsp;${player.team}`;
             
+            // Keep original name (without suffix) for tooltip
+            const originalName = player.name.replace(/\s+(Jr\.?|Sr\.?|III|II|IV|V)$/i, '');
+            
             // Check if game is currently in progress (anything that's not Final or Scheduled)
             const isGameInProgress = player.game_status && 
                 player.game_status !== 'Final' && 
@@ -1197,7 +1230,7 @@
             
             row.innerHTML = `
                 <td class="position position-${player.position}">${player.position}</td>
-                <td class="${isGameInProgress ? 'playername playernameinprogress' : 'playername'}" nowrap>${displayName}</td>
+                <td class="${isGameInProgress ? 'playername playernameinprogress' : 'playername'}" nowrap title="${originalName}">${displayName}</td>
                 <td class="opp">${player.opp || ''}</td>
                 <td class="status" align="center" nowrap>${gameStatus}</td>
                 <td class="${pointsClass}" align="right" nowrap>${pointsDisplay}</td>

@@ -45,3 +45,4 @@ create files in /tmp
 - If you need to restart the server in production, use `pm2 restart statfink2` NOT `npm start`
 - remember it is the 2025 season
 - remember whenever committing, include the fantasy football db
+- remember you can take screenshots from the browser by using scripts/take_screenshots.js

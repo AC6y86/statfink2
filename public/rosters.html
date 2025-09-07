@@ -294,13 +294,13 @@
             localStorage.setItem(storageKey, JSON.stringify(dataToSave));
         }
         
-        // Compare rosters and return changed players (with 2-minute window)
+        // Compare rosters and return changed players (with 1-minute window)
         function compareRosters(currentTeams, previousData) {
             if (!previousData || !previousData.timestamp) return {};
             
             const changes = {};
             const now = Date.now();
-            const TWO_MINUTES = 2 * 60 * 1000; // 2 minutes in milliseconds
+            const ONE_MINUTE = 60 * 1000; // 1 minute in milliseconds
             
             currentTeams.forEach(team => {
                 const prevTeam = previousData.teams?.[team.team_id];
@@ -324,21 +324,21 @@
                     } else if (prevTeam.lastChanged?.[player.player_id]) {
                         // Player hasn't changed - check if it should still be bold
                         const timeSinceChange = now - prevTeam.lastChanged[player.player_id];
-                        if (timeSinceChange <= TWO_MINUTES) {
-                            // Still within 2-minute window - keep bold
+                        if (timeSinceChange <= ONE_MINUTE) {
+                            // Still within 1-minute window - keep bold
                             teamChanges.push(player.player_id);
                         }
-                        // If > 2 minutes, don't add to teamChanges (unbold)
+                        // If > 1 minute, don't add to teamChanges (unbold)
                     }
                 });
                 
-                // Check for removed players (within 2-minute window)
+                // Check for removed players (within 1-minute window)
                 Object.keys(prevTeam.roster).forEach(playerId => {
                     if (!team.roster.find(p => p.player_id === playerId)) {
                         // Player was removed - check if removal should still be noted
                         if (prevTeam.lastChanged?.[playerId]) {
                             const timeSinceChange = now - prevTeam.lastChanged[playerId];
-                            if (timeSinceChange <= TWO_MINUTES) {
+                            if (timeSinceChange <= ONE_MINUTE) {
                                 // Recent removal - could add a note if needed
                                 console.log(`Player ${playerId} recently removed from team ${team.team_id}`);
                             }
@@ -495,6 +495,9 @@
                         // Add roster-changed class to player name if changed
                         const nameClass = isChanged ? 'roster-changed' : '';
                         
+                        // Format player name if too long
+                        const displayName = formatPlayerName(player.name);
+                        
                         // Format injury display
                         let injuryCell = '<td>-</td>';
                         if (player.injury_designation) {
@@ -509,7 +512,7 @@
                         
                         row.innerHTML = `
                             <td class="${posClass}">${pos}</td>
-                            <td class="${nameClass}" style="max-width: 150px;" title="${player.name}">${player.name}</td>
+                            <td class="${nameClass}" style="max-width: 150px;" title="${player.name}">${displayName}</td>
                             <td>${player.team || '-'}</td>
                             <td class="${statusClass}">${player.status}</td>
                             ${injuryCell}
@@ -558,6 +561,33 @@
         
         function hideError() {
             document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        // Format long player names to use first initial
+        function formatPlayerName(fullName, maxLength = 18) {
+            if (!fullName || fullName.length <= maxLength) {
+                return fullName;
+            }
+            
+            // Split name into parts
+            const parts = fullName.trim().split(/\s+/);
+            
+            // If single word name, return as is (shouldn't truncate)
+            if (parts.length === 1) {
+                return fullName;
+            }
+            
+            // Get first name and convert to initial
+            const firstName = parts[0];
+            const firstInitial = firstName.charAt(0).toUpperCase() + '.';
+            
+            // Reconstruct with initial + rest of name
+            const restOfName = parts.slice(1).join(' ');
+            const shortened = firstInitial + ' ' + restOfName;
+            
+            // If still too long, return the shortened version anyway
+            // (better than truncating with ellipsis)
+            return shortened;
         }
         
         // Get CSS class for injury designation

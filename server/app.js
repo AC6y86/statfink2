@@ -9,6 +9,7 @@ const cors = require('cors');
 const https = require('https');
 const http = require('http');
 const fs = require('fs');
+const cookieParser = require('cookie-parser');
 
 console.log('About to load DatabaseManager...');
 
@@ -23,6 +24,7 @@ const TeamScoreService = require('./services/teamScoreService');
 const ScoringPlayersService = require('./services/scoringPlayersService');
 const WeeklyReportService = require('./services/weeklyReportService');
 const DSTManagementService = require('./services/dstManagementService');
+const TrafficTracker = require('./middleware/trafficTracker');
 const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
 
 const app = express();
@@ -36,7 +38,7 @@ app.set('trust proxy', true);
 const { setupAuth } = require('./auth/auth');
 
 // Initialize services
-let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService, weeklyReportService, dstManagementService;
+let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService, weeklyReportService, dstManagementService, trafficTracker;
 
 async function initializeServices() {
     try {
@@ -89,6 +91,10 @@ async function initializeServices() {
         weeklyReportService = new WeeklyReportService(db);
         logInfo('Weekly report service initialized');
         
+        // Initialize traffic tracker
+        trafficTracker = new TrafficTracker(db);
+        logInfo('Traffic tracker initialized');
+        
         // Initialize scheduler service
         schedulerService = new SchedulerService(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService);
         logInfo('Scheduler service initialized');
@@ -106,6 +112,7 @@ async function initializeServices() {
         app.locals.weeklyReportService = weeklyReportService;
         app.locals.schedulerService = schedulerService;
         app.locals.dstManagementService = dstManagementService;
+        app.locals.trafficTracker = trafficTracker;
         
         logInfo('Services initialized successfully');
     } catch (error) {
@@ -124,6 +131,16 @@ app.use(cors({
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cookieParser());
+
+// Add traffic tracking middleware early in the pipeline
+app.use(async (req, res, next) => {
+    // Wait for services to be initialized
+    if (app.locals.trafficTracker) {
+        return app.locals.trafficTracker.middleware()(req, res, next);
+    }
+    next();
+});
 
 // Serve static files BEFORE setting security headers
 app.use(express.static(path.join(__dirname, '../public')));
