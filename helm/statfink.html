@@ -585,6 +585,7 @@
                     const timeSinceChange = now - prevMatchup.team1_lastChanged;
                     if (timeSinceChange <= 60 * 1000) {
                         scoresToSave.matchups[matchup.matchup_id].team1_delta = prevMatchup.team1_delta;
+                        scoresToSave.matchups[matchup.matchup_id].team1_lastChanged = prevMatchup.team1_lastChanged;
                     }
                 }
                 
@@ -596,6 +597,7 @@
                     const timeSinceChange = now - prevMatchup.team2_lastChanged;
                     if (timeSinceChange <= 60 * 1000) {
                         scoresToSave.matchups[matchup.matchup_id].team2_delta = prevMatchup.team2_delta;
+                        scoresToSave.matchups[matchup.matchup_id].team2_lastChanged = prevMatchup.team2_lastChanged;
                     }
                 }
             }
@@ -883,13 +885,6 @@
                 // Compare stats to find changes
                 const changedStats = compareStats(data.data, previousStats);
                 
-                // Debug logging (remove in production)
-                if (previousStats) {
-                    console.log('Previous stats found, comparing changes...');
-                    console.log('Changed players:', changedStats);
-                } else {
-                    console.log('No previous stats found - first load');
-                }
                 
                 // Save current stats for next comparison
                 saveCurrentStats(matchupId, data.data, changedStats);
