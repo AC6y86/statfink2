@@ -306,25 +306,6 @@ class GoogleSheetsExportService {
         });
         rows.push(recordRow);
         
-        // Many empty rows (~20)
-        for (let i = 0; i < 20; i++) {
-            rows.push(Array(headerRow.length).fill(''));
-        }
-        
-        // Bottom standings table
-        rows.push(['Team', 'Week', 'Total', 'Record']);
-        teams.forEach(team => {
-            rows.push([
-                team.owner_name,
-                team.weeklyPoints ? team.weeklyPoints.toFixed(1) : '0',
-                team.cumulativePoints ? 
-                    (team.cumulativePoints % 1 === 0 ? 
-                        team.cumulativePoints.toString() : 
-                        team.cumulativePoints.toFixed(2)) : '0',
-                team.record || '0-0'
-            ]);
-        });
-        
         // Write to sheet
         await this.sheets.spreadsheets.values.update({
             spreadsheetId,
