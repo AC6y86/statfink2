@@ -410,7 +410,7 @@
                         (Date.now() - matchupScoreData.team1_lastChanged <= 60 * 1000);
                     
                     if (team1Changed && Math.abs(team1Delta) > 0.01) {
-                        score1Cell.innerHTML = `${matchup.team1_points.toFixed(2)} <span class="score-delta">${team1Delta > 0 ? '+' : ''}${team1Delta.toFixed(2)}</span>`;
+                        score1Cell.innerHTML = `<span class="score-delta">${team1Delta > 0 ? '+' : ''}${team1Delta.toFixed(2)}</span> ${matchup.team1_points.toFixed(2)}`;
                         score1Cell.className = "fanpts score-changed";
                     } else {
                         score1Cell.textContent = matchup.team1_points.toFixed(2);
@@ -443,7 +443,7 @@
                         (Date.now() - matchupScoreData.team2_lastChanged <= 60 * 1000);
                     
                     if (team2Changed && Math.abs(team2Delta) > 0.01) {
-                        score2Cell.innerHTML = `${matchup.team2_points.toFixed(2)} <span class="score-delta">${team2Delta > 0 ? '+' : ''}${team2Delta.toFixed(2)}</span>`;
+                        score2Cell.innerHTML = `<span class="score-delta">${team2Delta > 0 ? '+' : ''}${team2Delta.toFixed(2)}</span> ${matchup.team2_points.toFixed(2)}`;
                         score2Cell.className = "fanpts score-changed";
                     } else {
                         score2Cell.textContent = matchup.team2_points.toFixed(2);
@@ -1163,6 +1163,8 @@
             
             // Format defense names consistently
             let basePlayerName = player.name;
+            // Remove suffixes like Jr., Sr., III, etc.
+            basePlayerName = basePlayerName.replace(/\s+(Jr\.?|Sr\.?|III|II|IV|V)$/i, '');
             if (player.position === 'DEF' || player.position === 'DST') {
                 // For defenses, just use the team abbreviation
                 basePlayerName = player.team;
