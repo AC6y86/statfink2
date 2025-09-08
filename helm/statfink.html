@@ -613,6 +613,10 @@
                     if (timeSinceChange <= 60 * 1000) {
                         scoresToSave.matchups[matchup.matchup_id].team1_delta = prevMatchup.team1_delta;
                         scoresToSave.matchups[matchup.matchup_id].team1_lastChanged = prevMatchup.team1_lastChanged;
+                    } else {
+                        // Clear expired delta
+                        scoresToSave.matchups[matchup.matchup_id].team1_delta = 0;
+                        scoresToSave.matchups[matchup.matchup_id].team1_lastChanged = null;
                     }
                 }
                 
@@ -625,6 +629,10 @@
                     if (timeSinceChange <= 60 * 1000) {
                         scoresToSave.matchups[matchup.matchup_id].team2_delta = prevMatchup.team2_delta;
                         scoresToSave.matchups[matchup.matchup_id].team2_lastChanged = prevMatchup.team2_lastChanged;
+                    } else {
+                        // Clear expired delta
+                        scoresToSave.matchups[matchup.matchup_id].team2_delta = 0;
+                        scoresToSave.matchups[matchup.matchup_id].team2_lastChanged = null;
                     }
                 }
             }
@@ -663,7 +671,7 @@
                 name: player.name,
                 stats: player.stats || {},
                 lastChanged: {},
-                previousFantasyPoints: player.stats?.fantasy_points || 0,
+                previousFantasyPoints: prevPlayer?.previousFantasyPoints || player.stats?.fantasy_points || 0,
                 fantasyPointsDelta: 0,
                 fantasyPointsLastChanged: prevPlayer?.fantasyPointsLastChanged || null
             };
@@ -678,6 +686,8 @@
                 if (timeSinceChange <= 60 * 1000) {
                     statsToSave.team1[player.player_id].fantasyPointsDelta = prevPlayer.fantasyPointsDelta || 0;
                     statsToSave.team1[player.player_id].fantasyPointsLastChanged = prevPlayer.fantasyPointsLastChanged;
+                    // Update baseline to current score when preserving delta
+                    statsToSave.team1[player.player_id].previousFantasyPoints = player.stats?.fantasy_points || 0;
                 }
             }
             
@@ -688,8 +698,11 @@
                         // This stat just changed
                         statsToSave.team1[player.player_id].lastChanged[stat] = now;
                     } else if (prevPlayer?.lastChanged?.[stat]) {
-                        // Preserve previous change time
-                        statsToSave.team1[player.player_id].lastChanged[stat] = prevPlayer.lastChanged[stat];
+                        // Only preserve if still within 60-second window
+                        const timeSinceChange = now - prevPlayer.lastChanged[stat];
+                        if (timeSinceChange <= 60 * 1000) {
+                            statsToSave.team1[player.player_id].lastChanged[stat] = prevPlayer.lastChanged[stat];
+                        }
                     }
                 });
             }
@@ -705,7 +718,7 @@
                 name: player.name,
                 stats: player.stats || {},
                 lastChanged: {},
-                previousFantasyPoints: player.stats?.fantasy_points || 0,
+                previousFantasyPoints: prevPlayer?.previousFantasyPoints || player.stats?.fantasy_points || 0,
                 fantasyPointsDelta: 0,
                 fantasyPointsLastChanged: prevPlayer?.fantasyPointsLastChanged || null
             };
@@ -720,6 +733,8 @@
                 if (timeSinceChange <= 60 * 1000) {
                     statsToSave.team2[player.player_id].fantasyPointsDelta = prevPlayer.fantasyPointsDelta || 0;
                     statsToSave.team2[player.player_id].fantasyPointsLastChanged = prevPlayer.fantasyPointsLastChanged;
+                    // Update baseline to current score when preserving delta
+                    statsToSave.team2[player.player_id].previousFantasyPoints = player.stats?.fantasy_points || 0;
                 }
             }
             
@@ -730,8 +745,11 @@
                         // This stat just changed
                         statsToSave.team2[player.player_id].lastChanged[stat] = now;
                     } else if (prevPlayer?.lastChanged?.[stat]) {
-                        // Preserve previous change time
-                        statsToSave.team2[player.player_id].lastChanged[stat] = prevPlayer.lastChanged[stat];
+                        // Only preserve if still within 60-second window
+                        const timeSinceChange = now - prevPlayer.lastChanged[stat];
+                        if (timeSinceChange <= 60 * 1000) {
+                            statsToSave.team2[player.player_id].lastChanged[stat] = prevPlayer.lastChanged[stat];
+                        }
                     }
                 });
             }
