@@ -20,6 +20,10 @@ describe(`Stats Completeness Verification (${getTestDescription()})`, () => {
     });
     
     afterAll(async () => {
+        // Clean up ESPN browser if it was used
+        if (statsFetcher) {
+            await statsFetcher.cleanup();
+        }
         await db.close();
     });
     
@@ -71,24 +75,41 @@ describe(`Stats Completeness Verification (${getTestDescription()})`, () => {
                         season
                     );
                     
-                    if (status === 'suspended' || status === 'inactive') {
-                        validReasons.push({ ...player, reason: status });
+                    // Valid reasons for not having stats
+                    const validStatuses = ['suspended', 'inactive', 'injured', 'dnp', 'backup'];
+                    
+                    if (validStatuses.includes(status)) {
+                        validReasons.push({ ...player, reason: status, source: status === 'suspended' || status === 'inactive' ? 'known' : 'ESPN' });
+                    } else if (status === 'active') {
+                        // ESPN confirmed player was active, they should have stats
+                        actuallyMissing.push({ ...player, espn_verified: true });
                     } else {
-                        actuallyMissing.push(player);
+                        // Status unknown, couldn't verify with ESPN
+                        actuallyMissing.push({ ...player, espn_verified: false });
                     }
                 }
                 
                 if (validReasons.length > 0) {
                     console.log(`\n✅ ${validReasons.length} players correctly have no stats:`);
                     validReasons.forEach(player => {
-                        console.log(`    - ${player.player_name} (${player.player_position}, ${player.player_team}) - ${player.reason}`);
+                        const sourceTag = player.source === 'ESPN' ? ' (ESPN verified)' : '';
+                        console.log(`    - ${player.player_name} (${player.player_position}, ${player.player_team}) - ${player.reason}${sourceTag}`);
                     });
                 }
                 
                 if (actuallyMissing.length > 0) {
-                    console.log(`\n❌ Found ${actuallyMissing.length} active players in completed games with unexplained missing stats:`);
+                    const espnVerifiedCount = actuallyMissing.filter(p => p.espn_verified).length;
+                    const unverifiedCount = actuallyMissing.filter(p => !p.espn_verified).length;
                     
-                    const csvLines = ['Week,Player ID,Player Name,Position,Team,Fantasy Team,Game,Score'];
+                    console.log(`\n❌ Found ${actuallyMissing.length} players in completed games with missing stats:`);
+                    if (espnVerifiedCount > 0) {
+                        console.log(`    ${espnVerifiedCount} confirmed active by ESPN (should have stats)`);
+                    }
+                    if (unverifiedCount > 0) {
+                        console.log(`    ${unverifiedCount} could not be verified with ESPN`);
+                    }
+                    
+                    const csvLines = ['Week,Player ID,Player Name,Position,Team,Fantasy Team,Game,Score,ESPN Status'];
                     
                     // Group by week for better readability
                     const byWeek = {};
@@ -101,8 +122,9 @@ describe(`Stats Completeness Verification (${getTestDescription()})`, () => {
                         console.log(`\n  Week ${week}:`);
                         byWeek[week].slice(0, 10).forEach(player => {
                             const gameDesc = `${player.away_team}@${player.home_team} (${player.away_score}-${player.home_score})`;
-                            console.log(`    - ${player.player_name} (${player.player_position}, ${player.player_team}) - Team ${player.team_id}`);
-                            csvLines.push(`${week},${player.player_id},${player.player_name},${player.player_position},${player.player_team},${player.team_id},${gameDesc},${player.away_score}-${player.home_score}`);
+                            const espnTag = player.espn_verified ? ' [ESPN: active]' : ' [ESPN: unknown]';
+                            console.log(`    - ${player.player_name} (${player.player_position}, ${player.player_team}) - Team ${player.team_id}${espnTag}`);
+                            csvLines.push(`${week},${player.player_id},${player.player_name},${player.player_position},${player.player_team},${player.team_id},${gameDesc},${player.away_score}-${player.home_score},${player.espn_verified ? 'active' : 'unknown'}`);
                         });
                     });
                     

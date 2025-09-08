@@ -1,5 +1,7 @@
 const axios = require('axios');
 const { logError, logInfo } = require('../../../server/utils/errorHandler');
+// Use fixed ESPN lookup with proper error handling
+const ESPNLookup = require('./espn-lookup-fixed');
 
 class StatsFetcher {
     constructor(db) {
@@ -10,6 +12,7 @@ class StatsFetcher {
             'X-RapidAPI-Key': this.tank01ApiKey,
             'X-RapidAPI-Host': 'tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com'
         };
+        this.espnLookup = new ESPNLookup(db);
     }
     
     /**
@@ -296,7 +299,7 @@ class StatsFetcher {
     
     /**
      * Check if a player should have stats for a given week
-     * Returns: 'active', 'suspended', 'inactive', 'injured', or 'unknown'
+     * Returns: 'active', 'suspended', 'inactive', 'injured', 'dnp', 'backup', or 'unknown'
      */
     async checkPlayerGameStatus(playerId, playerName, week, season) {
         // First check if we have cached status info
@@ -343,12 +346,30 @@ class StatsFetcher {
                 }
             }
             
+            // If status is still unknown, check ESPN
+            logInfo(`Checking ESPN for ${playerName} (${playerId}) status`);
+            const espnStatus = await this.espnLookup.fetchPlayerStatus(playerId, playerName, week, season);
+            
+            if (espnStatus && espnStatus !== 'unknown') {
+                logInfo(`ESPN status for ${playerName}: ${espnStatus}`);
+                return espnStatus;
+            }
+            
             // Default to unknown if we can't determine
             return 'unknown';
             
         } catch (error) {
             logError('Error checking player game status', error);
             return 'unknown';
+        }
+    }
+    
+    /**
+     * Clean up resources
+     */
+    async cleanup() {
+        if (this.espnLookup) {
+            await this.espnLookup.closeBrowser();
         }
     }
 }
