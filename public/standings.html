@@ -28,9 +28,11 @@
         }
         
         .standings-wrapper {
-            display: inline-flex;
-            gap: 10px;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .standings-section {
@@ -43,7 +45,7 @@
             border-collapse: collapse;
             border-spacing: 0;
             background: #fff;
-            width: 450px;
+            width: 100%;
         }
         
         .section-title {
@@ -125,6 +127,7 @@
         <div id="errorMessage" class="error" style="display: none;"></div>
         
         <div class="standings-wrapper">
+            <!-- Top Row -->
             <div id="weeklyRankings" class="standings-section" style="display: none;">
                 <table class="standings-table">
                     <tr>
@@ -141,20 +144,54 @@
                 </table>
             </div>
             
-            <div id="overallStandings" class="standings-section" style="display: none;">
+            <div id="cumulativeStandings" class="standings-section" style="display: none;">
                 <table class="standings-table">
                     <tr>
-                        <td colspan="5" class="section-title" id="overallTitle">Season Standings (Through Week X)</td>
+                        <td colspan="4" class="section-title" id="cumulativeTitle">Cumulative Points (Through Week X)</td>
+                    </tr>
+                    <tr>
+                        <th style="width: 40px;">Rank</th>
+                        <th>Team</th>
+                        <th style="width: 70px;">Points</th>
+                        <th style="width: 80px;">Week Wins</th>
+                    </tr>
+                    <tbody id="cumulativeStandingsBody">
+                        <!-- Cumulative standings will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Bottom Row -->
+            <div id="oddBracketStandings" class="standings-section" style="display: none;">
+                <table class="standings-table">
+                    <tr>
+                        <td colspan="4" class="section-title" id="oddBracketTitle">Odd Bracket Standings</td>
                     </tr>
                     <tr>
                         <th style="width: 40px;">Rank</th>
                         <th>Team</th>
                         <th style="width: 50px;">W-L-T</th>
                         <th style="width: 70px;">Points</th>
-                        <th style="width: 80px;">Week Wins</th>
                     </tr>
-                    <tbody id="overallStandingsBody">
-                        <!-- Overall standings will be populated here -->
+                    <tbody id="oddBracketStandingsBody">
+                        <!-- Odd bracket standings will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="evenBracketStandings" class="standings-section" style="display: none;">
+                <table class="standings-table">
+                    <tr>
+                        <td colspan="4" class="section-title" id="evenBracketTitle">Even Bracket Standings</td>
+                    </tr>
+                    <tr>
+                        <th style="width: 40px;">Rank</th>
+                        <th>Team</th>
+                        <th style="width: 50px;">W-L-T</th>
+                        <th style="width: 70px;">Points</th>
+                    </tr>
+                    <tbody id="evenBracketStandingsBody">
+                        <!-- Even bracket standings will be populated here -->
                     </tbody>
                 </table>
             </div>
@@ -236,9 +273,11 @@
             
             // Update titles
             document.getElementById('weeklyTitle').textContent = `Week ${week} Rankings`;
-            document.getElementById('overallTitle').textContent = `Season Standings (Through Week ${week})`;
+            document.getElementById('cumulativeTitle').textContent = `Cumulative Points (Through Week ${week})`;
+            document.getElementById('oddBracketTitle').textContent = `Odd Bracket Standings`;
+            document.getElementById('evenBracketTitle').textContent = `Even Bracket Standings`;
             
-            // Display weekly rankings
+            // 1. Display weekly rankings (Points for the Week)
             const weeklyBody = document.getElementById('weeklyRankingsBody');
             weeklyBody.innerHTML = '';
             
@@ -261,15 +300,37 @@
                 weeklyBody.appendChild(row);
             });
             
-            // Display overall standings
-            const overallBody = document.getElementById('overallStandingsBody');
-            overallBody.innerHTML = '';
+            // 2. Display cumulative points standings (sorted by cumulative points)
+            const cumulativeBody = document.getElementById('cumulativeStandingsBody');
+            cumulativeBody.innerHTML = '';
             
-            // Sort overall standings by total points
-            const sortedOverall = [...overallStandings];
-            sortedOverall.sort((a, b) => b.cumulative_points - a.cumulative_points);
+            // Sort by cumulative points
+            const cumulativeSorted = [...overallStandings].sort((a, b) => b.cumulative_points - a.cumulative_points);
             
-            sortedOverall.forEach((team, index) => {
+            cumulativeSorted.forEach((team, index) => {
+                const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'row1' : 'row2';
+                
+                // Extract first name from owner_name
+                const firstName = team.owner_name ? team.owner_name.split(' ')[0].replace("'s", '') : team.team_name;
+                
+                row.innerHTML = `
+                    <td style="width: 40px;">${index + 1}</td>
+                    <td>${firstName}</td>
+                    <td>${team.cumulative_points.toFixed(2)}</td>
+                    <td>${team.weekly_wins > 0 ? `<span class="weekly-wins">${team.weekly_wins}</span>` : '0'}</td>
+                `;
+                cumulativeBody.appendChild(row);
+            });
+            
+            // 3. Display odd bracket standings (teams 1, 3, 5, 7, 9, 11)
+            const oddBracketBody = document.getElementById('oddBracketStandingsBody');
+            oddBracketBody.innerHTML = '';
+            
+            // Filter for odd team_ids
+            const oddBracket = overallStandings.filter(team => team.team_id % 2 === 1);
+            
+            oddBracket.forEach((team, index) => {
                 const row = document.createElement('tr');
                 row.className = index % 2 === 0 ? 'row1' : 'row2';
                 
@@ -284,14 +345,41 @@
                     <td>${firstName}</td>
                     <td>${record}</td>
                     <td>${team.cumulative_points.toFixed(2)}</td>
-                    <td>${team.weekly_wins > 0 ? `<span class="weekly-wins">${team.weekly_wins}</span>` : '0'}</td>
                 `;
-                overallBody.appendChild(row);
+                oddBracketBody.appendChild(row);
+            });
+            
+            // 4. Display even bracket standings (teams 2, 4, 6, 8, 10, 12)
+            const evenBracketBody = document.getElementById('evenBracketStandingsBody');
+            evenBracketBody.innerHTML = '';
+            
+            // Filter for even team_ids
+            const evenBracket = overallStandings.filter(team => team.team_id % 2 === 0);
+            
+            evenBracket.forEach((team, index) => {
+                const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'row1' : 'row2';
+                
+                // Extract first name from owner_name
+                const firstName = team.owner_name ? team.owner_name.split(' ')[0].replace("'s", '') : team.team_name;
+                
+                // Format W-L-T record
+                const record = `${team.wins}-${team.losses}${team.ties > 0 ? `-${team.ties}` : ''}`;
+                
+                row.innerHTML = `
+                    <td style="width: 40px;">${index + 1}</td>
+                    <td>${firstName}</td>
+                    <td>${record}</td>
+                    <td>${team.cumulative_points.toFixed(2)}</td>
+                `;
+                evenBracketBody.appendChild(row);
             });
             
             // Show sections and hide loading
             document.getElementById('weeklyRankings').style.display = 'block';
-            document.getElementById('overallStandings').style.display = 'block';
+            document.getElementById('cumulativeStandings').style.display = 'block';
+            document.getElementById('oddBracketStandings').style.display = 'block';
+            document.getElementById('evenBracketStandings').style.display = 'block';
             document.getElementById('loadingMessage').style.display = 'none';
         }
         
@@ -299,7 +387,9 @@
         function showLoading() {
             document.getElementById('loadingMessage').style.display = 'block';
             document.getElementById('weeklyRankings').style.display = 'none';
-            document.getElementById('overallStandings').style.display = 'none';
+            document.getElementById('cumulativeStandings').style.display = 'none';
+            document.getElementById('oddBracketStandings').style.display = 'none';
+            document.getElementById('evenBracketStandings').style.display = 'none';
         }
         
         function showError(message) {
