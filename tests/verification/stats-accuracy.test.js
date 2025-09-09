@@ -350,7 +350,7 @@ describe(`Stats Accuracy Verification (${getTestDescription()})`, () => {
             console.log('Position | Count | Avg Points | Max Points');
             console.log('---------|-------|------------|------------');
             positionBreakdown.forEach(pos => {
-                console.log(`${pos.position.padEnd(8)} | ${String(pos.count).padEnd(5)} | ${pos.avg_points.toFixed(2).padEnd(10)} | ${pos.max_points.toFixed(2)}`);
+                console.log(`${(pos.position || 'N/A').padEnd(8)} | ${String(pos.count).padEnd(5)} | ${pos.avg_points.toFixed(2).padEnd(10)} | ${pos.max_points.toFixed(2)}`);
             });
             
             // Save summary to JSON
