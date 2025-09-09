@@ -24,6 +24,7 @@ const TeamScoreService = require('./services/teamScoreService');
 const ScoringPlayersService = require('./services/scoringPlayersService');
 const WeeklyReportService = require('./services/weeklyReportService');
 const DSTManagementService = require('./services/dstManagementService');
+const FantasyPointsCalculationService = require('./services/fantasyPointsCalculationService');
 const TrafficTracker = require('./middleware/trafficTracker');
 const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
 
@@ -38,7 +39,7 @@ app.set('trust proxy', true);
 const { setupAuth } = require('./auth/auth');
 
 // Initialize services
-let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService, weeklyReportService, dstManagementService, trafficTracker;
+let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService, weeklyReportService, dstManagementService, fantasyPointsCalculationService, trafficTracker;
 
 async function initializeServices() {
     try {
@@ -91,12 +92,16 @@ async function initializeServices() {
         weeklyReportService = new WeeklyReportService(db);
         logInfo('Weekly report service initialized');
         
+        // Initialize fantasy points calculation service
+        fantasyPointsCalculationService = new FantasyPointsCalculationService(db, scoringService);
+        logInfo('Fantasy points calculation service initialized');
+        
         // Initialize traffic tracker
         trafficTracker = new TrafficTracker(db);
         logInfo('Traffic tracker initialized');
         
         // Initialize scheduler service
-        schedulerService = new SchedulerService(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService);
+        schedulerService = new SchedulerService(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService, fantasyPointsCalculationService);
         logInfo('Scheduler service initialized');
         
         

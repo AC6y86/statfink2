@@ -6,7 +6,7 @@ const execAsync = promisify(exec);
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 
 class SchedulerService {
-    constructor(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService) {
+    constructor(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService, fantasyPointsCalculationService) {
         this.db = db;
         this.nflGamesService = nflGamesService;
         this.playerSyncService = playerSyncService;
@@ -15,6 +15,7 @@ class SchedulerService {
         this.teamScoreService = teamScoreService;
         this.scoringPlayersService = scoringPlayersService;
         this.weeklyReportService = weeklyReportService;
+        this.fantasyPointsCalculationService = fantasyPointsCalculationService;
         
         // Track last run times
         this.lastDailyUpdate = null;
@@ -376,6 +377,41 @@ class SchedulerService {
                     results.defensiveBonuses = bonusResult.success;
                     if (!bonusResult.success) {
                         results.errors.push(`Defensive bonuses: ${bonusResult.message}`);
+                    } else {
+                        // Recalculate DST fantasy points to include the bonuses
+                        if (this.fantasyPointsCalculationService) {
+                            try {
+                                const dstResult = await this.fantasyPointsCalculationService.calculateEndOfWeekDSTBonuses(
+                                    currentSettings.season_year
+                                );
+                                results.dstFantasyPoints = dstResult.success;
+                                if (!dstResult.success) {
+                                    results.errors.push(`DST fantasy points: Failed to update`);
+                                } else {
+                                    logInfo(`Updated DST fantasy points with bonuses: ${dstResult.updated} DST teams`);
+                                    
+                                    // Recalculate team scores again after DST bonuses are applied
+                                    if (this.teamScoreService) {
+                                        try {
+                                            const finalScoresResult = await this.teamScoreService.recalculateTeamScores(
+                                                currentSettings.current_week,
+                                                currentSettings.season_year
+                                            );
+                                            results.finalTeamScores = finalScoresResult.success;
+                                            if (finalScoresResult.success) {
+                                                logInfo(`Final team scores updated after DST bonuses: ${finalScoresResult.teamsUpdated} teams`);
+                                            }
+                                        } catch (error) {
+                                            logError('Failed to update final team scores after DST bonuses', error);
+                                            results.errors.push(`Final team scores: ${error.message}`);
+                                        }
+                                    }
+                                }
+                            } catch (error) {
+                                logError('Failed to calculate DST fantasy points', error);
+                                results.errors.push(`DST fantasy points: ${error.message}`);
+                            }
+                        }
                     }
                 }
             } catch (error) {

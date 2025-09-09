@@ -49,7 +49,7 @@ module.exports = {
       name: 'statfink2-weekly',
       script: './scripts/weekly-update-check.js',
       cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 10 * * 2', // 10am UTC Tuesday = 3am PDT Tuesday (after Monday night games)
+      // cron_restart: '0 10 * * 2', // 10am UTC Tuesday = 3am PDT Tuesday (after Monday night games) - TEMPORARILY DISABLED
       autorestart: false,
       watch: false,
       time: true
