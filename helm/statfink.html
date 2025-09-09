@@ -96,6 +96,18 @@
     var showDetails = false;
     var currentMatchupData = null;
     var remainingPlayersCache = {}; // Cache for remaining players count
+    
+    // Memory-only session state for tracking changes
+    var sessionStats = {}; // Current session baseline stats
+    var sessionScores = {}; // Current session baseline scores
+    var sessionStartTime = Date.now(); // Track when session started
+    var isFirstLoad = true; // Track if this is the first data load
+    
+    // Global delta storage - persists across matchup navigation
+    var globalDeltas = {
+        players: {}, // playerId -> {delta: value, timestamp: time, changedStats: []}
+        teams: {}    // "matchupId_team1/2" -> {delta: value, timestamp: time}
+    };
 
     // Initialize layout
     if (view == 0) {
@@ -316,8 +328,8 @@
     // Main initialization
     async function read_cont() {
         try {
-            // Clean up old localStorage entries on page load
-            cleanupOldStats();
+            // Initialize fresh session on page load
+            initializeSession();
             
             // Parse URL for year/week/mode
             const urlData = parseUrl();
@@ -432,9 +444,12 @@
                     
                     const score1Cell = row1.insertCell(1);
                     const matchupScoreData = scoreData?.matchups?.[matchup.matchup_id];
-                    const team1Delta = matchupScoreData?.team1_delta || 0;
-                    const team1Changed = matchupScoreData?.team1_lastChanged && 
-                        (Date.now() - matchupScoreData.team1_lastChanged <= 60 * 1000);
+                    // Check global deltas first, then local
+                    const globalTeam1Delta = globalDeltas.teams[`${matchup.matchup_id}_team1`];
+                    const globalTeam1Within30 = globalTeam1Delta && (Date.now() - globalTeam1Delta.timestamp <= 30000);
+                    const team1Delta = globalTeam1Within30 ? globalTeam1Delta.delta : (matchupScoreData?.team1_delta || 0);
+                    const team1Changed = globalTeam1Within30 || (matchupScoreData?.team1_lastChanged && 
+                        (Date.now() - matchupScoreData.team1_lastChanged <= 30 * 1000));
                     
                     if (team1Changed && Math.abs(team1Delta) > 0.01) {
                         score1Cell.innerHTML = `<span class="score-delta">${team1Delta > 0 ? '+' : ''}${team1Delta.toFixed(2)}</span> ${matchup.team1_points.toFixed(2)}`;
@@ -465,9 +480,12 @@
                     team2Cell.nowrap = true;
                     
                     const score2Cell = row2.insertCell(1);
-                    const team2Delta = matchupScoreData?.team2_delta || 0;
-                    const team2Changed = matchupScoreData?.team2_lastChanged && 
-                        (Date.now() - matchupScoreData.team2_lastChanged <= 60 * 1000);
+                    // Check global deltas first, then local
+                    const globalTeam2Delta = globalDeltas.teams[`${matchup.matchup_id}_team2`];
+                    const globalTeam2Within30 = globalTeam2Delta && (Date.now() - globalTeam2Delta.timestamp <= 30000);
+                    const team2Delta = globalTeam2Within30 ? globalTeam2Delta.delta : (matchupScoreData?.team2_delta || 0);
+                    const team2Changed = globalTeam2Within30 || (matchupScoreData?.team2_lastChanged && 
+                        (Date.now() - matchupScoreData.team2_lastChanged <= 30 * 1000));
                     
                     if (team2Changed && Math.abs(team2Delta) > 0.01) {
                         score2Cell.innerHTML = `<span class="score-delta">${team2Delta > 0 ? '+' : ''}${team2Delta.toFixed(2)}</span> ${matchup.team2_points.toFixed(2)}`;
@@ -529,57 +547,32 @@
     }
 
 
-    // Storage key for previous stats
-    function getStorageKey(matchupId) {
-        return `statfink_stats_${matchupId}_${currentWeek}_${currentSeason}`;
+    // Initialize fresh session (called on page load or refresh)
+    function initializeSession() {
+        sessionStats = {};
+        sessionScores = {};
+        sessionStartTime = Date.now();
+        isFirstLoad = true;
+        // Clear global deltas on page load/refresh
+        globalDeltas = {
+            players: {},
+            teams: {}
+        };
+        console.log('Session initialized - all indicators cleared');
     }
     
-    // Clear old/invalid localStorage data (call this if needed for debugging)
-    function clearStatsCache() {
-        const keys = Object.keys(localStorage);
-        keys.forEach(key => {
-            if (key.startsWith('statfink_stats_')) {
-                localStorage.removeItem(key);
-            }
-        });
-        console.log('Cleared all statfink stats from localStorage');
+    // Check if we should show an indicator (only for changes after session start)
+    function shouldShowIndicator(changeTime) {
+        if (!changeTime || isFirstLoad) return false;
+        const timeSinceChange = Date.now() - changeTime;
+        const timeSinceSessionStart = changeTime - sessionStartTime;
+        // Only show if change happened after session started and within 30 seconds
+        return timeSinceSessionStart > 0 && timeSinceChange <= 30000;
     }
     
-    // Clean up old localStorage entries (older than 24 hours)
-    function cleanupOldStats() {
-        const keys = Object.keys(localStorage);
-        const now = Date.now();
-        const ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-        
-        keys.forEach(key => {
-            if (key.startsWith('statfink_stats_') || key.startsWith('statfink_scores_')) {
-                try {
-                    const data = JSON.parse(localStorage.getItem(key));
-                    if (data && data.timestamp) {
-                        const age = now - data.timestamp;
-                        if (age > ONE_DAY) {
-                            localStorage.removeItem(key);
-                            console.log(`Removed old cache: ${key} (${Math.round(age / 3600000)} hours old)`);
-                        }
-                    }
-                } catch (e) {
-                    // If we can't parse it, remove it
-                    localStorage.removeItem(key);
-                    console.log(`Removed invalid cache: ${key}`);
-                }
-            }
-        });
-    }
-
-    // Storage key for team scores
-    function getScoresStorageKey() {
-        return `statfink_scores_${currentWeek}_${currentSeason}`;
-    }
-    
-    // Save team scores with change tracking
+    // Save team scores in memory only
     function saveTeamScores(matchups) {
-        const storageKey = getScoresStorageKey();
-        const previousData = getTeamScores();
+        const previousData = sessionScores;
         const now = Date.now();
         
         const scoresToSave = {
@@ -595,63 +588,60 @@
                 team2_points: matchup.team2_points,
                 team1_delta: 0,
                 team2_delta: 0,
-                team1_lastChanged: prevMatchup?.team1_lastChanged || null,
-                team2_lastChanged: prevMatchup?.team2_lastChanged || null
+                team1_lastChanged: null,
+                team2_lastChanged: null
             };
             
-            // Calculate deltas and update change timestamps
-            if (prevMatchup) {
+            // Only calculate deltas if not first load and previous data exists
+            if (!isFirstLoad && prevMatchup) {
                 const team1Delta = matchup.team1_points - prevMatchup.team1_points;
                 const team2Delta = matchup.team2_points - prevMatchup.team2_points;
                 
                 if (Math.abs(team1Delta) > 0.01) {
                     scoresToSave.matchups[matchup.matchup_id].team1_delta = team1Delta;
                     scoresToSave.matchups[matchup.matchup_id].team1_lastChanged = now;
-                } else if (prevMatchup.team1_lastChanged) {
-                    // Preserve previous delta if still within 1-minute window
-                    const timeSinceChange = now - prevMatchup.team1_lastChanged;
-                    if (timeSinceChange <= 60 * 1000) {
-                        scoresToSave.matchups[matchup.matchup_id].team1_delta = prevMatchup.team1_delta;
-                        scoresToSave.matchups[matchup.matchup_id].team1_lastChanged = prevMatchup.team1_lastChanged;
-                    } else {
-                        // Clear expired delta
-                        scoresToSave.matchups[matchup.matchup_id].team1_delta = 0;
-                        scoresToSave.matchups[matchup.matchup_id].team1_lastChanged = null;
-                    }
+                    // Store in global deltas
+                    globalDeltas.teams[`${matchup.matchup_id}_team1`] = {
+                        delta: team1Delta,
+                        timestamp: now
+                    };
+                } else if (shouldShowIndicator(prevMatchup.team1_lastChanged)) {
+                    // Keep showing delta if still within 30-second window
+                    scoresToSave.matchups[matchup.matchup_id].team1_delta = prevMatchup.team1_delta;
+                    scoresToSave.matchups[matchup.matchup_id].team1_lastChanged = prevMatchup.team1_lastChanged;
                 }
                 
                 if (Math.abs(team2Delta) > 0.01) {
                     scoresToSave.matchups[matchup.matchup_id].team2_delta = team2Delta;
                     scoresToSave.matchups[matchup.matchup_id].team2_lastChanged = now;
-                } else if (prevMatchup.team2_lastChanged) {
-                    // Preserve previous delta if still within 1-minute window
-                    const timeSinceChange = now - prevMatchup.team2_lastChanged;
-                    if (timeSinceChange <= 60 * 1000) {
-                        scoresToSave.matchups[matchup.matchup_id].team2_delta = prevMatchup.team2_delta;
-                        scoresToSave.matchups[matchup.matchup_id].team2_lastChanged = prevMatchup.team2_lastChanged;
-                    } else {
-                        // Clear expired delta
-                        scoresToSave.matchups[matchup.matchup_id].team2_delta = 0;
-                        scoresToSave.matchups[matchup.matchup_id].team2_lastChanged = null;
-                    }
+                    // Store in global deltas
+                    globalDeltas.teams[`${matchup.matchup_id}_team2`] = {
+                        delta: team2Delta,
+                        timestamp: now
+                    };
+                } else if (shouldShowIndicator(prevMatchup.team2_lastChanged)) {
+                    // Keep showing delta if still within 30-second window
+                    scoresToSave.matchups[matchup.matchup_id].team2_delta = prevMatchup.team2_delta;
+                    scoresToSave.matchups[matchup.matchup_id].team2_lastChanged = prevMatchup.team2_lastChanged;
                 }
             }
         });
         
-        localStorage.setItem(storageKey, JSON.stringify(scoresToSave));
+        sessionScores = scoresToSave;
         return scoresToSave;
     }
     
-    // Get team scores from localStorage
+    // Get team scores from memory
     function getTeamScores() {
-        const storageKey = getScoresStorageKey();
-        const saved = localStorage.getItem(storageKey);
-        return saved ? JSON.parse(saved) : null;
+        return sessionScores;
     }
 
-    // Save current stats to localStorage with change timestamps
+    // Save current stats in memory only
     function saveCurrentStats(matchupId, data, changedStats) {
-        const storageKey = getStorageKey(matchupId);
+        if (!sessionStats[matchupId]) {
+            sessionStats[matchupId] = {};
+        }
+        
         const previousData = getPreviousStats(matchupId);
         const now = Date.now();
         
@@ -671,40 +661,54 @@
                 name: player.name,
                 stats: player.stats || {},
                 lastChanged: {},
-                previousFantasyPoints: prevPlayer?.previousFantasyPoints || player.stats?.fantasy_points || 0,
+                previousFantasyPoints: player.stats?.fantasy_points || 0,
                 fantasyPointsDelta: 0,
-                fantasyPointsLastChanged: prevPlayer?.fantasyPointsLastChanged || null
+                fantasyPointsLastChanged: null
             };
             
-            // Track delta and last changed time for fantasy_points
-            if (Math.abs(playerDelta) > 0.01) {
-                statsToSave.team1[player.player_id].fantasyPointsDelta = playerDelta;
-                statsToSave.team1[player.player_id].fantasyPointsLastChanged = now;
-            } else if (prevPlayer?.fantasyPointsLastChanged) {
-                // Preserve previous delta if still within 60-second window
-                const timeSinceChange = now - prevPlayer.fantasyPointsLastChanged;
-                if (timeSinceChange <= 60 * 1000) {
+            // Only track changes if not first load
+            if (!isFirstLoad) {
+                // Track delta and last changed time for fantasy_points
+                if (Math.abs(playerDelta) > 0.01) {
+                    statsToSave.team1[player.player_id].fantasyPointsDelta = playerDelta;
+                    statsToSave.team1[player.player_id].fantasyPointsLastChanged = now;
+                    // Store in global deltas
+                    globalDeltas.players[player.player_id] = {
+                        delta: playerDelta,
+                        timestamp: now,
+                        changedStats: playerChanges
+                    };
+                } else if (shouldShowIndicator(prevPlayer?.fantasyPointsLastChanged)) {
+                    // Keep showing delta if still within 30-second window
                     statsToSave.team1[player.player_id].fantasyPointsDelta = prevPlayer.fantasyPointsDelta || 0;
                     statsToSave.team1[player.player_id].fantasyPointsLastChanged = prevPlayer.fantasyPointsLastChanged;
-                    // Update baseline to current score when preserving delta
                     statsToSave.team1[player.player_id].previousFantasyPoints = player.stats?.fantasy_points || 0;
                 }
-            }
-            
-            // Track when each stat last changed
-            if (player.stats) {
-                Object.keys(player.stats).forEach(stat => {
-                    if (playerChanges.includes(stat)) {
-                        // This stat just changed
-                        statsToSave.team1[player.player_id].lastChanged[stat] = now;
-                    } else if (prevPlayer?.lastChanged?.[stat]) {
-                        // Only preserve if still within 60-second window
-                        const timeSinceChange = now - prevPlayer.lastChanged[stat];
-                        if (timeSinceChange <= 60 * 1000) {
+                
+                // Track when each stat last changed
+                if (player.stats) {
+                    Object.keys(player.stats).forEach(stat => {
+                        if (playerChanges.includes(stat)) {
+                            // This stat just changed
+                            statsToSave.team1[player.player_id].lastChanged[stat] = now;
+                            // Update global deltas with changed stats
+                            if (!globalDeltas.players[player.player_id]) {
+                                globalDeltas.players[player.player_id] = {
+                                    delta: 0,
+                                    timestamp: now,
+                                    changedStats: []
+                                };
+                            }
+                            if (!globalDeltas.players[player.player_id].changedStats.includes(stat)) {
+                                globalDeltas.players[player.player_id].changedStats.push(stat);
+                            }
+                            globalDeltas.players[player.player_id].timestamp = now;
+                        } else if (shouldShowIndicator(prevPlayer?.lastChanged?.[stat])) {
+                            // Keep showing as changed if still within 30-second window
                             statsToSave.team1[player.player_id].lastChanged[stat] = prevPlayer.lastChanged[stat];
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 
@@ -718,62 +722,75 @@
                 name: player.name,
                 stats: player.stats || {},
                 lastChanged: {},
-                previousFantasyPoints: prevPlayer?.previousFantasyPoints || player.stats?.fantasy_points || 0,
+                previousFantasyPoints: player.stats?.fantasy_points || 0,
                 fantasyPointsDelta: 0,
-                fantasyPointsLastChanged: prevPlayer?.fantasyPointsLastChanged || null
+                fantasyPointsLastChanged: null
             };
             
-            // Track delta and last changed time for fantasy_points
-            if (Math.abs(playerDelta) > 0.01) {
-                statsToSave.team2[player.player_id].fantasyPointsDelta = playerDelta;
-                statsToSave.team2[player.player_id].fantasyPointsLastChanged = now;
-            } else if (prevPlayer?.fantasyPointsLastChanged) {
-                // Preserve previous delta if still within 60-second window
-                const timeSinceChange = now - prevPlayer.fantasyPointsLastChanged;
-                if (timeSinceChange <= 60 * 1000) {
+            // Only track changes if not first load
+            if (!isFirstLoad) {
+                // Track delta and last changed time for fantasy_points
+                if (Math.abs(playerDelta) > 0.01) {
+                    statsToSave.team2[player.player_id].fantasyPointsDelta = playerDelta;
+                    statsToSave.team2[player.player_id].fantasyPointsLastChanged = now;
+                    // Store in global deltas
+                    globalDeltas.players[player.player_id] = {
+                        delta: playerDelta,
+                        timestamp: now,
+                        changedStats: playerChanges
+                    };
+                } else if (shouldShowIndicator(prevPlayer?.fantasyPointsLastChanged)) {
+                    // Keep showing delta if still within 30-second window
                     statsToSave.team2[player.player_id].fantasyPointsDelta = prevPlayer.fantasyPointsDelta || 0;
                     statsToSave.team2[player.player_id].fantasyPointsLastChanged = prevPlayer.fantasyPointsLastChanged;
-                    // Update baseline to current score when preserving delta
                     statsToSave.team2[player.player_id].previousFantasyPoints = player.stats?.fantasy_points || 0;
                 }
-            }
-            
-            // Track when each stat last changed
-            if (player.stats) {
-                Object.keys(player.stats).forEach(stat => {
-                    if (playerChanges.includes(stat)) {
-                        // This stat just changed
-                        statsToSave.team2[player.player_id].lastChanged[stat] = now;
-                    } else if (prevPlayer?.lastChanged?.[stat]) {
-                        // Only preserve if still within 60-second window
-                        const timeSinceChange = now - prevPlayer.lastChanged[stat];
-                        if (timeSinceChange <= 60 * 1000) {
+                
+                // Track when each stat last changed
+                if (player.stats) {
+                    Object.keys(player.stats).forEach(stat => {
+                        if (playerChanges.includes(stat)) {
+                            // This stat just changed
+                            statsToSave.team2[player.player_id].lastChanged[stat] = now;
+                            // Update global deltas with changed stats
+                            if (!globalDeltas.players[player.player_id]) {
+                                globalDeltas.players[player.player_id] = {
+                                    delta: 0,
+                                    timestamp: now,
+                                    changedStats: []
+                                };
+                            }
+                            if (!globalDeltas.players[player.player_id].changedStats.includes(stat)) {
+                                globalDeltas.players[player.player_id].changedStats.push(stat);
+                            }
+                            globalDeltas.players[player.player_id].timestamp = now;
+                        } else if (shouldShowIndicator(prevPlayer?.lastChanged?.[stat])) {
+                            // Keep showing as changed if still within 30-second window
                             statsToSave.team2[player.player_id].lastChanged[stat] = prevPlayer.lastChanged[stat];
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 
-        localStorage.setItem(storageKey, JSON.stringify(statsToSave));
+        sessionStats[matchupId] = statsToSave;
     }
 
-    // Get previous stats from localStorage
+    // Get previous stats from memory
     function getPreviousStats(matchupId) {
-        const storageKey = getStorageKey(matchupId);
-        const saved = localStorage.getItem(storageKey);
-        return saved ? JSON.parse(saved) : null;
+        return sessionStats[matchupId] || null;
     }
 
-    // Compare stats and return changed players (with 1-minute window) and deltas
+    // Compare stats and return changed players (with 30-second window) and deltas
     function compareStats(currentData, previousStats) {
-        // If no previous stats exist, return empty (nothing is "changed" on first load)
-        if (!previousStats || !previousStats.timestamp) return { team1: {}, team2: {}, deltas: { team1: {}, team2: {} } };
+        // If first load or no previous stats, return empty (nothing is "changed" on first load)
+        if (isFirstLoad || !previousStats || !previousStats.timestamp) {
+            return { team1: {}, team2: {}, deltas: { team1: {}, team2: {} } };
+        }
 
         const changes = { team1: {}, team2: {} };
         const deltas = { team1: {}, team2: {} };
         const now = Date.now();
-        const ONE_MINUTE = 60 * 1000; // 1 minute in milliseconds
 
         // Compare team1
         currentData.team1.starters.forEach(player => {
@@ -789,13 +806,9 @@
                 if (Math.abs(delta) > 0.01) {
                     // New change detected
                     deltas.team1[player.player_id] = delta;
-                } else if (prevPlayer.fantasyPointsLastChanged) {
-                    // Check if we should preserve the previous delta
-                    const timeSinceChange = now - prevPlayer.fantasyPointsLastChanged;
-                    if (timeSinceChange <= ONE_MINUTE) {
-                        // Still within 60-second window - preserve delta
-                        deltas.team1[player.player_id] = prevPlayer.fantasyPointsDelta || 0;
-                    }
+                } else if (shouldShowIndicator(prevPlayer.fantasyPointsLastChanged)) {
+                    // Still within 30-second window - preserve delta
+                    deltas.team1[player.player_id] = prevPlayer.fantasyPointsDelta || 0;
                 }
                 
                 // Only compare stats that exist in both previous and current
@@ -807,15 +820,11 @@
                     if (previousValue !== undefined && currentValue !== previousValue) {
                         // Value just changed - mark as bold
                         changedStats.push(stat);
-                    } else if (prevPlayer.lastChanged && prevPlayer.lastChanged[stat]) {
-                        // Value hasn't changed - check if it should still be bold
-                        const timeSinceChange = now - prevPlayer.lastChanged[stat];
-                        if (timeSinceChange <= ONE_MINUTE) {
-                            // Still within 1-minute window - keep bold
-                            changedStats.push(stat);
-                        }
-                        // If > 1 minute, don't add to changedStats (unbold)
+                    } else if (shouldShowIndicator(prevPlayer.lastChanged?.[stat])) {
+                        // Still within 30-second window - keep bold
+                        changedStats.push(stat);
                     }
+                    // If > 30 seconds, don't add to changedStats (unbold)
                 });
                 
                 if (changedStats.length > 0) {
@@ -838,13 +847,9 @@
                 if (Math.abs(delta) > 0.01) {
                     // New change detected
                     deltas.team2[player.player_id] = delta;
-                } else if (prevPlayer.fantasyPointsLastChanged) {
-                    // Check if we should preserve the previous delta
-                    const timeSinceChange = now - prevPlayer.fantasyPointsLastChanged;
-                    if (timeSinceChange <= ONE_MINUTE) {
-                        // Still within 60-second window - preserve delta
-                        deltas.team2[player.player_id] = prevPlayer.fantasyPointsDelta || 0;
-                    }
+                } else if (shouldShowIndicator(prevPlayer.fantasyPointsLastChanged)) {
+                    // Still within 30-second window - preserve delta
+                    deltas.team2[player.player_id] = prevPlayer.fantasyPointsDelta || 0;
                 }
                 
                 // Only compare stats that exist in both previous and current
@@ -856,15 +861,11 @@
                     if (previousValue !== undefined && currentValue !== previousValue) {
                         // Value just changed - mark as bold
                         changedStats.push(stat);
-                    } else if (prevPlayer.lastChanged && prevPlayer.lastChanged[stat]) {
-                        // Value hasn't changed - check if it should still be bold
-                        const timeSinceChange = now - prevPlayer.lastChanged[stat];
-                        if (timeSinceChange <= ONE_MINUTE) {
-                            // Still within 1-minute window - keep bold
-                            changedStats.push(stat);
-                        }
-                        // If > 1 minute, don't add to changedStats (unbold)
+                    } else if (shouldShowIndicator(prevPlayer.lastChanged?.[stat])) {
+                        // Still within 30-second window - keep bold
+                        changedStats.push(stat);
                     }
+                    // If > 30 seconds, don't add to changedStats (unbold)
                 });
                 
                 if (changedStats.length > 0) {
@@ -937,6 +938,12 @@
                 currentMatchupData = data.data;
                 displayMatchup(data.data, changedStats);
                 updateLastUpdate();
+                
+                // After first successful load, no longer first load
+                if (isFirstLoad) {
+                    isFirstLoad = false;
+                    console.log('First data load complete - future changes will show indicators');
+                }
             }
         } catch (error) {
             console.error('Error loading matchup:', error);
@@ -1193,8 +1200,11 @@
                 scoringTotalPoints += points;
             }
             
-            // Check if any stats changed for this player
-            const playerChangedStats = changedPlayers[player.player_id] || [];
+            // Check if any stats changed for this player (from global deltas first, then local)
+            const globalPlayerInfo = globalDeltas.players[player.player_id];
+            const globalChangedStats = (globalPlayerInfo && (Date.now() - globalPlayerInfo.timestamp <= 30000)) 
+                ? globalPlayerInfo.changedStats : [];
+            const playerChangedStats = globalChangedStats.length > 0 ? globalChangedStats : (changedPlayers[player.player_id] || []);
             
             // Player row
             const row = tbody.insertRow(-1);
@@ -1222,8 +1232,10 @@
             // Get the stats display before building the HTML
             const statsDisplay = formatPlayerStatsCompact(player.position, player.stats, playerChangedStats);
             
-            // Check if this player has a score delta
-            const delta = deltas[player.player_id] || 0;
+            // Check if this player has a score delta from global deltas
+            const globalPlayerDelta = globalDeltas.players[player.player_id];
+            const isWithin30Seconds = globalPlayerDelta && (Date.now() - globalPlayerDelta.timestamp <= 30000);
+            const delta = (isWithin30Seconds ? globalPlayerDelta.delta : 0) || deltas[player.player_id] || 0;
             const hasScoreDelta = Math.abs(delta) > 0.01;
             
             // Add stat-changed class to points if fantasy_points changed OR if there's a delta
@@ -1847,6 +1859,8 @@
             loadMatchup(currentMatchupId);
         }
     });
+    
+    // Removed visibilitychange listener - deltas should persist when switching tabs
 
     // Clean up on unload
     window.onbeforeunload = function() {

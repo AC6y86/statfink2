@@ -16,7 +16,7 @@ async function runLiveUpdate() {
                 'Content-Type': 'application/json',
                 'X-Internal-Token': 'statfink-internal-cron'
             },
-            timeout: 50000 // 50 second timeout (must be less than 1 minute interval)
+            timeout: 25000 // 25 second timeout (must be less than 30 second interval)
         });
         
         const result = response.data;
@@ -39,8 +39,8 @@ async function runLiveUpdate() {
 // Run immediately on startup
 runLiveUpdate();
 
-// Then run every minute
-setInterval(runLiveUpdate, 60000);
+// Then run every 30 seconds
+setInterval(runLiveUpdate, 30000);
 
 // Keep the process running
 process.on('SIGTERM', () => {
