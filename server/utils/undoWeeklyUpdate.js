@@ -77,8 +77,7 @@ async function undoWeeklyUpdate(db) {
                 team1_points = 0,
                 team2_points = 0,
                 team1_scoring_points = 0,
-                team2_scoring_points = 0,
-                is_complete = 0
+                team2_scoring_points = 0
             WHERE week = ? AND season = ?
         `, [currentWeek, season]);
         results.matchupsReset = matchupsResult.changes;

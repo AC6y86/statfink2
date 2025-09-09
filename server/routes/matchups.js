@@ -155,8 +155,7 @@ router.get('/mock/:week/:season', asyncHandler(async (req, res) => {
             team1_points: isWeek1PreGame ? 0 : (120 + Math.random() * 40).toFixed(2),
             team2_name: `Team ${String.fromCharCode(66 + (i * 2))}`, // B, D, F, etc.
             team2_owner: `Owner ${team2Id}`,
-            team2_points: isWeek1PreGame ? 0 : (120 + Math.random() * 40).toFixed(2),
-            is_complete: isWeek1PreGame ? 0 : 1
+            team2_points: isWeek1PreGame ? 0 : (120 + Math.random() * 40).toFixed(2)
         });
     }
     
@@ -438,8 +437,7 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
             team1_points: parseFloat(team1Points.toFixed(2)),
             team2_name: team2Name,
             team2_owner: `Owner ${team2Id}`, 
-            team2_points: parseFloat(team2Points.toFixed(2)),
-            is_complete: isWeek1PreGame ? 0 : 1
+            team2_points: parseFloat(team2Points.toFixed(2))
         },
         team1: {
             starters: team1Starters

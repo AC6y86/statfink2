@@ -24,10 +24,9 @@ class StandingsService {
                     team1_points,
                     team2_points,
                     team1_scoring_points,
-                    team2_scoring_points,
-                    is_complete
+                    team2_scoring_points
                 FROM matchups
-                WHERE week = ? AND season = ? AND is_complete = 1
+                WHERE week = ? AND season = ?
             `, [week, season]);
             
             // Calculate standings for each team
@@ -148,7 +147,7 @@ class StandingsService {
             m.team1_id === teamId || m.team2_id === teamId
         );
         
-        if (!matchup || !matchup.is_complete) {
+        if (!matchup) {
             return { win: 0, loss: 0, tie: 0 };
         }
         

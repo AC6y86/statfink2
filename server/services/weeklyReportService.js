@@ -269,7 +269,6 @@ class WeeklyReportService {
                     m.team2_points,
                     m.team1_scoring_points,
                     m.team2_scoring_points,
-                    m.is_complete,
                     t1.team_name as team1_name,
                     t2.team_name as team2_name
                 FROM matchups m
@@ -296,7 +295,7 @@ class WeeklyReportService {
                 winner: m.team1_scoring_points > m.team2_scoring_points ? m.team1_name : 
                         m.team2_scoring_points > m.team1_scoring_points ? m.team2_name : 
                         'Tie',
-                is_complete: m.is_complete === 1
+                is_complete: true
             }));
             
         } catch (error) {

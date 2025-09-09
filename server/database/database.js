@@ -480,10 +480,9 @@ class DatabaseManager {
     async updateMatchupScore(matchupId, team1Points, team2Points) {
         return this.run(`
             UPDATE matchups 
-            SET team1_points = ?, team2_points = ?, 
-                is_complete = CASE WHEN ? > 0 OR ? > 0 THEN 1 ELSE 0 END
+            SET team1_points = ?, team2_points = ?
             WHERE matchup_id = ?
-        `, [team1Points, team2Points, team1Points, team2Points, matchupId]);
+        `, [team1Points, team2Points, matchupId]);
     }
 
     // League settings
