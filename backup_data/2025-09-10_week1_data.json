@@ -1,0 +1,3450 @@
+{
+  "week": 1,
+  "season": 2025,
+  "generated_at": "2025-09-10T12:00:09.026Z",
+  "teams": [
+    {
+      "team_id": 1,
+      "team_name": "Chris's Team",
+      "owner": "Chris",
+      "total_points": 102,
+      "scoring_points": 97,
+      "active_players": 19,
+      "ir_players": 0,
+      "roster": [
+        {
+          "player_id": "3918298",
+          "player_name": "Josh Allen",
+          "position": "QB",
+          "team": "BUF",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "QB",
+          "fantasy_points": 38,
+          "stats": {
+            "passing_yards": 394,
+            "passing_tds": 2,
+            "rushing_yards": 30,
+            "rushing_tds": 2
+          }
+        },
+        {
+          "player_id": "4047365",
+          "player_name": "Josh Jacobs",
+          "position": "RB",
+          "team": "GB",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB1",
+          "fantasy_points": 11,
+          "stats": {
+            "rushing_yards": 66,
+            "rushing_tds": 1,
+            "receiving_yards": 4,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "4429160",
+          "player_name": "De'Von Achane",
+          "position": "RB",
+          "team": "MIA",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB2",
+          "fantasy_points": 11,
+          "stats": {
+            "rushing_yards": 55,
+            "receiving_yards": 20,
+            "receiving_tds": 1,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "4686361",
+          "player_name": "Cam Little",
+          "position": "K",
+          "team": "JAX",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "K",
+          "fantasy_points": 9,
+          "stats": {
+            "field_goals_made": 4,
+            "field_goals_attempted": 4,
+            "extra_points_made": 2
+          }
+        },
+        {
+          "player_id": "4431299",
+          "player_name": "Rome Odunze",
+          "position": "WR",
+          "team": "CHI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE1",
+          "fantasy_points": 8,
+          "stats": {
+            "receiving_yards": 37,
+            "receiving_tds": 1,
+            "receptions": 6
+          }
+        },
+        {
+          "player_id": "4572680",
+          "player_name": "Tucker Kraft",
+          "position": "TE",
+          "team": "GB",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE2",
+          "fantasy_points": 8,
+          "stats": {
+            "receiving_yards": 16,
+            "receiving_tds": 1,
+            "receptions": 2,
+            "rushing_yards": 3
+          }
+        },
+        {
+          "player_id": "2577417",
+          "player_name": "Dak Prescott",
+          "position": "QB",
+          "team": "DAL",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "BONUS",
+          "fantasy_points": 6,
+          "stats": {
+            "passing_yards": 188,
+            "rushing_yards": 3
+          }
+        },
+        {
+          "player_id": "3953687",
+          "player_name": "Brandon Aubrey",
+          "position": "K",
+          "team": "DAL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 5,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 2,
+            "extra_points_made": 2
+          }
+        },
+        {
+          "player_id": "3916148",
+          "player_name": "Tony Pollard",
+          "position": "RB",
+          "team": "TEN",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB3",
+          "fantasy_points": 3,
+          "stats": {
+            "rushing_yards": 60,
+            "receiving_yards": 29,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "4568490",
+          "player_name": "RJ Harvey",
+          "position": "RB",
+          "team": "DEN",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB4",
+          "fantasy_points": 3,
+          "stats": {
+            "rushing_yards": 70,
+            "receiving_yards": -1,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "4432710",
+          "player_name": "TreVeyon Henderson",
+          "position": "RB",
+          "team": "NE",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 27,
+            "receiving_yards": 24,
+            "receptions": 6
+          }
+        },
+        {
+          "player_id": "3912547",
+          "player_name": "Sam Darnold",
+          "position": "QB",
+          "team": "SEA",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "passing_yards": 150,
+            "rushing_yards": 14
+          }
+        },
+        {
+          "player_id": "4426388",
+          "player_name": "Jameson Williams",
+          "position": "WR",
+          "team": "DET",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 23,
+            "receptions": 4,
+            "rushing_yards": 3
+          }
+        },
+        {
+          "player_id": "4711533",
+          "player_name": "Ollie Gordon II",
+          "position": "RB",
+          "team": "MIA",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 4,
+            "receiving_yards": -1,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "3123076",
+          "player_name": "David Njoku",
+          "position": "TE",
+          "team": "CLE",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 37,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "DEF_LAR",
+          "player_name": "Rams",
+          "position": "DST",
+          "team": "LAR",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "DEF_TB",
+          "player_name": "Buccaneers",
+          "position": "DST",
+          "team": "TB",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "4429205",
+          "player_name": "Jordan Addison",
+          "position": "WR",
+          "team": "MIN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "4428331",
+          "player_name": "Rashee Rice",
+          "position": "WR",
+          "team": "KC",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "team_id": 2,
+      "team_name": "Mitch's Team",
+      "owner": "Mitch",
+      "total_points": 128.5,
+      "scoring_points": 105,
+      "active_players": 19,
+      "ir_players": 0,
+      "roster": [
+        {
+          "player_id": "3916387",
+          "player_name": "Lamar Jackson",
+          "position": "QB",
+          "team": "BAL",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "QB",
+          "fantasy_points": 27,
+          "stats": {
+            "passing_yards": 209,
+            "passing_tds": 2,
+            "rushing_yards": 70,
+            "rushing_tds": 1
+          }
+        },
+        {
+          "player_id": "4360423",
+          "player_name": "Michael Penix Jr.",
+          "position": "QB",
+          "team": "ATL",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "BONUS",
+          "fantasy_points": 22,
+          "stats": {
+            "passing_yards": 298,
+            "passing_tds": 1,
+            "rushing_yards": 21,
+            "rushing_tds": 1
+          }
+        },
+        {
+          "player_id": "4361741",
+          "player_name": "Brock Purdy",
+          "position": "QB",
+          "team": "SF",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 19,
+          "stats": {
+            "passing_yards": 277,
+            "passing_tds": 2,
+            "interceptions": 2,
+            "rushing_yards": 17
+          }
+        },
+        {
+          "player_id": "4241416",
+          "player_name": "Chuba Hubbard",
+          "position": "RB",
+          "team": "CAR",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB1",
+          "fantasy_points": 11,
+          "stats": {
+            "rushing_yards": 57,
+            "receiving_yards": 32,
+            "receiving_tds": 1,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "15818",
+          "player_name": "Keenan Allen",
+          "position": "WR",
+          "team": "LAC",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE1",
+          "fantasy_points": 11,
+          "stats": {
+            "receiving_yards": 68,
+            "receiving_tds": 1,
+            "receptions": 7
+          }
+        },
+        {
+          "player_id": "4426515",
+          "player_name": "Puka Nacua",
+          "position": "WR",
+          "team": "LAR",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE2",
+          "fantasy_points": 9,
+          "stats": {
+            "receiving_yards": 130,
+            "receptions": 10,
+            "rushing_yards": 1
+          }
+        },
+        {
+          "player_id": "3040151",
+          "player_name": "George Kittle",
+          "position": "TE",
+          "team": "SF",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE3",
+          "fantasy_points": 8,
+          "stats": {
+            "receiving_yards": 25,
+            "receiving_tds": 1,
+            "receptions": 4
+          }
+        },
+        {
+          "player_id": "DEF_CHI",
+          "player_name": "Bears",
+          "position": "DST",
+          "team": "CHI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "DST_YA",
+          "fantasy_points": 8,
+          "stats": {}
+        },
+        {
+          "player_id": "4697745",
+          "player_name": "Tyler Loop",
+          "position": "K",
+          "team": "BAL",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "K",
+          "fantasy_points": 6,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 2,
+            "extra_points_made": 4
+          }
+        },
+        {
+          "player_id": "4689936",
+          "player_name": "Jake Bates",
+          "position": "K",
+          "team": "DET",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 4.5,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 2,
+            "extra_points_made": 1
+          }
+        },
+        {
+          "player_id": "2976212",
+          "player_name": "Stefon Diggs",
+          "position": "WR",
+          "team": "NE",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE4",
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 57,
+            "receptions": 6
+          }
+        },
+        {
+          "player_id": "3121422",
+          "player_name": "Terry McLaurin",
+          "position": "WR",
+          "team": "Commanders",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 27,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4241474",
+          "player_name": "Brian Robinson Jr.",
+          "position": "RB",
+          "team": "SF",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 33,
+            "receiving_yards": 4,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "4696981",
+          "player_name": "Cam Skattebo",
+          "position": "RB",
+          "team": "NYG",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": -3,
+            "receiving_yards": 12,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "2977187",
+          "player_name": "Cooper Kupp",
+          "position": "WR",
+          "team": "SEA",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 15,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "3059915",
+          "player_name": "Kareem Hunt",
+          "position": "RB",
+          "team": "KC",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 16,
+            "receiving_yards": 10,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4430034",
+          "player_name": "Xavier Legette",
+          "position": "WR",
+          "team": "CAR",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 10,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "3116389",
+          "player_name": "Samaje Perine",
+          "position": "RB",
+          "team": "CIN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 6,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "DEF_MIN",
+          "player_name": "Vikings",
+          "position": "DST",
+          "team": "MIN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "team_id": 3,
+      "team_name": "Dan's Team",
+      "owner": "Dan",
+      "total_points": 122.5,
+      "scoring_points": 98.5,
+      "active_players": 19,
+      "ir_players": 0,
+      "roster": [
+        {
+          "player_id": "8439",
+          "player_name": "Aaron Rodgers",
+          "position": "QB",
+          "team": "PIT",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "QB",
+          "fantasy_points": 26,
+          "stats": {
+            "passing_yards": 244,
+            "passing_tds": 4,
+            "rushing_yards": -1
+          }
+        },
+        {
+          "player_id": "4040715",
+          "player_name": "Jalen Hurts",
+          "position": "QB",
+          "team": "PHI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "BONUS",
+          "fantasy_points": 19,
+          "stats": {
+            "passing_yards": 152,
+            "rushing_yards": 62,
+            "rushing_tds": 2
+          }
+        },
+        {
+          "player_id": "4429615",
+          "player_name": "Zay Flowers",
+          "position": "WR",
+          "team": "BAL",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE1",
+          "fantasy_points": 17,
+          "stats": {
+            "receiving_yards": 143,
+            "receiving_tds": 1,
+            "receptions": 7,
+            "rushing_yards": 8
+          }
+        },
+        {
+          "player_id": "15864",
+          "player_name": "Geno Smith",
+          "position": "QB",
+          "team": "LV",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 17,
+          "stats": {
+            "passing_yards": 362,
+            "passing_tds": 1,
+            "interceptions": 1,
+            "rushing_yards": 10
+          }
+        },
+        {
+          "player_id": "3126486",
+          "player_name": "Deebo Samuel",
+          "position": "WR",
+          "team": "WSH",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE2",
+          "fantasy_points": 14,
+          "stats": {
+            "receiving_yards": 77,
+            "receptions": 7,
+            "rushing_yards": 19,
+            "rushing_tds": 1
+          }
+        },
+        {
+          "player_id": "4430737",
+          "player_name": "Kyren Williams",
+          "position": "RB",
+          "team": "LAR",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB1",
+          "fantasy_points": 11,
+          "stats": {
+            "rushing_yards": 66,
+            "rushing_tds": 1,
+            "receiving_yards": 3,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "16339",
+          "player_name": "Brandon McManus",
+          "position": "K",
+          "team": "GB",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "K",
+          "fantasy_points": 5.5,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 2,
+            "extra_points_made": 3
+          }
+        },
+        {
+          "player_id": "3049899",
+          "player_name": "Younghoe Koo",
+          "position": "K",
+          "team": "ATL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 5,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 3,
+            "extra_points_made": 2
+          }
+        },
+        {
+          "player_id": "16800",
+          "player_name": "Davante Adams",
+          "position": "WR",
+          "team": "LAR",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE3",
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 51,
+            "receptions": 4
+          }
+        },
+        {
+          "player_id": "4373678",
+          "player_name": "Khalil Shakir",
+          "position": "WR",
+          "team": "BUF",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE4",
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 64,
+            "receptions": 6
+          }
+        },
+        {
+          "player_id": "16460",
+          "player_name": "Adam Thielen",
+          "position": "WR",
+          "team": "MIN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 2,
+          "stats": {
+            "two_point_conversions_rec": 1
+          }
+        },
+        {
+          "player_id": "4567048",
+          "player_name": "Kenneth Walker III",
+          "position": "RB",
+          "team": "SEA",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 20,
+            "receiving_yards": 4,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "3068267",
+          "player_name": "Austin Ekeler",
+          "position": "RB",
+          "team": "Commanders",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 26,
+            "receiving_yards": 31,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "4429096",
+          "player_name": "Blake Corum",
+          "position": "RB",
+          "team": "LAR",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 2,
+            "receiving_yards": 14,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "4686472",
+          "player_name": "Marvin Mims Jr.",
+          "position": "WR",
+          "team": "DEN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 12,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "DEF_BAL",
+          "player_name": "Ravens",
+          "position": "DST",
+          "team": "BAL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "DEF_CLE",
+          "player_name": "Browns",
+          "position": "DST",
+          "team": "CLE",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "2576414",
+          "player_name": "Raheem Mostert",
+          "position": "RB",
+          "team": "LV",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "16760",
+          "player_name": "Jimmy Garoppolo",
+          "position": "QB",
+          "team": "LAR",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "team_id": 4,
+      "team_name": "Pete's Team",
+      "owner": "Pete",
+      "total_points": 92,
+      "scoring_points": 78,
+      "active_players": 19,
+      "ir_players": 0,
+      "roster": [
+        {
+          "player_id": "3046779",
+          "player_name": "Jared Goff",
+          "position": "QB",
+          "team": "DET",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "QB",
+          "fantasy_points": 11,
+          "stats": {
+            "passing_yards": 225,
+            "passing_tds": 1,
+            "interceptions": 1,
+            "rushing_yards": -1
+          }
+        },
+        {
+          "player_id": "3128429",
+          "player_name": "Courtland Sutton",
+          "position": "WR",
+          "team": "DEN",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE1",
+          "fantasy_points": 11,
+          "stats": {
+            "receiving_yards": 61,
+            "receiving_tds": 1,
+            "receptions": 6
+          }
+        },
+        {
+          "player_id": "12483",
+          "player_name": "Matthew Stafford",
+          "position": "QB",
+          "team": "LAR",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "BONUS",
+          "fantasy_points": 11,
+          "stats": {
+            "passing_yards": 245,
+            "passing_tds": 1,
+            "rushing_yards": -2
+          }
+        },
+        {
+          "player_id": "4428209",
+          "player_name": "Ricky Pearsall",
+          "position": "WR",
+          "team": "SF",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE2",
+          "fantasy_points": 9,
+          "stats": {
+            "receiving_yards": 108,
+            "receptions": 4
+          }
+        },
+        {
+          "player_id": "4596448",
+          "player_name": "Bucky Irving",
+          "position": "RB",
+          "team": "TB",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB1",
+          "fantasy_points": 8,
+          "stats": {
+            "rushing_yards": 37,
+            "receiving_yards": 8,
+            "receiving_tds": 1,
+            "receptions": 4
+          }
+        },
+        {
+          "player_id": "15847",
+          "player_name": "Travis Kelce",
+          "position": "TE",
+          "team": "KC",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE3",
+          "fantasy_points": 8,
+          "stats": {
+            "receiving_yards": 47,
+            "receiving_tds": 1,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "15835",
+          "player_name": "Zach Ertz",
+          "position": "TE",
+          "team": "WSH",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE4",
+          "fantasy_points": 8,
+          "stats": {
+            "receiving_yards": 26,
+            "receiving_tds": 1,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "4430027",
+          "player_name": "Sam LaPorta",
+          "position": "TE",
+          "team": "DET",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 6,
+          "stats": {
+            "receiving_yards": 79,
+            "receptions": 6
+          }
+        },
+        {
+          "player_id": "3915511",
+          "player_name": "Joe Burrow",
+          "position": "QB",
+          "team": "CIN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 5,
+          "stats": {
+            "passing_yards": 113,
+            "passing_tds": 1,
+            "rushing_yards": 3
+          }
+        },
+        {
+          "player_id": "DEF_DEN",
+          "player_name": "Broncos",
+          "position": "DST",
+          "team": "DEN",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "DST_YA",
+          "fantasy_points": 5,
+          "stats": {}
+        },
+        {
+          "player_id": "12460",
+          "player_name": "Graham Gano",
+          "position": "K",
+          "team": "NYG",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "K",
+          "fantasy_points": 4,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 2
+          }
+        },
+        {
+          "player_id": "4259545",
+          "player_name": "D'Andre Swift",
+          "position": "RB",
+          "team": "CHI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB2",
+          "fantasy_points": 3,
+          "stats": {
+            "rushing_yards": 53,
+            "receiving_yards": 12,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "4360234",
+          "player_name": "Evan McPherson",
+          "position": "K",
+          "team": "CIN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 3,
+          "stats": {
+            "field_goals_made": 1,
+            "field_goals_attempted": 1,
+            "extra_points_made": 2
+          }
+        },
+        {
+          "player_id": "4258173",
+          "player_name": "Nico Collins",
+          "position": "WR",
+          "team": "HOU",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 25,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "4429501",
+          "player_name": "Ray Davis",
+          "position": "RB",
+          "team": "BUF",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 2,
+            "receiving_yards": -1,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "4429059",
+          "player_name": "Woody Marks",
+          "position": "RB",
+          "team": "HOU",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 3
+          }
+        },
+        {
+          "player_id": "4372561",
+          "player_name": "Isaac Guerendo",
+          "position": "RB",
+          "team": "SF",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "DEF_LAC",
+          "player_name": "Chargers",
+          "position": "DST",
+          "team": "LAC",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "4360438",
+          "player_name": "Brandon Aiyuk",
+          "position": "WR",
+          "team": "SF",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "team_id": 5,
+      "team_name": "Joe's Team",
+      "owner": "Joe",
+      "total_points": 103,
+      "scoring_points": 95.5,
+      "active_players": 19,
+      "ir_players": 0,
+      "roster": [
+        {
+          "player_id": "4362887",
+          "player_name": "Justin Fields",
+          "position": "QB",
+          "team": "NYJ",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "QB",
+          "fantasy_points": 27,
+          "stats": {
+            "passing_yards": 218,
+            "passing_tds": 1,
+            "rushing_yards": 48,
+            "rushing_tds": 2
+          }
+        },
+        {
+          "player_id": "4433970",
+          "player_name": "J.J. McCarthy",
+          "position": "QB",
+          "team": "MIN",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "BONUS",
+          "fantasy_points": 20,
+          "stats": {
+            "passing_yards": 143,
+            "passing_tds": 2,
+            "interceptions": 1,
+            "rushing_yards": 25,
+            "rushing_tds": 1,
+            "two_point_conversions_pass": 1
+          }
+        },
+        {
+          "player_id": "3929630",
+          "player_name": "Saquon Barkley",
+          "position": "RB",
+          "team": "PHI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB1",
+          "fantasy_points": 11,
+          "stats": {
+            "rushing_yards": 60,
+            "rushing_tds": 1,
+            "receiving_yards": 24,
+            "receptions": 4
+          }
+        },
+        {
+          "player_id": "4379399",
+          "player_name": "James Cook",
+          "position": "RB",
+          "team": "BUF",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB2",
+          "fantasy_points": 11,
+          "stats": {
+            "rushing_yards": 44,
+            "rushing_tds": 1,
+            "receiving_yards": 58,
+            "receptions": 5
+          }
+        },
+        {
+          "player_id": "4569987",
+          "player_name": "Jaylen Warren",
+          "position": "RB",
+          "team": "PIT",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB3",
+          "fantasy_points": 8,
+          "stats": {
+            "rushing_yards": 37,
+            "receiving_yards": 22,
+            "receiving_tds": 1,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4362249",
+          "player_name": "Jayden Reed",
+          "position": "WR",
+          "team": "GB",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE1",
+          "fantasy_points": 8,
+          "stats": {
+            "receiving_yards": 45,
+            "receiving_tds": 1,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "4567104",
+          "player_name": "Will Reichard",
+          "position": "K",
+          "team": "MIN",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "K",
+          "fantasy_points": 4.5,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 2,
+            "extra_points_made": 1
+          }
+        },
+        {
+          "player_id": "4259619",
+          "player_name": "Blake Grupe",
+          "position": "K",
+          "team": "NO",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 4.5,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 3,
+            "extra_points_made": 1
+          }
+        },
+        {
+          "player_id": "4242335",
+          "player_name": "Jonathan Taylor",
+          "position": "RB",
+          "team": "IND",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB4",
+          "fantasy_points": 3,
+          "stats": {
+            "rushing_yards": 71,
+            "receiving_yards": 27,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "4612826",
+          "player_name": "Ladd McConkey",
+          "position": "WR",
+          "team": "LAC",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE2",
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 74,
+            "receptions": 6
+          }
+        },
+        {
+          "player_id": "4360569",
+          "player_name": "Jordan Mason",
+          "position": "RB",
+          "team": "MIN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 3,
+          "stats": {
+            "rushing_yards": 68,
+            "receiving_yards": 7,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "4683062",
+          "player_name": "Xavier Worthy",
+          "position": "WR",
+          "team": "KC",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "4426354",
+          "player_name": "George Pickens",
+          "position": "WR",
+          "team": "DAL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 30,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "4373626",
+          "player_name": "Tyler Allgeier",
+          "position": "RB",
+          "team": "ATL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 24
+          }
+        },
+        {
+          "player_id": "4038815",
+          "player_name": "Rico Dowdle",
+          "position": "RB",
+          "team": "CAR",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 12,
+            "receiving_yards": 4,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "DEF_PHI",
+          "player_name": "Eagles",
+          "position": "DST",
+          "team": "PHI",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "DEF_NE",
+          "player_name": "Patriots",
+          "position": "DST",
+          "team": "NE",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "3895856",
+          "player_name": "Christian Kirk",
+          "position": "WR",
+          "team": "HOU",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "4429084",
+          "player_name": "Anthony Richardson Sr.",
+          "position": "QB",
+          "team": "IND",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "team_id": 6,
+      "team_name": "Aaron's Team",
+      "owner": "Aaron",
+      "total_points": 96,
+      "scoring_points": 93,
+      "active_players": 19,
+      "ir_players": 0,
+      "roster": [
+        {
+          "player_id": "4361579",
+          "player_name": "Javonte Williams",
+          "position": "RB",
+          "team": "DAL",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB1",
+          "fantasy_points": 19,
+          "stats": {
+            "rushing_yards": 54,
+            "rushing_tds": 2,
+            "receiving_yards": 10,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4426348",
+          "player_name": "Jayden Daniels",
+          "position": "QB",
+          "team": "Commanders",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "QB",
+          "fantasy_points": 14,
+          "stats": {
+            "passing_yards": 233,
+            "passing_tds": 1,
+            "rushing_yards": 68
+          }
+        },
+        {
+          "player_id": "4432708",
+          "player_name": "Marvin Harrison Jr.",
+          "position": "WR",
+          "team": "ARI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE1",
+          "fantasy_points": 11,
+          "stats": {
+            "receiving_yards": 71,
+            "receiving_tds": 1,
+            "receptions": 5
+          }
+        },
+        {
+          "player_id": "3917315",
+          "player_name": "Kyler Murray",
+          "position": "QB",
+          "team": "ARI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "BONUS",
+          "fantasy_points": 10,
+          "stats": {
+            "passing_yards": 163,
+            "passing_tds": 2,
+            "rushing_yards": 38
+          }
+        },
+        {
+          "player_id": "4432773",
+          "player_name": "Brian Thomas Jr.",
+          "position": "WR",
+          "team": "JAX",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE2",
+          "fantasy_points": 8,
+          "stats": {
+            "receiving_yards": 11,
+            "receptions": 1,
+            "rushing_yards": 9,
+            "rushing_tds": 1
+          }
+        },
+        {
+          "player_id": "3045147",
+          "player_name": "James Conner",
+          "position": "RB",
+          "team": "ARI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB2",
+          "fantasy_points": 8,
+          "stats": {
+            "rushing_yards": 39,
+            "receiving_yards": 5,
+            "receiving_tds": 1,
+            "receptions": 4
+          }
+        },
+        {
+          "player_id": "4426385",
+          "player_name": "Zach Charbonnet",
+          "position": "RB",
+          "team": "SEA",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB3",
+          "fantasy_points": 8,
+          "stats": {
+            "rushing_yards": 47,
+            "rushing_tds": 1
+          }
+        },
+        {
+          "player_id": "3916433",
+          "player_name": "Jakobi Meyers",
+          "position": "WR",
+          "team": "LV",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE3",
+          "fantasy_points": 6,
+          "stats": {
+            "receiving_yards": 97,
+            "receptions": 8
+          }
+        },
+        {
+          "player_id": "2971573",
+          "player_name": "Ka'imi Fairbairn",
+          "position": "K",
+          "team": "HOU",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "K",
+          "fantasy_points": 6,
+          "stats": {
+            "field_goals_made": 3,
+            "field_goals_attempted": 3
+          }
+        },
+        {
+          "player_id": "4685472",
+          "player_name": "Tetairoa McMillan",
+          "position": "WR",
+          "team": "CAR",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE4",
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 68,
+            "receptions": 5
+          }
+        },
+        {
+          "player_id": "3150744",
+          "player_name": "Chase McLaughlin",
+          "position": "K",
+          "team": "TB",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 3,
+          "stats": {
+            "field_goals_made": 1,
+            "field_goals_attempted": 2,
+            "extra_points_made": 2
+          }
+        },
+        {
+          "player_id": "4429013",
+          "player_name": "Tank Bigsby",
+          "position": "RB",
+          "team": "JAX",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 12
+          }
+        },
+        {
+          "player_id": "3886598",
+          "player_name": "Jauan Jennings",
+          "position": "WR",
+          "team": "SF",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 16,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "3116365",
+          "player_name": "Mark Andrews",
+          "position": "TE",
+          "team": "BAL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 5,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "4688813",
+          "player_name": "Josh Downs",
+          "position": "WR",
+          "team": "IND",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 12,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4431545",
+          "player_name": "Will Shipley",
+          "position": "RB",
+          "team": "PHI",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 26
+          }
+        },
+        {
+          "player_id": "DEF_ARI",
+          "player_name": "Cardinals",
+          "position": "DST",
+          "team": "ARI",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "DEF_DAL",
+          "player_name": "Cowboys",
+          "position": "DST",
+          "team": "DAL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "4426386",
+          "player_name": "Roschon Johnson",
+          "position": "RB",
+          "team": "CHI",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "team_id": 7,
+      "team_name": "Cal's Team",
+      "owner": "Cal",
+      "total_points": 139.5,
+      "scoring_points": 129.5,
+      "active_players": 19,
+      "ir_players": 0,
+      "roster": [
+        {
+          "player_id": "4431611",
+          "player_name": "Caleb Williams",
+          "position": "QB",
+          "team": "CHI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "QB",
+          "fantasy_points": 22,
+          "stats": {
+            "passing_yards": 210,
+            "passing_tds": 1,
+            "rushing_yards": 58,
+            "rushing_tds": 1
+          }
+        },
+        {
+          "player_id": "4567750",
+          "player_name": "Emeka Egbuka",
+          "position": "WR",
+          "team": "TB",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE1",
+          "fantasy_points": 19,
+          "stats": {
+            "receiving_yards": 67,
+            "receiving_tds": 2,
+            "receptions": 4,
+            "rushing_yards": 9
+          }
+        },
+        {
+          "player_id": "4430807",
+          "player_name": "Bijan Robinson",
+          "position": "RB",
+          "team": "ATL",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB1",
+          "fantasy_points": 17,
+          "stats": {
+            "rushing_yards": 24,
+            "receiving_yards": 100,
+            "receiving_tds": 1,
+            "receptions": 6
+          }
+        },
+        {
+          "player_id": "4635008",
+          "player_name": "Keon Coleman",
+          "position": "WR",
+          "team": "BUF",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE2",
+          "fantasy_points": 17,
+          "stats": {
+            "receiving_yards": 112,
+            "receiving_tds": 1,
+            "receptions": 8
+          }
+        },
+        {
+          "player_id": "4360310",
+          "player_name": "Trevor Lawrence",
+          "position": "QB",
+          "team": "JAX",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "BONUS",
+          "fantasy_points": 11,
+          "stats": {
+            "passing_yards": 178,
+            "passing_tds": 1,
+            "interceptions": 1,
+            "rushing_yards": 12
+          }
+        },
+        {
+          "player_id": "4430878",
+          "player_name": "Jaxon Smith-Njigba",
+          "position": "WR",
+          "team": "SEA",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE3",
+          "fantasy_points": 9,
+          "stats": {
+            "receiving_yards": 124,
+            "receptions": 9
+          }
+        },
+        {
+          "player_id": "4890973",
+          "player_name": "Ashton Jeanty",
+          "position": "RB",
+          "team": "LV",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB2",
+          "fantasy_points": 8,
+          "stats": {
+            "rushing_yards": 38,
+            "rushing_tds": 1,
+            "receiving_yards": 2,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4685247",
+          "player_name": "Braelon Allen",
+          "position": "RB",
+          "team": "NYJ",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB3",
+          "fantasy_points": 8,
+          "stats": {
+            "rushing_yards": 9,
+            "rushing_tds": 1
+          }
+        },
+        {
+          "player_id": "4431459",
+          "player_name": "Tyler Warren",
+          "position": "TE",
+          "team": "IND",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE4",
+          "fantasy_points": 6,
+          "stats": {
+            "receiving_yards": 76,
+            "receptions": 7,
+            "rushing_yards": 3
+          }
+        },
+        {
+          "player_id": "DEF_WAS",
+          "player_name": "Commanders",
+          "position": "DST",
+          "team": "WAS",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "DST_YA",
+          "fantasy_points": 5,
+          "stats": {}
+        },
+        {
+          "player_id": "2473037",
+          "player_name": "Jason Myers",
+          "position": "K",
+          "team": "SEA",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "K",
+          "fantasy_points": 4.5,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 2,
+            "extra_points_made": 1
+          }
+        },
+        {
+          "player_id": "4595348",
+          "player_name": "Malik Nabers",
+          "position": "WR",
+          "team": "NYG",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 71,
+            "receptions": 5
+          }
+        },
+        {
+          "player_id": "4426502",
+          "player_name": "Drake London",
+          "position": "WR",
+          "team": "ATL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 55,
+            "receptions": 8
+          }
+        },
+        {
+          "player_id": "5081397",
+          "player_name": "Dylan Sampson",
+          "position": "RB",
+          "team": "CLE",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB4",
+          "fantasy_points": 3,
+          "stats": {
+            "rushing_yards": 29,
+            "receiving_yards": 64,
+            "receptions": 8
+          }
+        },
+        {
+          "player_id": "4360248",
+          "player_name": "Kyle Pitts Sr.",
+          "position": "TE",
+          "team": "ATL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 59,
+            "receptions": 7
+          }
+        },
+        {
+          "player_id": "4566192",
+          "player_name": "Joshua Karty",
+          "position": "K",
+          "team": "LAR",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 1,
+          "stats": {
+            "extra_points_made": 2
+          }
+        },
+        {
+          "player_id": "4360516",
+          "player_name": "Tyrone Tracy Jr.",
+          "position": "RB",
+          "team": "NYG",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 24,
+            "receiving_yards": 11,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "DEF_PIT",
+          "player_name": "Steelers",
+          "position": "DST",
+          "team": "PIT",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "4362619",
+          "player_name": "Chris Rodriguez Jr.",
+          "position": "RB",
+          "team": "WSH",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "team_id": 8,
+      "team_name": "Bruce's Team",
+      "owner": "Bruce",
+      "total_points": 110.5,
+      "scoring_points": 96,
+      "active_players": 19,
+      "ir_players": 0,
+      "roster": [
+        {
+          "player_id": "3917792",
+          "player_name": "Daniel Jones",
+          "position": "QB",
+          "team": "IND",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "QB",
+          "fantasy_points": 30,
+          "stats": {
+            "passing_yards": 272,
+            "passing_tds": 1,
+            "rushing_yards": 26,
+            "rushing_tds": 2
+          }
+        },
+        {
+          "player_id": "4431452",
+          "player_name": "Drake Maye",
+          "position": "QB",
+          "team": "NE",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "BONUS",
+          "fantasy_points": 14,
+          "stats": {
+            "passing_yards": 287,
+            "passing_tds": 1,
+            "interceptions": 1,
+            "rushing_yards": 11
+          }
+        },
+        {
+          "player_id": "4426338",
+          "player_name": "Bo Nix",
+          "position": "QB",
+          "team": "DEN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 11,
+          "stats": {
+            "passing_yards": 176,
+            "passing_tds": 1,
+            "interceptions": 2,
+            "rushing_yards": 18
+          }
+        },
+        {
+          "player_id": "4241985",
+          "player_name": "J.K. Dobbins",
+          "position": "RB",
+          "team": "DEN",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB1",
+          "fantasy_points": 11,
+          "stats": {
+            "rushing_yards": 63,
+            "rushing_tds": 1,
+            "receiving_yards": 5,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4432665",
+          "player_name": "Brock Bowers",
+          "position": "TE",
+          "team": "LV",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE1",
+          "fantasy_points": 9,
+          "stats": {
+            "receiving_yards": 103,
+            "receptions": 5
+          }
+        },
+        {
+          "player_id": "4362238",
+          "player_name": "Chase Brown",
+          "position": "RB",
+          "team": "CIN",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB2",
+          "fantasy_points": 8,
+          "stats": {
+            "rushing_yards": 43,
+            "rushing_tds": 1,
+            "receiving_yards": 8,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4047650",
+          "player_name": "DK Metcalf",
+          "position": "WR",
+          "team": "PIT",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE2",
+          "fantasy_points": 6,
+          "stats": {
+            "receiving_yards": 83,
+            "receptions": 4
+          }
+        },
+        {
+          "player_id": "4241372",
+          "player_name": "Marquise Brown",
+          "position": "WR",
+          "team": "Chiefs",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE3",
+          "fantasy_points": 6,
+          "stats": {
+            "receiving_yards": 99,
+            "receptions": 10
+          }
+        },
+        {
+          "player_id": "17372",
+          "player_name": "Chris Boswell",
+          "position": "K",
+          "team": "PIT",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "K",
+          "fantasy_points": 6,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 2,
+            "extra_points_made": 4
+          }
+        },
+        {
+          "player_id": "17427",
+          "player_name": "Cairo Santos",
+          "position": "K",
+          "team": "CHI",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 3.5,
+          "stats": {
+            "field_goals_made": 1,
+            "field_goals_attempted": 2,
+            "extra_points_made": 3
+          }
+        },
+        {
+          "player_id": "3128720",
+          "player_name": "Nick Chubb",
+          "position": "RB",
+          "team": "HOU",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB3",
+          "fantasy_points": 3,
+          "stats": {
+            "rushing_yards": 60
+          }
+        },
+        {
+          "player_id": "4241463",
+          "player_name": "Jerry Jeudy",
+          "position": "WR",
+          "team": "CLE",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE4",
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 66,
+            "receptions": 5
+          }
+        },
+        {
+          "player_id": "4362628",
+          "player_name": "Ja'Marr Chase",
+          "position": "WR",
+          "team": "CIN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 26,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "3925357",
+          "player_name": "Calvin Ridley",
+          "position": "WR",
+          "team": "TEN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 27,
+            "receptions": 4
+          }
+        },
+        {
+          "player_id": "4882093",
+          "player_name": "Bhayshul Tuten",
+          "position": "RB",
+          "team": "JAX",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 11
+          }
+        },
+        {
+          "player_id": "16002",
+          "player_name": "Kyle Juszczyk",
+          "position": "RB",
+          "team": "SF",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 32,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "DEF_HOU",
+          "player_name": "Texans",
+          "position": "DST",
+          "team": "HOU",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "DEF_IND",
+          "player_name": "Colts",
+          "position": "DST",
+          "team": "IND",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "4685279",
+          "player_name": "Jaydon Blue",
+          "position": "RB",
+          "team": "DAL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "team_id": 9,
+      "team_name": "Mike's Team",
+      "owner": "Mike",
+      "total_points": 76,
+      "scoring_points": 65,
+      "active_players": 19,
+      "ir_players": 0,
+      "roster": [
+        {
+          "player_id": "4036378",
+          "player_name": "Jordan Love",
+          "position": "QB",
+          "team": "GB",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "QB",
+          "fantasy_points": 16,
+          "stats": {
+            "passing_yards": 188,
+            "passing_tds": 2,
+            "rushing_yards": 4
+          }
+        },
+        {
+          "player_id": "3052587",
+          "player_name": "Baker Mayfield",
+          "position": "QB",
+          "team": "TB",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "BONUS",
+          "fantasy_points": 15,
+          "stats": {
+            "passing_yards": 167,
+            "passing_tds": 3,
+            "rushing_yards": 39
+          }
+        },
+        {
+          "player_id": "4575131",
+          "player_name": "Jacory Croskey-Merritt",
+          "position": "RB",
+          "team": "WSH",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB1",
+          "fantasy_points": 14,
+          "stats": {
+            "rushing_yards": 82,
+            "rushing_tds": 1
+          }
+        },
+        {
+          "player_id": "3054850",
+          "player_name": "Alvin Kamara",
+          "position": "RB",
+          "team": "NO",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB2",
+          "fantasy_points": 8,
+          "stats": {
+            "rushing_yards": 45,
+            "rushing_tds": 1,
+            "receiving_yards": 12,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4426339",
+          "player_name": "Spencer Rattler",
+          "position": "QB",
+          "team": "NO",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 6,
+          "stats": {
+            "passing_yards": 214,
+            "rushing_yards": 29
+          }
+        },
+        {
+          "player_id": "3055899",
+          "player_name": "Harrison Butker",
+          "position": "K",
+          "team": "KC",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "K",
+          "fantasy_points": 6,
+          "stats": {
+            "field_goals_made": 3,
+            "field_goals_attempted": 3
+          }
+        },
+        {
+          "player_id": "3051909",
+          "player_name": "Daniel Carlson",
+          "position": "K",
+          "team": "LV",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 5,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 3,
+            "extra_points_made": 2
+          }
+        },
+        {
+          "player_id": "16737",
+          "player_name": "Mike Evans",
+          "position": "WR",
+          "team": "TB",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE1",
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 51,
+            "receptions": 5
+          }
+        },
+        {
+          "player_id": "4361432",
+          "player_name": "Romeo Doubs",
+          "position": "WR",
+          "team": "GB",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE2",
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 68,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4429795",
+          "player_name": "Jahmyr Gibbs",
+          "position": "RB",
+          "team": "DET",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 19,
+            "receiving_yards": 31,
+            "receptions": 10
+          }
+        },
+        {
+          "player_id": "4239993",
+          "player_name": "Tee Higgins",
+          "position": "WR",
+          "team": "CIN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 33,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "4819231",
+          "player_name": "Kaleb Johnson",
+          "position": "RB",
+          "team": "PIT",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": -2
+          }
+        },
+        {
+          "player_id": "4685415",
+          "player_name": "Travis Hunter",
+          "position": "WR",
+          "team": "JAX",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 33,
+            "receptions": 6
+          }
+        },
+        {
+          "player_id": "4808766",
+          "player_name": "Mason Taylor",
+          "position": "TE",
+          "team": "NYJ",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 20,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "DEF_GB",
+          "player_name": "Packers",
+          "position": "DST",
+          "team": "GB",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "DEF_BUF",
+          "player_name": "Bills",
+          "position": "DST",
+          "team": "BUF",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "4685702",
+          "player_name": "Quinshon Judkins",
+          "position": "RB",
+          "team": "CLE",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "3116165",
+          "player_name": "Chris Godwin",
+          "position": "WR",
+          "team": "Buccaneers",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "4428557",
+          "player_name": "Tyjae Spears",
+          "position": "RB",
+          "team": "TEN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "team_id": 10,
+      "team_name": "Sean's Team",
+      "owner": "Sean",
+      "total_points": 89.5,
+      "scoring_points": 86.5,
+      "active_players": 19,
+      "ir_players": 0,
+      "roster": [
+        {
+          "player_id": "4038941",
+          "player_name": "Justin Herbert",
+          "position": "QB",
+          "team": "LAC",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "QB",
+          "fantasy_points": 24,
+          "stats": {
+            "passing_yards": 318,
+            "passing_tds": 3,
+            "rushing_yards": 32
+          }
+        },
+        {
+          "player_id": "4569618",
+          "player_name": "Garrett Wilson",
+          "position": "WR",
+          "team": "NYJ",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE1",
+          "fantasy_points": 14,
+          "stats": {
+            "receiving_yards": 95,
+            "receiving_tds": 1,
+            "receptions": 7
+          }
+        },
+        {
+          "player_id": "11252",
+          "player_name": "Joe Flacco",
+          "position": "QB",
+          "team": "CLE",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "BONUS",
+          "fantasy_points": 14,
+          "stats": {
+            "passing_yards": 290,
+            "passing_tds": 1,
+            "interceptions": 2,
+            "rushing_yards": 6
+          }
+        },
+        {
+          "player_id": "4427366",
+          "player_name": "Breece Hall",
+          "position": "RB",
+          "team": "NYJ",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB1",
+          "fantasy_points": 9,
+          "stats": {
+            "rushing_yards": 107,
+            "receiving_yards": 38,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4239996",
+          "player_name": "Travis Etienne Jr.",
+          "position": "RB",
+          "team": "JAX",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB2",
+          "fantasy_points": 9,
+          "stats": {
+            "rushing_yards": 143,
+            "receiving_yards": 13,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "4262921",
+          "player_name": "Justin Jefferson",
+          "position": "WR",
+          "team": "MIN",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE2",
+          "fantasy_points": 8,
+          "stats": {
+            "receiving_yards": 44,
+            "receiving_tds": 1,
+            "receptions": 4,
+            "rushing_yards": 4
+          }
+        },
+        {
+          "player_id": "4362081",
+          "player_name": "Cameron Dicker",
+          "position": "K",
+          "team": "LAC",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "K",
+          "fantasy_points": 5.5,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 2,
+            "extra_points_made": 3
+          }
+        },
+        {
+          "player_id": "4361370",
+          "player_name": "Chris Olave",
+          "position": "WR",
+          "team": "NO",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE3",
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 54,
+            "receptions": 7
+          }
+        },
+        {
+          "player_id": "4372066",
+          "player_name": "Jake Moody",
+          "position": "K",
+          "team": "SF",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 3,
+          "stats": {
+            "field_goals_made": 1,
+            "field_goals_attempted": 3,
+            "extra_points_made": 2
+          }
+        },
+        {
+          "player_id": "4569173",
+          "player_name": "Rhamondre Stevenson",
+          "position": "RB",
+          "team": "NE",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 15,
+            "receiving_yards": 12,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4372016",
+          "player_name": "Jaylen Waddle",
+          "position": "WR",
+          "team": "MIA",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 30,
+            "receptions": 4
+          }
+        },
+        {
+          "player_id": "4688380",
+          "player_name": "Cam Ward",
+          "position": "QB",
+          "team": "TEN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "passing_yards": 112
+          }
+        },
+        {
+          "player_id": "4241457",
+          "player_name": "Najee Harris",
+          "position": "RB",
+          "team": "LAC",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 5,
+            "receiving_yards": 5,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "4599739",
+          "player_name": "Kendre Miller",
+          "position": "RB",
+          "team": "NO",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 24
+          }
+        },
+        {
+          "player_id": "4360939",
+          "player_name": "Rashod Bateman",
+          "position": "WR",
+          "team": "BAL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 10,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4040761",
+          "player_name": "Devin Singletary",
+          "position": "RB",
+          "team": "NYG",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 9
+          }
+        },
+        {
+          "player_id": "DEF_SF",
+          "player_name": "49ers",
+          "position": "DST",
+          "team": "SF",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "DEF_NYJ",
+          "player_name": "Jets",
+          "position": "DST",
+          "team": "NYJ",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "3045144",
+          "player_name": "Tyler Boyd",
+          "position": "WR",
+          "team": "TEN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "team_id": 11,
+      "team_name": "Eli's Team",
+      "owner": "Eli",
+      "total_points": 64.5,
+      "scoring_points": 63,
+      "active_players": 19,
+      "ir_players": 0,
+      "roster": [
+        {
+          "player_id": "3139477",
+          "player_name": "Patrick Mahomes",
+          "position": "QB",
+          "team": "KC",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "QB",
+          "fantasy_points": 25,
+          "stats": {
+            "passing_yards": 258,
+            "passing_tds": 1,
+            "rushing_yards": 57,
+            "rushing_tds": 1
+          }
+        },
+        {
+          "player_id": "4241389",
+          "player_name": "CeeDee Lamb",
+          "position": "WR",
+          "team": "DAL",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE1",
+          "fantasy_points": 9,
+          "stats": {
+            "receiving_yards": 110,
+            "receptions": 7
+          }
+        },
+        {
+          "player_id": "3042519",
+          "player_name": "Aaron Jones Sr.",
+          "position": "RB",
+          "team": "MIN",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB1",
+          "fantasy_points": 8,
+          "stats": {
+            "rushing_yards": 23,
+            "receiving_yards": 44,
+            "receiving_tds": 1,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "4241479",
+          "player_name": "Tua Tagovailoa",
+          "position": "QB",
+          "team": "MIA",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "BONUS",
+          "fantasy_points": 7,
+          "stats": {
+            "passing_yards": 114,
+            "passing_tds": 1,
+            "interceptions": 2,
+            "rushing_yards": 7,
+            "two_point_conversions_pass": 1
+          }
+        },
+        {
+          "player_id": "2985659",
+          "player_name": "Wil Lutz",
+          "position": "K",
+          "team": "DEN",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "K",
+          "fantasy_points": 5,
+          "stats": {
+            "field_goals_made": 2,
+            "field_goals_attempted": 2,
+            "extra_points_made": 2
+          }
+        },
+        {
+          "player_id": "4361307",
+          "player_name": "Trey McBride",
+          "position": "TE",
+          "team": "ARI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE2",
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 61,
+            "receptions": 6
+          }
+        },
+        {
+          "player_id": "4429275",
+          "player_name": "Trey Benson",
+          "position": "RB",
+          "team": "ARI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB2",
+          "fantasy_points": 3,
+          "stats": {
+            "rushing_yards": 69,
+            "receiving_yards": 6,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "4242433",
+          "player_name": "Joshua Palmer",
+          "position": "WR",
+          "team": "BUF",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE3",
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 61,
+            "receptions": 5
+          }
+        },
+        {
+          "player_id": "4249087",
+          "player_name": "Matt Gay",
+          "position": "K",
+          "team": "Colts",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 1.5,
+          "stats": {
+            "extra_points_made": 3
+          }
+        },
+        {
+          "player_id": "4374302",
+          "player_name": "Amon-Ra St. Brown",
+          "position": "WR",
+          "team": "DET",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 45,
+            "receptions": 4
+          }
+        },
+        {
+          "player_id": "4685382",
+          "player_name": "Omarion Hampton",
+          "position": "RB",
+          "team": "LAC",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 48,
+            "receiving_yards": 13,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4035538",
+          "player_name": "David Montgomery",
+          "position": "RB",
+          "team": "DET",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 25,
+            "receiving_yards": 18,
+            "receptions": 4
+          }
+        },
+        {
+          "player_id": "4701936",
+          "player_name": "Matthew Golden",
+          "position": "WR",
+          "team": "GB",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 16,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4036133",
+          "player_name": "T.J. Hockenson",
+          "position": "TE",
+          "team": "MIN",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 15,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "DEF_KC",
+          "player_name": "Chiefs",
+          "position": "DST",
+          "team": "KC",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "DEF_SEA",
+          "player_name": "Seahawks",
+          "position": "DST",
+          "team": "SEA",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "4040655",
+          "player_name": "Darnell Mooney",
+          "position": "WR",
+          "team": "ATL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "3116385",
+          "player_name": "Joe Mixon",
+          "position": "RB",
+          "team": "HOU",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "4360689",
+          "player_name": "Tyler Shough",
+          "position": "QB",
+          "team": "NO",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "team_id": 12,
+      "team_name": "Matt's Team",
+      "owner": "Matt",
+      "total_points": 65.5,
+      "scoring_points": 65.5,
+      "active_players": 19,
+      "ir_players": 0,
+      "roster": [
+        {
+          "player_id": "3043078",
+          "player_name": "Derrick Henry",
+          "position": "RB",
+          "team": "BAL",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB1",
+          "fantasy_points": 28,
+          "stats": {
+            "rushing_yards": 169,
+            "rushing_tds": 2,
+            "receiving_yards": 13,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "4035687",
+          "player_name": "Michael Pittman Jr.",
+          "position": "WR",
+          "team": "IND",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE1",
+          "fantasy_points": 14,
+          "stats": {
+            "receiving_yards": 80,
+            "receiving_tds": 1,
+            "receptions": 6
+          }
+        },
+        {
+          "player_id": "3117251",
+          "player_name": "Christian McCaffrey",
+          "position": "RB",
+          "team": "SF",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "RB2",
+          "fantasy_points": 6,
+          "stats": {
+            "rushing_yards": 69,
+            "receiving_yards": 73,
+            "receptions": 9
+          }
+        },
+        {
+          "player_id": "4432577",
+          "player_name": "C.J. Stroud",
+          "position": "QB",
+          "team": "HOU",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "QB",
+          "fantasy_points": 6,
+          "stats": {
+            "passing_yards": 188,
+            "interceptions": 1,
+            "rushing_yards": 32
+          }
+        },
+        {
+          "player_id": "4685720",
+          "player_name": "Bryce Young",
+          "position": "QB",
+          "team": "CAR",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "BONUS",
+          "fantasy_points": 5,
+          "stats": {
+            "passing_yards": 154,
+            "passing_tds": 1,
+            "interceptions": 2,
+            "rushing_yards": 40
+          }
+        },
+        {
+          "player_id": "3050478",
+          "player_name": "Jake Elliott",
+          "position": "K",
+          "team": "PHI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "K",
+          "fantasy_points": 3.5,
+          "stats": {
+            "field_goals_made": 1,
+            "field_goals_attempted": 1,
+            "extra_points_made": 3
+          }
+        },
+        {
+          "player_id": "3915416",
+          "player_name": "DJ Moore",
+          "position": "WR",
+          "team": "CHI",
+          "status": "active",
+          "is_scoring": true,
+          "scoring_slot": "WR/TE2",
+          "fantasy_points": 3,
+          "stats": {
+            "receiving_yards": 68,
+            "receptions": 3,
+            "rushing_yards": 8
+          }
+        },
+        {
+          "player_id": "4047646",
+          "player_name": "A.J. Brown",
+          "position": "WR",
+          "team": "PHI",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 8,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "3116406",
+          "player_name": "Tyreek Hill",
+          "position": "WR",
+          "team": "MIA",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 40,
+            "receptions": 4
+          }
+        },
+        {
+          "player_id": "4361529",
+          "player_name": "Isiah Pacheco",
+          "position": "RB",
+          "team": "KC",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 25,
+            "receiving_yards": 3,
+            "receptions": 2
+          }
+        },
+        {
+          "player_id": "4241478",
+          "player_name": "DeVonta Smith",
+          "position": "WR",
+          "team": "PHI",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 16,
+            "receptions": 3
+          }
+        },
+        {
+          "player_id": "4372019",
+          "player_name": "Jerome Ford",
+          "position": "RB",
+          "team": "CLE",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 8,
+            "receiving_yards": -3,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "4697815",
+          "player_name": "Rachaad White",
+          "position": "RB",
+          "team": "TB",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": 14,
+            "receiving_yards": 2,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "14881",
+          "player_name": "Russell Wilson",
+          "position": "QB",
+          "team": "NYG",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "passing_yards": 168,
+            "rushing_yards": 44
+          }
+        },
+        {
+          "player_id": "4032473",
+          "player_name": "Rashid Shaheed",
+          "position": "WR",
+          "team": "NO",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "receiving_yards": 33,
+            "receptions": 6
+          }
+        },
+        {
+          "player_id": "4038441",
+          "player_name": "Justice Hill",
+          "position": "RB",
+          "team": "BAL",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {
+            "rushing_yards": -14,
+            "receiving_yards": 3,
+            "receptions": 1
+          }
+        },
+        {
+          "player_id": "DEF_DET",
+          "player_name": "Lions",
+          "position": "DST",
+          "team": "DET",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "DEF_MIA",
+          "player_name": "Dolphins",
+          "position": "DST",
+          "team": "MIA",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        },
+        {
+          "player_id": "3917232",
+          "player_name": "Tyler Bass",
+          "position": "K",
+          "team": "BUF",
+          "status": "active",
+          "is_scoring": false,
+          "scoring_slot": null,
+          "fantasy_points": 0,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "matchups": [
+    {
+      "matchup_id": 838,
+      "team1": {
+        "id": 1,
+        "name": "Chris's Team",
+        "total_points": 102,
+        "scoring_points": 97
+      },
+      "team2": {
+        "id": 2,
+        "name": "Mitch's Team",
+        "total_points": 128.5,
+        "scoring_points": 105
+      },
+      "winner": "Mitch's Team",
+      "is_complete": true
+    },
+    {
+      "matchup_id": 839,
+      "team1": {
+        "id": 3,
+        "name": "Dan's Team",
+        "total_points": 122.5,
+        "scoring_points": 98.5
+      },
+      "team2": {
+        "id": 4,
+        "name": "Pete's Team",
+        "total_points": 92,
+        "scoring_points": 78
+      },
+      "winner": "Dan's Team",
+      "is_complete": true
+    },
+    {
+      "matchup_id": 840,
+      "team1": {
+        "id": 5,
+        "name": "Joe's Team",
+        "total_points": 103,
+        "scoring_points": 95.5
+      },
+      "team2": {
+        "id": 6,
+        "name": "Aaron's Team",
+        "total_points": 96,
+        "scoring_points": 93
+      },
+      "winner": "Joe's Team",
+      "is_complete": true
+    },
+    {
+      "matchup_id": 841,
+      "team1": {
+        "id": 7,
+        "name": "Cal's Team",
+        "total_points": 139.5,
+        "scoring_points": 129.5
+      },
+      "team2": {
+        "id": 8,
+        "name": "Bruce's Team",
+        "total_points": 110.5,
+        "scoring_points": 96
+      },
+      "winner": "Cal's Team",
+      "is_complete": true
+    },
+    {
+      "matchup_id": 842,
+      "team1": {
+        "id": 9,
+        "name": "Mike's Team",
+        "total_points": 76,
+        "scoring_points": 65
+      },
+      "team2": {
+        "id": 10,
+        "name": "Sean's Team",
+        "total_points": 89.5,
+        "scoring_points": 86.5
+      },
+      "winner": "Sean's Team",
+      "is_complete": true
+    },
+    {
+      "matchup_id": 843,
+      "team1": {
+        "id": 11,
+        "name": "Eli's Team",
+        "total_points": 64.5,
+        "scoring_points": 63
+      },
+      "team2": {
+        "id": 12,
+        "name": "Matt's Team",
+        "total_points": 65.5,
+        "scoring_points": 65.5
+      },
+      "winner": "Matt's Team",
+      "is_complete": true
+    }
+  ],
+  "validation": {
+    "all_teams_have_19_players": true,
+    "teams_with_issues": []
+  }
+}

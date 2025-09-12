@@ -393,6 +393,10 @@
             // Start refresh interval (30 seconds)
             startAutoRefresh(urlData.isMock);
             
+            // Start cleanup timer to remove expired indicators (runs every second)
+            if (cleanupInterval) clearInterval(cleanupInterval);
+            cleanupInterval = setInterval(cleanupExpiredIndicators, 1000);
+            
         } catch (error) {
             console.error('Error initializing:', error);
             document.getElementById("fleague").textContent = "Error loading league data";
@@ -1492,6 +1496,82 @@
         return details.join(', ');
     }
 
+    // Clean up expired delta indicators
+    function cleanupExpiredIndicators() {
+        const now = Date.now();
+        const EXPIRY_TIME = 30000; // 30 seconds
+        
+        // Clean up expired team score deltas in the left panel
+        Object.keys(globalDeltas.teams).forEach(key => {
+            const delta = globalDeltas.teams[key];
+            if (delta && (now - delta.timestamp > EXPIRY_TIME)) {
+                // Parse the key to get matchup ID and team
+                const [matchupId, team] = key.split('_');
+                
+                // Find the row in the left panel
+                const rows = document.querySelectorAll(`tr[data-matchup-id="${matchupId}"][data-team="${team}"]`);
+                rows.forEach(row => {
+                    const scoreCell = row.cells[1];
+                    if (scoreCell) {
+                        // Remove delta span and restore normal display
+                        const deltaSpan = scoreCell.querySelector('.score-delta');
+                        if (deltaSpan) {
+                            // Extract the actual score from the cell
+                            const scoreText = scoreCell.textContent.replace(/[+-]\d+\.\d+\s*/, '');
+                            scoreCell.textContent = scoreText;
+                            scoreCell.className = "fanpts";
+                        }
+                    }
+                });
+                
+                // Remove from global deltas
+                delete globalDeltas.teams[key];
+            }
+        });
+        
+        // Clean up expired player deltas in the matchup display
+        Object.keys(globalDeltas.players).forEach(playerId => {
+            const playerDelta = globalDeltas.players[playerId];
+            if (playerDelta && (now - playerDelta.timestamp > EXPIRY_TIME)) {
+                // Find player rows in both team tables
+                ['team0', 'team1'].forEach(tableId => {
+                    const table = document.getElementById(tableId);
+                    if (table) {
+                        const rows = table.getElementsByTagName('tr');
+                        for (let row of rows) {
+                            // Check if this row contains the player's score
+                            const pointsCell = row.cells?.[4];
+                            if (pointsCell && pointsCell.className.includes('fanpts')) {
+                                const deltaSpan = pointsCell.querySelector('.score-delta');
+                                if (deltaSpan) {
+                                    // Extract the actual score and remove delta
+                                    const scoreText = pointsCell.textContent.replace(/[+-]\d+\.\d+\s*/, '');
+                                    pointsCell.textContent = scoreText;
+                                    pointsCell.className = 'points fanpts';
+                                }
+                            }
+                            
+                            // Remove bold from stats in the stats row
+                            const statsCell = row.querySelector('td[colspan="5"]');
+                            if (statsCell) {
+                                const boldSpans = statsCell.querySelectorAll('.stat-changed');
+                                boldSpans.forEach(span => {
+                                    // Replace the bold span with plain text
+                                    const text = span.textContent;
+                                    const textNode = document.createTextNode(text);
+                                    span.parentNode.replaceChild(textNode, span);
+                                });
+                            }
+                        }
+                    }
+                });
+                
+                // Remove from global deltas
+                delete globalDeltas.players[playerId];
+            }
+        });
+    }
+    
     // Update last update time
     async function updateLastUpdate() {
         try {
@@ -1534,6 +1614,7 @@
     var refreshCountdown = null;
     var secondsUntilRefresh = 30;
     var isMockMode = false;
+    var cleanupInterval = null;  // Timer to clean up expired indicators
     
     // Start auto-refresh
     function startAutoRefresh(mockMode) {
@@ -1866,6 +1947,9 @@
     window.onbeforeunload = function() {
         if (refreshInterval) {
             clearInterval(refreshInterval);
+        }
+        if (cleanupInterval) {
+            clearInterval(cleanupInterval);
         }
     };
 </script>

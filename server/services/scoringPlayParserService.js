@@ -235,6 +235,27 @@ class ScoringPlayParserService {
             return 'safety';
         }
 
+        // Two-point conversions
+        if (normalizedText.includes('two point') || normalizedText.includes('2 point') || 
+            normalizedText.includes('two-point') || normalizedText.includes('2-point') ||
+            normalizedText.includes('conversion')) {
+            // Check type of conversion
+            if (normalizedText.includes('pass')) {
+                // If the play says "pass from [QB]", the extracted player is the receiver
+                if (normalizedText.includes('pass from')) {
+                    return 'two_point_conversion_rec';
+                } else {
+                    return 'two_point_conversion_pass';
+                }
+            } else if (normalizedText.includes('rush') || normalizedText.includes('run')) {
+                return 'two_point_conversion_run';
+            } else if (normalizedText.includes('receiv') || normalizedText.includes('catch')) {
+                return 'two_point_conversion_rec';
+            }
+            // Default to rec if no clear indication
+            return 'two_point_conversion_rec';
+        }
+
         // Other touchdown types
         if (normalizedText.includes('touchdown')) {
             // Skip lateral plays - they don't count for individual player fantasy points

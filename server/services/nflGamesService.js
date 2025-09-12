@@ -243,6 +243,7 @@ class NFLGamesService {
                    OR (status = 'Scheduled' AND 
                        game_time_epoch IS NOT NULL AND
                        game_time_epoch BETWEEN ? AND ?)
+                   OR (status = 'Final' AND game_time IS NOT NULL)
                 ORDER BY game_time_epoch
             `, [gameWindowStart, gameWindowEnd]);
 
@@ -473,10 +474,11 @@ class NFLGamesService {
                             receiving_yards, receiving_tds, receptions,
                             field_goals_made, field_goals_attempted, extra_points_made,
                             fumbles,
+                            two_point_conversions_pass, two_point_conversions_run, two_point_conversions_rec,
                             fantasy_points,
                             player_name, team, position,
                             last_updated
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
                     `, [
                         playerId,
                         gameInfo.week,
@@ -494,6 +496,9 @@ class NFLGamesService {
                         playerStatsObj.field_goals_attempted,
                         playerStatsObj.extra_points_made,
                         playerStatsObj.fumbles,
+                        playerStatsObj.two_point_conversions_pass,
+                        playerStatsObj.two_point_conversions_run,
+                        playerStatsObj.two_point_conversions_rec,
                         fantasyPoints,  // Use our calculated value instead of Tank01's
                         stats.longName || '',
                         stats.teamAbv || '',
