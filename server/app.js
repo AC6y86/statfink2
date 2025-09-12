@@ -117,6 +117,7 @@ async function initializeServices() {
         app.locals.weeklyReportService = weeklyReportService;
         app.locals.schedulerService = schedulerService;
         app.locals.dstManagementService = dstManagementService;
+        app.locals.fantasyPointsCalculationService = fantasyPointsCalculationService;
         app.locals.trafficTracker = trafficTracker;
         
         logInfo('Services initialized successfully');

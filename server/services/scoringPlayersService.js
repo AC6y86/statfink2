@@ -139,12 +139,12 @@ class ScoringPlayersService {
             if (dstPlayers.length > 0) {
                 // Sort by points allowed (ascending - fewer is better)
                 const dstByPoints = [...dstPlayers]
-                    .filter(d => d.points_allowed !== null && d.fantasy_points > 0)
+                    .filter(d => d.points_allowed !== null)
                     .sort((a, b) => a.points_allowed - b.points_allowed);
                 
                 // Sort by yards allowed (ascending - fewer is better)
                 const dstByYards = [...dstPlayers]
-                    .filter(d => d.yards_allowed !== null && d.fantasy_points > 0)
+                    .filter(d => d.yards_allowed !== null)
                     .sort((a, b) => a.yards_allowed - b.yards_allowed);
                 
                 // Add best points allowed DST

@@ -389,23 +389,6 @@ class SchedulerService {
                 results.errors.push(`Team scores: ${error.message}`);
             }
 
-            // 1c. Calculate scoring players and update scoring_points
-            try {
-                if (this.scoringPlayersService) {
-                    const scoringPlayersResult = await this.scoringPlayersService.calculateScoringPlayers(
-                        currentSettings.current_week,
-                        currentSettings.season_year
-                    );
-                    results.scoringPlayersUpdated = scoringPlayersResult.success;
-                    if (scoringPlayersResult.success) {
-                        logInfo(`Updated scoring players: ${scoringPlayersResult.playersMarked} players marked as scoring`);
-                    }
-                }
-            } catch (error) {
-                logError('Failed to update scoring players', error);
-                results.errors.push(`Scoring players: ${error.message}`);
-            }
-
             // 2. Check if all games are complete and calculate defensive bonuses
             try {
                 const gamesComplete = await this.nflGamesService.areAllWeekGamesComplete(
@@ -433,6 +416,23 @@ class SchedulerService {
                                     results.errors.push(`DST fantasy points: Failed to update`);
                                 } else {
                                     logInfo(`Updated DST fantasy points with bonuses: ${dstResult.updated} DST teams`);
+                                    
+                                    // Recalculate scoring players now that DST have their bonuses
+                                    if (this.scoringPlayersService) {
+                                        try {
+                                            const scoringPlayersResult = await this.scoringPlayersService.calculateScoringPlayers(
+                                                currentSettings.current_week,
+                                                currentSettings.season_year
+                                            );
+                                            results.scoringPlayersUpdated = scoringPlayersResult.success;
+                                            if (scoringPlayersResult.success) {
+                                                logInfo(`Recalculated scoring players after DST bonuses: ${scoringPlayersResult.playersMarked} players marked as scoring`);
+                                            }
+                                        } catch (error) {
+                                            logError('Failed to recalculate scoring players after DST bonuses', error);
+                                            results.errors.push(`Scoring players (DST): ${error.message}`);
+                                        }
+                                    }
                                     
                                     // Recalculate team scores again after DST bonuses are applied
                                     if (this.teamScoreService) {

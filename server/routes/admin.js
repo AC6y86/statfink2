@@ -433,7 +433,67 @@ router.post('/sync/games/current-week', requireAdmin, asyncHandler(async (req, r
             }
         }
         
-        // Recalculate team scores after updating player stats
+        // Check if all games are complete for defensive bonus calculation
+        const gamesComplete = await nflGamesService.areAllWeekGamesComplete(currentWeek, currentSeason);
+        logInfo(`Games complete check for Week ${currentWeek}: ${JSON.stringify(gamesComplete)}`);
+        
+        if (gamesComplete.isComplete) {
+            logInfo('All games complete - processing defensive scoring...');
+            
+            // Step 1: Calculate defensive bonuses (5 pts for fewest points/yards allowed)
+            const scoringService = req.app.locals.scoringService;
+            if (scoringService) {
+                const bonusResult = await scoringService.calculateDefensiveBonuses(
+                    currentWeek,
+                    currentSeason
+                );
+                
+                if (bonusResult.success) {
+                    logInfo(`✓ Defensive bonuses calculated for ${bonusResult.teamsProcessed} DST teams`);
+                    
+                    // Step 2: Recalculate ALL DST fantasy points (includes TDs + bonuses)
+                    const fantasyPointsService = req.app.locals.fantasyPointsCalculationService;
+                    if (fantasyPointsService) {
+                        const dstResult = await fantasyPointsService.calculateEndOfWeekDSTBonuses(
+                            currentSeason
+                        );
+                        logInfo(`✓ DST fantasy points updated for ${dstResult.updated} teams`);
+                        
+                        // Log some examples to verify
+                        const sample = await db.all(`
+                            SELECT player_id, def_int_return_tds, def_fumble_return_tds, 
+                                   def_points_bonus, def_yards_bonus, fantasy_points
+                            FROM player_stats 
+                            WHERE week = ? AND player_id LIKE 'DEF_%' 
+                            AND (def_int_return_tds > 0 OR def_fumble_return_tds > 0 
+                                 OR def_points_bonus > 0 OR def_yards_bonus > 0)
+                            LIMIT 3
+                        `, [currentWeek]);
+                        
+                        sample.forEach(dst => {
+                            logInfo(`  ${dst.player_id}: ${dst.fantasy_points} pts ` +
+                                   `(TDs: ${dst.def_int_return_tds}/${dst.def_fumble_return_tds}, ` +
+                                   `Bonuses: ${dst.def_points_bonus}/${dst.def_yards_bonus})`);
+                        });
+                    }
+                    
+                    // Step 3: Recalculate scoring players now that DSTs have points
+                    const scoringPlayersService = req.app.locals.scoringPlayersService;
+                    if (scoringPlayersService) {
+                        logInfo(`Starting scoring players calculation for Week ${currentWeek}...`);
+                        const scoringResult = await scoringPlayersService.calculateScoringPlayers(
+                            currentWeek,
+                            currentSeason
+                        );
+                        logInfo(`✓ Scoring players recalculated: ${scoringResult.playersMarked} players marked`);
+                    } else {
+                        logInfo('WARNING: scoringPlayersService not available');
+                    }
+                }
+            }
+        }
+        
+        // Recalculate team scores after updating player stats and DST bonuses
         let teamScoresUpdated = false;
         let teamsUpdated = 0;
         try {
