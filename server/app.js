@@ -290,9 +290,18 @@ app.get('/statfink', async (req, res) => {
     }
 });
 
-// Mock/test interface for integration tests
+// New /mocks routes
+app.get('/mocks', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/mocks/index.html'));
+});
+
+app.get('/mocks/delta-test', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/mocks/delta-test.html'));
+});
+
+// Legacy mock routes - redirect to new location
 app.get('/statfink/mock', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/mock-weeks-index.html'));
+    res.redirect('/mocks');
 });
 
 // Serve statfink mock mode for specific week
@@ -511,7 +520,7 @@ app.get('*', (req, res) => {
                     </div>
                     
                     <div class="dashboard-link" style="background: linear-gradient(135deg, #ff8c00 0%, #ff4500 100%);">
-                        <a href="/statfink/mock">🧪 Mock Matchups (Testing)</a>
+                        <a href="/mocks">🧪 Mock Matchups (Testing)</a>
                     </div>
                     
                     <div class="status">

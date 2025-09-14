@@ -1,0 +1,313 @@
+/**
+ * Expected Week 1 2025 Fantasy Football Stats
+ * This file contains the hardcoded expected stats for verification
+ */
+
+const week1_2025_stats = {
+  teams: {
+    'Chris': {
+      owner_id: 1,
+      players: [
+        { name: 'Josh Allen', team: 'Bills', position: 'QB', points: 38 },
+        { name: 'Dak Prescott', team: 'Cowboys', position: 'QB', points: 6 },
+        { name: 'Sam Darnold', team: 'Seahawks', position: 'QB', points: 0 }, // X = injured/inactive
+        { name: "De'Von Achane", team: 'Dolphins', position: 'RB', points: 11 },
+        { name: 'Josh Jacobs', team: 'Packers', position: 'RB', points: 11 },
+        { name: 'RJ Harvey', team: 'Broncos', position: 'RB', points: 3 },
+        { name: 'Tony Pollard', team: 'Titans', position: 'RB', points: 3 },
+        { name: 'Ollie Gordon II', team: 'Dolphins', position: 'RB', points: 0 },
+        { name: 'TreVeyon Henderson', team: 'Patriots', position: 'RB', points: 0 },
+        { name: 'Rome Odunze', team: 'Bears', position: 'WR', points: 8 },
+        { name: 'Jameson Williams', team: 'Lions', position: 'WR', points: 0 },
+        { name: 'Jordan Addison', team: 'Vikings', position: 'WR', points: 0 },
+        { name: 'Rashee Rice', team: 'Chiefs', position: 'WR', points: 0 },
+        { name: 'Tucker Kraft', team: 'Packers', position: 'WR', points: 8 },
+        { name: 'David Njoku', team: 'Browns', position: 'WR', points: 0 },
+        { name: 'Cam Little', team: 'Jaguars', position: 'K', points: 9 },
+        { name: 'Brandon Aubrey', team: 'Cowboys', position: 'K', points: 5 },
+        { name: 'Buccaneers', team: 'Buccaneers', position: 'DEF', points: 0 },
+        { name: 'Rams', team: 'Rams', position: 'DEF', points: 0 }
+      ],
+      total: 102.0  // WK. reference shows 97.0
+    },
+    'Mitch': {
+      owner_id: 2,
+      players: [
+        { name: 'Lamar Jackson', team: 'Ravens', position: 'QB', points: 27 },
+        { name: 'Michael Penix Jr.', team: 'Falcons', position: 'QB', points: 22 },
+        { name: 'Brock Purdy', team: '49ers', position: 'QB', points: 19 },
+        { name: 'Chuba Hubbard', team: 'Panthers', position: 'RB', points: 11 },
+        { name: 'Brian Robinson Jr.', team: '49ers', position: 'RB', points: 0 },
+        { name: 'Cam Skattebo', team: 'Giants', position: 'RB', points: 0 },
+        { name: 'Kareem Hunt', team: 'Chiefs', position: 'RB', points: 0 },
+        { name: 'Samaje Perine', team: 'Bengals', position: 'RB', points: 0 },
+        { name: 'Keenan Allen', team: 'Chargers', position: 'WR', points: 11 },
+        { name: 'Puka Nacua', team: 'Rams', position: 'WR', points: 9 },
+        { name: 'Stefon Diggs', team: 'Patriots', position: 'WR', points: 3 },
+        { name: 'Cooper Kupp', team: 'Seahawks', position: 'WR', points: 0 },
+        { name: 'Terry McLaurin', team: 'Commanders', position: 'WR', points: 0 },
+        { name: 'Xavier Legette', team: 'Panthers', position: 'WR', points: 0 },
+        { name: 'George Kittle', team: '49ers', position: 'WR', points: 8 },
+        { name: 'Tyler Loop', team: 'Ravens', position: 'K', points: 6 },
+        { name: 'Jake Bates', team: 'Lions', position: 'K', points: 4.5 },
+        { name: 'Bears', team: 'Bears', position: 'DEF', points: 8 },
+        { name: 'Vikings', team: 'Vikings', position: 'DEF', points: 0 }
+      ],
+      total: 128.5  // WK. reference shows 105.0
+    },
+    'Dan': {
+      owner_id: 3,
+      players: [
+        { name: 'Aaron Rodgers', team: 'Steelers', position: 'QB', points: 26 },
+        { name: 'Jalen Hurts', team: 'Eagles', position: 'QB', points: 19 },
+        { name: 'Geno Smith', team: 'Raiders', position: 'QB', points: 17 },
+        { name: 'Jimmy Garoppolo', team: 'Rams', position: 'QB', points: 0 },
+        { name: 'Kyren Williams', team: 'Rams', position: 'RB', points: 11 },
+        { name: 'Austin Ekeler', team: 'Commanders', position: 'RB', points: 0 },
+        { name: 'Blake Corum', team: 'Rams', position: 'RB', points: 0 },
+        { name: 'Kenneth Walker III', team: 'Seahawks', position: 'RB', points: 0 },
+        { name: 'Raheem Mostert', team: 'Raiders', position: 'RB', points: 0 },
+        { name: 'Zay Flowers', team: 'Ravens', position: 'WR', points: 17 },
+        { name: 'Deebo Samuel', team: 'Commanders', position: 'WR', points: 14 },
+        { name: 'Davante Adams', team: 'Rams', position: 'WR', points: 3 },
+        { name: 'Khalil Shakir', team: 'Bills', position: 'WR', points: 3 },
+        { name: 'Adam Thielen', team: 'Vikings', position: 'WR', points: 2 },
+        { name: 'Marvin Mims Jr.', team: 'Broncos', position: 'WR', points: 0 },
+        { name: 'Brandon McManus', team: 'Packers', position: 'K', points: 5.5 },
+        { name: 'Younghoe Koo', team: 'Falcons', position: 'K', points: 5 },
+        { name: 'Browns', team: 'Browns', position: 'DEF', points: 0 },
+        { name: 'Ravens', team: 'Ravens', position: 'DEF', points: 0 }
+      ],
+      total: 122.5  // WK. reference shows 98.5
+    },
+    'Pete': {
+      owner_id: 4,
+      players: [
+        { name: 'Jared Goff', team: 'Lions', position: 'QB', points: 11 },
+        { name: 'Matthew Stafford', team: 'Rams', position: 'QB', points: 11 },
+        { name: 'Joe Burrow', team: 'Bengals', position: 'QB', points: 5 },
+        { name: 'Bucky Irving', team: 'Buccaneers', position: 'RB', points: 8 },
+        { name: "D'Andre Swift", team: 'Bears', position: 'RB', points: 3 },
+        { name: 'Isaac Guerendo', team: '49ers', position: 'RB', points: 0 },
+        { name: 'Ray Davis', team: 'Bills', position: 'RB', points: 0 },
+        { name: 'Woody Marks', team: 'Texans', position: 'RB', points: 0 },
+        { name: 'Courtland Sutton', team: 'Broncos', position: 'WR', points: 11 },
+        { name: 'Ricky Pearsall', team: '49ers', position: 'WR', points: 9 },
+        { name: 'Nico Collins', team: 'Texans', position: 'WR', points: 0 },
+        { name: 'Brandon Aiyuk', team: '49ers', position: 'WR', points: 0 },
+        { name: 'Travis Kelce', team: 'Chiefs', position: 'WR', points: 8 },
+        { name: 'Zach Ertz', team: 'Commanders', position: 'WR', points: 8 },
+        { name: 'Sam LaPorta', team: 'Lions', position: 'WR', points: 6 },
+        { name: 'Graham Gano', team: 'Giants', position: 'K', points: 4 },
+        { name: 'Evan McPherson', team: 'Bengals', position: 'K', points: 3 },
+        { name: 'Broncos', team: 'Broncos', position: 'DEF', points: 5 },
+        { name: 'Chargers', team: 'Chargers', position: 'DEF', points: 0 }
+      ],
+      total: 92.0  // WK. reference shows 78.0
+    },
+    'Joe': {
+      owner_id: 5,
+      players: [
+        { name: 'Justin Fields', team: 'Jets', position: 'QB', points: 27 },
+        { name: 'J.J. McCarthy', team: 'Vikings', position: 'QB', points: 20 },
+        { name: 'Anthony Richardson Sr.', team: 'Colts', position: 'QB', points: 0 },
+        { name: 'James Cook', team: 'Bills', position: 'RB', points: 11 },
+        { name: 'Saquon Barkley', team: 'Eagles', position: 'RB', points: 11 },
+        { name: 'Jaylen Warren', team: 'Steelers', position: 'RB', points: 8 },
+        { name: 'Jonathan Taylor', team: 'Colts', position: 'RB', points: 3 },
+        { name: 'Jordan Mason', team: 'Vikings', position: 'RB', points: 3 },
+        { name: 'Rico Dowdle', team: 'Panthers', position: 'RB', points: 0 },
+        { name: 'Tyler Allgeier', team: 'Falcons', position: 'RB', points: 0 },
+        { name: 'Jayden Reed', team: 'Packers', position: 'WR', points: 8 },
+        { name: 'Ladd McConkey', team: 'Chargers', position: 'WR', points: 3 },
+        { name: 'George Pickens', team: 'Cowboys', position: 'WR', points: 0 },
+        { name: 'Xavier Worthy', team: 'Chiefs', position: 'WR', points: 0 },
+        { name: 'Christian Kirk', team: 'Texans', position: 'WR', points: 0 },
+        { name: 'Will Reichard', team: 'Vikings', position: 'K', points: 4.5 },
+        { name: 'Blake Grupe', team: 'Saints', position: 'K', points: 4.5 },
+        { name: 'Eagles', team: 'Eagles', position: 'DEF', points: 0 },
+        { name: 'Patriots', team: 'Patriots', position: 'DEF', points: 0 }
+      ],
+      total: 103.0  // WK. reference shows 95.5
+    },
+    'Aaron': {
+      owner_id: 6,
+      players: [
+        { name: 'Jayden Daniels', team: 'Commanders', position: 'QB', points: 14 },
+        { name: 'Kyler Murray', team: 'Cardinals', position: 'QB', points: 10 },
+        { name: 'Javonte Williams', team: 'Cowboys', position: 'RB', points: 19 },
+        { name: 'James Conner', team: 'Cardinals', position: 'RB', points: 8 },
+        { name: 'Zach Charbonnet', team: 'Seahawks', position: 'RB', points: 8 },
+        { name: 'Tank Bigsby', team: 'Jaguars', position: 'RB', points: 0 },
+        { name: 'Will Shipley', team: 'Eagles', position: 'RB', points: 0 },
+        { name: 'Roschon Johnson', team: 'Bears', position: 'RB', points: 0 },
+        { name: 'Marvin Harrison Jr.', team: 'Cardinals', position: 'WR', points: 11 },
+        { name: 'Brian Thomas Jr.', team: 'Jaguars', position: 'WR', points: 8 },
+        { name: 'Jakobi Meyers', team: 'Raiders', position: 'WR', points: 6 },
+        { name: 'Tetairoa McMillan', team: 'Panthers', position: 'WR', points: 3 },
+        { name: 'Jauan Jennings', team: '49ers', position: 'WR', points: 0 },
+        { name: 'Josh Downs', team: 'Colts', position: 'WR', points: 0 },
+        { name: 'Mark Andrews', team: 'Ravens', position: 'WR', points: 0 },
+        { name: "Ka'imi Fairbairn", team: 'Texans', position: 'K', points: 6 },
+        { name: 'Chase McLaughlin', team: 'Buccaneers', position: 'K', points: 3 },
+        { name: 'Cardinals', team: 'Cardinals', position: 'DEF', points: 0 },
+        { name: 'Cowboys', team: 'Cowboys', position: 'DEF', points: 0 }
+      ],
+      total: 96.0  // WK. reference shows 93.0
+    },
+    'Cal': {
+      owner_id: 7,
+      players: [
+        { name: 'Caleb Williams', team: 'Bears', position: 'QB', points: 22 },
+        { name: 'Trevor Lawrence', team: 'Jaguars', position: 'QB', points: 11 },
+        { name: 'Bijan Robinson', team: 'Falcons', position: 'RB', points: 17 },
+        { name: 'Ashton Jeanty', team: 'Raiders', position: 'RB', points: 8 },
+        { name: 'Braelon Allen', team: 'Jets', position: 'RB', points: 8 },
+        { name: 'Dylan Sampson', team: 'Browns', position: 'RB', points: 3 },
+        { name: 'Tyrone Tracy Jr.', team: 'Giants', position: 'RB', points: 0 },
+        { name: 'Chris Rodriguez Jr.', team: 'Commanders', position: 'RB', points: 0 },
+        { name: 'Emeka Egbuka', team: 'Buccaneers', position: 'WR', points: 19 },
+        { name: 'Keon Coleman', team: 'Bills', position: 'WR', points: 17 },
+        { name: 'Jaxon Smith-Njigba', team: 'Seahawks', position: 'WR', points: 9 },
+        { name: 'Drake London', team: 'Falcons', position: 'WR', points: 3 },
+        { name: 'Malik Nabers', team: 'Giants', position: 'WR', points: 3 },
+        { name: 'Tyler Warren', team: 'Colts', position: 'WR', points: 6 },
+        { name: 'Kyle Pitts Sr.', team: 'Falcons', position: 'WR', points: 3 },
+        { name: 'Jason Myers', team: 'Seahawks', position: 'K', points: 4.5 },
+        { name: 'Joshua Karty', team: 'Rams', position: 'K', points: 1 },
+        { name: 'Commanders', team: 'Commanders', position: 'DEF', points: 5 },
+        { name: 'Steelers', team: 'Steelers', position: 'DEF', points: 0 }
+      ],
+      total: 139.5  // WK. reference shows 129.5
+    },
+    'Bruce': {
+      owner_id: 8,
+      players: [
+        { name: 'Daniel Jones', team: 'Colts', position: 'QB', points: 30 },
+        { name: 'Drake Maye', team: 'Patriots', position: 'QB', points: 14 },
+        { name: 'Bo Nix', team: 'Broncos', position: 'QB', points: 11 },
+        { name: 'J.K. Dobbins', team: 'Broncos', position: 'RB', points: 11 },
+        { name: 'Chase Brown', team: 'Bengals', position: 'RB', points: 8 },
+        { name: 'Nick Chubb', team: 'Texans', position: 'RB', points: 3 },
+        { name: 'Bhayshul Tuten', team: 'Jaguars', position: 'RB', points: 0 },
+        { name: 'Kyle Juszczyk', team: '49ers', position: 'RB', points: 0 },
+        { name: 'Jaydon Blue', team: 'Cowboys', position: 'RB', points: 0 },
+        { name: 'DK Metcalf', team: 'Steelers', position: 'WR', points: 6 },
+        { name: 'Marquise Brown', team: 'Chiefs', position: 'WR', points: 6 },
+        { name: 'Jerry Jeudy', team: 'Browns', position: 'WR', points: 3 },
+        { name: 'Calvin Ridley', team: 'Titans', position: 'WR', points: 0 },
+        { name: 'Ja\'Marr Chase', team: 'Bengals', position: 'WR', points: 0 },
+        { name: 'Brock Bowers', team: 'Raiders', position: 'WR', points: 9 },
+        { name: 'Chris Boswell', team: 'Steelers', position: 'K', points: 6 },
+        { name: 'Cairo Santos', team: 'Bears', position: 'K', points: 3.5 },
+        { name: 'Colts', team: 'Colts', position: 'DEF', points: 0 },
+        { name: 'Texans', team: 'Texans', position: 'DEF', points: 0 }
+      ],
+      total: 110.5  // WK. reference shows 96.0
+    },
+    'Mike': {
+      owner_id: 9,
+      players: [
+        { name: 'Jordan Love', team: 'Packers', position: 'QB', points: 16 },
+        { name: 'Baker Mayfield', team: 'Buccaneers', position: 'QB', points: 15 },
+        { name: 'Spencer Rattler', team: 'Saints', position: 'QB', points: 6 },
+        { name: 'Jacory Croskey-Merritt', team: 'Commanders', position: 'RB', points: 14 },
+        { name: 'Alvin Kamara', team: 'Saints', position: 'RB', points: 8 },
+        { name: 'Jahmyr Gibbs', team: 'Lions', position: 'RB', points: 0 },
+        { name: 'Kaleb Johnson', team: 'Steelers', position: 'RB', points: 0 },
+        { name: 'Quinshon Judkins', team: 'Browns', position: 'RB', points: 0 },
+        { name: 'Tyjae Spears', team: 'Titans', position: 'RB', points: 0 },
+        { name: 'Mike Evans', team: 'Buccaneers', position: 'WR', points: 3 },
+        { name: 'Romeo Doubs', team: 'Packers', position: 'WR', points: 3 },
+        { name: 'Tee Higgins', team: 'Bengals', position: 'WR', points: 0 },
+        { name: 'Travis Hunter', team: 'Jaguars', position: 'WR', points: 0 },
+        { name: 'Chris Godwin', team: 'Buccaneers', position: 'WR', points: 0 },
+        { name: 'Mason Taylor', team: 'Jets', position: 'WR', points: 0 },
+        { name: 'Harrison Butker', team: 'Chiefs', position: 'K', points: 6 },
+        { name: 'Daniel Carlson', team: 'Raiders', position: 'K', points: 5 },
+        { name: 'Bills', team: 'Bills', position: 'DEF', points: 0 },
+        { name: 'Packers', team: 'Packers', position: 'DEF', points: 0 }
+      ],
+      total: 76.0  // WK. reference shows 65.0
+    },
+    'Sean': {
+      owner_id: 10,
+      players: [
+        { name: 'Justin Herbert', team: 'Chargers', position: 'QB', points: 24 },
+        { name: 'Joe Flacco', team: 'Browns', position: 'QB', points: 14 },
+        { name: 'Cam Ward', team: 'Titans', position: 'QB', points: 0 },
+        { name: 'Breece Hall', team: 'Jets', position: 'RB', points: 9 },
+        { name: 'Travis Etienne Jr.', team: 'Jaguars', position: 'RB', points: 9 },
+        { name: 'Devin Singletary', team: 'Giants', position: 'RB', points: 0 },
+        { name: 'Kendre Miller', team: 'Saints', position: 'RB', points: 0 },
+        { name: 'Najee Harris', team: 'Chargers', position: 'RB', points: 0 },
+        { name: 'Rhamondre Stevenson', team: 'Patriots', position: 'RB', points: 0 },
+        { name: 'Garrett Wilson', team: 'Jets', position: 'WR', points: 14 },
+        { name: 'Justin Jefferson', team: 'Vikings', position: 'WR', points: 8 },
+        { name: 'Chris Olave', team: 'Saints', position: 'WR', points: 3 },
+        { name: 'Jaylen Waddle', team: 'Dolphins', position: 'WR', points: 0 },
+        { name: 'Rashod Bateman', team: 'Ravens', position: 'WR', points: 0 },
+        { name: 'Tyler Boyd', team: 'Titans', position: 'WR', points: 0 },
+        { name: 'Cameron Dicker', team: 'Chargers', position: 'K', points: 5.5 },
+        { name: 'Jake Moody', team: '49ers', position: 'K', points: 3 },
+        { name: '49ers', team: '49ers', position: 'DEF', points: 0 },
+        { name: 'Jets', team: 'Jets', position: 'DEF', points: 0 }
+      ],
+      total: 89.5  // WK. reference shows 86.5
+    },
+    'Eli': {
+      owner_id: 11,
+      players: [
+        { name: 'Patrick Mahomes', team: 'Chiefs', position: 'QB', points: 25 },
+        { name: 'Tua Tagovailoa', team: 'Dolphins', position: 'QB', points: 7 },
+        { name: 'Tyler Shough', team: 'Saints', position: 'QB', points: 0 },
+        { name: 'Aaron Jones Sr.', team: 'Vikings', position: 'RB', points: 8 },
+        { name: 'Trey Benson', team: 'Cardinals', position: 'RB', points: 3 },
+        { name: 'David Montgomery', team: 'Lions', position: 'RB', points: 0 },
+        { name: 'Omarion Hampton', team: 'Chargers', position: 'RB', points: 0 },
+        { name: 'Joe Mixon', team: 'Texans', position: 'RB', points: 0 },
+        { name: 'CeeDee Lamb', team: 'Cowboys', position: 'WR', points: 9 },
+        { name: 'Joshua Palmer', team: 'Bills', position: 'WR', points: 3 },
+        { name: 'Amon-Ra St. Brown', team: 'Lions', position: 'WR', points: 0 },
+        { name: 'Matthew Golden', team: 'Packers', position: 'WR', points: 0 },
+        { name: 'Darnell Mooney', team: 'Falcons', position: 'WR', points: 0 },
+        { name: 'Trey McBride', team: 'Cardinals', position: 'WR', points: 3 },
+        { name: 'T.J. Hockenson', team: 'Vikings', position: 'WR', points: 0 },
+        { name: 'Wil Lutz', team: 'Broncos', position: 'K', points: 5 },
+        { name: 'Matt Gay', team: 'Colts', position: 'K', points: 1.5 },
+        { name: 'Chiefs', team: 'Chiefs', position: 'DEF', points: 0 },
+        { name: 'Seahawks', team: 'Seahawks', position: 'DEF', points: 0 }
+      ],
+      total: 64.5  // WK. reference shows 63.0
+    },
+    'Matt': {
+      owner_id: 12,
+      players: [
+        { name: 'C.J. Stroud', team: 'Texans', position: 'QB', points: 6 },
+        { name: 'Bryce Young', team: 'Panthers', position: 'QB', points: 5 },
+        { name: 'Russell Wilson', team: 'Giants', position: 'QB', points: 0 },
+        { name: 'Derrick Henry', team: 'Ravens', position: 'RB', points: 28 },
+        { name: 'Christian McCaffrey', team: '49ers', position: 'RB', points: 6 },
+        { name: 'Isiah Pacheco', team: 'Chiefs', position: 'RB', points: 0 },
+        { name: 'Jerome Ford', team: 'Browns', position: 'RB', points: 0 },
+        { name: 'Justice Hill', team: 'Ravens', position: 'RB', points: 0 },
+        { name: 'Rachaad White', team: 'Buccaneers', position: 'RB', points: 0 },
+        { name: 'Michael Pittman Jr.', team: 'Colts', position: 'WR', points: 14 },
+        { name: 'DJ Moore', team: 'Bears', position: 'WR', points: 3 },
+        { name: 'A.J. Brown', team: 'Eagles', position: 'WR', points: 0 },
+        { name: 'DeVonta Smith', team: 'Eagles', position: 'WR', points: 0 },
+        { name: 'Rashid Shaheed', team: 'Saints', position: 'WR', points: 0 },
+        { name: 'Tyreek Hill', team: 'Dolphins', position: 'WR', points: 0 },
+        { name: 'Jake Elliott', team: 'Eagles', position: 'K', points: 3.5 },
+        { name: 'Tyler Bass', team: 'Bills', position: 'K', points: 0 },
+        { name: 'Dolphins', team: 'Dolphins', position: 'DEF', points: 0 },
+        { name: 'Lions', team: 'Lions', position: 'DEF', points: 0 }
+      ],
+      total: 65.5
+    }
+  },
+  week: 1,
+  season: 2025
+};
+
+module.exports = week1_2025_stats;

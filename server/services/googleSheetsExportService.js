@@ -163,8 +163,8 @@ class GoogleSheetsExportService {
             return player.isScoring ? `*${pointStr}` : pointStr;
         };
         
-        // QB Section (3 rows typical, 4 max)
-        const maxQBs = 3;
+        // QB Section (4 rows max to accommodate all teams)
+        const maxQBs = 4;
         for (let i = 0; i < maxQBs; i++) {
             const row = ['QB'];
             teams.forEach(team => {
@@ -184,8 +184,8 @@ class GoogleSheetsExportService {
             rows.push(Array(headerRow.length).fill(''));
         }
         
-        // RB Section (5-6 rows)
-        const maxRBs = 6;
+        // RB Section (7 rows max to accommodate all teams)
+        const maxRBs = 7;
         for (let i = 0; i < maxRBs; i++) {
             const row = ['RB'];
             teams.forEach(team => {
@@ -205,8 +205,8 @@ class GoogleSheetsExportService {
             rows.push(Array(headerRow.length).fill(''));
         }
         
-        // WR Section (includes TEs) (6-7 rows)
-        const maxWRs = 7;
+        // WR Section (includes TEs) (8 rows max for future-proofing)
+        const maxWRs = 8;
         for (let i = 0; i < maxWRs; i++) {
             const row = ['WR'];
             teams.forEach(team => {

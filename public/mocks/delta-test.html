@@ -1,0 +1,879 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Delta Display Test Dashboard - Statfink</title>
+    <link href="/statfink-styles.css" rel="stylesheet" type="text/css" media="all" />
+    <script src="/js/delta-manager.js"></script>
+    <style>
+        /* Test dashboard specific styles */
+        .test-controls {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 350px;
+            background: white;
+            border: 2px solid #556;
+            padding: 15px;
+            z-index: 1000;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .test-controls h3 {
+            margin-top: 0;
+            background: #556;
+            color: white;
+            padding: 8px;
+            margin: -15px -15px 10px -15px;
+        }
+        
+        .test-button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 8px;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            font-family: arial;
+            font-size: 12px;
+        }
+        
+        .test-button:hover {
+            background: #e0e0e0;
+        }
+        
+        .test-button.active {
+            background: #b83535;
+            color: white;
+        }
+        
+        .delta-timeline {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            font-size: 11px;
+        }
+        
+        .delta-entry {
+            margin: 3px 0;
+            padding: 3px;
+            background: white;
+            border-left: 3px solid #2e7d32;
+        }
+        
+        .delta-entry.expired {
+            border-left-color: #999;
+            opacity: 0.6;
+        }
+        
+        .timer-display {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            background: #333;
+            color: #0f0;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        
+        .stats-display {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f0f0f0;
+            font-size: 11px;
+        }
+        
+        .debug-log {
+            margin: 10px 0;
+            padding: 10px;
+            background: black;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .scenario-group {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background: #fafafa;
+        }
+        
+        .scenario-group h4 {
+            margin: 0 0 5px 0;
+            font-size: 12px;
+            color: #556;
+        }
+        
+        /* Visual indicators for delta state */
+        .delta-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .delta-indicator.active {
+            background: #2e7d32;
+            animation: pulse 1s infinite;
+        }
+        
+        .delta-indicator.expired {
+            background: #999;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* Production-like styles for delta display */
+        .score-delta {
+            color: #00ff00;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .score-changed {
+            font-weight: bold;
+        }
+        
+        .stat-changed {
+            font-weight: bold;
+        }
+        
+        .playernameinprogress {
+            font-weight: bold;
+        }
+        
+        /* Player row styles */
+        .playerrow1 {
+            background-color: #f8f8f8;
+        }
+        
+        .playerrow2 {
+            background-color: #ffffff;
+        }
+        
+        .totalsrow {
+            background-color: #333;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .pointsrow {
+            background-color: #666;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Position colors */
+        .position-QB { color: #8B0000; }
+        .position-RB { color: #006400; }
+        .position-WR { color: #000080; }
+        .position-TE { color: #FF8C00; }
+        .position-K { color: #800080; }
+        .position-DST, .position-DEF { color: #008B8B; }
+        
+        /* Table cell styles */
+        .opp { width: 50px; }
+        .status { width: 80px; }
+        .fanpts { font-weight: bold; }
+        .fanptsbig { font-size: 14px; font-weight: bold; }
+        .playername { max-width: 200px; }
+    </style>
+</head>
+<body onload="initDeltaTest()">
+    <!-- Main Statfink content (copy from statfink.html) -->
+    <div id="controls" class="controls" style="display: none;">
+        <div id="updatemsg" style="display: inline-block; font-size: 11px; color: #333;"></div>
+    </div>
+    <div id="lastupdate" class="lastupdate" style="display: none;"></div>
+
+    <div id="leaguediv">
+        <table class="leaguetable" id="leaguetable" width="250">
+            <tbody>
+                <tr>
+                    <td class="fleague" id="fleague" colspan="2" nowrap="nowrap">Delta Test Mode</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="nfldiv" class="nfldiv">
+            <table class="nfltable" id="nfltable" width="250">
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div id="teams">
+        <div id="team0div">
+            <table class="matchuptable" id="team0" width="325px">
+                <tbody>
+                    <tr id="fteam0row">
+                        <td class="fteam" id="fteam0" colspan="5" nowrap="nowrap">Team 1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="team1div">
+            <table class="matchuptable" id="team1" width="325px">
+                <tbody>
+                    <tr id="fteam1row">
+                        <td class="fteam" id="fteam1" colspan="5" nowrap="nowrap">Team 2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Test Control Panel -->
+    <div class="test-controls">
+        <h3>Delta Test Controls</h3>
+        
+        <div class="timer-display" id="timer">00:00</div>
+        
+        <div class="scenario-group">
+            <h4>Quick Scenarios</h4>
+            <button class="test-button" onclick="runScenario('touchdown')">🏈 Touchdown (+7.2)</button>
+            <button class="test-button" onclick="runScenario('fieldgoal')">🥅 Field Goal (+3.0)</button>
+            <button class="test-button" onclick="runScenario('teamscores')">👥 Team Scores (Multiple)</button>
+            <button class="test-button" onclick="runScenario('correction')">❌ Stat Correction (-6.0)</button>
+            <button class="test-button" onclick="runScenario('defense')">🛡️ Defense TD (+8.0)</button>
+            <button class="test-button" onclick="runScenario('bigplay')">💥 Big Play (+7.0)</button>
+        </div>
+        
+        <div class="scenario-group">
+            <h4>Timing Tests</h4>
+            <button class="test-button" onclick="startExpirationTest()">⏱️ 30-Second Expiration Test</button>
+            <button class="test-button" onclick="rapidFireTest()">⚡ Rapid Fire Updates</button>
+            <button class="test-button" onclick="simulateTimePass(10)">⏩ Skip 10 Seconds</button>
+            <button class="test-button" onclick="simulateTimePass(30)">⏩ Skip 30 Seconds</button>
+        </div>
+        
+        <div class="scenario-group">
+            <h4>Control Actions</h4>
+            <button class="test-button" onclick="resetDeltaState()">🔄 Reset All Deltas</button>
+            <button class="test-button" onclick="refreshDisplay()">🔃 Refresh Display</button>
+            <button class="test-button" onclick="toggleAutoRefresh()">⏸️ Toggle Auto-Refresh</button>
+            <button class="test-button" onclick="exportState()">💾 Export State</button>
+            <button class="test-button" onclick="takeScreenshot()">📸 Take Screenshot</button>
+        </div>
+        
+        <div class="stats-display" id="stats">
+            <strong>Statistics:</strong><br>
+            Active Deltas: <span id="activeCount">0</span><br>
+            Total Created: <span id="totalCount">0</span><br>
+            Expired: <span id="expiredCount">0</span><br>
+            Runtime: <span id="runtime">0s</span>
+        </div>
+        
+        <div class="delta-timeline" id="timeline">
+            <strong>Active Deltas:</strong><br>
+            <div id="deltaList"></div>
+        </div>
+        
+        <div class="debug-log" id="debugLog">
+            <div>Debug console initialized...</div>
+        </div>
+    </div>
+
+    <script>
+        // Copy necessary functions from statfink.html
+        var bench = 0;
+        var breakout = 0;
+        var matchup = 0;
+        var view = 0;
+        var league = "pfl";
+        var currentMatchupId = 1;
+        var currentWeek = 99;  // Special delta test week
+        var currentSeason = "mock";
+        var autoRefreshEnabled = true;
+        var refreshInterval = null;
+        var timerInterval = null;
+        var startTime = Date.now();
+        
+        // Test-specific variables
+        var testStartTime = Date.now();
+        var deltaRefreshInterval = null;
+        
+        // Delta tracking now handled by DeltaManager
+        
+        // Initialize layout
+        document.getElementById("team0div").className = "floatleftpad";
+        document.getElementById("team1div").className = "floatleft";
+        document.getElementById("team0").className = "floatleft";
+        document.getElementById("teams").className = "absteams";
+        document.getElementById("leaguediv").className = "absleague";
+        
+        function initDeltaTest() {
+            log("Delta test dashboard initialized");
+            
+            // Initialize DeltaManager for production-like delta handling
+            DeltaManager.init();
+            
+            // Start timer
+            timerInterval = setInterval(updateTimer, 100);
+            
+            // Start delta state refresh
+            deltaRefreshInterval = setInterval(refreshDeltaState, 1000);
+            
+            // Load initial data
+            loadMockWeekDelta();
+            
+            // Start auto-refresh if enabled
+            if (autoRefreshEnabled) {
+                refreshInterval = setInterval(refreshDisplay, 5000);
+            }
+        }
+        
+        function updateTimer() {
+            const elapsed = Math.floor((Date.now() - testStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function log(message) {
+            const logDiv = document.getElementById('debugLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            
+            // Also log to console
+            console.log(`[Delta Test] ${message}`);
+        }
+        
+        async function runScenario(scenario) {
+            log(`Running scenario: ${scenario}`);
+            
+            // Simulate delta updates based on scenario
+            const playerId = '4431611'; // Caleb Williams for testing
+            
+            switch(scenario) {
+                case 'touchdown':
+                    simulateDelta(playerId, 7.2);
+                    break;
+                case 'fieldgoal':
+                    simulateDelta('2473037', 3.0); // Jason Myers
+                    break;
+                case 'teamscores':
+                    // Multiple players score
+                    simulateDelta('4431611', 4.0);
+                    simulateDelta('4430807', 6.0);
+                    simulateDelta('4635008', 7.2);
+                    break;
+                case 'statcorrection':
+                    simulateDelta('4430807', -6.0); // Negative delta
+                    break;
+                case 'defensetd':
+                    simulateDelta('DEF_WAS', 8.0);
+                    break;
+                case 'bigplay':
+                    simulateDelta('4567750', 7.0);
+                    break;
+            }
+            
+            log(`Scenario completed: ${scenario}`);
+            refreshDisplay();
+            updateDeltaDisplay();
+        }
+        
+        function simulateDelta(playerId, deltaValue) {
+            // Use DeltaManager to handle delta (production logic)
+            DeltaManager.addPlayerDelta(playerId, deltaValue, []);
+            
+            // Update display immediately
+            updateDeltaDisplay();
+            
+            // Note: DeltaManager handles the 30-second cleanup automatically
+        }
+        
+        function updateDeltaDisplay() {
+            const activeDeltas = DeltaManager.getActiveDeltas();
+            const activeCount = activeDeltas.players.length + activeDeltas.teams.length;
+            
+            document.getElementById('activeCount').textContent = activeCount;
+            document.getElementById('totalCount').textContent = '-'; // Not tracked with DeltaManager
+            document.getElementById('expiredCount').textContent = '-'; // Not tracked with DeltaManager
+            
+            // Update delta list
+            const deltaList = document.getElementById('deltaList');
+            deltaList.innerHTML = '';
+            
+            // Show active player deltas
+            activeDeltas.players.forEach(playerDelta => {
+                const div = document.createElement('div');
+                div.textContent = `Player ${playerDelta.playerId}: ${playerDelta.delta > 0 ? '+' : ''}${playerDelta.delta.toFixed(2)} (${playerDelta.remainingTime}s remaining)`;
+                deltaList.appendChild(div);
+            });
+            
+            // Show active team deltas
+            activeDeltas.teams.forEach(teamDelta => {
+                const div = document.createElement('div');
+                div.textContent = `Team ${teamDelta.matchupId}-${teamDelta.team}: ${teamDelta.delta > 0 ? '+' : ''}${teamDelta.delta.toFixed(2)} (${teamDelta.remainingTime}s remaining)`;
+                deltaList.appendChild(div);
+            });
+            
+            if (activeCount === 0) {
+                deltaList.innerHTML = '<em>No active deltas</em>';
+            }
+        }
+        
+        async function startExpirationTest() {
+            log("Starting 30-second expiration test...");
+            
+            // Create a test delta
+            await runScenario('touchdown');
+            
+            // Set up countdown
+            let countdown = 30;
+            const countdownInterval = setInterval(async () => {
+                countdown--;
+                log(`Expiration countdown: ${countdown} seconds`);
+                
+                if (countdown === 0) {
+                    clearInterval(countdownInterval);
+                    log("Delta should expire NOW");
+                    setTimeout(() => {
+                        refreshDeltaState();
+                        log("Checking if delta expired...");
+                    }, 1000);
+                }
+            }, 1000);
+        }
+        
+        async function rapidFireTest() {
+            log("Starting rapid fire test...");
+            
+            const scenarios = ['touchdown', 'fieldgoal', 'defense', 'bigplay'];
+            for (let i = 0; i < scenarios.length; i++) {
+                await runScenario(scenarios[i]);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+            
+            log("Rapid fire test complete");
+        }
+        
+        async function resetDeltaState() {
+            log("Resetting delta state...");
+            
+            try {
+                // Clear all deltas using DeltaManager
+                DeltaManager.clearAll();
+                
+                testStartTime = Date.now();
+                log("Delta state reset");
+                refreshDisplay();
+                updateDeltaDisplay();
+            } catch (error) {
+                log(`Error resetting: ${error.message}`);
+            }
+        }
+        
+        async function refreshDeltaState() {
+            try {
+                const response = await fetch('/api/matchups/mock/delta/state');
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update statistics
+                    document.getElementById('activeCount').textContent = data.activeDeltas.length;
+                    document.getElementById('totalCount').textContent = data.stats.totalCreated;
+                    document.getElementById('expiredCount').textContent = data.stats.expiredCount;
+                    document.getElementById('runtime').textContent = `${data.stats.runningTimeSeconds.toFixed(1)}s`;
+                    
+                    // Update timeline
+                    const deltaList = document.getElementById('deltaList');
+                    deltaList.innerHTML = '';
+                    
+                    data.activeDeltas.forEach(delta => {
+                        const entry = document.createElement('div');
+                        entry.className = 'delta-entry';
+                        
+                        const indicator = document.createElement('span');
+                        indicator.className = 'delta-indicator active';
+                        
+                        const value = delta.pointsDelta || delta.scoreDelta || 0;
+                        const name = delta.playerName || delta.teamName || delta.playerId || 'Unknown';
+                        
+                        entry.innerHTML = `
+                            <span class="delta-indicator active"></span>
+                            ${name}: <strong>${value > 0 ? '+' : ''}${value.toFixed(2)}</strong>
+                            (${delta.remainingTime}s remaining)
+                        `;
+                        
+                        deltaList.appendChild(entry);
+                    });
+                    
+                    if (data.activeDeltas.length === 0) {
+                        deltaList.innerHTML = '<em>No active deltas</em>';
+                    }
+                }
+            } catch (error) {
+                // Silently fail for state refresh
+            }
+        }
+        
+        async function refreshDisplay() {
+            // Refresh both the matchup list and current matchup details
+            try {
+                // Reload the matchup list to show updated scores with deltas
+                const response = await fetch('/api/matchups/mock/99/mock');
+                const data = await response.json();
+                
+                if (data.success && data.data.length > 0) {
+                    // Display updated matchup list with deltas applied
+                    displayMatchupList(data.data);
+                }
+                
+                // Refresh the current matchup display
+                if (currentMatchupId) {
+                    await loadMatchupDetails(currentMatchupId);
+                }
+                
+                log("Display refreshed");
+            } catch (error) {
+                log(`Error refreshing display: ${error.message}`);
+            }
+        }
+        
+        function toggleAutoRefresh() {
+            autoRefreshEnabled = !autoRefreshEnabled;
+            
+            if (autoRefreshEnabled) {
+                refreshInterval = setInterval(refreshDisplay, 5000);
+                log("Auto-refresh enabled");
+            } else {
+                clearInterval(refreshInterval);
+                log("Auto-refresh disabled");
+            }
+        }
+        
+        async function exportState() {
+            try {
+                const response = await fetch('/api/matchups/mock/delta/state');
+                const data = await response.json();
+                
+                const blob = new Blob([JSON.stringify(data.state, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `delta-state-${Date.now()}.json`;
+                a.click();
+                
+                log("State exported");
+            } catch (error) {
+                log(`Error exporting: ${error.message}`);
+            }
+        }
+        
+        function takeScreenshot() {
+            log("Screenshot functionality would capture current state");
+            // This would integrate with the screenshot capture script
+        }
+        
+        function simulateTimePass(seconds) {
+            log(`Simulating ${seconds} seconds passing...`);
+            // This would call the backend to simulate time passing
+            testStartTime -= seconds * 1000;
+        }
+        
+        async function loadMockWeekDelta() {
+            log("Loading mock week delta data...");
+            
+            // Load the special delta test week (week 99)
+            try {
+                // First load the matchup list
+                const response = await fetch('/api/matchups/mock/99/mock');
+                const data = await response.json();
+                
+                if (data.success && data.data.length > 0) {
+                    log("Mock week delta loaded successfully");
+                    
+                    // Display matchup list in left panel
+                    displayMatchupList(data.data);
+                    
+                    // Load the first matchup details
+                    await loadMatchupDetails(1);
+                }
+            } catch (error) {
+                log(`Error loading mock week: ${error.message}`);
+            }
+        }
+        
+        function displayMatchupList(matchups) {
+            const tbody = document.getElementById("leaguetable").getElementsByTagName("tbody")[0];
+            
+            // Clear existing rows except header
+            while (tbody.rows.length > 1) {
+                tbody.deleteRow(1);
+            }
+            
+            // Store base scores if not already stored
+            if (!window.baseMatchupScores) {
+                window.baseMatchupScores = {};
+                matchups.forEach(m => {
+                    window.baseMatchupScores[`${m.matchup_id}_team1`] = parseFloat(m.team1_points);
+                    window.baseMatchupScores[`${m.matchup_id}_team2`] = parseFloat(m.team2_points);
+                });
+            }
+            
+            // Add matchup rows
+            matchups.forEach((matchup, index) => {
+                // Calculate deltas for this matchup
+                let team1Delta = 0;
+                let team2Delta = 0;
+                
+                // For matchup 1 (owner 7 vs 8), apply player deltas
+                if (matchup.matchup_id === 1) {
+                    // Sum deltas for team 1 (owner 7) players
+                    ['4431611', '4430807', '4890973', '4567750', '4635008', '4431459', '2473037', 'DEF_WAS'].forEach(playerId => {
+                        const playerDelta = DeltaManager.getPlayerDelta(playerId);
+                        if (playerDelta) {
+                            team1Delta += playerDelta.delta;
+                        }
+                    });
+                    
+                    // Sum deltas for team 2 (owner 8) players
+                    ['3917792', '4241985', '4362238', '4047650', '4241372', '4432665', '17372', 'DEF_IND'].forEach(playerId => {
+                        const playerDelta = DeltaManager.getPlayerDelta(playerId);
+                        if (playerDelta) {
+                            team2Delta += playerDelta.delta;
+                        }
+                    });
+                }
+                
+                const team1Score = window.baseMatchupScores[`${matchup.matchup_id}_team1`] + team1Delta;
+                const team2Score = window.baseMatchupScores[`${matchup.matchup_id}_team2`] + team2Delta;
+                
+                // Team 1 row
+                const row1 = tbody.insertRow(-1);
+                row1.className = index % 2 ? "matchuprow2" : "matchuprow1";
+                row1.onclick = () => loadMatchupDetails(matchup.matchup_id);
+                row1.style.cursor = "pointer";
+                
+                const team1Cell = row1.insertCell(0);
+                team1Cell.textContent = matchup.team1_owner;
+                team1Cell.nowrap = true;
+                
+                const score1Cell = row1.insertCell(1);
+                if (team1Delta !== 0) {
+                    score1Cell.innerHTML = `<span class="score-delta">${team1Delta > 0 ? '+' : ''}${team1Delta.toFixed(2)}</span> ${team1Score.toFixed(2)}`;
+                    score1Cell.className = "fanpts score-changed";
+                } else {
+                    score1Cell.textContent = team1Score.toFixed(2);
+                    score1Cell.className = "fanpts";
+                }
+                score1Cell.align = "right";
+                
+                // Team 2 row
+                const row2 = tbody.insertRow(-1);
+                row2.className = index % 2 ? "matchuprow2" : "matchuprow1";
+                row2.onclick = () => loadMatchupDetails(matchup.matchup_id);
+                row2.style.cursor = "pointer";
+                
+                const team2Cell = row2.insertCell(0);
+                team2Cell.textContent = matchup.team2_owner;
+                team2Cell.nowrap = true;
+                
+                const score2Cell = row2.insertCell(1);
+                if (team2Delta !== 0) {
+                    score2Cell.innerHTML = `<span class="score-delta">${team2Delta > 0 ? '+' : ''}${team2Delta.toFixed(2)}</span> ${team2Score.toFixed(2)}`;
+                    score2Cell.className = "fanpts score-changed";
+                } else {
+                    score2Cell.textContent = team2Score.toFixed(2);
+                    score2Cell.className = "fanpts";
+                }
+                score2Cell.align = "right";
+            });
+        }
+        
+        async function loadMatchupDetails(matchupId) {
+            try {
+                const response = await fetch(`/api/matchups/mock-game/${matchupId}?week=99&season=mock`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentMatchupId = matchupId;
+                    displayMatchupDetails(data.data);
+                    log(`Loaded matchup ${matchupId}`);
+                }
+            } catch (error) {
+                log(`Error loading matchup details: ${error.message}`);
+            }
+        }
+        
+        function displayMatchupDetails(data) {
+            const matchup = data.matchup;
+            
+            // Update team headers
+            document.getElementById("fteam0").textContent = `${matchup.team1_owner} - ${matchup.team1_name}`;
+            document.getElementById("fteam1").textContent = `${matchup.team2_owner} - ${matchup.team2_name}`;
+            
+            // Display team rosters
+            displayTeamRoster("team0", data.team1.starters, matchup.team1_points);
+            displayTeamRoster("team1", data.team2.starters, matchup.team2_points);
+        }
+        
+        // Format player stats based on position
+        function formatPlayerStatsCompact(position, stats, changedStats = []) {
+            if (!stats) return '0 Stats';
+            
+            let details = [];
+            
+            // Helper function to wrap entire stat phrase in bold span if changed
+            const wrapIfChanged = (statPhrase, statNames) => {
+                // For now, stats aren't tracked as changed in test mode
+                // Production tracks this differently
+                return statPhrase;
+            };
+            
+            switch(position) {
+                case 'QB':
+                    if ((stats.passing_yards || 0) > 0) details.push(wrapIfChanged(`${stats.passing_yards} Pyds`, 'passing_yards'));
+                    if ((stats.rushing_yards || 0) > 0) details.push(wrapIfChanged(`${stats.rushing_yards} Rshyds`, 'rushing_yards'));
+                    if ((stats.passing_tds || 0) + (stats.rushing_tds || 0) > 0) {
+                        const tds = (stats.passing_tds || 0) + (stats.rushing_tds || 0);
+                        details.push(wrapIfChanged(`${tds} TDs`, ['passing_tds', 'rushing_tds']));
+                    }
+                    break;
+                case 'RB':
+                    if ((stats.rushing_yards || 0) > 0) details.push(wrapIfChanged(`${stats.rushing_yards} Rshyds`, 'rushing_yards'));
+                    if ((stats.receptions || 0) > 0) details.push(wrapIfChanged(`${stats.receptions} Recs`, 'receptions'));
+                    if ((stats.receiving_yards || 0) > 0) details.push(wrapIfChanged(`${stats.receiving_yards} Recyds`, 'receiving_yards'));
+                    if ((stats.rushing_tds || 0) + (stats.receiving_tds || 0) > 0) {
+                        const tds = (stats.rushing_tds || 0) + (stats.receiving_tds || 0);
+                        details.push(wrapIfChanged(`${tds} TDs`, ['rushing_tds', 'receiving_tds']));
+                    }
+                    break;
+                case 'WR':
+                case 'TE':
+                    if ((stats.receptions || 0) > 0) details.push(wrapIfChanged(`${stats.receptions} Recs`, 'receptions'));
+                    if ((stats.receiving_yards || 0) > 0) details.push(wrapIfChanged(`${stats.receiving_yards} Recyds`, 'receiving_yards'));
+                    if ((stats.receiving_tds || 0) > 0) details.push(wrapIfChanged(`${stats.receiving_tds} TDs`, 'receiving_tds'));
+                    break;
+                case 'K':
+                    if ((stats.field_goals_made || 0) > 0) details.push(wrapIfChanged(`${stats.field_goals_made} FG`, 'field_goals_made'));
+                    if ((stats.extra_points_made || 0) > 0) details.push(wrapIfChanged(`${stats.extra_points_made} XP`, 'extra_points_made'));
+                    break;
+                case 'DST':
+                case 'DEF':
+                    if ((stats.sacks || 0) > 0) details.push(wrapIfChanged(`${stats.sacks} Sck`, 'sacks'));
+                    if ((stats.def_interceptions || 0) > 0) details.push(wrapIfChanged(`${stats.def_interceptions} Int`, 'def_interceptions'));
+                    if ((stats.points_allowed || 0) > 0) details.push(wrapIfChanged(`${stats.points_allowed} PtsAllow`, 'points_allowed'));
+                    if ((stats.yards_allowed || 0) > 0) details.push(wrapIfChanged(`${stats.yards_allowed} YdsAllow`, 'yards_allowed'));
+                    break;
+            }
+            
+            return details.length > 0 ? details.join(', ') : '0 Stats';
+        }
+        
+        function displayTeamRoster(tableId, players, totalPoints) {
+            const table = document.getElementById(tableId);
+            const tbody = table.getElementsByTagName("tbody")[0];
+            
+            // Clear existing rows except header
+            while (tbody.rows.length > 1) {
+                tbody.deleteRow(1);
+            }
+            
+            // Add header row
+            const headerRow = tbody.insertRow(-1);
+            headerRow.className = "pointsrow";
+            headerRow.innerHTML = `
+                <td>Pos</td>
+                <td>Player</td>
+                <td class="opp">Opp</td>
+                <td align="center">Game Status</td>
+                <td align="right">FanPts</td>
+            `;
+            
+            let rowIndex = 0;
+            let scoringTotalPoints = 0;
+            
+            // Add player rows
+            players.forEach((player) => {
+                const points = player.stats?.fantasy_points || 0;
+                const isScoring = player.is_scoring !== undefined ? player.is_scoring : true;
+                
+                if (isScoring) {
+                    scoringTotalPoints += points;
+                }
+                
+                // Main player row
+                const row = tbody.insertRow(-1);
+                row.className = rowIndex % 2 ? "playerrow2" : "playerrow1";
+                row.id = `${tableId}_player_${player.player_id}`;
+                
+                // Format player name with asterisk for scoring players
+                let playerName = player.name;
+                if (player.position === 'DEF' || player.position === 'DST') {
+                    playerName = player.team; // For defenses, just use team
+                }
+                const displayName = (isScoring && points > 0) ? `*${playerName}` : playerName;
+                
+                // Format game status
+                let gameStatus = player.game_status || 'Final';
+                if (gameStatus === 'InProgress' && player.game_time) {
+                    gameStatus = player.game_time;
+                }
+                
+                // Check for deltas using DeltaManager
+                const playerDelta = DeltaManager.getPlayerDelta(player.player_id);
+                const delta = playerDelta ? playerDelta.delta : 0;
+                const hasScoreDelta = Math.abs(delta) > 0.01;
+                
+                // Build points display with delta
+                let pointsDisplay = points.toFixed(2);
+                if (hasScoreDelta) {
+                    pointsDisplay = `<span class="score-delta">${delta > 0 ? '+' : ''}${delta.toFixed(2)}</span> ${points.toFixed(2)}`;
+                }
+                
+                // Determine if game is in progress
+                const isGameInProgress = gameStatus && gameStatus !== 'Final' && gameStatus !== 'Scheduled';
+                
+                row.innerHTML = `
+                    <td class="position position-${player.position}">${player.position}</td>
+                    <td class="${isGameInProgress ? 'playername playernameinprogress' : 'playername'}" nowrap>
+                        ${displayName}${player.position !== 'DEF' && player.position !== 'DST' ? ` &nbsp;&nbsp;${player.team}` : ''}
+                    </td>
+                    <td class="opp">${player.opp || '@OPP'}</td>
+                    <td class="status" align="center" nowrap>${gameStatus}</td>
+                    <td class="${hasScoreDelta ? 'points fanpts score-changed' : 'points fanpts'}" align="right" nowrap>${pointsDisplay}</td>
+                `;
+                
+                // Add stats row
+                const statsDisplay = formatPlayerStatsCompact(player.position, player.stats);
+                if (statsDisplay && statsDisplay !== '0 Stats') {
+                    const statsRow = tbody.insertRow(-1);
+                    statsRow.className = row.className;
+                    const statsCell = statsRow.insertCell(0);
+                    statsCell.colSpan = 5;
+                    statsCell.style.fontSize = 'smaller';
+                    statsCell.innerHTML = statsDisplay;
+                }
+                
+                rowIndex++;
+            });
+            
+            // Add total row (show scoring total)
+            const totalRow = tbody.insertRow(-1);
+            totalRow.className = "totalsrow";
+            totalRow.innerHTML = `
+                <td colspan="4" class="fanptsbig">Net Points</td>
+                <td class="fanptsbig" align="right">${scoringTotalPoints.toFixed(2)}</td>
+            `;
+        }
+    </script>
+</body>
+</html>

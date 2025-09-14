@@ -24,7 +24,11 @@ describe('Tank01Service', () => {
     jest.useRealTimers();
     // Close database connection to prevent logging after tests
     if (service && service.db && typeof service.db.close === 'function') {
-      await service.db.close();
+      try {
+        await service.db.close();
+      } catch (err) {
+        // Ignore close errors
+      }
     }
   });
 

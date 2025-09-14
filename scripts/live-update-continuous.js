@@ -1,22 +1,22 @@
 #!/usr/bin/env node
 const axios = require('axios');
 
-// This script runs continuously every minute to update live game scores
+// This script runs continuously every 60 seconds to update live game scores
 // It replaces the multiple time-windowed cron jobs with a single always-on process
 // The API will only update games that are actually in progress or recently scheduled
 
 async function runLiveUpdate() {
     const timestamp = new Date().toISOString();
-    
+
     try {
         console.log(`[${timestamp}] Starting continuous live game update...`);
-        
+
         const response = await axios.post('http://localhost:8000/api/internal/scheduler/live', {}, {
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
                 'X-Internal-Token': 'statfink-internal-cron'
             },
-            timeout: 25000 // 25 second timeout (must be less than 30 second interval)
+            timeout: 55000 // 55 second timeout (must be less than 60 second interval)
         });
         
         const result = response.data;
@@ -39,8 +39,8 @@ async function runLiveUpdate() {
 // Run immediately on startup
 runLiveUpdate();
 
-// Then run every 30 seconds
-setInterval(runLiveUpdate, 30000);
+// Then run every 60 seconds
+setInterval(runLiveUpdate, 60000);
 
 // Keep the process running
 process.on('SIGTERM', () => {

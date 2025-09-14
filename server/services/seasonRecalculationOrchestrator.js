@@ -106,11 +106,30 @@ class SeasonRecalculationOrchestrator {
             // Step 3: Calculate all fantasy points in a transaction
             logInfo('\n💯 Calculating fantasy points for all players...');
             await this.db.beginTransaction();
+            logInfo('  Transaction started');
             try {
                 await this.fantasyPointsCalculationService.calculateAllFantasyPoints(this.season);
                 await this.db.commit();
+                logInfo('  Transaction committed successfully');
+
+                // Verify a sample was actually updated
+                const sampleCheck = await this.db.get(
+                    'SELECT fantasy_points FROM player_stats WHERE season = ? AND fantasy_points > 0 LIMIT 1',
+                    [this.season]
+                );
+                if (sampleCheck) {
+                    logInfo(`  ✓ Verification: Found player with ${sampleCheck.fantasy_points} fantasy points`);
+                } else {
+                    logError('  ⚠️ WARNING: No players have fantasy_points > 0 after commit!');
+                }
             } catch (error) {
                 await this.db.rollback();
+                logError('  Transaction rolled back due to error:', error);
+                logError('  Error details:', {
+                    message: error?.message,
+                    stack: error?.stack?.split('\n')[0],
+                    type: error?.constructor?.name
+                });
                 throw error;
             }
             
@@ -180,6 +199,13 @@ class SeasonRecalculationOrchestrator {
             
             // Print summary
             await this.printSummary();
+
+            // Final verification
+            const finalCheck = await this.db.get(
+                'SELECT COUNT(*) as total, COUNT(CASE WHEN fantasy_points > 0 THEN 1 END) as with_points FROM player_stats WHERE season = ?',
+                [this.season]
+            );
+            logInfo(`\n📊 Final Verification: ${finalCheck.with_points}/${finalCheck.total} player stats have fantasy points > 0`);
             
         } catch (error) {
             logError('❌ Fatal error during recalculation:', error);

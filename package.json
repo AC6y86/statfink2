@@ -14,6 +14,8 @@
     "test:fast": "jest tests/unit/ --silent",
     "test:browser": "jest tests/browser/ --maxWorkers=1",
     "test:all": "node tests/test-all.js",
+    "test:verify2025": "node tests/2025/StatsComparator2025.js",
+    "test:verify2025:jest": "jest tests/2025/compareStats2025.test.js",
     "pm2:start": "pm2 start ecosystem.config.js",
     "pm2:stop": "pm2 stop statfink2",
     "pm2:restart": "pm2 restart statfink2",

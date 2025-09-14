@@ -123,16 +123,12 @@ class IndividualPlayerScoringService {
                 updates.passing_tds = (currentStats.passing_tds || 0) + 1;
                 break;
 
+            // Two-point conversions are handled directly from Tank01 stats
+            // Skip these to avoid double-counting
             case 'two_point_conversion_pass':
-                updates.two_point_conversions_pass = (currentStats.two_point_conversions_pass || 0) + 1;
-                break;
-
             case 'two_point_conversion_run':
-                updates.two_point_conversions_run = (currentStats.two_point_conversions_run || 0) + 1;
-                break;
-
             case 'two_point_conversion_rec':
-                updates.two_point_conversions_rec = (currentStats.two_point_conversions_rec || 0) + 1;
+                // Do nothing - Tank01 provides accurate 2pt data
                 break;
 
             // Add more play types as needed

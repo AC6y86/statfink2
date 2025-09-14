@@ -33,16 +33,25 @@ class FantasyPointsCalculationService {
                     skippedDST++;
                     continue;
                 }
-                
+
                 const fantasyPoints = await this.scoringService.calculateFantasyPoints(stats);
-                
-                await this.db.run(
+
+                // Add detailed logging for debugging
+                if (updated < 5 || (stats.rushing_tds > 0 || stats.receiving_tds > 0 || stats.passing_tds > 0)) {
+                    logInfo(`    Updating stat_id ${stats.stat_id}: calculated ${fantasyPoints} points (TDs: ${stats.rushing_tds}/${stats.receiving_tds}/${stats.passing_tds})`);
+                }
+
+                const updateResult = await this.db.run(
                     'UPDATE player_stats SET fantasy_points = ? WHERE stat_id = ?',
                     [fantasyPoints, stats.stat_id]
                 );
-                
+
+                if (updateResult.changes === 0) {
+                    logError(`    WARNING: No rows updated for stat_id ${stats.stat_id}`);
+                }
+
                 updated++;
-                
+
                 if (updated % 1000 === 0) {
                     logInfo(`    Progress: ${updated}/${allStats.length - skippedDST} stats updated`);
                 }

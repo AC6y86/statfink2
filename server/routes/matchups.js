@@ -57,7 +57,10 @@ async function getPlayerOpponent(db, player, week, season, stats) {
 // Reset mock game progression state
 router.post('/mock/reset', asyncHandler(async (req, res) => {
     const { resetAllProgressionStates } = require('../../tests/mockWeeks');
+    const { resetDeltaTracker } = require('../../tests/mockWeeks/deltaTracker');
+    
     resetAllProgressionStates();
+    resetDeltaTracker();
     
     res.json({
         success: true,
@@ -98,6 +101,88 @@ router.post('/mock/simulate-update/:week', asyncHandler(async (req, res) => {
     });
 }));
 
+// Delta testing endpoints
+router.post('/mock/delta/trigger', asyncHandler(async (req, res) => {
+    const { getDeltaTracker } = require('../../tests/mockWeeks/deltaTracker');
+    const { playerId, playerName, beforeStats, afterStats, matchupId, team, teamScore } = req.body;
+    
+    const tracker = getDeltaTracker();
+    let result = null;
+    
+    if (playerId && beforeStats && afterStats) {
+        // Player delta
+        tracker.setPlayerBaseline(playerId, beforeStats);
+        result = tracker.updatePlayerStats(playerId, afterStats, playerName);
+    } else if (matchupId && team && teamScore !== undefined) {
+        // Team delta
+        result = tracker.updateTeamScore(matchupId, team, teamScore);
+    }
+    
+    res.json({
+        success: true,
+        delta: result,
+        activeDeltas: tracker.getActiveDeltas(),
+        stats: tracker.getStats()
+    });
+}));
+
+router.get('/mock/delta/state', asyncHandler(async (req, res) => {
+    const { getDeltaTracker } = require('../../tests/mockWeeks/deltaTracker');
+    const tracker = getDeltaTracker();
+    
+    res.json({
+        success: true,
+        activeDeltas: tracker.getActiveDeltas(),
+        stats: tracker.getStats(),
+        timeline: tracker.getDeltaTimeline(),
+        state: tracker.exportState()
+    });
+}));
+
+router.post('/mock/delta/reset', asyncHandler(async (req, res) => {
+    const { resetDeltaTracker } = require('../../tests/mockWeeks/deltaTracker');
+    resetDeltaTracker();
+    
+    res.json({
+        success: true,
+        message: 'Delta tracker reset'
+    });
+}));
+
+router.post('/mock/delta/run-scenario', asyncHandler(async (req, res) => {
+    const { scenario } = req.body;
+    const deltaScenarios = require('../../tests/mockWeeks/deltaScenarios');
+    
+    let result;
+    switch(scenario) {
+        case 'touchdown':
+            result = deltaScenarios.runSingleTouchdown();
+            break;
+        case 'fieldgoal':
+            result = deltaScenarios.runFieldGoal();
+            break;
+        case 'teamscores':
+            result = deltaScenarios.runTeamScores();
+            break;
+        case 'correction':
+            result = deltaScenarios.runStatCorrection();
+            break;
+        case 'defense':
+            result = deltaScenarios.runDefenseScores();
+            break;
+        case 'bigplay':
+            result = deltaScenarios.runBigPlay();
+            break;
+        default:
+            throw new APIError('Invalid scenario', 400);
+    }
+    
+    res.json({
+        success: true,
+        scenario: result
+    });
+}));
+
 // Mock matchups for a specific week/season
 router.get('/mock/:week/:season', asyncHandler(async (req, res) => {
     const { week, season } = req.params;
@@ -135,28 +220,83 @@ router.get('/mock/:week/:season', asyncHandler(async (req, res) => {
     // Generate mock matchup data
     const mockMatchups = [];
     
-    // Create 6 matchups (12 teams total)
-    for (let i = 0; i < 6; i++) {
-        const matchupId = i + 1;
-        const team1Id = (i * 2) + 1;
-        const team2Id = (i * 2) + 2;
+    // Special handling for Week 99 (delta testing week)
+    if (weekNum === 99 && mockWeekData && mockWeekData.playerStats) {
+        // Calculate actual scores from week99.js data
+        const playerStats = mockWeekData.playerStats;
         
-        // For Week 1, all scores should be 0 (pre-game state)
-        const isWeek1PreGame = weekNum === 1 && mockWeekData && mockWeekData.metadata.scenario === "Pre-Game State";
+        // Group players by matchup and calculate team scores
+        const matchupScores = {};
+        playerStats.forEach(player => {
+            const key = `${player.matchup_id}_${player.owner_id}`;
+            if (!matchupScores[key]) {
+                matchupScores[key] = 0;
+            }
+            matchupScores[key] += player.fantasy_points || 0;
+        });
         
+        // Create matchup for owner 7 vs owner 8 (matchup_id 1)
         mockMatchups.push({
-            matchup_id: matchupId,
+            matchup_id: 1,
             week: weekNum,
             season: parseInt(season),
-            team1_id: team1Id,
-            team2_id: team2Id,
-            team1_name: `Team ${String.fromCharCode(65 + (i * 2))}`, // A, C, E, etc.
-            team1_owner: `Owner ${team1Id}`,
-            team1_points: isWeek1PreGame ? 0 : (120 + Math.random() * 40).toFixed(2),
-            team2_name: `Team ${String.fromCharCode(66 + (i * 2))}`, // B, D, F, etc.
-            team2_owner: `Owner ${team2Id}`,
-            team2_points: isWeek1PreGame ? 0 : (120 + Math.random() * 40).toFixed(2)
+            team1_id: 7,
+            team2_id: 8,
+            team1_name: "Team 7",
+            team1_owner: "Owner 7",
+            team1_points: (matchupScores['1_7'] || 98.5).toFixed(2),
+            team2_name: "Team 8",
+            team2_owner: "Owner 8",
+            team2_points: (matchupScores['1_8'] || 76.0).toFixed(2),
+            is_complete: 0
         });
+        
+        // Add placeholder matchups for others
+        for (let i = 1; i < 6; i++) {
+            const matchupId = i + 1;
+            const team1Id = (i * 2) + 1;
+            const team2Id = (i * 2) + 2;
+            
+            mockMatchups.push({
+                matchup_id: matchupId,
+                week: weekNum,
+                season: parseInt(season),
+                team1_id: team1Id,
+                team2_id: team2Id,
+                team1_name: `Team ${String.fromCharCode(65 + (i * 2))}`,
+                team1_owner: `Owner ${team1Id}`,
+                team1_points: (120 + Math.random() * 40).toFixed(2),
+                team2_name: `Team ${String.fromCharCode(66 + (i * 2))}`,
+                team2_owner: `Owner ${team2Id}`,
+                team2_points: (120 + Math.random() * 40).toFixed(2),
+                is_complete: 0
+            });
+        }
+    } else {
+        // Create 6 matchups (12 teams total) for other weeks
+        for (let i = 0; i < 6; i++) {
+            const matchupId = i + 1;
+            const team1Id = (i * 2) + 1;
+            const team2Id = (i * 2) + 2;
+            
+            // For Week 1, all scores should be 0 (pre-game state)
+            const isWeek1PreGame = weekNum === 1 && mockWeekData && mockWeekData.metadata.scenario === "Pre-Game State";
+            
+            mockMatchups.push({
+                matchup_id: matchupId,
+                week: weekNum,
+                season: parseInt(season),
+                team1_id: team1Id,
+                team2_id: team2Id,
+                team1_name: `Team ${String.fromCharCode(65 + (i * 2))}`, // A, C, E, etc.
+                team1_owner: `Owner ${team1Id}`,
+                team1_points: isWeek1PreGame ? 0 : (120 + Math.random() * 40).toFixed(2),
+                team2_name: `Team ${String.fromCharCode(66 + (i * 2))}`, // B, D, F, etc.
+                team2_owner: `Owner ${team2Id}`,
+                team2_points: isWeek1PreGame ? 0 : (120 + Math.random() * 40).toFixed(2),
+                is_complete: isWeek1PreGame ? 0 : (weekNum === 2 ? 1 : 0)
+            });
+        }
     }
     
     res.json({
@@ -203,6 +343,85 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
         }
     } catch (error) {
         mockWeekData = null;
+    }
+    
+    // Special handling for Week 99 (delta testing week)
+    if (weekNum === 99 && mockWeekData && mockWeekData.playerStats) {
+        // Use actual player data from week99.js
+        const playerStats = mockWeekData.playerStats;
+        const dstStats = mockWeekData.dstStats || [];
+        
+        // Group players by owner_id/matchup_id
+        const team1Players = playerStats.filter(p => p.owner_id === 7 && p.matchup_id === 1);
+        const team2Players = playerStats.filter(p => p.owner_id === 8 && p.matchup_id === 1);
+        
+        // Format players for the response
+        const formatPlayer = (player) => {
+            return {
+                player_id: player.player_id,
+                name: player.name,
+                position: player.position,
+                team: player.team,
+                opp: player.opp || '@OPP',
+                is_scoring: player.is_scoring !== undefined ? player.is_scoring : true,
+                game_status: player.game_status || 'InProgress',
+                game_time: player.game_quarter ? `Q${player.game_quarter[0]} ${player.game_time_remaining}` : null,
+                game_quarter: player.game_quarter,
+                game_time_remaining: player.game_time_remaining,
+                stats: {
+                    fantasy_points: player.fantasy_points || 0,
+                    passing_yards: player.passing_yards || 0,
+                    passing_tds: player.passing_tds || 0,
+                    rushing_yards: player.rushing_yards || 0,
+                    rushing_tds: player.rushing_tds || 0,
+                    receiving_yards: player.receiving_yards || 0,
+                    receiving_tds: player.receiving_tds || 0,
+                    receptions: player.receptions || 0,
+                    field_goals_made: player.field_goals_made || 0,
+                    field_goals_attempted: player.field_goals_attempted || 0,
+                    extra_points_made: player.extra_points_made || 0,
+                    extra_points_attempted: player.extra_points_attempted || 0,
+                    sacks: player.sacks || 0,
+                    def_interceptions: player.def_interceptions || 0,
+                    points_allowed: player.points_allowed || 0,
+                    yards_allowed: player.yards_allowed || 0
+                }
+            };
+        };
+        
+        // Calculate total points for each team
+        const team1Points = team1Players.reduce((sum, p) => sum + (p.fantasy_points || 0), 0);
+        const team2Points = team2Players.reduce((sum, p) => sum + (p.fantasy_points || 0), 0);
+        
+        const mockMatchupData = {
+            matchup: {
+                matchup_id: matchupIdNum,
+                week: weekNum,
+                season: parseInt(season),
+                team1_id: 7,
+                team2_id: 8,
+                team1_name: "Team 7",
+                team1_owner: "Owner 7",
+                team1_points: parseFloat(team1Points.toFixed(2)),
+                team2_name: "Team 8",
+                team2_owner: "Owner 8",
+                team2_points: parseFloat(team2Points.toFixed(2))
+            },
+            team1: {
+                starters: team1Players.map(formatPlayer)
+            },
+            team2: {
+                starters: team2Players.map(formatPlayer)
+            }
+        };
+        
+        res.json({
+            success: true,
+            data: mockMatchupData,
+            mock: true,
+            metadata: mockWeekData.metadata
+        });
+        return;
     }
     
     // For Week 1 (pre-game), all stats should be 0
