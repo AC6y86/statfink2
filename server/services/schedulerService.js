@@ -372,7 +372,24 @@ class SchedulerService {
                 results.errors.push(`Game scores: ${error.message}`);
             }
 
-            // 1b. Recalculate team scores for matchups
+            // 1b. Calculate scoring players (determines which 13 players count for each team)
+            try {
+                if (this.scoringPlayersService) {
+                    const scoringPlayersResult = await this.scoringPlayersService.calculateScoringPlayers(
+                        currentSettings.current_week,
+                        currentSettings.season_year
+                    );
+                    results.scoringPlayersUpdated = scoringPlayersResult.success;
+                    if (scoringPlayersResult.success) {
+                        logInfo(`Calculated scoring players: ${scoringPlayersResult.playersMarked} players marked as scoring`);
+                    }
+                }
+            } catch (error) {
+                logError('Failed to calculate scoring players', error);
+                results.errors.push(`Scoring players: ${error.message}`);
+            }
+
+            // 1c. Recalculate team scores for matchups (based on scoring players)
             try {
                 if (this.teamScoreService) {
                     const teamScoresResult = await this.teamScoreService.recalculateTeamScores(

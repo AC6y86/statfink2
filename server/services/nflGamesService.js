@@ -224,28 +224,35 @@ class NFLGamesService {
     /**
      * Update live scores for all active games
      */
-    async updateLiveScores() {
+    async updateLiveScores(week, season) {
         try {
-            logInfo('Starting live scores update');
+            logInfo(`Starting live scores update for Week ${week}, Season ${season}`);
 
             // Get all games that are currently live or recently scheduled
             // Check for games that are either:
             // 1. Currently in progress (based on status)
             // 2. Scheduled to start within the game window (using epoch time)
+            // 3. Recently finished (Final status but within 4 hours of expected end time)
             const currentEpoch = Math.floor(Date.now() / 1000);
             const gameWindowStart = currentEpoch - 900; // 15 minutes before current time
             const gameWindowEnd = currentEpoch + (3.5 * 3600); // 3.5 hours after current time
-            
+            const recentlyFinishedCutoff = currentEpoch - (4 * 3600); // 4 hours ago
+
             const liveGames = await this.db.all(`
                 SELECT game_id, week, season, home_team, away_team, status, game_time_epoch
-                FROM nfl_games 
-                WHERE (status != 'Final' AND status != 'Scheduled')
-                   OR (status = 'Scheduled' AND 
-                       game_time_epoch IS NOT NULL AND
-                       game_time_epoch BETWEEN ? AND ?)
-                   OR (status = 'Final' AND game_time IS NOT NULL)
+                FROM nfl_games
+                WHERE season = ?
+                  AND week = ?
+                  AND ((status != 'Final' AND status != 'Scheduled')
+                       OR (status = 'Scheduled' AND
+                           game_time_epoch IS NOT NULL AND
+                           game_time_epoch BETWEEN ? AND ?)
+                       OR (status = 'Scheduled' AND (home_score > 0 OR away_score > 0))
+                       OR (status = 'Final' AND
+                           game_time_epoch IS NOT NULL AND
+                           game_time_epoch > ?))
                 ORDER BY game_time_epoch
-            `, [gameWindowStart, gameWindowEnd]);
+            `, [season, week, gameWindowStart, gameWindowEnd, recentlyFinishedCutoff]);
 
             if (liveGames.length === 0) {
                 logInfo('No live games to update');
