@@ -1092,8 +1092,53 @@
                         <!-- Force Sync Current Week Games -->
                         <div style="border: 1px solid #dee2e6; padding: 15px; border-radius: 8px;">
                             <h4 style="margin-top: 0;">🔄 Full Sync Games</h4>
-                            <p style="font-size: 0.9em; color: #6c757d;">Force refresh ALL games for current week (bypasses cache)</p>
-                            <button class="btn" onclick="forceSyncCurrentWeekGames()" id="force-sync-games-btn">Full Sync Games (Force Refresh)</button>
+                            <p style="font-size: 0.9em; color: #6c757d;">Force refresh ALL games (bypasses cache)</p>
+
+                            <!-- Quick sync current week -->
+                            <div style="margin-bottom: 15px;">
+                                <button class="btn" onclick="forceSyncCurrentWeekGames()" id="force-sync-games-btn">Full Sync Current Week</button>
+                            </div>
+
+                            <!-- Custom week sync -->
+                            <div style="border-top: 1px solid #dee2e6; padding-top: 15px;">
+                                <p style="font-size: 0.9em; color: #6c757d; margin-bottom: 10px;">Or sync a specific week:</p>
+                                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                    <div>
+                                        <label style="display: block; font-size: 0.85em; margin-bottom: 3px;">Season:</label>
+                                        <select id="sync-season" style="padding: 6px; border: 1px solid #ced4da; border-radius: 4px;">
+                                            <option value="2025" selected>2025</option>
+                                            <option value="2024">2024</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.85em; margin-bottom: 3px;">Week:</label>
+                                        <select id="sync-week" style="padding: 6px; border: 1px solid #ced4da; border-radius: 4px;">
+                                            <option value="1">Week 1</option>
+                                            <option value="2">Week 2</option>
+                                            <option value="3">Week 3</option>
+                                            <option value="4">Week 4</option>
+                                            <option value="5">Week 5</option>
+                                            <option value="6">Week 6</option>
+                                            <option value="7">Week 7</option>
+                                            <option value="8">Week 8</option>
+                                            <option value="9">Week 9</option>
+                                            <option value="10">Week 10</option>
+                                            <option value="11">Week 11</option>
+                                            <option value="12">Week 12</option>
+                                            <option value="13">Week 13</option>
+                                            <option value="14">Week 14</option>
+                                            <option value="15">Week 15</option>
+                                            <option value="16">Week 16</option>
+                                            <option value="17">Week 17</option>
+                                            <option value="18">Week 18</option>
+                                        </select>
+                                    </div>
+                                    <div style="align-self: flex-end;">
+                                        <button class="btn btn-primary" onclick="forceSyncSpecificWeek()" id="force-sync-specific-btn">Full Sync Selected Week</button>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div id="force-sync-results" style="display: none; margin-top: 10px;">
                                 <div id="force-sync-results-content"></div>
                             </div>
@@ -3090,10 +3135,82 @@
                 showSyncMessage(`Error running force sync: ${error.message}`, 'error');
             } finally {
                 button.disabled = false;
-                button.textContent = 'Full Sync Games (Force Refresh)';
+                button.textContent = 'Full Sync Current Week';
             }
         }
-        
+
+        // Force sync specific week games
+        async function forceSyncSpecificWeek() {
+            const button = document.getElementById('force-sync-specific-btn');
+            const season = document.getElementById('sync-season').value;
+            const week = document.getElementById('sync-week').value;
+
+            button.disabled = true;
+            button.textContent = 'Syncing...';
+
+            const resultsDiv = document.getElementById('force-sync-results');
+            const resultsContent = document.getElementById('force-sync-results-content');
+
+            try {
+                const response = await fetch('/api/admin/sync/games/specific-week', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ season: parseInt(season), week: parseInt(week) }),
+                    credentials: 'same-origin'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    const data = result.data;
+                    resultsContent.innerHTML = `
+                        <div style="color: #28a745; margin-top: 10px;">
+                            ✅ ${result.message}
+                            <div style="font-size: 0.9em; margin-top: 10px;">
+                                <div>Week ${data.week}, Season ${data.season}</div>
+                                <div>Total games: ${data.totalGames}</div>
+                                <div>Updated: ${data.gamesUpdated} games with player stats</div>
+                                <div>API calls made: ${data.apiCallsMade}</div>
+                                ${data.teamScoresUpdated ? `<div>✅ Team scores recalculated: ${data.teamsUpdated} teams</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                    resultsDiv.style.display = 'block';
+
+                    showSyncMessage(`Successfully synced Week ${week}, Season ${season}`, 'success');
+
+                    // Refresh status after successful sync
+                    setTimeout(() => {
+                        loadSyncStatus();
+                    }, 1000);
+                } else {
+                    resultsContent.innerHTML = `
+                        <div style="color: #dc3545; margin-top: 10px;">
+                            ❌ ${result.message || result.error}
+                        </div>
+                    `;
+                    resultsDiv.style.display = 'block';
+
+                    showSyncMessage(`Sync failed: ${result.message || result.error}`, 'error');
+                }
+
+            } catch (error) {
+                resultsContent.innerHTML = `
+                    <div style="color: #dc3545; margin-top: 10px;">
+                        ❌ Error: ${error.message}
+                    </div>
+                `;
+                resultsDiv.style.display = 'block';
+
+                showSyncMessage(`Error running sync: ${error.message}`, 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Full Sync Selected Week';
+            }
+        }
+
         // Load current cron schedules and display in PST
         async function loadCronSchedules() {
             try {

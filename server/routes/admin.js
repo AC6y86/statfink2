@@ -538,6 +538,252 @@ router.post('/sync/games/current-week', requireAdmin, asyncHandler(async (req, r
     }
 }));
 
+// Force sync specific week games (full sync - all games with cache bypass for a specific week)
+router.post('/sync/games/specific-week', requireAdmin, asyncHandler(async (req, res) => {
+    const nflGamesService = req.app.locals.nflGamesService;
+    const tank01Service = req.app.locals.tank01Service;
+    const db = req.app.locals.db;
+
+    const { season, week } = req.body;
+
+    // Validate inputs
+    if (!season || !week) {
+        return res.status(400).json({
+            success: false,
+            message: 'Season and week are required'
+        });
+    }
+
+    const seasonNum = parseInt(season);
+    const weekNum = parseInt(week);
+
+    if (isNaN(seasonNum) || seasonNum < 2024 || seasonNum > 2025) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid season. Must be 2024 or 2025'
+        });
+    }
+
+    if (isNaN(weekNum) || weekNum < 1 || weekNum > 18) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid week. Must be between 1 and 18'
+        });
+    }
+
+    if (!nflGamesService) {
+        throw new APIError('NFL Games service not available', 500);
+    }
+
+    if (!tank01Service) {
+        throw new APIError('Tank01 service not available', 500);
+    }
+
+    try {
+        logInfo(`Starting full sync (with cache bypass) for specific week ${weekNum}, season ${seasonNum}`);
+
+        // First, get the list of games for the week (1 API call, bypassing cache)
+        const gamesData = await tank01Service.getNFLGamesForWeek(weekNum, seasonNum, true);
+
+        if (!gamesData || typeof gamesData !== 'object') {
+            throw new APIError('No games data received from Tank01 API', 500);
+        }
+
+        // Extract games from Tank01 response format
+        const allValues = Object.values(gamesData);
+        const games = allValues.filter(game => game && typeof game === 'object' && game.gameID);
+
+        logInfo(`Found ${games.length} total games for week ${weekNum}`);
+
+        // Check existing game statuses in database
+        const existingGames = await db.all(
+            'SELECT game_id, status FROM nfl_games WHERE week = ? AND season = ?',
+            [weekNum, seasonNum]
+        );
+
+        const existingGameMap = new Map(existingGames.map(g => [g.game_id, g.status]));
+
+        let gamesUpdated = 0;
+        let gamesSkipped = 0;
+        let apiCallsMade = 1; // Already made one for the games list
+        const results = [];
+
+        // Process each game
+        for (const game of games) {
+            const existingStatus = existingGameMap.get(game.gameID);
+
+            // Always update all games in full sync mode
+            try {
+                // First update the game info
+                await nflGamesService.upsertGame(game, weekNum, seasonNum);
+
+                // Use updateGameFromAPI which handles both scores AND player stats
+                logInfo(`Updating game and player stats for ${game.gameID} (bypassing cache)`);
+                const updated = await nflGamesService.updateGameFromAPI(game.gameID, true); // Pass bypassCache flag
+                apiCallsMade++;
+
+                if (updated) {
+                    // Get the updated game info for the response
+                    const updatedGame = await db.get(`
+                        SELECT home_score, away_score, status
+                        FROM nfl_games
+                        WHERE game_id = ?
+                    `, [game.gameID]);
+
+                    gamesUpdated++;
+                    results.push({
+                        gameID: game.gameID,
+                        action: 'updated',
+                        status: updatedGame.status,
+                        scores: `${updatedGame.away_score}-${updatedGame.home_score}`,
+                        playerStatsUpdated: true
+                    });
+                    logInfo(`Updated game ${game.gameID}: ${updatedGame.status} (${updatedGame.away_score}-${updatedGame.home_score}) with player stats`);
+                } else {
+                    results.push({
+                        gameID: game.gameID,
+                        action: 'failed',
+                        reason: 'Failed to update from API'
+                    });
+                }
+
+            } catch (error) {
+                logError(`Failed to update game ${game.gameID}:`, error);
+                results.push({
+                    gameID: game.gameID,
+                    action: 'error',
+                    error: error.message
+                });
+            }
+        }
+
+        // After all games are updated, calculate defensive bonuses
+        const scoringService = req.app.locals.scoringService;
+        if (scoringService) {
+            const bonusResult = await scoringService.calculateDefensiveBonuses(
+                weekNum,
+                seasonNum
+            );
+
+            if (bonusResult.success) {
+                logInfo(`✓ Defensive bonuses calculated for ${bonusResult.teamsProcessed} DST teams`);
+
+                // Step 2: Recalculate ALL DST fantasy points (includes TDs + bonuses)
+                const fantasyPointsService = req.app.locals.fantasyPointsCalculationService;
+                if (fantasyPointsService) {
+                    const dstResult = await fantasyPointsService.calculateEndOfWeekDSTBonuses(
+                        seasonNum
+                    );
+                    logInfo(`✓ DST fantasy points updated for ${dstResult.updated} teams`);
+
+                    // Log some examples to verify
+                    const sample = await db.all(`
+                        SELECT player_id, def_int_return_tds, def_fumble_return_tds,
+                               def_points_bonus, def_yards_bonus, fantasy_points
+                        FROM player_stats
+                        WHERE week = ? AND season = ? AND player_id LIKE 'DEF_%'
+                        AND (def_int_return_tds > 0 OR def_fumble_return_tds > 0
+                             OR def_points_bonus > 0 OR def_yards_bonus > 0)
+                        LIMIT 3
+                    `, [weekNum, seasonNum]);
+
+                    sample.forEach(dst => {
+                        logInfo(`  ${dst.player_id}: ${dst.fantasy_points} pts ` +
+                               `(TDs: ${dst.def_int_return_tds}/${dst.def_fumble_return_tds}, ` +
+                               `Bonuses: ${dst.def_points_bonus}/${dst.def_yards_bonus})`);
+                    });
+                }
+
+                // Step 3: Recalculate scoring players now that DSTs have points
+                const scoringPlayersService = req.app.locals.scoringPlayersService;
+                if (scoringPlayersService) {
+                    logInfo(`Starting scoring players calculation for Week ${weekNum}...`);
+                    const scoringResult = await scoringPlayersService.calculateScoringPlayers(
+                        weekNum,
+                        seasonNum
+                    );
+                    logInfo(`✓ Scoring players recalculated: ${scoringResult.playersMarked} players marked`);
+                } else {
+                    logInfo('WARNING: scoringPlayersService not available');
+                }
+            }
+        }
+
+        // After defensive bonuses and DST points are calculated, recalculate team scores
+        let teamScoresUpdated = false;
+        let teamsUpdated = 0;
+
+        try {
+            const teamUpdates = await db.all(`
+                SELECT DISTINCT t.team_id, t.owner_name
+                FROM teams t
+                WHERE EXISTS (
+                    SELECT 1 FROM weekly_rosters wr
+                    WHERE wr.team_id = t.team_id
+                    AND wr.week = ?
+                    AND wr.season = ?
+                )
+            `, [weekNum, seasonNum]);
+
+            for (const team of teamUpdates) {
+                try {
+                    await db.run(`
+                        UPDATE teams
+                        SET week_${weekNum}_score = (
+                            SELECT COALESCE(SUM(ps.fantasy_points), 0)
+                            FROM weekly_rosters wr
+                            JOIN player_stats ps ON wr.player_id = ps.player_id
+                                AND wr.week = ps.week
+                                AND wr.season = ps.season
+                            WHERE wr.team_id = ?
+                            AND wr.week = ?
+                            AND wr.season = ?
+                            AND wr.roster_position = 'active'
+                        )
+                        WHERE team_id = ?
+                    `, [team.team_id, weekNum, seasonNum, team.team_id]);
+
+                    teamsUpdated++;
+                    logInfo(`Recalculated week ${weekNum} score for team ${team.owner_name}`);
+                } catch (error) {
+                    logError(`Failed to update team score for ${team.owner_name}:`, error);
+                }
+            }
+
+            teamScoresUpdated = true;
+            logInfo(`Recalculated scores for ${teamsUpdated} teams`);
+        } catch (error) {
+            logError('Failed to recalculate team scores:', error);
+        }
+
+        logInfo(`Full sync completed: ${gamesUpdated} games updated, ${gamesSkipped} skipped, ${apiCallsMade} API calls made`);
+
+        res.json({
+            success: true,
+            message: `Successfully synced ${gamesUpdated} games for week ${weekNum}`,
+            data: {
+                week: weekNum,
+                season: seasonNum,
+                totalGames: games.length,
+                gamesUpdated,
+                gamesSkipped,
+                apiCallsMade,
+                results,
+                teamScoresUpdated,
+                teamsUpdated
+            }
+        });
+
+    } catch (error) {
+        logError(`Failed to sync week ${weekNum} games:`, error);
+        res.status(500).json({
+            success: false,
+            message: `Failed to sync week ${weekNum} games`,
+            error: error.message
+        });
+    }
+}));
+
 // Debug endpoint to inspect Tank01 API data
 router.get('/debug/tank01/:week/:season', requireAdmin, asyncHandler(async (req, res) => {
     const tank01Service = req.app.locals.tank01Service;
