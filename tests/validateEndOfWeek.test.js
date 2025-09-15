@@ -157,14 +157,20 @@ async function checkDefensiveTouchdowns(db, week, season) {
             player_id,
             player_name,
             position,
-            def_touchdowns
+            def_touchdowns,
+            def_int_return_tds,
+            def_fumble_return_tds,
+            def_blocked_return_tds,
+            (COALESCE(def_touchdowns, 0) + COALESCE(def_int_return_tds, 0) +
+             COALESCE(def_fumble_return_tds, 0) + COALESCE(def_blocked_return_tds, 0)) as total_def_tds
         FROM player_stats
         WHERE week = ? AND season = ?
-        AND def_touchdowns > 0
-        ORDER BY def_touchdowns DESC
+        AND (def_touchdowns > 0 OR def_int_return_tds > 0 OR
+             def_fumble_return_tds > 0 OR def_blocked_return_tds > 0)
+        ORDER BY total_def_tds DESC
     `, [week, season]);
 
-    const totalTDs = defTDStats.reduce((sum, stat) => sum + stat.def_touchdowns, 0);
+    const totalTDs = defTDStats.reduce((sum, stat) => sum + stat.total_def_tds, 0);
 
     return {
         name: 'Defensive Touchdowns',
@@ -173,7 +179,14 @@ async function checkDefensiveTouchdowns(db, week, season) {
             ? `Found ${totalTDs} defensive touchdowns from ${defTDStats.length} units`
             : 'No defensive touchdowns found in week',
         value: totalTDs,
-        details: defTDStats.map(s => `${s.player_name}: ${s.def_touchdowns} TD${s.def_touchdowns > 1 ? 's' : ''}`)
+        details: defTDStats.map(s => {
+            const tdTypes = [];
+            if (s.def_int_return_tds > 0) tdTypes.push(`${s.def_int_return_tds} INT return`);
+            if (s.def_fumble_return_tds > 0) tdTypes.push(`${s.def_fumble_return_tds} fumble return`);
+            if (s.def_blocked_return_tds > 0) tdTypes.push(`${s.def_blocked_return_tds} blocked kick return`);
+            if (s.def_touchdowns > 0) tdTypes.push(`${s.def_touchdowns} other defensive`);
+            return `${s.player_name || s.player_id}: ${s.total_def_tds} TD${s.total_def_tds > 1 ? 's' : ''} (${tdTypes.join(', ')})`;
+        })
     };
 }
 
@@ -327,12 +340,16 @@ async function checkPlayersWithZeroStats(db, statsFetcher, week, season) {
 
     for (const player of playersWithoutStats.slice(0, 10)) {
         try {
-            const status = await statsFetcher.checkPlayerGameStatus(
+            const result = await statsFetcher.checkPlayerGameStatus(
                 player.player_id,
                 player.player_name,
                 player.week,
                 season
             );
+
+            // Handle both old (string) and new (object) formats
+            const status = typeof result === 'string' ? result : result.status;
+            const espnStats = typeof result === 'object' ? result.stats : null;
 
             const validStatuses = ['suspended', 'inactive', 'injured', 'dnp', 'backup'];
 
@@ -348,7 +365,8 @@ async function checkPlayersWithZeroStats(db, statsFetcher, week, season) {
                     team: player.player_team,
                     position: player.player_position,
                     fantasyTeam: player.team_id,
-                    espnStatus: status
+                    espnStatus: status,
+                    espnStats: espnStats
                 });
             }
         } catch (error) {
@@ -357,7 +375,8 @@ async function checkPlayersWithZeroStats(db, statsFetcher, week, season) {
                 team: player.player_team,
                 position: player.player_position,
                 fantasyTeam: player.team_id,
-                espnStatus: 'lookup-failed'
+                espnStatus: 'lookup-failed',
+                espnStats: null
             });
         }
     }
@@ -373,9 +392,35 @@ async function checkPlayersWithZeroStats(db, statsFetcher, week, season) {
             : `${actuallyMissing.length} active players missing stats (checked ${playersWithoutStats.length} total)`,
         value: actuallyMissing.length,
         details: [
-            ...actuallyMissing.slice(0, 5).map(p =>
-                `${p.name} (${p.position}, ${p.team}) - Team ${p.fantasyTeam} [ESPN: ${p.espnStatus}]`
-            ),
+            ...actuallyMissing.slice(0, 5).map(p => {
+                let line = `${p.name} (${p.position}, ${p.team}) - Team ${p.fantasyTeam} [ESPN: ${p.espnStatus}`;
+
+                // Add ESPN stats if available
+                if (p.espnStats) {
+                    const stats = p.espnStats;
+                    const statParts = [];
+
+                    // Format stats based on what's available
+                    if (stats.carries !== undefined || stats.rushYards !== undefined) {
+                        statParts.push(`Rush: ${stats.carries || 0}/${stats.rushYards || 0}/${stats.rushTD || 0}`);
+                    }
+                    if (stats.receptions !== undefined || stats.recYards !== undefined) {
+                        statParts.push(`Rec: ${stats.receptions || 0}/${stats.recYards || 0}/${stats.recTD || 0}`);
+                    }
+                    if (stats.completions !== undefined || stats.attempts !== undefined) {
+                        statParts.push(`Pass: ${stats.completions || 0}/${stats.attempts || 0}/${stats.passYards || 0}/${stats.passTD || 0}`);
+                    }
+
+                    if (statParts.length > 0) {
+                        line += ` - ${statParts.join(', ')}`;
+                    } else if (stats.rawCells) {
+                        // Show raw data if we couldn't parse specific stats
+                        line += ` - Raw: ${stats.rawCells}`;
+                    }
+                }
+                line += ']';
+                return line;
+            }),
             ...validReasons.slice(0, 3).map(p =>
                 `✓ ${p.name} (${p.team}) - ${p.reason}`
             )
