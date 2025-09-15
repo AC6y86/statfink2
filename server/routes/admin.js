@@ -433,51 +433,60 @@ router.post('/sync/games/current-week', requireAdmin, asyncHandler(async (req, r
             }
         }
         
+        // Always calculate DST fantasy points (defensive TDs count immediately)
+        const fantasyPointsService = req.app.locals.fantasyPointsCalculationService;
+        if (fantasyPointsService) {
+            logInfo('Calculating DST fantasy points (including defensive TDs)...');
+            const dstResult = await fantasyPointsService.calculateEndOfWeekDSTBonuses(
+                currentSeason
+            );
+            logInfo(`✓ DST fantasy points updated for ${dstResult.updated} teams`);
+
+            // Log some examples to verify
+            const sample = await db.all(`
+                SELECT player_id, def_int_return_tds, def_fumble_return_tds,
+                       def_blocked_return_tds, def_points_bonus, def_yards_bonus, fantasy_points
+                FROM player_stats
+                WHERE week = ? AND season = ? AND player_id LIKE 'DEF_%'
+                AND (def_int_return_tds > 0 OR def_fumble_return_tds > 0
+                     OR def_blocked_return_tds > 0 OR def_points_bonus > 0 OR def_yards_bonus > 0)
+                LIMIT 5
+            `, [currentWeek, currentSeason]);
+
+            sample.forEach(dst => {
+                logInfo(`  ${dst.player_id}: ${dst.fantasy_points} pts ` +
+                       `(TDs: INT=${dst.def_int_return_tds}/FUM=${dst.def_fumble_return_tds}/BLK=${dst.def_blocked_return_tds}, ` +
+                       `Bonuses: ${dst.def_points_bonus}/${dst.def_yards_bonus})`);
+            });
+        }
+
         // Check if all games are complete for defensive bonus calculation
         const gamesComplete = await nflGamesService.areAllWeekGamesComplete(currentWeek, currentSeason);
         logInfo(`Games complete check for Week ${currentWeek}: ${JSON.stringify(gamesComplete)}`);
-        
+
         if (gamesComplete.isComplete) {
-            logInfo('All games complete - processing defensive scoring...');
-            
-            // Step 1: Calculate defensive bonuses (5 pts for fewest points/yards allowed)
+            logInfo('All games complete - calculating defensive bonuses...');
+
+            // Calculate defensive bonuses (5 pts for fewest points/yards allowed)
             const scoringService = req.app.locals.scoringService;
             if (scoringService) {
                 const bonusResult = await scoringService.calculateDefensiveBonuses(
                     currentWeek,
                     currentSeason
                 );
-                
+
                 if (bonusResult.success) {
                     logInfo(`✓ Defensive bonuses calculated for ${bonusResult.teamsProcessed} DST teams`);
-                    
-                    // Step 2: Recalculate ALL DST fantasy points (includes TDs + bonuses)
-                    const fantasyPointsService = req.app.locals.fantasyPointsCalculationService;
+
+                    // Recalculate DST fantasy points again to include bonuses
                     if (fantasyPointsService) {
-                        const dstResult = await fantasyPointsService.calculateEndOfWeekDSTBonuses(
+                        const dstBonusResult = await fantasyPointsService.calculateEndOfWeekDSTBonuses(
                             currentSeason
                         );
-                        logInfo(`✓ DST fantasy points updated for ${dstResult.updated} teams`);
-                        
-                        // Log some examples to verify
-                        const sample = await db.all(`
-                            SELECT player_id, def_int_return_tds, def_fumble_return_tds, 
-                                   def_points_bonus, def_yards_bonus, fantasy_points
-                            FROM player_stats 
-                            WHERE week = ? AND player_id LIKE 'DEF_%' 
-                            AND (def_int_return_tds > 0 OR def_fumble_return_tds > 0 
-                                 OR def_points_bonus > 0 OR def_yards_bonus > 0)
-                            LIMIT 3
-                        `, [currentWeek]);
-                        
-                        sample.forEach(dst => {
-                            logInfo(`  ${dst.player_id}: ${dst.fantasy_points} pts ` +
-                                   `(TDs: ${dst.def_int_return_tds}/${dst.def_fumble_return_tds}, ` +
-                                   `Bonuses: ${dst.def_points_bonus}/${dst.def_yards_bonus})`);
-                        });
+                        logInfo(`✓ DST fantasy points updated with bonuses for ${dstBonusResult.updated} teams`);
                     }
-                    
-                    // Step 3: Recalculate scoring players now that DSTs have points
+
+                    // Recalculate scoring players now that DSTs have final points
                     const scoringPlayersService = req.app.locals.scoringPlayersService;
                     if (scoringPlayersService) {
                         logInfo(`Starting scoring players calculation for Week ${currentWeek}...`);
@@ -491,6 +500,8 @@ router.post('/sync/games/current-week', requireAdmin, asyncHandler(async (req, r
                     }
                 }
             }
+        } else {
+            logInfo(`Week ${currentWeek} not complete (${gamesComplete.completedGames}/${gamesComplete.totalGames} games done) - bonuses will be calculated when all games finish`);
         }
         
         // Recalculate team scores after updating player stats and DST bonuses
@@ -1136,6 +1147,64 @@ router.post('/weekly-report/generate', requireAdmin, asyncHandler(async (req, re
             message: result.message
         });
     }
+}));
+
+// Test runner endpoints
+const TestRunnerService = require('../services/testRunnerService');
+
+// Get available weeks for testing
+router.get('/test/available-weeks', requireAdmin, asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const testRunner = new TestRunnerService(db);
+    const season = parseInt(req.query.season) || 2025;
+
+    const weeks = await testRunner.getAvailableWeeks(season);
+
+    res.json({
+        success: true,
+        season: season,
+        weeks: weeks
+    });
+}));
+
+// Run validateEndOfWeek test
+router.post('/test/validate-week', requireAdmin, asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const testRunner = new TestRunnerService(db);
+    const { week, season = 2025 } = req.body;
+
+    if (!week) {
+        throw new APIError('Week number is required', 400);
+    }
+
+    logInfo(`Running validateEndOfWeek test for week ${week}, season ${season}`);
+
+    const results = await testRunner.runValidateEndOfWeekTest(parseInt(week), parseInt(season));
+
+    res.json({
+        success: true,
+        results: results
+    });
+}));
+
+// Run stats completeness test
+router.post('/test/stats-completeness', requireAdmin, asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const testRunner = new TestRunnerService(db);
+    const { week, season = 2025 } = req.body;
+
+    if (!week) {
+        throw new APIError('Week number is required', 400);
+    }
+
+    logInfo(`Running stats completeness test for week ${week}, season ${season}`);
+
+    const results = await testRunner.runStatsCompletenessTest(parseInt(week), parseInt(season));
+
+    res.json({
+        success: true,
+        results: results
+    });
 }));
 
 module.exports = router;

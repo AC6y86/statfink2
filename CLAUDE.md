@@ -46,3 +46,4 @@ create files in /tmp
 - remember it is the 2025 season
 - remember whenever committing, include the fantasy football db
 - remember you can take screenshots from the browser by using scripts/take_screenshots.js
+- Never fix stats by changing the database, fix the sync logic instead

@@ -178,21 +178,28 @@ class ScoringPlayParserService {
             // Check if this is likely an offensive fumble recovery vs defensive fumble return
             // Key indicators for offensive fumble recovery:
             // 1. Very short yardage (0-3 yards) suggests fumble on current drive
-            // 2. Description says "recovery" instead of "return" 
+            // 2. Description says "recovery" instead of "return"
             // 3. Player name suggests it's same team that was on offense
-            
+
             const yardageMatch = originalText.match(/(\d+)\s*Yd/i);
             const yardage = yardageMatch ? parseInt(yardageMatch[1]) : null;
-            
+
             // Special cases for offensive fumble recoveries:
             // 1. Short yardage fumble recovery: "Tank Bigsby 3 Yd Fumble Recovery"
             // 2. End zone fumble recovery: "Patrick Ricard Fumble Recovery in End Zone"
             if (normalizedText.includes('recovery')) {
-                // Case 1: Short yardage (1-5 yards) suggests offensive fumble recovery
+                // Check for defensive indicators FIRST before filtering by yardage
+                // Strip sack pattern: "by [player] for" indicates defensive fumble recovery
+                if (originalText.match(/by .+ (for|For)/i)) {
+                    logInfo(`Defensive fumble TD detected: ${originalText}`);
+                    return 'defensive_fumble_return_td';  // Definitely defensive (e.g., "Zaven Collins 3 Yd Fumble Recovery by Josh Sweat For 3 Yd Loss")
+                }
+
+                // Case 1: Short yardage (1-5 yards) WITHOUT defensive indicators suggests offensive fumble recovery
                 if (yardage !== null && yardage >= 1 && yardage <= 5) {
                     return null;
                 }
-                
+
                 // Case 2: "in End Zone" suggests offensive fumble recovery
                 // But only for known offensive players (more conservative approach)
                 if (normalizedText.includes('in end zone')) {
@@ -202,13 +209,13 @@ class ScoringPlayParserService {
                         /fullback/i,    // Any fullback reference
                         /\bfb\b/i       // FB abbreviation
                     ];
-                    
+
                     for (const pattern of offensivePlayerPatterns) {
                         if (pattern.test(originalText)) {
                             return null; // Offensive fumble recovery
                         }
                     }
-                    
+
                     // Default: treat "in End Zone" as defensive if no clear offensive indicators
                     // This is more conservative and prevents missing legitimate defensive TDs
                 }
@@ -409,6 +416,7 @@ class ScoringPlayParserService {
                         break;
                     case 'defensive_fumble_return_td':
                         breakdown.def_fumble_return_tds++;
+                        logInfo(`Defensive fumble TD for ${team}: ${play.originalText}`);
                         break;
                     case 'defensive_blocked_return_td':
                         breakdown.def_blocked_return_tds++;
@@ -418,6 +426,10 @@ class ScoringPlayParserService {
                         break;
                 }
             }
+        }
+
+        if (breakdown.def_fumble_return_tds > 0 || breakdown.def_int_return_tds > 0 || breakdown.def_blocked_return_tds > 0) {
+            logInfo(`Defensive breakdown for ${team}: ${JSON.stringify(breakdown)}`);
         }
 
         return breakdown;

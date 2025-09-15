@@ -214,7 +214,9 @@ class DSTManagementService {
             sacks: parseInt(dstData.sacks) || 0,
             def_interceptions: parseInt(dstData.defensiveInterceptions) || 0,
             fumbles_recovered: parseInt(dstData.fumblesRecovered) || 0,
-            def_touchdowns: 0, // Don't use unreliable API defTD field
+            def_touchdowns: (defensiveBreakdown?.def_int_return_tds || 0) +
+                           (defensiveBreakdown?.def_fumble_return_tds || 0) +
+                           (defensiveBreakdown?.def_blocked_return_tds || 0), // Sum of all defensive TD types
             safeties: defensiveBreakdown?.safeties || parseInt(dstData.safeties) || 0,
             points_allowed: pointsAllowed,
             yards_allowed: yardsAllowed,

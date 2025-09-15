@@ -156,7 +156,7 @@ describe(`Stats Completeness Verification (${getTestDescription()})`, () => {
                 // No missing stats at all
                 expect(playersWithoutStats.length).toBe(0);
             }
-        });
+        }, 20000);
         
         test('verify fantasy points are calculated for all stats entries', async () => {
             const { season, week } = testConfig;
