@@ -229,6 +229,11 @@ app.get('/c', (req, res) => {
     res.redirect(301, 'https://script.google.com/macros/s/AKfycbx0mhtv3PX5HF_RRzRl7t2rzUNV4KOgrJamPXFGvCItu7h4HIl3ov9hEMg4aHl5Nj7Xgg/exec?view=cards');
 });
 
+// Roster moves page
+app.get('/moves', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/moves.html'));
+});
+
 // Admin routes (before static middleware)
 app.get('/helm', (req, res) => {
     res.redirect('/admin');
@@ -427,6 +432,7 @@ app.use('/api/database', require('./routes/databaseBrowser'));
 app.use('/api/standings', require('./routes/standings'));
 app.use('/api/rosters', require('./routes/rosters'));
 app.use('/api/export', require('./routes/export'));
+app.use('/api/roster-moves', require('./routes/rosterMoves'));
 
 // Admin routes
 app.use('/api/admin', require('./routes/admin'));

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roster Moves - Peninsula Football League</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            margin-top: 50px;
+        }
+
+        .error {
+            background: #ff4757;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .team-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .team-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .team-header {
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .team-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .owner-name {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .moves-section {
+            margin: 15px 0;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .move-count {
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+        }
+
+        .move-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .move-item {
+            padding: 8px;
+            background: #f8f9fa;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .player-info {
+            flex: 1;
+        }
+
+        .player-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .player-position {
+            display: inline-block;
+            background: #e1e8ed;
+            color: #666;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            margin-left: 8px;
+        }
+
+        .week-badge {
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .ir-move .week-badge {
+            background: #dc3545;
+        }
+
+        .activation-move .week-badge {
+            background: #17a2b8;
+        }
+
+        .no-moves {
+            color: #999;
+            font-style: italic;
+            padding: 10px 0;
+        }
+
+        .stats-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Roster Moves</h1>
+
+        <div id="stats-summary" class="stats-summary" style="display: none;">
+            <div class="stat-item">
+                <div class="stat-value" id="total-ir-moves">0</div>
+                <div class="stat-label">Total IR Moves</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="total-supplemental">0</div>
+                <div class="stat-label">Supplemental Draft Picks</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="total-activations">0</div>
+                <div class="stat-label">IR Activations</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="active-teams">0</div>
+                <div class="stat-label">Teams with Moves</div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">Loading roster moves...</div>
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="teams-container" class="team-grid" style="display: none;"></div>
+    </div>
+
+    <script>
+        async function loadRosterMoves() {
+            try {
+                const response = await fetch('/api/roster-moves?season=2025');
+                if (!response.ok) {
+                    throw new Error('Failed to load roster moves');
+                }
+
+                const result = await response.json();
+                if (!result.success) {
+                    throw new Error(result.message || 'Failed to load data');
+                }
+
+                displayRosterMoves(result.data);
+
+            } catch (error) {
+                console.error('Error loading roster moves:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = 'Error loading roster moves: ' + error.message;
+            }
+        }
+
+        function displayRosterMoves(data) {
+            const container = document.getElementById('teams-container');
+            const loading = document.getElementById('loading');
+            const statsDiv = document.getElementById('stats-summary');
+
+            container.innerHTML = '';
+
+            let totalIRMoves = 0;
+            let totalSupplemental = 0;
+            let totalActivations = 0;
+            let activeTeams = 0;
+
+            // Sort teams by owner name
+            const teams = Object.values(data).sort((a, b) =>
+                a.owner_name.localeCompare(b.owner_name)
+            );
+
+            teams.forEach(team => {
+                const hasAnyMoves = team.ir_moves.length > 0 ||
+                                   (team.supplemental_moves && team.supplemental_moves.length > 0);
+
+                if (hasAnyMoves) activeTeams++;
+
+                totalIRMoves += team.ir_move_count;
+                totalSupplemental += team.supplemental_move_count || 0;
+                totalActivations += 0; // No longer tracking activations separately
+
+                const teamCard = document.createElement('div');
+                teamCard.className = 'team-card';
+
+                let html = `
+                    <div class="team-header">
+                        <div class="team-name">${team.team_name}</div>
+                        <div class="owner-name">${team.owner_name}</div>
+                    </div>
+                `;
+
+                // IR Moves section
+                html += `
+                    <div class="moves-section">
+                        <div class="section-title">
+                            IR Moves
+                            <span class="move-count">${team.ir_move_count}</span>
+                        </div>
+                        <ul class="move-list">
+                `;
+
+                if (team.ir_moves.length > 0) {
+                    team.ir_moves.forEach(move => {
+                        const moveDate = new Date(move.move_timestamp);
+                        const dateStr = moveDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        const timeStr = moveDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                        html += `
+                            <li class="move-item ir-move">
+                                <div class="player-info">
+                                    <span class="player-name">${move.dropped_player_name} (${move.dropped_player_position})</span>
+                                    <span style="margin: 0 10px;">→ IR</span>
+                                    <span class="player-name">${move.added_player_name} (${move.added_player_position}) added</span>
+                                </div>
+                                <div>
+                                    <span class="week-badge">Week ${move.week}</span>
+                                    <span style="font-size: 0.8em; color: #666; margin-left: 8px;">${dateStr} ${timeStr}</span>
+                                </div>
+                            </li>
+                        `;
+                    });
+                } else {
+                    html += '<li class="no-moves">No IR moves</li>';
+                }
+
+                html += '</ul></div>';
+
+                // Supplemental Moves section
+                html += `
+                    <div class="moves-section">
+                        <div class="section-title">
+                            Supplemental Moves
+                        </div>
+                        <ul class="move-list">
+                `;
+
+                if (team.supplemental_moves && team.supplemental_moves.length > 0) {
+                    team.supplemental_moves.forEach(move => {
+                        const moveDate = new Date(move.move_timestamp);
+                        const dateStr = moveDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        const timeStr = moveDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                        html += `
+                            <li class="move-item">
+                                <div class="player-info">
+                                    <span class="player-name">Dropped: ${move.dropped_player_name} (${move.dropped_player_position})</span>
+                                    <span style="margin: 0 10px;">→</span>
+                                    <span class="player-name">Added: ${move.added_player_name} (${move.added_player_position})</span>
+                                </div>
+                                <div>
+                                    <span class="week-badge">Week ${move.week}</span>
+                                    <span style="font-size: 0.8em; color: #666; margin-left: 8px;">${dateStr} ${timeStr}</span>
+                                </div>
+                            </li>
+                        `;
+                    });
+                } else {
+                    html += '<li class="no-moves">No supplemental moves</li>';
+                }
+
+                html += '</ul></div>';
+
+                teamCard.innerHTML = html;
+                container.appendChild(teamCard);
+            });
+
+            // Update summary stats
+            document.getElementById('total-ir-moves').textContent = totalIRMoves;
+            document.getElementById('total-supplemental').textContent = totalSupplemental;
+            document.getElementById('total-activations').textContent = totalActivations;
+            document.getElementById('active-teams').textContent = activeTeams;
+
+            // Show content and hide loading
+            loading.style.display = 'none';
+            statsDiv.style.display = 'grid';
+            container.style.display = 'grid';
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', loadRosterMoves);
+    </script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 const Database = require('../../server/database/database');
 const fs = require('fs').promises;
 const path = require('path');
-const { getTestConfig, getTestDescription, logTestConfig } = require('./helpers/test-config');
+const { getTestConfig, getTestDescription, logTestConfig, initTestConfig } = require('./helpers/test-config');
 
 describe(`Player Matching Verification (${getTestDescription()})`, () => {
     let db;
@@ -11,8 +11,9 @@ describe(`Player Matching Verification (${getTestDescription()})`, () => {
     
     beforeAll(async () => {
         db = new Database();
+        await initTestConfig(); // Initialize config from database
         testConfig = getTestConfig();
-        logTestConfig();
+        await logTestConfig();
         await fs.mkdir(reportDir, { recursive: true });
     });
     

@@ -70,25 +70,38 @@ class DataCleanupService {
      */
     async cleanWeekData(week, season) {
         logInfo(`🗑️ Cleaning data for Week ${week}, ${season}...`);
-        
+
         try {
             // Clean player stats for the week
             const statsResult = await this.db.run(
                 'DELETE FROM player_stats WHERE week = ? AND season = ?',
                 [week, season]
             );
-            
+
             // Clean NFL games for the week
             const gamesResult = await this.db.run(
                 'DELETE FROM nfl_games WHERE week = ? AND season = ?',
                 [week, season]
             );
-            
+
+            // Reset matchup points to 0 (keep the matchup records but clear the points)
+            const matchupsResult = await this.db.run(
+                `UPDATE matchups
+                 SET team1_points = 0,
+                     team2_points = 0,
+                     team1_scoring_points = 0,
+                     team2_scoring_points = 0
+                 WHERE week = ? AND season = ?`,
+                [week, season]
+            );
+
             logInfo(`  ✓ Deleted ${statsResult.changes} player stats and ${gamesResult.changes} games`);
-            
+            logInfo(`  ✓ Reset points for ${matchupsResult.changes} matchups`);
+
             return {
                 statsDeleted: statsResult.changes,
                 gamesDeleted: gamesResult.changes,
+                matchupsReset: matchupsResult.changes,
                 success: true
             };
         } catch (error) {

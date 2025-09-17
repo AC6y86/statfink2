@@ -318,7 +318,7 @@ class StatsFetcher {
                 const suspension = knownSuspensions[playerId];
                 if (suspension.season === season && week >= suspension.start && week <= suspension.end) {
                     logInfo(`Player ${playerName} (${playerId}) is suspended for week ${week}`);
-                    return 'suspended';
+                    return { status: 'suspended', stats: null };
                 }
             }
             
@@ -326,7 +326,7 @@ class StatsFetcher {
                 const inactive = knownInactives[playerId];
                 if (inactive.season === season && inactive.weeks.includes(week)) {
                     logInfo(`Player ${playerName} (${playerId}) was inactive for week ${week}`);
-                    return 'inactive';
+                    return { status: 'inactive', stats: null };
                 }
             }
             
@@ -342,25 +342,35 @@ class StatsFetcher {
             // If we have stats entry with 0 points, check raw_stats for inactive notation
             if (stats && stats.fantasy_points === 0) {
                 if (stats.raw_stats && stats.raw_stats.includes('inactive')) {
-                    return 'inactive';
+                    return { status: 'inactive', stats: null };
                 }
             }
             
             // If status is still unknown, check ESPN
             logInfo(`Checking ESPN for ${playerName} (${playerId}) status`);
-            const espnStatus = await this.espnLookup.fetchPlayerStatus(playerId, playerName, week, season);
-            
-            if (espnStatus && espnStatus !== 'unknown') {
-                logInfo(`ESPN status for ${playerName}: ${espnStatus}`);
-                return espnStatus;
+            const espnResult = await this.espnLookup.fetchPlayerStatus(playerId, playerName, week, season);
+
+            // Handle both old (string) and new (object) return formats
+            if (typeof espnResult === 'string') {
+                if (espnResult && espnResult !== 'unknown') {
+                    logInfo(`ESPN status for ${playerName}: ${espnResult}`);
+                    return { status: espnResult, stats: null };
+                }
+                return { status: 'unknown', stats: null };
+            } else {
+                if (espnResult && espnResult.status !== 'unknown') {
+                    logInfo(`ESPN status for ${playerName}: ${espnResult.status}`);
+                    if (espnResult.stats) {
+                        logInfo(`ESPN stats for ${playerName}: ${JSON.stringify(espnResult.stats)}`);
+                    }
+                    return espnResult;
+                }
+                return { status: 'unknown', stats: null };
             }
-            
-            // Default to unknown if we can't determine
-            return 'unknown';
             
         } catch (error) {
             logError('Error checking player game status', error);
-            return 'unknown';
+            return { status: 'unknown', stats: null };
         }
     }
     

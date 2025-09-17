@@ -333,6 +333,10 @@
     </div>
 
     <div class="container">
+        <div id="data-source" style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: center; font-weight: 600; color: #495057;">
+            <span id="data-source-text">Loading league settings...</span>
+        </div>
+
         <div class="controls">
             <div class="form-group">
                 <label for="team-select">Select Team:</label>
@@ -345,23 +349,34 @@
 
         <div id="message-container"></div>
 
-        <div id="add-player-section" class="add-player-section" style="display: none;">
-            <h3>Add Player to Roster</h3>
+        <div id="roster-move-section" class="add-player-section" style="display: none;">
+            <h3>Make Roster Move</h3>
+            <p style="margin-bottom: 1rem; color: #666;">All roster moves require both a drop and an add</p>
             <div class="add-player-form">
                 <div class="form-group">
-                    <label for="player-select">Select Player:</label>
-                    <select id="player-select">
-                        <option value="">Choose a player...</option>
+                    <label for="move-type-select">Move Type:</label>
+                    <select id="move-type-select" onchange="updateMoveTypeUI()">
+                        <option value="ir">IR Move (player to IR)</option>
+                        <option value="supplemental">Supplemental (drop player)</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="position-select">Roster Position:</label>
-                    <select id="position-select">
-                        <option value="active">Active</option>
-                        <option value="injured_reserve">Injured Reserve</option>
+                    <label for="drop-player-select" id="drop-label">Player to IR:</label>
+                    <select id="drop-player-select" onchange="updateMovePreview()">
+                        <option value="">Select player to drop...</option>
                     </select>
                 </div>
-                <button class="btn btn-success" onclick="addPlayerToRoster()">Add to Roster</button>
+                <div class="form-group">
+                    <label for="add-player-select">Add Player:</label>
+                    <select id="add-player-select" onchange="updateMovePreview()">
+                        <option value="">Select player to add...</option>
+                    </select>
+                </div>
+                <div id="move-preview" style="display: none; padding: 1rem; background: #fffbf0; border: 1px solid #ffc107; border-radius: 8px; margin: 1rem 0;">
+                    <strong>Move Preview:</strong>
+                    <p id="move-preview-text"></p>
+                </div>
+                <button class="btn btn-success" onclick="executeRosterMove()">Execute Move</button>
             </div>
         </div>
 
@@ -383,9 +398,29 @@
 
         // Load teams on page load
         document.addEventListener('DOMContentLoaded', function() {
+            loadLeagueSettings();
             loadTeams();
             loadAvailablePlayers();
         });
+
+        // Load and display league settings
+        async function loadLeagueSettings() {
+            try {
+                const response = await fetch('/api/league/settings');
+                const data = await response.json();
+
+                if (data.success && data.data) {
+                    const settings = data.data;
+                    document.getElementById('data-source-text').textContent =
+                        `Displaying roster data for: Season ${settings.season_year}, Week ${settings.current_week}`;
+                } else {
+                    document.getElementById('data-source-text').textContent = 'Unable to load league settings';
+                }
+            } catch (error) {
+                console.error('Error loading league settings:', error);
+                document.getElementById('data-source-text').textContent = 'Unable to load league settings';
+            }
+        }
 
         // Team selection handler
         document.getElementById('team-select').addEventListener('change', function() {
@@ -393,12 +428,12 @@
             if (teamId) {
                 currentTeamId = teamId;
                 loadTeamRoster(teamId);
-                document.getElementById('add-player-section').style.display = 'block';
+                document.getElementById('roster-move-section').style.display = 'block';
             } else {
                 currentTeamId = null;
                 document.getElementById('roster-sections').innerHTML = '<div class="loading">Select a team to view roster</div>';
                 document.getElementById('roster-title').textContent = 'Select a team to view roster';
-                document.getElementById('add-player-section').style.display = 'none';
+                document.getElementById('roster-move-section').style.display = 'none';
             }
         });
 
@@ -424,27 +459,24 @@
             try {
                 const response = await fetch('/api/players/available');
                 const data = await response.json();
-                
+
                 const playerSelect = document.getElementById('player-select');
-                
+                const addSelect = document.getElementById('add-player-select');
+
                 // Build HTML string first, then set innerHTML once
                 let html = '<option value="">Choose a player...</option>';
-                
-                // Group by position for easier selection
-                const positions = ['QB', 'RB', 'WR', 'TE', 'K', 'Defense'];
-                positions.forEach(position => {
-                    const positionPlayers = data.data.filter(p => p.position === position);
-                    if (positionPlayers.length > 0) {
-                        html += `<optgroup label="${position}">`;
-                        positionPlayers.forEach(player => {
-                            html += `<option value="${player.player_id}">${player.name} (${player.team})</option>`;
-                        });
-                        html += `</optgroup>`;
-                    }
+
+                // Sort players alphabetically by name
+                const sortedPlayers = data.data.sort((a, b) => a.name.localeCompare(b.name));
+
+                // Add all players in a single list
+                sortedPlayers.forEach(player => {
+                    html += `<option value="${player.player_id}">${player.name} (${player.position}, ${player.team})</option>`;
                 });
-                
+
                 // Set innerHTML once at the end
-                playerSelect.innerHTML = html;
+                if (playerSelect) playerSelect.innerHTML = html;
+                if (addSelect) addSelect.innerHTML = html.replace('Choose a player...', 'Select player to add...');
                 allPlayers = data.data;
             } catch (error) {
                 showMessage(`Error loading available players: ${error.message}`, 'error');
@@ -468,6 +500,16 @@
 
                 // Display roster
                 displayRoster(data.data);
+
+                // Populate drop player select
+                const dropSelect = document.getElementById('drop-player-select');
+                let dropOptionsHTML = '<option value="">Select player to drop...</option>';
+                if (data.data.active) {
+                    data.data.active.forEach(player => {
+                        dropOptionsHTML += `<option value="${player.player_id}">${player.name} (${player.position})</option>`;
+                    });
+                }
+                dropSelect.innerHTML = dropOptionsHTML;
                 
             } catch (error) {
                 showMessage(`Error loading roster: ${error.message}`, 'error');
@@ -541,56 +583,69 @@
                             ${player.bye_week ? `Bye: Week ${player.bye_week}` : ''}
                         </div>
                     </div>
-                    <div class="player-actions">
-                        <button class="btn btn-small" onclick="movePlayer('${player.player_id}', '${otherPosition}')">
-                            To ${otherPositionLabel}
-                        </button>
-                        <button class="btn btn-small btn-danger" onclick="removePlayer('${player.player_id}')">
-                            Remove
-                        </button>
-                    </div>
+                    <!-- Removed individual action buttons - all moves must be paired -->
                 </div>
             `;
         }
 
-        // Add player to roster
-        async function addPlayerToRoster() {
-            const playerId = document.getElementById('player-select').value;
-            const position = document.getElementById('position-select').value;
-            
+        // Execute paired roster move
+        async function executeRosterMove() {
+            const dropPlayerId = document.getElementById('drop-player-select').value;
+            const addPlayerId = document.getElementById('add-player-select').value;
+            const moveType = document.getElementById('move-type-select').value;
+
             if (!currentTeamId) {
                 showMessage('Please select a team first', 'error');
                 return;
             }
-            
-            if (!playerId) {
-                showMessage('Please select a player', 'error');
+
+            if (!dropPlayerId || !addPlayerId) {
+                showMessage('Please select both a player to drop and a player to add', 'error');
                 return;
             }
-            
+
+            // Confirm the move
+            const dropOption = document.querySelector(`#drop-player-select option[value="${dropPlayerId}"]`);
+            const addOption = document.querySelector(`#add-player-select option[value="${addPlayerId}"]`);
+            const dropName = dropOption ? dropOption.textContent : 'Unknown';
+            const addName = addOption ? addOption.textContent : 'Unknown';
+
+            const confirmMessage = moveType === 'ir'
+                ? `Move ${dropName} to IR and add ${addName}?`
+                : `Drop ${dropName} and add ${addName}?`;
+
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+
             try {
-                const response = await fetch(`/api/teams/${currentTeamId}/roster/add`, {
+                const response = await fetch('/api/admin/roster/move', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        playerId: playerId,
-                        rosterPosition: position
+                        teamId: currentTeamId,
+                        dropPlayerId: dropPlayerId,
+                        addPlayerId: addPlayerId,
+                        moveType: moveType
                     })
                 });
-                
+
                 const result = await response.json();
-                
+
                 if (result.success) {
                     showMessage(result.message, 'success');
                     loadTeamRoster(currentTeamId); // Refresh roster
                     loadAvailablePlayers(); // Refresh available players
-                    document.getElementById('player-select').value = '';
+                    // Reset selections
+                    document.getElementById('drop-player-select').value = '';
+                    document.getElementById('add-player-select').value = '';
+                    document.getElementById('move-preview').style.display = 'none';
                 } else {
-                    showMessage(result.error || 'Failed to add player', 'error');
+                    showMessage(result.error || 'Failed to execute move', 'error');
                 }
-                
+
             } catch (error) {
                 showMessage(`Error: ${error.message}`, 'error');
             }
@@ -667,6 +722,42 @@
         }
 
         // Show message to user
+        function updateMoveTypeUI() {
+            const moveType = document.getElementById('move-type-select').value;
+            const dropLabel = document.getElementById('drop-label');
+
+            if (moveType === 'ir') {
+                dropLabel.textContent = 'Player to IR:';
+            } else {
+                dropLabel.textContent = 'Drop Player:';
+            }
+            updateMovePreview();
+        }
+
+        function updateMovePreview() {
+            const dropPlayerId = document.getElementById('drop-player-select').value;
+            const addPlayerId = document.getElementById('add-player-select').value;
+            const moveType = document.getElementById('move-type-select').value;
+            const previewDiv = document.getElementById('move-preview');
+            const previewText = document.getElementById('move-preview-text');
+
+            if (dropPlayerId && addPlayerId) {
+                const dropOption = document.querySelector(`#drop-player-select option[value="${dropPlayerId}"]`);
+                const addOption = document.querySelector(`#add-player-select option[value="${addPlayerId}"]`);
+                const dropName = dropOption ? dropOption.textContent : 'Unknown';
+                const addName = addOption ? addOption.textContent : 'Unknown';
+
+                if (moveType === 'ir') {
+                    previewText.innerHTML = `${dropName} → IR, Add ${addName}`;
+                } else {
+                    previewText.innerHTML = `Drop ${dropName}, Add ${addName}`;
+                }
+                previewDiv.style.display = 'block';
+            } else {
+                previewDiv.style.display = 'none';
+            }
+        }
+
         function showMessage(message, type) {
             const container = document.getElementById('message-container');
             const messageDiv = document.createElement('div');

@@ -2,7 +2,7 @@ const Database = require('../../server/database/database');
 const fs = require('fs').promises;
 const path = require('path');
 const StatsFetcher = require('./helpers/stats-fetcher');
-const { getTestConfig, getTestDescription, logTestConfig } = require('./helpers/test-config');
+const { getTestConfig, getTestDescription, logTestConfig, initTestConfig } = require('./helpers/test-config');
 
 describe(`Data Reconciliation (${getTestDescription()})`, () => {
     let db;
@@ -13,8 +13,9 @@ describe(`Data Reconciliation (${getTestDescription()})`, () => {
     beforeAll(async () => {
         db = new Database();
         statsFetcher = new StatsFetcher(db);
+        await initTestConfig(); // Initialize config from database
         testConfig = getTestConfig();
-        logTestConfig();
+        await logTestConfig();
         await fs.mkdir(reportDir, { recursive: true });
     });
     

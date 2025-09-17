@@ -9,12 +9,28 @@ class TestRunnerService {
 
     async getAvailableWeeks(season = 2025) {
         try {
+            // Get current week from league settings
+            const currentSettings = await this.db.get(`
+                SELECT current_week
+                FROM league_settings
+                WHERE league_id = 1
+            `);
+
+            // Get all weeks that have any data (from multiple sources)
             const weeks = await this.db.all(`
                 SELECT DISTINCT week
-                FROM weekly_standings
-                WHERE season = ?
+                FROM (
+                    SELECT DISTINCT week FROM nfl_games WHERE season = ?
+                    UNION
+                    SELECT DISTINCT week FROM player_stats WHERE season = ?
+                    UNION
+                    SELECT DISTINCT week FROM weekly_standings WHERE season = ?
+                    UNION
+                    SELECT ? as week  -- Include current week from settings
+                )
+                WHERE week IS NOT NULL
                 ORDER BY week DESC
-            `, [season]);
+            `, [season, season, season, currentSettings?.current_week || 2]);
 
             return weeks.map(w => w.week);
         } catch (error) {

@@ -1,5 +1,6 @@
 const express = require('express');
 const { asyncHandler, APIError, logInfo, logError } = require('../utils/errorHandler');
+const DataCleanupService = require('../services/dataCleanupService');
 const router = express.Router();
 
 // No admin authentication required - network-only access
@@ -81,35 +82,85 @@ router.post('/roster/remove', requireAdmin, asyncHandler(async (req, res) => {
     });
 }));
 
+// Execute paired roster move (drop + add)
+router.post('/roster/move', requireAdmin, asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const { teamId, dropPlayerId, addPlayerId, moveType } = req.body;
+
+    if (!teamId || !dropPlayerId || !addPlayerId || !moveType) {
+        throw new APIError('Team ID, Drop Player ID, Add Player ID, and Move Type are required', 400);
+    }
+
+    if (!['ir', 'supplemental'].includes(moveType)) {
+        throw new APIError('Invalid move type. Must be: ir or supplemental', 400);
+    }
+
+    // Validate team exists
+    const team = await db.getTeam(parseInt(teamId));
+    if (!team) {
+        throw new APIError('Team not found', 404);
+    }
+
+    try {
+        const result = await db.executeRosterMove(
+            parseInt(teamId),
+            dropPlayerId,
+            addPlayerId,
+            moveType
+        );
+
+        res.json({
+            success: true,
+            message: `Roster move completed: ${result.dropped.name} ${moveType === 'ir' ? 'to IR' : 'dropped'}, ${result.added.name} added`,
+            data: {
+                team: team.team_name,
+                moveType: moveType,
+                dropped: {
+                    id: result.dropped.player_id,
+                    name: result.dropped.name,
+                    position: result.dropped.position
+                },
+                added: {
+                    id: result.added.player_id,
+                    name: result.added.name,
+                    position: result.added.position
+                }
+            }
+        });
+    } catch (error) {
+        throw new APIError(error.message, 400);
+    }
+}));
+
 // Update roster position (starter/bench)
 router.post('/roster/position', requireAdmin, asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const { teamId, playerId, rosterPosition } = req.body;
-    
+
     if (!teamId || !playerId || !rosterPosition) {
         throw new APIError('Team ID, Player ID, and roster position are required', 400);
     }
-    
+
     if (!['starter', 'injured_reserve'].includes(rosterPosition)) {
         throw new APIError('Invalid roster position. Must be: starter or injured_reserve', 400);
     }
-    
+
     // Get player and team info for response
     const [team, player] = await Promise.all([
         db.getTeam(parseInt(teamId)),
         db.get('SELECT * FROM nfl_players WHERE player_id = ?', [playerId])
     ]);
-    
+
     if (!team) {
         throw new APIError('Team not found', 404);
     }
-    
+
     if (!player) {
         throw new APIError('Player not found', 404);
     }
-    
+
     await db.updateRosterPosition(parseInt(teamId), playerId, rosterPosition);
-    
+
     res.json({
         success: true,
         message: `${player.name} moved to ${rosterPosition}`,
@@ -323,17 +374,54 @@ router.post('/traffic/cleanup', requireAdmin, asyncHandler(async (req, res) => {
 // Force sync (for testing)
 router.post('/sync/force', requireAdmin, asyncHandler(async (req, res) => {
     const playerSyncService = req.app.locals.playerSyncService;
-    
+    const teamScoreService = req.app.locals.teamScoreService;
+    const db = req.app.locals.db;
+
     if (!playerSyncService) {
         throw new APIError('Player sync service not available', 500);
     }
-    
+
+    // Step 1: Sync player data
     const result = await playerSyncService.forceSyncPlayers();
-    
+
+    // Step 2: Get current week and season
+    const settings = await db.get('SELECT * FROM league_settings WHERE league_id = 1');
+    const currentWeek = settings.current_week;
+    const currentSeason = settings.season_year;
+
+    // Step 3: Sync player stats for current week
+    let statsResult = null;
+    if (playerSyncService.syncPlayerStats) {
+        logInfo(`Syncing player stats for week ${currentWeek}, season ${currentSeason}`);
+        statsResult = await playerSyncService.syncPlayerStats(currentWeek, currentSeason);
+    }
+
+    // Step 4: Recalculate team scores
+    let teamScoresUpdated = false;
+    let teamsUpdated = 0;
+    try {
+        if (teamScoreService) {
+            logInfo('Recalculating team scores after force sync...');
+            const teamScoreResult = await teamScoreService.recalculateTeamScores(currentWeek, currentSeason);
+            teamScoresUpdated = teamScoreResult.success;
+            teamsUpdated = teamScoreResult.teamsUpdated || 0;
+            logInfo(`Team scores recalculated: ${teamsUpdated} teams updated`);
+        }
+    } catch (teamScoreError) {
+        logError('Failed to recalculate team scores:', teamScoreError);
+    }
+
     res.json({
         success: true,
-        message: 'Force sync initiated',
-        data: result
+        message: `Force sync completed. ${teamsUpdated} team scores updated.`,
+        data: {
+            playerSync: result,
+            statsSync: statsResult,
+            teamScoresUpdated,
+            teamsUpdated,
+            week: currentWeek,
+            season: currentSeason
+        }
     });
 }));
 
@@ -356,9 +444,15 @@ router.post('/sync/games/current-week', requireAdmin, asyncHandler(async (req, r
         const settings = await db.get('SELECT * FROM league_settings WHERE league_id = 1');
         const currentWeek = settings.current_week;
         const currentSeason = settings.season_year;
-        
+
         logInfo(`Starting full sync (with cache bypass) for week ${currentWeek}, season ${currentSeason}`);
-        
+
+        // Initialize cleanup service and wipe existing stats for this week
+        const dataCleanupService = new DataCleanupService(db);
+        logInfo(`Wiping existing stats for week ${currentWeek}, season ${currentSeason}...`);
+        const cleanupResult = await dataCleanupService.cleanWeekData(currentWeek, currentSeason);
+        logInfo(`Cleaned ${cleanupResult.statsDeleted} player stats and ${cleanupResult.gamesDeleted} games`);
+
         // First, get the list of games for the week (1 API call, bypassing cache)
         const gamesData = await tank01Service.getNFLGamesForWeek(currentWeek, currentSeason, true);
         
@@ -592,6 +686,12 @@ router.post('/sync/games/specific-week', requireAdmin, asyncHandler(async (req, 
 
     try {
         logInfo(`Starting full sync (with cache bypass) for specific week ${weekNum}, season ${seasonNum}`);
+
+        // Initialize cleanup service and wipe existing stats for this week
+        const dataCleanupService = new DataCleanupService(db);
+        logInfo(`Wiping existing stats for week ${weekNum}, season ${seasonNum}...`);
+        const cleanupResult = await dataCleanupService.cleanWeekData(weekNum, seasonNum);
+        logInfo(`Cleaned ${cleanupResult.statsDeleted} player stats and ${cleanupResult.gamesDeleted} games`);
 
         // First, get the list of games for the week (1 API call, bypassing cache)
         const gamesData = await tank01Service.getNFLGamesForWeek(weekNum, seasonNum, true);
@@ -1151,6 +1251,37 @@ router.post('/weekly-report/generate', requireAdmin, asyncHandler(async (req, re
 
 // Test runner endpoints
 const TestRunnerService = require('../services/testRunnerService');
+
+// Clear data for a specific week
+router.post('/test/clear-week-data', requireAdmin, asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const { week, season = 2025 } = req.body;
+
+    if (!week) {
+        throw new APIError('Week number is required', 400);
+    }
+
+    const dataCleanupService = new DataCleanupService(db);
+
+    logInfo(`Admin request to clear data for week ${week}, season ${season}`);
+
+    try {
+        const result = await dataCleanupService.cleanWeekData(week, season);
+
+        logInfo(`Successfully cleared week ${week} data: ${result.statsDeleted} stats, ${result.gamesDeleted} games, ${result.matchupsReset} matchups reset`);
+
+        res.json({
+            success: true,
+            message: `Cleared data for week ${week}, season ${season}`,
+            statsDeleted: result.statsDeleted,
+            gamesDeleted: result.gamesDeleted,
+            matchupsReset: result.matchupsReset
+        });
+    } catch (error) {
+        logError(`Failed to clear week ${week} data:`, error);
+        throw new APIError(`Failed to clear data: ${error.message}`, 500);
+    }
+}));
 
 // Get available weeks for testing
 router.get('/test/available-weeks', requireAdmin, asyncHandler(async (req, res) => {

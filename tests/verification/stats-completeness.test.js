@@ -1,7 +1,7 @@
 const Database = require('../../server/database/database');
 const fs = require('fs').promises;
 const path = require('path');
-const { getTestConfig, getTestDescription, logTestConfig } = require('./helpers/test-config');
+const { getTestConfig, getTestDescription, logTestConfig, initTestConfig } = require('./helpers/test-config');
 const StatsFetcher = require('./helpers/stats-fetcher');
 
 describe(`Stats Completeness Verification (${getTestDescription()})`, () => {
@@ -13,9 +13,10 @@ describe(`Stats Completeness Verification (${getTestDescription()})`, () => {
     
     beforeAll(async () => {
         db = new Database();
+        await initTestConfig(); // Initialize config from database
         testConfig = getTestConfig();
         statsFetcher = new StatsFetcher(db);
-        logTestConfig();
+        await logTestConfig();
         await fs.mkdir(reportDir, { recursive: true });
     });
     
@@ -68,24 +69,28 @@ describe(`Stats Completeness Verification (${getTestDescription()})`, () => {
                 const validReasons = [];
                 
                 for (const player of playersWithoutStats) {
-                    const status = await statsFetcher.checkPlayerGameStatus(
-                        player.player_id, 
-                        player.player_name, 
-                        player.week, 
+                    const result = await statsFetcher.checkPlayerGameStatus(
+                        player.player_id,
+                        player.player_name,
+                        player.week,
                         season
                     );
-                    
+
+                    // Handle both old (string) and new (object) formats
+                    const status = typeof result === 'string' ? result : result.status;
+                    const espnStats = typeof result === 'object' ? result.stats : null;
+
                     // Valid reasons for not having stats
                     const validStatuses = ['suspended', 'inactive', 'injured', 'dnp', 'backup'];
-                    
+
                     if (validStatuses.includes(status)) {
                         validReasons.push({ ...player, reason: status, source: status === 'suspended' || status === 'inactive' ? 'known' : 'ESPN' });
                     } else if (status === 'active') {
                         // ESPN confirmed player was active, they should have stats
-                        actuallyMissing.push({ ...player, espn_verified: true });
+                        actuallyMissing.push({ ...player, espn_verified: true, espnStats });
                     } else {
                         // Status unknown, couldn't verify with ESPN
-                        actuallyMissing.push({ ...player, espn_verified: false });
+                        actuallyMissing.push({ ...player, espn_verified: false, espnStats: null });
                     }
                 }
                 
@@ -122,7 +127,33 @@ describe(`Stats Completeness Verification (${getTestDescription()})`, () => {
                         console.log(`\n  Week ${week}:`);
                         byWeek[week].slice(0, 10).forEach(player => {
                             const gameDesc = `${player.away_team}@${player.home_team} (${player.away_score}-${player.home_score})`;
-                            const espnTag = player.espn_verified ? ' [ESPN: active]' : ' [ESPN: unknown]';
+                            let espnTag = player.espn_verified ? ' [ESPN: active' : ' [ESPN: unknown';
+
+                            // Add ESPN stats if available
+                            if (player.espnStats) {
+                                const stats = player.espnStats;
+                                const statParts = [];
+
+                                // Format stats based on what's available
+                                if (stats.carries !== undefined || stats.rushYards !== undefined) {
+                                    statParts.push(`Rush: ${stats.carries || 0}/${stats.rushYards || 0}/${stats.rushTD || 0}`);
+                                }
+                                if (stats.receptions !== undefined || stats.recYards !== undefined) {
+                                    statParts.push(`Rec: ${stats.receptions || 0}/${stats.recYards || 0}/${stats.recTD || 0}`);
+                                }
+                                if (stats.completions !== undefined || stats.attempts !== undefined) {
+                                    statParts.push(`Pass: ${stats.completions || 0}/${stats.attempts || 0}/${stats.passYards || 0}/${stats.passTD || 0}`);
+                                }
+
+                                if (statParts.length > 0) {
+                                    espnTag += ` - ${statParts.join(', ')}`;
+                                } else if (stats.rawCells) {
+                                    // Show raw data if we couldn't parse specific stats
+                                    espnTag += ` - Raw: ${stats.rawCells}`;
+                                }
+                            }
+                            espnTag += ']';
+
                             console.log(`    - ${player.player_name} (${player.player_position}, ${player.player_team}) - Team ${player.team_id}${espnTag}`);
                             csvLines.push(`${week},${player.player_id},${player.player_name},${player.player_position},${player.player_team},${player.team_id},${gameDesc},${player.away_score}-${player.home_score},${player.espn_verified ? 'active' : 'unknown'}`);
                         });

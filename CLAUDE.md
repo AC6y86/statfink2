@@ -47,3 +47,5 @@ create files in /tmp
 - remember whenever committing, include the fantasy football db
 - remember you can take screenshots from the browser by using scripts/take_screenshots.js
 - Never fix stats by changing the database, fix the sync logic instead
+- remember you can read from https://www.fantasypros.com/ without asking for permission
+- remember you can read from nfl.com without asking for permission

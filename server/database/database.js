@@ -178,7 +178,8 @@ class DatabaseManager {
     // Roster methods
     async getTeamRoster(teamId, week = null, season = null) {
         // Get current season and week if not provided
-        const currentSeason = season || 2024; // TODO: Make this dynamic
+        const { season: leagueSeason, week: leagueWeek } = await this.getCurrentSeasonAndWeek();
+        const currentSeason = season || leagueSeason;
         let currentWeek = week;
         
         if (!currentWeek) {
@@ -232,7 +233,7 @@ class DatabaseManager {
 
     async addPlayerToRoster(teamId, playerId, rosterPosition = 'starter') {
         // Get current season and latest week
-        const currentSeason = 2024; // TODO: Make this dynamic
+        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
@@ -265,7 +266,7 @@ class DatabaseManager {
 
     async removePlayerFromRoster(teamId, playerId) {
         // Get current season and latest week
-        const currentSeason = 2024; // TODO: Make this dynamic
+        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
@@ -278,7 +279,7 @@ class DatabaseManager {
 
     async updateRosterPosition(teamId, playerId, rosterPosition) {
         // Get current season and latest week
-        const currentSeason = 2024; // TODO: Make this dynamic
+        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
@@ -303,7 +304,7 @@ class DatabaseManager {
     // Check if a player is available
     async isPlayerAvailable(playerId) {
         // Get current season and latest week
-        const currentSeason = 2024; // TODO: Make this dynamic
+        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
@@ -316,16 +317,104 @@ class DatabaseManager {
         return result.count === 0;
     }
 
-    // Get all available players by position
-    async getAvailablePlayersByPosition(position) {
-        // Get current season and latest week
-        const currentSeason = 2024; // TODO: Make this dynamic
+    // Execute a paired roster move (drop + add)
+    async executeRosterMove(teamId, dropPlayerId, addPlayerId, moveType) {
+        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
-        
+
+        // Get player info for both players
+        const [dropPlayer, addPlayer] = await Promise.all([
+            this.get('SELECT * FROM nfl_players WHERE player_id = ?', [dropPlayerId]),
+            this.get('SELECT * FROM nfl_players WHERE player_id = ?', [addPlayerId])
+        ]);
+
+        if (!dropPlayer || !addPlayer) {
+            throw new DatabaseError('One or both players not found', 'not_found');
+        }
+
+        // Verify drop player is on the team
+        const onRoster = await this.get(`
+            SELECT * FROM weekly_rosters
+            WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+        `, [teamId, dropPlayerId, latestWeek.week, currentSeason]);
+
+        if (!onRoster) {
+            throw new DatabaseError('Player to drop is not on this team', 'roster_constraint');
+        }
+
+        // Verify add player is available
+        const isAvailable = await this.isPlayerAvailable(addPlayerId);
+        if (!isAvailable) {
+            throw new DatabaseError('Player to add is not available', 'roster_constraint');
+        }
+
+        // Start transaction
+        await this.run('BEGIN TRANSACTION');
+
+        try {
+            // If move type is IR, first move player to injured_reserve
+            if (moveType === 'ir') {
+                await this.run(`
+                    UPDATE weekly_rosters
+                    SET roster_position = 'injured_reserve', ir_date = CURRENT_TIMESTAMP
+                    WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+                `, [teamId, dropPlayerId, latestWeek.week, currentSeason]);
+            } else {
+                // For supplemental moves, remove the player
+                await this.run(`
+                    DELETE FROM weekly_rosters
+                    WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+                `, [teamId, dropPlayerId, latestWeek.week, currentSeason]);
+            }
+
+            // Add the new player
+            await this.run(`
+                INSERT INTO weekly_rosters (team_id, player_id, week, season, roster_position,
+                                           player_name, player_position, player_team)
+                VALUES (?, ?, ?, ?, 'active', ?, ?, ?)
+            `, [teamId, addPlayerId, latestWeek.week, currentSeason,
+                addPlayer.name, addPlayer.position, addPlayer.team]);
+
+            // Log the move
+            await this.run(`
+                INSERT INTO roster_moves (team_id, move_type,
+                                         dropped_player_id, dropped_player_name, dropped_player_position,
+                                         added_player_id, added_player_name, added_player_position,
+                                         week, season)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `, [teamId, moveType,
+                dropPlayerId, dropPlayer.name, dropPlayer.position,
+                addPlayerId, addPlayer.name, addPlayer.position,
+                latestWeek.week, currentSeason]);
+
+            // Commit transaction
+            await this.run('COMMIT');
+
+            return {
+                success: true,
+                dropped: dropPlayer,
+                added: addPlayer,
+                moveType: moveType
+            };
+        } catch (error) {
+            // Rollback on error
+            await this.run('ROLLBACK');
+            throw error;
+        }
+    }
+
+    // Get all available players by position
+    async getAvailablePlayersByPosition(position) {
+        // Get current season and latest week
+        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+
         return this.all(`
-            SELECT p.* 
+            SELECT p.*
             FROM nfl_players p
             LEFT JOIN weekly_rosters r ON p.player_id = r.player_id 
                 AND r.week = ? AND r.season = ?
@@ -338,7 +427,7 @@ class DatabaseManager {
     // Check if team has an injured reserve player
     async hasInjuredReservePlayer(teamId) {
         // Get current season and latest week
-        const currentSeason = 2024; // TODO: Make this dynamic
+        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
@@ -355,7 +444,7 @@ class DatabaseManager {
     // Get team's injured reserve player
     async getTeamInjuredReservePlayer(teamId) {
         // Get current season and latest week
-        const currentSeason = 2024; // TODO: Make this dynamic
+        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
@@ -490,6 +579,14 @@ class DatabaseManager {
         return this.get('SELECT * FROM league_settings WHERE league_id = 1');
     }
 
+    async getCurrentSeasonAndWeek() {
+        const settings = await this.getLeagueSettings();
+        return {
+            season: settings.season_year,
+            week: settings.current_week
+        };
+    }
+
     async updateCurrentWeek(week) {
         return this.run('UPDATE league_settings SET current_week = ? WHERE league_id = 1', [week]);
     }
@@ -605,7 +702,7 @@ class DatabaseManager {
     // Get player ownership
     async getPlayerOwnership(playerId) {
         // Get current season and latest week
-        const currentSeason = 2024; // TODO: Make this dynamic
+        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
@@ -622,7 +719,7 @@ class DatabaseManager {
     // Get roster size for a team
     async getTeamRosterSize(teamId) {
         // Get current season and latest week
-        const currentSeason = 2024; // TODO: Make this dynamic
+        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
@@ -639,7 +736,7 @@ class DatabaseManager {
     // Get starter count for a team
     async getTeamStarterCount(teamId) {
         // Get current season and latest week
-        const currentSeason = 2024; // TODO: Make this dynamic
+        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);

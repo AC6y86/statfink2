@@ -15,7 +15,7 @@ const ROSTER_CONSTRAINTS = {
 // Validate roster constraints for PFL rules
 async function validateRosterConstraints(db, teamId, position, action) {
     // Get current season and week
-    const currentSeason = 2024; // TODO: Make this dynamic
+    const { season: currentSeason } = await db.getCurrentSeasonAndWeek();
     const currentWeek = await db.get(`
         SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
     `, [currentSeason]);
@@ -107,13 +107,16 @@ router.get('/:teamId', asyncHandler(async (req, res) => {
 router.get('/:teamId/roster', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const { teamId } = req.params;
-    
+
     if (!teamId || isNaN(teamId)) {
         throw new APIError('Invalid team ID', 400);
     }
-    
+
     const roster = await db.getTeamRoster(parseInt(teamId));
-    
+
+    // Get current season and week info
+    const { season, week } = await db.getCurrentSeasonAndWeek();
+
     // Group players by position for easier frontend consumption
     const groupedRoster = roster.reduce((acc, player) => {
         const position = player.position;
@@ -123,14 +126,18 @@ router.get('/:teamId/roster', asyncHandler(async (req, res) => {
         acc[position].push(player);
         return acc;
     }, {});
-    
+
     res.json({
         success: true,
         data: {
             roster,
             groupedByPosition: groupedRoster,
             active: roster.filter(p => p.roster_position === 'active'),
-            injured_reserve: roster.filter(p => p.roster_position === 'injured_reserve')
+            injured_reserve: roster.filter(p => p.roster_position === 'injured_reserve'),
+            dataSource: {
+                season: season,
+                week: week
+            }
         }
     });
 }));
@@ -192,7 +199,7 @@ router.post('/:teamId/roster/add', asyncHandler(async (req, res) => {
     }
     
     // Get current season and week
-    const currentSeason = 2024; // TODO: Make this dynamic
+    const { season: currentSeason } = await db.getCurrentSeasonAndWeek();
     const currentWeek = await db.get(`
         SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
     `, [currentSeason]);
@@ -263,7 +270,7 @@ router.delete('/:teamId/roster/remove', asyncHandler(async (req, res) => {
     }
     
     // Get current season and week
-    const currentSeason = 2024; // TODO: Make this dynamic
+    const { season: currentSeason } = await db.getCurrentSeasonAndWeek();
     const currentWeek = await db.get(`
         SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
     `, [currentSeason]);
@@ -337,7 +344,7 @@ router.put('/:teamId/roster/move', asyncHandler(async (req, res) => {
     }
     
     // Get current season and week
-    const currentSeason = 2024; // TODO: Make this dynamic  
+    const { season: currentSeason } = await db.getCurrentSeasonAndWeek();  
     const currentWeek = await db.get(`
         SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
     `, [currentSeason]);
