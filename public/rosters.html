@@ -191,6 +191,29 @@
             display: block;
             box-sizing: border-box;
         }
+
+        .ir-separator {
+            background-color: #556;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            text-align: center;
+            padding: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ir-section {
+            background-color: #f8f8f8;
+        }
+
+        .ir-section tr.row1 {
+            background-color: #f8f8f8;
+        }
+
+        .ir-section tr.row2 {
+            background-color: #efefef;
+        }
     </style>
 </head>
 <body>
@@ -462,72 +485,133 @@
                 
                 // Add table body
                 const tbody = document.createElement('tbody');
-                
+
+                // Separate active and IR players
+                const activePlayers = team.roster.filter(p => p.status !== 'IR');
+                const irPlayers = team.roster.filter(p => p.status === 'IR');
+
                 // Group players by position
                 const positions = ['QB', 'RB', 'WR', 'TE', 'K', 'Defense'];
                 let rowIndex = 0;
                 let activeCount = 0;
-                let irCount = 0;
-                
+                let irCount = irPlayers.length;
+
+                // First, add all active players sorted by position
                 positions.forEach(pos => {
-                    const playersAtPosition = team.roster.filter(p => p.position === pos);
-                    
+                    const playersAtPosition = activePlayers.filter(p => p.position === pos);
+
                     playersAtPosition.forEach(player => {
                         // Skip players with no name (potential blank entries)
                         if (!player.name || player.name.trim() === '') {
                             return;
                         }
-                        
+
                         const row = document.createElement('tr');
                         row.className = rowIndex % 2 === 0 ? 'row1' : 'row2';
-                        
+
                         if (player.is_scoring) {
                             row.classList.add('scoring-player');
                         }
-                        
+
                         // Check if this player has changed
                         const teamChanges = changedPlayers[team.team_id] || [];
                         const isChanged = teamChanges.includes(player.player_id);
-                        
+
                         const posClass = `position-${pos.toLowerCase()}`;
-                        const statusClass = player.status === 'IR' ? 'status-ir' : '';
-                        
+
                         // Add roster-changed class to player name if changed
                         const nameClass = isChanged ? 'roster-changed' : '';
-                        
+
                         // Format player name if too long
                         const displayName = formatPlayerName(player.name);
-                        
+
                         // Format injury display
                         let injuryCell = '<td>-</td>';
                         if (player.injury_designation) {
                             const injuryClass = getInjuryClass(player.injury_designation);
-                            const tooltip = player.injury_description ? 
+                            const tooltip = player.injury_description ?
                                 `<div class="injury-tooltip">${player.injury_description}</div>` : '';
                             injuryCell = `<td class="injury-cell">
                                 <span class="injury-status ${injuryClass}">${player.injury_designation}</span>
                                 ${tooltip}
                             </td>`;
                         }
-                        
+
                         row.innerHTML = `
                             <td class="${posClass}">${pos}</td>
                             <td class="${nameClass}" style="max-width: 150px;" title="${player.name}">${displayName}</td>
                             <td>${player.team || '-'}</td>
-                            <td class="${statusClass}">${player.status}</td>
+                            <td>${player.status}</td>
                             ${injuryCell}
                         `;
-                        
+
                         tbody.appendChild(row);
                         rowIndex++;
-                        
-                        if (player.status === 'IR') {
-                            irCount++;
-                        } else {
-                            activeCount++;
-                        }
+                        activeCount++;
                     });
                 });
+
+                // Add IR separator and players if there are any
+                if (irPlayers.length > 0) {
+                    // Add separator row
+                    const separatorRow = document.createElement('tr');
+                    separatorRow.innerHTML = `<td colspan="5" class="ir-separator">Injured Reserve</td>`;
+                    tbody.appendChild(separatorRow);
+
+                    // Reset row index for IR section
+                    rowIndex = 0;
+
+                    // Add IR players sorted by position
+                    positions.forEach(pos => {
+                        const playersAtPosition = irPlayers.filter(p => p.position === pos);
+
+                        playersAtPosition.forEach(player => {
+                            // Skip players with no name (potential blank entries)
+                            if (!player.name || player.name.trim() === '') {
+                                return;
+                            }
+
+                            const row = document.createElement('tr');
+                            row.className = `ir-section ${rowIndex % 2 === 0 ? 'row1' : 'row2'}`;
+
+                            // Check if this player has changed
+                            const teamChanges = changedPlayers[team.team_id] || [];
+                            const isChanged = teamChanges.includes(player.player_id);
+
+                            const posClass = `position-${pos.toLowerCase()}`;
+                            const statusClass = 'status-ir';
+
+                            // Add roster-changed class to player name if changed
+                            const nameClass = isChanged ? 'roster-changed' : '';
+
+                            // Format player name if too long
+                            const displayName = formatPlayerName(player.name);
+
+                            // Format injury display
+                            let injuryCell = '<td>-</td>';
+                            if (player.injury_designation) {
+                                const injuryClass = getInjuryClass(player.injury_designation);
+                                const tooltip = player.injury_description ?
+                                    `<div class="injury-tooltip">${player.injury_description}</div>` : '';
+                                injuryCell = `<td class="injury-cell">
+                                    <span class="injury-status ${injuryClass}">${player.injury_designation}</span>
+                                    ${tooltip}
+                                </td>`;
+                            }
+
+                            row.innerHTML = `
+                                <td class="${posClass}">${pos}</td>
+                                <td class="${nameClass}" style="max-width: 150px;" title="${player.name}">${displayName}</td>
+                                <td>${player.team || '-'}</td>
+                                <td class="${statusClass}">IR</td>
+                                ${injuryCell}
+                            `;
+
+                            tbody.appendChild(row);
+                            rowIndex++;
+                        });
+                    });
+                }
                 
                 table.appendChild(tbody);
                 teamDiv.appendChild(table);
@@ -535,7 +619,7 @@
                 // Add player count
                 const countDiv = document.createElement('div');
                 countDiv.className = 'player-count';
-                countDiv.textContent = `Active: ${activeCount} | IR: ${irCount} | Total: ${team.roster.length}`;
+                countDiv.textContent = `Active: ${activeCount} | IR: ${irCount} | Total: ${activeCount + irCount}`;
                 teamDiv.appendChild(countDiv);
                 
                 rostersGrid.appendChild(teamDiv);
