@@ -301,20 +301,51 @@ class DatabaseManager {
         }
     }
 
-    // Check if a player is available
+    // Check if a player is available (returns detailed info)
     async isPlayerAvailable(playerId) {
         // Get current season and latest week
         const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
-        
-        const result = await this.get(`
-            SELECT COUNT(*) as count FROM weekly_rosters 
-            WHERE player_id = ? AND week = ? AND season = ?
-              AND roster_position != 'injured_reserve'
+
+        // Check if player exists
+        const player = await this.get(`
+            SELECT player_id, name, position, team FROM nfl_players WHERE player_id = ?
+        `, [playerId]);
+
+        if (!player) {
+            return {
+                available: false,
+                reason: 'Player not found in database',
+                player: null
+            };
+        }
+
+        // Check if player is on another team
+        const ownership = await this.get(`
+            SELECT wr.*, t.team_name, t.owner_name
+            FROM weekly_rosters wr
+            JOIN teams t ON wr.team_id = t.team_id
+            WHERE wr.player_id = ? AND wr.week = ? AND wr.season = ?
+              AND wr.roster_position != 'injured_reserve'
         `, [playerId, latestWeek.week, currentSeason]);
-        return result.count === 0;
+
+        if (ownership) {
+            return {
+                available: false,
+                reason: `Player is already on ${ownership.team_name} (owned by ${ownership.owner_name})`,
+                player: player,
+                currentTeam: ownership.team_name,
+                currentOwner: ownership.owner_name
+            };
+        }
+
+        return {
+            available: true,
+            reason: null,
+            player: player
+        };
     }
 
     // Execute a paired roster move (drop + add)
@@ -345,9 +376,9 @@ class DatabaseManager {
         }
 
         // Verify add player is available
-        const isAvailable = await this.isPlayerAvailable(addPlayerId);
-        if (!isAvailable) {
-            throw new DatabaseError('Player to add is not available', 'roster_constraint');
+        const availability = await this.isPlayerAvailable(addPlayerId);
+        if (!availability.available) {
+            throw new DatabaseError(availability.reason || 'Player to add is not available', 'roster_constraint');
         }
 
         // Start transaction

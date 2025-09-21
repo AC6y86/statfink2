@@ -49,3 +49,7 @@ create files in /tmp
 - Never fix stats by changing the database, fix the sync logic instead
 - remember you can read from https://www.fantasypros.com/ without asking for permission
 - remember you can read from nfl.com without asking for permission
+- remember when a roster move is made, a player needs to be on the IR for at least 3 weeks before they can be brought back
+- remember when a roster move is made, a player needs 
+to be on the IR for at least 3 weeks before they can 
+be brought back

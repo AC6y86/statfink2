@@ -132,6 +132,28 @@ router.post('/roster/move', requireAdmin, asyncHandler(async (req, res) => {
     }
 }));
 
+// Check player availability
+router.get('/roster/check-availability/:playerId', requireAdmin, asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const { playerId } = req.params;
+
+    if (!playerId) {
+        throw new APIError('Player ID is required', 400);
+    }
+
+    const availability = await db.isPlayerAvailable(playerId);
+
+    res.json({
+        success: true,
+        playerId: playerId,
+        available: availability.available,
+        reason: availability.reason,
+        player: availability.player,
+        currentTeam: availability.currentTeam || null,
+        currentOwner: availability.currentOwner || null
+    });
+}));
+
 // Update roster position (starter/bench)
 router.post('/roster/position', requireAdmin, asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
