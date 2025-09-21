@@ -243,7 +243,7 @@ class PlayerSyncService {
             'SEA': 'SEA', 'SEATTLE': 'SEA',
             'TB': 'TB', 'TAMPA BAY': 'TB', 'BUCCANEERS': 'TB',
             'TEN': 'TEN', 'TENNESSEE': 'TEN',
-            'WAS': 'WAS', 'WASHINGTON': 'WAS', 'COMMANDERS': 'WAS'
+            'WAS': 'WAS', 'WASHINGTON': 'WAS', 'COMMANDERS': 'WAS', 'WSH': 'WAS'
         };
 
         return teamMap[teamAbv] || teamAbv;
