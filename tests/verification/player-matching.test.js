@@ -225,17 +225,17 @@ describe(`Player Matching Verification (${getTestDescription()})`, () => {
         
         test('each team should have exactly 19 players', async () => {
             const { season, week } = testConfig;
-            
+
             const invalidRosters = await db.all(`
-                SELECT 
+                SELECT
                     team_id,
                     week,
-                    COUNT(*) as player_count
+                    COUNT(CASE WHEN roster_position != 'injured_reserve' THEN 1 END) as player_count
                 FROM weekly_rosters
                 WHERE season = ?
                 AND week = ?
                 GROUP BY team_id, week
-                HAVING COUNT(*) != 19
+                HAVING COUNT(CASE WHEN roster_position != 'injured_reserve' THEN 1 END) != 19
                 ORDER BY week, team_id
             `, [season, week]);
             

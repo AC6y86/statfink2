@@ -311,7 +311,8 @@ class StatsFetcher {
             
             // Check for known inactives (could be in a database table in the future)
             const knownInactives = {
-                '4685279': { weeks: [1], season: 2025 } // Jaydon Blue - inactive Week 1
+                '4685279': { weeks: [1], season: 2025 }, // Jaydon Blue - inactive Week 1
+                '4360438': { weeks: [3], season: 2025 }  // Brandon Aiyuk - not in box score Week 3
             };
             
             if (knownSuspensions[playerId]) {
