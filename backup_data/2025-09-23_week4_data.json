@@ -1,0 +1,308 @@
+{
+  "week": 4,
+  "season": 2025,
+  "generated_at": "2025-09-23T07:33:20.533Z",
+  "teams": [
+    {
+      "team_id": 1,
+      "team_name": "Chris's Team",
+      "owner": "Chris",
+      "total_points": 0,
+      "scoring_points": 0,
+      "active_players": 0,
+      "ir_players": 0,
+      "roster": []
+    },
+    {
+      "team_id": 2,
+      "team_name": "Mitch's Team",
+      "owner": "Mitch",
+      "total_points": 0,
+      "scoring_points": 0,
+      "active_players": 0,
+      "ir_players": 0,
+      "roster": []
+    },
+    {
+      "team_id": 3,
+      "team_name": "Dan's Team",
+      "owner": "Dan",
+      "total_points": 0,
+      "scoring_points": 0,
+      "active_players": 0,
+      "ir_players": 0,
+      "roster": []
+    },
+    {
+      "team_id": 4,
+      "team_name": "Pete's Team",
+      "owner": "Pete",
+      "total_points": 0,
+      "scoring_points": 0,
+      "active_players": 0,
+      "ir_players": 0,
+      "roster": []
+    },
+    {
+      "team_id": 5,
+      "team_name": "Joe's Team",
+      "owner": "Joe",
+      "total_points": 0,
+      "scoring_points": 0,
+      "active_players": 0,
+      "ir_players": 0,
+      "roster": []
+    },
+    {
+      "team_id": 6,
+      "team_name": "Aaron's Team",
+      "owner": "Aaron",
+      "total_points": 0,
+      "scoring_points": 0,
+      "active_players": 0,
+      "ir_players": 0,
+      "roster": []
+    },
+    {
+      "team_id": 7,
+      "team_name": "Cal's Team",
+      "owner": "Cal",
+      "total_points": 0,
+      "scoring_points": 0,
+      "active_players": 0,
+      "ir_players": 0,
+      "roster": []
+    },
+    {
+      "team_id": 8,
+      "team_name": "Bruce's Team",
+      "owner": "Bruce",
+      "total_points": 0,
+      "scoring_points": 0,
+      "active_players": 0,
+      "ir_players": 0,
+      "roster": []
+    },
+    {
+      "team_id": 9,
+      "team_name": "Mike's Team",
+      "owner": "Mike",
+      "total_points": 0,
+      "scoring_points": 0,
+      "active_players": 0,
+      "ir_players": 0,
+      "roster": []
+    },
+    {
+      "team_id": 10,
+      "team_name": "Sean's Team",
+      "owner": "Sean",
+      "total_points": 0,
+      "scoring_points": 0,
+      "active_players": 0,
+      "ir_players": 0,
+      "roster": []
+    },
+    {
+      "team_id": 11,
+      "team_name": "Eli's Team",
+      "owner": "Eli",
+      "total_points": 0,
+      "scoring_points": 0,
+      "active_players": 0,
+      "ir_players": 0,
+      "roster": []
+    },
+    {
+      "team_id": 12,
+      "team_name": "Matt's Team",
+      "owner": "Matt",
+      "total_points": 0,
+      "scoring_points": 0,
+      "active_players": 0,
+      "ir_players": 0,
+      "roster": []
+    }
+  ],
+  "matchups": [
+    {
+      "matchup_id": 856,
+      "team1": {
+        "id": 1,
+        "name": "Chris's Team",
+        "total_points": 0,
+        "scoring_points": 0
+      },
+      "team2": {
+        "id": 8,
+        "name": "Bruce's Team",
+        "total_points": 0,
+        "scoring_points": 0
+      },
+      "winner": "Tie",
+      "is_complete": true
+    },
+    {
+      "matchup_id": 857,
+      "team1": {
+        "id": 3,
+        "name": "Dan's Team",
+        "total_points": 0,
+        "scoring_points": 0
+      },
+      "team2": {
+        "id": 10,
+        "name": "Sean's Team",
+        "total_points": 0,
+        "scoring_points": 0
+      },
+      "winner": "Tie",
+      "is_complete": true
+    },
+    {
+      "matchup_id": 858,
+      "team1": {
+        "id": 5,
+        "name": "Joe's Team",
+        "total_points": 0,
+        "scoring_points": 0
+      },
+      "team2": {
+        "id": 12,
+        "name": "Matt's Team",
+        "total_points": 0,
+        "scoring_points": 0
+      },
+      "winner": "Tie",
+      "is_complete": true
+    },
+    {
+      "matchup_id": 859,
+      "team1": {
+        "id": 7,
+        "name": "Cal's Team",
+        "total_points": 0,
+        "scoring_points": 0
+      },
+      "team2": {
+        "id": 2,
+        "name": "Mitch's Team",
+        "total_points": 0,
+        "scoring_points": 0
+      },
+      "winner": "Tie",
+      "is_complete": true
+    },
+    {
+      "matchup_id": 860,
+      "team1": {
+        "id": 9,
+        "name": "Mike's Team",
+        "total_points": 0,
+        "scoring_points": 0
+      },
+      "team2": {
+        "id": 4,
+        "name": "Pete's Team",
+        "total_points": 0,
+        "scoring_points": 0
+      },
+      "winner": "Tie",
+      "is_complete": true
+    },
+    {
+      "matchup_id": 861,
+      "team1": {
+        "id": 11,
+        "name": "Eli's Team",
+        "total_points": 0,
+        "scoring_points": 0
+      },
+      "team2": {
+        "id": 6,
+        "name": "Aaron's Team",
+        "total_points": 0,
+        "scoring_points": 0
+      },
+      "winner": "Tie",
+      "is_complete": true
+    }
+  ],
+  "validation": {
+    "all_teams_have_19_players": false,
+    "teams_with_issues": [
+      {
+        "team_id": 1,
+        "team_name": "Chris's Team",
+        "player_count": 0,
+        "expected": 19
+      },
+      {
+        "team_id": 2,
+        "team_name": "Mitch's Team",
+        "player_count": 0,
+        "expected": 19
+      },
+      {
+        "team_id": 3,
+        "team_name": "Dan's Team",
+        "player_count": 0,
+        "expected": 19
+      },
+      {
+        "team_id": 4,
+        "team_name": "Pete's Team",
+        "player_count": 0,
+        "expected": 19
+      },
+      {
+        "team_id": 5,
+        "team_name": "Joe's Team",
+        "player_count": 0,
+        "expected": 19
+      },
+      {
+        "team_id": 6,
+        "team_name": "Aaron's Team",
+        "player_count": 0,
+        "expected": 19
+      },
+      {
+        "team_id": 7,
+        "team_name": "Cal's Team",
+        "player_count": 0,
+        "expected": 19
+      },
+      {
+        "team_id": 8,
+        "team_name": "Bruce's Team",
+        "player_count": 0,
+        "expected": 19
+      },
+      {
+        "team_id": 9,
+        "team_name": "Mike's Team",
+        "player_count": 0,
+        "expected": 19
+      },
+      {
+        "team_id": 10,
+        "team_name": "Sean's Team",
+        "player_count": 0,
+        "expected": 19
+      },
+      {
+        "team_id": 11,
+        "team_name": "Eli's Team",
+        "player_count": 0,
+        "expected": 19
+      },
+      {
+        "team_id": 12,
+        "team_name": "Matt's Team",
+        "player_count": 0,
+        "expected": 19
+      }
+    ]
+  }
+}

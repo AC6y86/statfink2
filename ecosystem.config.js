@@ -27,7 +27,7 @@ module.exports = {
       name: 'statfink2-daily',
       script: './scripts/daily-update.js',
       cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 13 * * *', // 10am UTC = 3am PDT (Pacific Daylight Time)
+      cron_restart: '0 14 * * *', // 10am UTC = 3am PDT (Pacific Daylight Time)
       autorestart: false,
       watch: false,
       time: true
@@ -49,7 +49,7 @@ module.exports = {
       name: 'statfink2-weekly',
       script: './scripts/weekly-update-check.js',
       cwd: '/home/joepaley/statfink2',
-      // cron_restart: '0 10 * * 2', // 10am UTC Tuesday = 3am PDT Tuesday (after Monday night games) - TEMPORARILY DISABLED
+      // cron_restart: '0 11 * * 2', // 10am UTC Tuesday = 3am PDT Tuesday (after Monday night games) - TEMPORARILY DISABLED
       autorestart: false,
       watch: false,
       time: true

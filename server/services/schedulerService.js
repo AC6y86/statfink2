@@ -195,6 +195,7 @@ class SchedulerService {
             standings: false,
             sheetsExport: false,
             weekAdvance: false,
+            rosterCopy: false,
             errors: []
         };
 
@@ -287,6 +288,25 @@ class SchedulerService {
                 results.weekAdvance = advanceResult.success;
                 if (!advanceResult.success) {
                     results.errors.push(`Week advance: ${advanceResult.message}`);
+                } else {
+                    // 3a. Copy rosters from completed week to new week
+                    try {
+                        const rosterCopyResult = await this.db.copyRostersToNextWeek(
+                            currentSettings.current_week,
+                            advanceResult.newWeek,
+                            currentSettings.season_year
+                        );
+                        results.rosterCopy = rosterCopyResult.success;
+                        if (!rosterCopyResult.success) {
+                            results.errors.push(`Roster copy: ${rosterCopyResult.message}`);
+                        } else {
+                            logInfo(`Successfully copied ${rosterCopyResult.entriesCopied} roster entries to week ${advanceResult.newWeek}`);
+                        }
+                    } catch (error) {
+                        logError('Failed to copy rosters to new week', error);
+                        results.errors.push(`Roster copy: ${error.message}`);
+                        results.rosterCopy = false;
+                    }
                 }
             } catch (error) {
                 logError('Failed to advance week', error);

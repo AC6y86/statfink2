@@ -771,15 +771,64 @@ class DatabaseManager {
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
-        
+
         const result = await this.get(`
             SELECT COUNT(*) as starter_count
             FROM weekly_rosters
             WHERE team_id = ? AND roster_position = 'starter'
               AND week = ? AND season = ?
         `, [teamId, latestWeek.week, currentSeason]);
-        
+
         return result ? result.starter_count : 0;
+    }
+
+    // Copy rosters from one week to another
+    async copyRostersToNextWeek(fromWeek, toWeek, season) {
+        const { logInfo, logWarn, logError } = require('../utils/errorHandler');
+
+        try {
+            // Check if target week already has rosters
+            const existingRosters = await this.get(`
+                SELECT COUNT(*) as count FROM weekly_rosters
+                WHERE week = ? AND season = ?
+            `, [toWeek, season]);
+
+            if (existingRosters.count > 0) {
+                logWarn(`Week ${toWeek} already has ${existingRosters.count} roster entries, skipping copy`);
+                return {
+                    success: false,
+                    message: `Week ${toWeek} already has rosters`,
+                    existingCount: existingRosters.count
+                };
+            }
+
+            // Copy all rosters from previous week to new week
+            const result = await this.run(`
+                INSERT INTO weekly_rosters (team_id, player_id, week, season, roster_position,
+                                          player_name, player_position, player_team, is_scoring,
+                                          scoring_slot, ir_date)
+                SELECT team_id, player_id, ?, season, roster_position,
+                       player_name, player_position, player_team, is_scoring,
+                       scoring_slot, ir_date
+                FROM weekly_rosters
+                WHERE week = ? AND season = ?
+            `, [toWeek, fromWeek, season]);
+
+            logInfo(`Copied ${result.changes} roster entries from week ${fromWeek} to week ${toWeek}`);
+
+            return {
+                success: true,
+                message: `Successfully copied rosters from week ${fromWeek} to week ${toWeek}`,
+                entriesCopied: result.changes
+            };
+        } catch (error) {
+            logError(`Failed to copy rosters from week ${fromWeek} to week ${toWeek}:`, error);
+            return {
+                success: false,
+                message: error.message,
+                error: error
+            };
+        }
     }
 
 
