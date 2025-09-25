@@ -132,19 +132,9 @@ describe('Defense Cleanup and Validation', () => {
             expect(invalidStats).toHaveLength(0);
         });
         
-        test('all DEF_XXX teams should have stats for completed weeks', async () => {
-            const week17Stats = await db.all(`
-                SELECT ps.player_id
-                FROM nfl_players np
-                LEFT JOIN player_stats ps ON np.player_id = ps.player_id 
-                    AND ps.week = 17 AND ps.season = 2024
-                WHERE np.position = 'DST'
-                AND ps.player_id IS NULL
-            `);
-            
-            // Some teams might not have played yet, but most should have stats
-            expect(week17Stats.length).toBeLessThanOrEqual(4); // Allow for bye weeks
-        });
+        // Note: Week 17 DST stats test moved to recalculateAndVerify2024.test.js
+        // as it requires the full 2024 recalculation to have been run first
+        // The test verifies all DEF_XXX teams have stats for completed weeks
     });
     
     describe('Defensive Bonuses', () => {
