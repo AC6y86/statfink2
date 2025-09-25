@@ -36,11 +36,37 @@ const loginLimiter = rateLimit({
 });
 
 function requireAuth(req, res, next) {
+    // Check if request is from localhost for API routes
+    // Use originalUrl which contains the full path including /api/admin
+    if (req.originalUrl && req.originalUrl.startsWith('/api/')) {
+        const clientIp = req.ip ||
+                        req.connection?.remoteAddress ||
+                        req.socket?.remoteAddress ||
+                        req.headers['x-forwarded-for']?.split(',')[0];
+
+        const localhostPatterns = [
+            '127.0.0.1',
+            '::1',
+            '::ffff:127.0.0.1',
+            'localhost'
+        ];
+
+        const isLocalhost = localhostPatterns.some(pattern =>
+            clientIp && (clientIp === pattern || clientIp.includes(pattern))
+        );
+
+        if (isLocalhost) {
+            // Allow localhost API requests without authentication
+            console.log(`Localhost API access: ${req.method} ${req.originalUrl}`);
+            return next();
+        }
+    }
+
     if (!req.session.userId) {
         req.session.returnTo = req.originalUrl;
         return res.redirect('/login');
     }
-    
+
     if (!req.session.regenerated || Date.now() - req.session.regenerated > 300000) {
         req.session.regenerate((err) => {
             if (err) return next(err);

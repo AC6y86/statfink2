@@ -3,9 +3,43 @@ const { asyncHandler, APIError, logInfo, logError } = require('../utils/errorHan
 const DataCleanupService = require('../services/dataCleanupService');
 const router = express.Router();
 
-// No admin authentication required - network-only access
+// Admin authentication - localhost bypass for local scripts
 const requireAdmin = (req, res, next) => {
-    // Skip authentication for network-only deployment
+    // Get client IP address
+    const clientIp = req.ip ||
+                    req.connection?.remoteAddress ||
+                    req.socket?.remoteAddress ||
+                    req.headers['x-forwarded-for']?.split(',')[0];
+
+    // Check if request is from localhost
+    // Include IPv4, IPv6, and loopback variations
+    const localhostPatterns = [
+        '127.0.0.1',
+        '::1',
+        '::ffff:127.0.0.1',
+        'localhost'
+    ];
+
+    const isLocalhost = localhostPatterns.some(pattern =>
+        clientIp && (clientIp === pattern || clientIp.includes(pattern))
+    );
+
+    if (isLocalhost) {
+        // Allow localhost requests without authentication
+        console.log(`Admin API access from localhost: ${req.method} ${req.path}`);
+        return next();
+    }
+
+    // For external requests, require authentication
+    if (!req.session || !req.session.userId) {
+        console.log(`Unauthorized admin API attempt from ${clientIp}: ${req.method} ${req.path}`);
+        return res.status(401).json({
+            error: 'Authentication required for external access',
+            message: 'Please login to access admin functions'
+        });
+    }
+
+    // Authenticated external user
     next();
 };
 

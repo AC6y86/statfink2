@@ -643,7 +643,7 @@
                     document.getElementById('add-player-select').value = '';
                     document.getElementById('move-preview').style.display = 'none';
                 } else {
-                    showMessage(result.error || 'Failed to execute move', 'error');
+                    showMessage(result.message || result.error || 'Failed to execute move', 'error');
                 }
 
             } catch (error) {
