@@ -25,7 +25,7 @@ const ScoringPlayersService = require('./services/scoringPlayersService');
 const WeeklyReportService = require('./services/weeklyReportService');
 const DSTManagementService = require('./services/dstManagementService');
 const FantasyPointsCalculationService = require('./services/fantasyPointsCalculationService');
-const TrafficTracker = require('./middleware/trafficTracker');
+// const TrafficTracker = require('./middleware/trafficTracker'); // Disabled traffic tracking
 const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
 
 const app = express();
@@ -96,9 +96,9 @@ async function initializeServices() {
         fantasyPointsCalculationService = new FantasyPointsCalculationService(db, scoringService);
         logInfo('Fantasy points calculation service initialized');
         
-        // Initialize traffic tracker
-        trafficTracker = new TrafficTracker(db);
-        logInfo('Traffic tracker initialized');
+        // Traffic tracker disabled to reduce database size
+        // trafficTracker = new TrafficTracker(db);
+        // logInfo('Traffic tracker initialized');
         
         // Initialize scheduler service
         schedulerService = new SchedulerService(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService, fantasyPointsCalculationService);
@@ -118,7 +118,7 @@ async function initializeServices() {
         app.locals.schedulerService = schedulerService;
         app.locals.dstManagementService = dstManagementService;
         app.locals.fantasyPointsCalculationService = fantasyPointsCalculationService;
-        app.locals.trafficTracker = trafficTracker;
+        // app.locals.trafficTracker = trafficTracker; // Disabled traffic tracking
         
         logInfo('Services initialized successfully');
     } catch (error) {
@@ -139,14 +139,15 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
-// Add traffic tracking middleware early in the pipeline
-app.use(async (req, res, next) => {
-    // Wait for services to be initialized
-    if (app.locals.trafficTracker) {
-        return app.locals.trafficTracker.middleware()(req, res, next);
-    }
-    next();
-});
+// Traffic tracking disabled to reduce database size
+// Uncomment to re-enable traffic tracking
+// app.use(async (req, res, next) => {
+//     // Wait for services to be initialized
+//     if (app.locals.trafficTracker) {
+//         return app.locals.trafficTracker.middleware()(req, res, next);
+//     }
+//     next();
+// });
 
 // Serve static files BEFORE setting security headers
 app.use(express.static(path.join(__dirname, '../public')));
