@@ -5,9 +5,10 @@ const router = express.Router();
 // PFL Roster Constraints (from PFL_RULES.md)
 const ROSTER_CONSTRAINTS = {
     QB: { min: 2, max: null }, // Minimum 2 QBs
-    RB: { min: 5, max: null }, // Minimum 5 RBs  
-    WR: { min: 6, max: null }, // 6 WRs and/or TEs combined
-    TE: { min: 6, max: null }, // 6 WRs and/or TEs combined (shared with WR)
+    RB: { min: 5, max: null }, // Minimum 5 RBs
+    WR: { min: 0, max: null }, // WR and TE combined must be at least 6
+    TE: { min: 0, max: null }, // WR and TE combined must be at least 6
+    WR_TE_COMBINED: { min: 6, max: null }, // Combined minimum for WR+TE
     K: { min: 2, max: null },  // Minimum 2 Kickers
     Defense: { min: 2, max: null } // Minimum 2 Defenses
 };
@@ -50,12 +51,18 @@ async function validateRosterConstraints(db, teamId, position, action) {
         // Check if removing would violate minimum constraints
         const newCount = (currentCounts[position] || 0) - 1;
         const constraint = ROSTER_CONSTRAINTS[position];
-        
-        if (constraint && newCount < constraint.min) {
-            // Special handling for WR/TE combined constraint
-            if ((position === 'WR' || position === 'TE') && wrTeCount - 1 >= 6) {
-                return true; // OK to remove if combined WR/TE still >= 6
+
+        // Special handling for WR/TE combined constraint
+        if (position === 'WR' || position === 'TE') {
+            const newWrTeCount = wrTeCount - 1;
+            if (newWrTeCount < ROSTER_CONSTRAINTS.WR_TE_COMBINED.min) {
+                throw new APIError(`Cannot remove ${position}. Team must maintain at least ${ROSTER_CONSTRAINTS.WR_TE_COMBINED.min} WRs and TEs combined on roster.`, 400);
             }
+            return true; // OK to remove if combined constraint is met
+        }
+
+        // Check individual position constraints for other positions
+        if (constraint && constraint.min > 0 && newCount < constraint.min) {
             throw new APIError(`Cannot remove ${position}. Team must maintain at least ${constraint.min} ${position}s on roster.`, 400);
         }
     }

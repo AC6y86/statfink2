@@ -156,8 +156,8 @@ class DSTManagementService {
             // Process away team DST
             if (dstData.away && game.away && game.teamIDHome && game.teamIDAway) {
                 const awayTeam = game.away;
-                const homeScore = parseInt(game.homePts || dstData.home?.ptsAllowed || 0);
-                const homeYards = parseInt(dstData.away?.ydsAllowed || 0);  // Away DST's yards allowed
+                const homeScore = parseInt(game.homePts ?? dstData.home?.ptsAllowed ?? 0);
+                const homeYards = parseInt(dstData.away?.ydsAllowed ?? 0);  // Away DST's yards allowed
                 
                 await this.insertDSTStats(
                     getDefensePlayerId(awayTeam),
@@ -174,8 +174,8 @@ class DSTManagementService {
             // Process home team DST
             if (dstData.home && game.home && game.teamIDHome && game.teamIDAway) {
                 const homeTeam = game.home;
-                const awayScore = parseInt(game.awayPts || dstData.away?.ptsAllowed || 0);
-                const awayYards = parseInt(dstData.home?.ydsAllowed || 0);  // Home DST's yards allowed
+                const awayScore = parseInt(game.awayPts ?? dstData.away?.ptsAllowed ?? 0);
+                const awayYards = parseInt(dstData.home?.ydsAllowed ?? 0);  // Home DST's yards allowed
                 
                 await this.insertDSTStats(
                     getDefensePlayerId(homeTeam),
