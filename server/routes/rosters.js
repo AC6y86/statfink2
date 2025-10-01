@@ -28,16 +28,16 @@ router.get('/:season/:week', asyncHandler(async (req, res) => {
     
     // Get all rosters for the week with injury data
     const rosters = await db.all(`
-        SELECT 
+        SELECT
             r.team_id,
             r.player_id,
             r.player_name as name,
-            CASE 
+            CASE
                 WHEN r.player_position = 'DST' THEN 'Defense'
                 ELSE r.player_position
             END as position,
             r.player_team as team,
-            CASE 
+            CASE
                 WHEN r.roster_position = 'injured_reserve' THEN 'IR'
                 ELSE 'Active'
             END as status,
@@ -46,24 +46,31 @@ router.get('/:season/:week', asyncHandler(async (req, res) => {
             p.injury_designation,
             p.injury_description,
             p.injury_date,
-            p.injury_return_date
+            p.injury_return_date,
+            ir_moves.ir_added_week
         FROM weekly_rosters r
         LEFT JOIN nfl_players p ON r.player_id = p.player_id
+        LEFT JOIN (
+            SELECT dropped_player_id, team_id, MAX(week) as ir_added_week
+            FROM roster_moves
+            WHERE move_type = 'ir' AND season = ?
+            GROUP BY dropped_player_id, team_id
+        ) ir_moves ON r.player_id = ir_moves.dropped_player_id AND r.team_id = ir_moves.team_id
         WHERE r.week = ? AND r.season = ?
-        ORDER BY 
+        ORDER BY
             r.team_id,
-            CASE r.player_position 
-                WHEN 'QB' THEN 1 
-                WHEN 'RB' THEN 2 
-                WHEN 'WR' THEN 3 
-                WHEN 'TE' THEN 4 
+            CASE r.player_position
+                WHEN 'QB' THEN 1
+                WHEN 'RB' THEN 2
+                WHEN 'WR' THEN 3
+                WHEN 'TE' THEN 4
                 WHEN 'K' THEN 5
                 WHEN 'DST' THEN 6
                 WHEN 'Defense' THEN 6
-                ELSE 7 
+                ELSE 7
             END,
             r.player_name
-    `, [weekNum, seasonNum]);
+    `, [seasonNum, weekNum, seasonNum]);
     
     // Group rosters by team
     const teamRosters = {};

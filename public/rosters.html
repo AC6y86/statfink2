@@ -603,7 +603,7 @@
                                 <td class="${posClass}">${pos}</td>
                                 <td class="${nameClass}" style="max-width: 150px;" title="${player.name}">${displayName}</td>
                                 <td>${player.team || '-'}</td>
-                                <td class="${statusClass}">IR</td>
+                                <td class="${statusClass}">${player.ir_added_week ? `IR (W${player.ir_added_week})` : 'IR'}</td>
                                 ${injuryCell}
                             `;
 
