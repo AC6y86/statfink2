@@ -896,12 +896,12 @@
             if (data.success) {
                 const matchup = data.data.matchup;
                 
-                // Calculate players not started yet (including in-progress games)
-                const team1Remaining = data.data.team1.starters.filter(p => 
-                    p.game_status !== 'Final' && p.game_status !== undefined
+                // Calculate players not started yet (scheduled games only)
+                const team1Remaining = data.data.team1.starters.filter(p =>
+                    p.game_status === 'Scheduled'
                 ).length;
-                const team2Remaining = data.data.team2.starters.filter(p => 
-                    p.game_status !== 'Final' && p.game_status !== undefined
+                const team2Remaining = data.data.team2.starters.filter(p =>
+                    p.game_status === 'Scheduled'
                 ).length;
                 
                 // Cache the remaining players count for the left bar
@@ -976,12 +976,12 @@
     function displayMatchup(data, changedStats = { team1: {}, team2: {}, deltas: { team1: {}, team2: {} } }) {
         const matchup = data.matchup;
         
-        // Calculate players not started yet (including in-progress games)
-        const team1Remaining = data.team1.starters.filter(p => 
-            p.game_status !== 'Final' && p.game_status !== undefined
+        // Calculate players not started yet (scheduled games only)
+        const team1Remaining = data.team1.starters.filter(p =>
+            p.game_status === 'Scheduled'
         ).length;
-        const team2Remaining = data.team2.starters.filter(p => 
-            p.game_status !== 'Final' && p.game_status !== undefined
+        const team2Remaining = data.team2.starters.filter(p =>
+            p.game_status === 'Scheduled'
         ).length;
         
         // Update team headers
