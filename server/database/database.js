@@ -388,6 +388,14 @@ class DatabaseManager {
                 AND roster_position = 'injured_reserve'
         `, [teamId, addPlayerId, latestWeek.week, currentSeason]);
 
+        // If move type is 'ir_return', validate player is on IR
+        if (moveType === 'ir_return' && !playerOnIR) {
+            throw new DatabaseError(
+                'Cannot perform IR return - player is not on this team\'s injured reserve',
+                'roster_constraint'
+            );
+        }
+
         // If bringing back from IR, validate 3-week minimum
         if (playerOnIR) {
             // Find when player was moved to IR (they would be the dropped player)
@@ -413,11 +421,18 @@ class DatabaseManager {
         await this.run('BEGIN TRANSACTION');
 
         try {
-            // If move type is IR, first move player to injured_reserve
+            // Handle drop player based on move type
             if (moveType === 'ir') {
+                // Move player to injured_reserve
                 await this.run(`
                     UPDATE weekly_rosters
                     SET roster_position = 'injured_reserve', ir_date = CURRENT_TIMESTAMP
+                    WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+                `, [teamId, dropPlayerId, latestWeek.week, currentSeason]);
+            } else if (moveType === 'ir_return') {
+                // For IR return, drop player completely (player being brought back is the "add")
+                await this.run(`
+                    DELETE FROM weekly_rosters
                     WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
                 `, [teamId, dropPlayerId, latestWeek.week, currentSeason]);
             } else {
@@ -480,6 +495,213 @@ class DatabaseManager {
                 dropped: dropPlayer,
                 added: addPlayer,
                 moveType: moveType
+            };
+        } catch (error) {
+            // Rollback on error
+            await this.run('ROLLBACK');
+            throw error;
+        }
+    }
+
+    // Helper function to validate position minimums for a team
+    async validateTeamPositionMinimums(teamId, week, season) {
+        const ROSTER_CONSTRAINTS = {
+            QB: { min: 2 },
+            RB: { min: 5 },
+            WR_TE_COMBINED: { min: 6 },
+            K: { min: 2 },
+            DST: { min: 2 }
+        };
+
+        // Get roster counts by position (active players only)
+        const roster = await this.all(`
+            SELECT p.position, COUNT(*) as count
+            FROM weekly_rosters r
+            JOIN nfl_players p ON r.player_id = p.player_id
+            WHERE r.team_id = ?
+              AND r.week = ?
+              AND r.season = ?
+              AND r.roster_position = 'active'
+            GROUP BY p.position
+        `, [teamId, week, season]);
+
+        const counts = {};
+        roster.forEach(row => {
+            counts[row.position] = parseInt(row.count);
+        });
+
+        // Validate each position minimum
+        if ((counts.QB || 0) < ROSTER_CONSTRAINTS.QB.min) {
+            return { valid: false, reason: `Team must have at least ${ROSTER_CONSTRAINTS.QB.min} QBs` };
+        }
+        if ((counts.RB || 0) < ROSTER_CONSTRAINTS.RB.min) {
+            return { valid: false, reason: `Team must have at least ${ROSTER_CONSTRAINTS.RB.min} RBs` };
+        }
+        if ((counts.K || 0) < ROSTER_CONSTRAINTS.K.min) {
+            return { valid: false, reason: `Team must have at least ${ROSTER_CONSTRAINTS.K.min} Kickers` };
+        }
+        if ((counts.DST || 0) < ROSTER_CONSTRAINTS.DST.min) {
+            return { valid: false, reason: `Team must have at least ${ROSTER_CONSTRAINTS.DST.min} Defenses` };
+        }
+
+        // Check WR+TE combined
+        const wrTeCount = (counts.WR || 0) + (counts.TE || 0);
+        if (wrTeCount < ROSTER_CONSTRAINTS.WR_TE_COMBINED.min) {
+            return { valid: false, reason: `Team must have at least ${ROSTER_CONSTRAINTS.WR_TE_COMBINED.min} WRs and TEs combined` };
+        }
+
+        return { valid: true };
+    }
+
+    // Execute a trade between two teams
+    async executeTrade(team1Id, team1PlayerId, team2Id, team2PlayerId) {
+        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
+        const latestWeek = await this.get(`
+            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
+        `, [currentSeason]);
+
+        // Get player info for both players
+        const [player1, player2] = await Promise.all([
+            this.get('SELECT * FROM nfl_players WHERE player_id = ?', [team1PlayerId]),
+            this.get('SELECT * FROM nfl_players WHERE player_id = ?', [team2PlayerId])
+        ]);
+
+        if (!player1 || !player2) {
+            throw new DatabaseError('One or both players not found', 'not_found');
+        }
+
+        // Verify both players are on their respective teams (and active, not IR)
+        const [player1OnTeam, player2OnTeam] = await Promise.all([
+            this.get(`
+                SELECT * FROM weekly_rosters
+                WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+                    AND roster_position = 'active'
+            `, [team1Id, team1PlayerId, latestWeek.week, currentSeason]),
+            this.get(`
+                SELECT * FROM weekly_rosters
+                WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+                    AND roster_position = 'active'
+            `, [team2Id, team2PlayerId, latestWeek.week, currentSeason])
+        ]);
+
+        if (!player1OnTeam) {
+            throw new DatabaseError(`${player1.name} is not on team ${team1Id}'s active roster`, 'roster_constraint');
+        }
+        if (!player2OnTeam) {
+            throw new DatabaseError(`${player2.name} is not on team ${team2Id}'s active roster`, 'roster_constraint');
+        }
+
+        // Generate a unique trade ID
+        const tradeId = `trade_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+        // Start transaction
+        await this.run('BEGIN TRANSACTION');
+
+        try {
+            // Remove player1 from team1
+            await this.run(`
+                DELETE FROM weekly_rosters
+                WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+            `, [team1Id, team1PlayerId, latestWeek.week, currentSeason]);
+
+            // Remove player2 from team2
+            await this.run(`
+                DELETE FROM weekly_rosters
+                WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+            `, [team2Id, team2PlayerId, latestWeek.week, currentSeason]);
+
+            // Add player2 to team1
+            await this.run(`
+                INSERT INTO weekly_rosters (team_id, player_id, week, season, roster_position,
+                                           player_name, player_position, player_team)
+                VALUES (?, ?, ?, ?, 'active', ?, ?, ?)
+            `, [team1Id, team2PlayerId, latestWeek.week, currentSeason,
+                player2.name, player2.position, player2.team]);
+
+            // Add player1 to team2
+            await this.run(`
+                INSERT INTO weekly_rosters (team_id, player_id, week, season, roster_position,
+                                           player_name, player_position, player_team)
+                VALUES (?, ?, ?, ?, 'active', ?, ?, ?)
+            `, [team2Id, team1PlayerId, latestWeek.week, currentSeason,
+                player1.name, player1.position, player1.team]);
+
+            // Validate roster counts (both teams should have 19 active players)
+            const [team1Count, team2Count] = await Promise.all([
+                this.get(`
+                    SELECT COUNT(*) as count FROM weekly_rosters
+                    WHERE team_id = ? AND week = ? AND season = ?
+                        AND roster_position = 'active'
+                `, [team1Id, latestWeek.week, currentSeason]),
+                this.get(`
+                    SELECT COUNT(*) as count FROM weekly_rosters
+                    WHERE team_id = ? AND week = ? AND season = ?
+                        AND roster_position = 'active'
+                `, [team2Id, latestWeek.week, currentSeason])
+            ]);
+
+            if (team1Count.count !== 19) {
+                throw new DatabaseError(
+                    `Trade resulted in invalid roster size for team ${team1Id}: ${team1Count.count} (expected 19)`,
+                    'roster_constraint'
+                );
+            }
+            if (team2Count.count !== 19) {
+                throw new DatabaseError(
+                    `Trade resulted in invalid roster size for team ${team2Id}: ${team2Count.count} (expected 19)`,
+                    'roster_constraint'
+                );
+            }
+
+            // Validate position minimums for both teams
+            const [team1Validation, team2Validation] = await Promise.all([
+                this.validateTeamPositionMinimums(team1Id, latestWeek.week, currentSeason),
+                this.validateTeamPositionMinimums(team2Id, latestWeek.week, currentSeason)
+            ]);
+
+            if (!team1Validation.valid) {
+                throw new DatabaseError(
+                    `Trade violates position minimums for team ${team1Id}: ${team1Validation.reason}`,
+                    'roster_constraint'
+                );
+            }
+            if (!team2Validation.valid) {
+                throw new DatabaseError(
+                    `Trade violates position minimums for team ${team2Id}: ${team2Validation.reason}`,
+                    'roster_constraint'
+                );
+            }
+
+            // Log the trade as a single move entry with both teams
+            await this.run(`
+                INSERT INTO roster_moves (team_id, move_type,
+                                         dropped_player_id, dropped_player_name, dropped_player_position,
+                                         added_player_id, added_player_name, added_player_position,
+                                         week, season, partner_team_id, trade_id,
+                                         notes)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `, [team1Id, 'trade',
+                team1PlayerId, player1.name, player1.position,
+                team2PlayerId, player2.name, player2.position,
+                latestWeek.week, currentSeason, team2Id, tradeId,
+                `Traded ${player1.name} to team ${team2Id} for ${player2.name}`]);
+
+            // Commit transaction
+            await this.run('COMMIT');
+
+            return {
+                success: true,
+                tradeId: tradeId,
+                team1: {
+                    teamId: team1Id,
+                    gave: player1,
+                    received: player2
+                },
+                team2: {
+                    teamId: team2Id,
+                    gave: player2,
+                    received: player1
+                }
             };
         } catch (error) {
             // Rollback on error

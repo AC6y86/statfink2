@@ -204,8 +204,12 @@
                 <div class="stat-label">Supplemental Draft Picks</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="total-activations">0</div>
-                <div class="stat-label">IR Activations</div>
+                <div class="stat-value" id="total-ir-returns">0</div>
+                <div class="stat-label">IR Returns</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="total-trades">0</div>
+                <div class="stat-label">Trades</div>
             </div>
             <div class="stat-item">
                 <div class="stat-value" id="active-teams">0</div>
@@ -250,7 +254,8 @@
 
             let totalIRMoves = 0;
             let totalSupplemental = 0;
-            let totalActivations = 0;
+            let totalIRReturns = 0;
+            let totalTrades = 0;
             let activeTeams = 0;
 
             // Sort teams by owner name
@@ -260,13 +265,16 @@
 
             teams.forEach(team => {
                 const hasAnyMoves = team.ir_moves.length > 0 ||
-                                   (team.supplemental_moves && team.supplemental_moves.length > 0);
+                                   (team.supplemental_moves && team.supplemental_moves.length > 0) ||
+                                   (team.ir_return_moves && team.ir_return_moves.length > 0) ||
+                                   (team.trade_moves && team.trade_moves.length > 0);
 
                 if (hasAnyMoves) activeTeams++;
 
                 totalIRMoves += team.ir_move_count;
                 totalSupplemental += team.supplemental_move_count || 0;
-                totalActivations += 0; // No longer tracking activations separately
+                totalIRReturns += team.ir_return_count || 0;
+                totalTrades += team.trade_count || 0;
 
                 const teamCard = document.createElement('div');
                 teamCard.className = 'team-card';
@@ -347,6 +355,77 @@
 
                 html += '</ul></div>';
 
+                // IR Returns section
+                html += `
+                    <div class="moves-section">
+                        <div class="section-title">
+                            IR Returns
+                            <span class="move-count">${team.ir_return_count || 0}</span>
+                        </div>
+                        <ul class="move-list">
+                `;
+
+                if (team.ir_return_moves && team.ir_return_moves.length > 0) {
+                    team.ir_return_moves.forEach(move => {
+                        const moveDate = new Date(move.move_timestamp);
+                        const dateStr = moveDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        const timeStr = moveDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                        html += `
+                            <li class="move-item">
+                                <div class="player-info">
+                                    <span class="player-name">${move.added_player_name} (${move.added_player_position})</span>
+                                    <span style="margin: 0 10px;">← IR</span>
+                                    <span class="player-name">Dropped: ${move.dropped_player_name} (${move.dropped_player_position})</span>
+                                </div>
+                                <div>
+                                    <span class="week-badge">Week ${move.week}</span>
+                                    <span style="font-size: 0.8em; color: #666; margin-left: 8px;">${dateStr} ${timeStr}</span>
+                                </div>
+                            </li>
+                        `;
+                    });
+                } else {
+                    html += '<li class="no-moves">No IR returns</li>';
+                }
+
+                html += '</ul></div>';
+
+                // Trades section
+                html += `
+                    <div class="moves-section">
+                        <div class="section-title">
+                            Trades
+                            <span class="move-count">${team.trade_count || 0}</span>
+                        </div>
+                        <ul class="move-list">
+                `;
+
+                if (team.trade_moves && team.trade_moves.length > 0) {
+                    team.trade_moves.forEach(move => {
+                        const moveDate = new Date(move.move_timestamp);
+                        const dateStr = moveDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        const timeStr = moveDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                        html += `
+                            <li class="move-item" style="background: #fff3cd; border-left: 4px solid #ffc107;">
+                                <div class="player-info">
+                                    <span class="player-name">Traded: ${move.dropped_player_name} (${move.dropped_player_position})</span>
+                                    <span style="margin: 0 10px;">⇄</span>
+                                    <span class="player-name">Received: ${move.added_player_name} (${move.added_player_position})</span>
+                                    ${move.notes ? `<div style="font-size: 0.85em; color: #666; margin-top: 4px;">${move.notes}</div>` : ''}
+                                </div>
+                                <div>
+                                    <span class="week-badge">Week ${move.week}</span>
+                                    <span style="font-size: 0.8em; color: #666; margin-left: 8px;">${dateStr} ${timeStr}</span>
+                                </div>
+                            </li>
+                        `;
+                    });
+                } else {
+                    html += '<li class="no-moves">No trades</li>';
+                }
+
+                html += '</ul></div>';
+
                 teamCard.innerHTML = html;
                 container.appendChild(teamCard);
             });
@@ -354,7 +433,8 @@
             // Update summary stats
             document.getElementById('total-ir-moves').textContent = totalIRMoves;
             document.getElementById('total-supplemental').textContent = totalSupplemental;
-            document.getElementById('total-activations').textContent = totalActivations;
+            document.getElementById('total-ir-returns').textContent = totalIRReturns;
+            document.getElementById('total-trades').textContent = totalTrades;
             document.getElementById('active-teams').textContent = activeTeams;
 
             // Show content and hide loading

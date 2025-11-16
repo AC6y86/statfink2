@@ -119,50 +119,129 @@ router.post('/roster/remove', requireAdmin, asyncHandler(async (req, res) => {
 // Execute paired roster move (drop + add)
 router.post('/roster/move', requireAdmin, asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
-    const { teamId, dropPlayerId, addPlayerId, moveType } = req.body;
+    const { teamId, dropPlayerId, addPlayerId, moveType, partnerTeamId, partnerPlayerId } = req.body;
 
-    if (!teamId || !dropPlayerId || !addPlayerId || !moveType) {
-        throw new APIError('Team ID, Drop Player ID, Add Player ID, and Move Type are required', 400);
+    if (!moveType) {
+        throw new APIError('Move Type is required', 400);
     }
 
-    if (!['ir', 'supplemental'].includes(moveType)) {
-        throw new APIError('Invalid move type. Must be: ir or supplemental', 400);
+    if (!['ir', 'supplemental', 'ir_return', 'trade'].includes(moveType)) {
+        throw new APIError('Invalid move type. Must be: ir, supplemental, ir_return, or trade', 400);
     }
 
-    // Validate team exists
-    const team = await db.getTeam(parseInt(teamId));
-    if (!team) {
-        throw new APIError('Team not found', 404);
-    }
+    // Handle trade moves separately
+    if (moveType === 'trade') {
+        if (!teamId || !dropPlayerId || !partnerTeamId || !partnerPlayerId) {
+            throw new APIError('For trades: Team ID, Player ID, Partner Team ID, and Partner Player ID are required', 400);
+        }
 
-    try {
-        const result = await db.executeRosterMove(
-            parseInt(teamId),
-            dropPlayerId,
-            addPlayerId,
-            moveType
-        );
+        // Validate both teams exist
+        const [team1, team2] = await Promise.all([
+            db.getTeam(parseInt(teamId)),
+            db.getTeam(parseInt(partnerTeamId))
+        ]);
 
-        res.json({
-            success: true,
-            message: `Roster move completed: ${result.dropped.name} ${moveType === 'ir' ? 'to IR' : 'dropped'}, ${result.added.name} added`,
-            data: {
-                team: team.team_name,
-                moveType: moveType,
-                dropped: {
-                    id: result.dropped.player_id,
-                    name: result.dropped.name,
-                    position: result.dropped.position
-                },
-                added: {
-                    id: result.added.player_id,
-                    name: result.added.name,
-                    position: result.added.position
+        if (!team1) {
+            throw new APIError('Team not found', 404);
+        }
+        if (!team2) {
+            throw new APIError('Partner team not found', 404);
+        }
+
+        try {
+            const result = await db.executeTrade(
+                parseInt(teamId),
+                dropPlayerId,
+                parseInt(partnerTeamId),
+                partnerPlayerId
+            );
+
+            res.json({
+                success: true,
+                message: `Trade completed: ${team1.team_name} traded ${result.team1.gave.name} to ${team2.team_name} for ${result.team1.received.name}`,
+                data: {
+                    tradeId: result.tradeId,
+                    team1: {
+                        name: team1.team_name,
+                        gave: {
+                            id: result.team1.gave.player_id,
+                            name: result.team1.gave.name,
+                            position: result.team1.gave.position
+                        },
+                        received: {
+                            id: result.team1.received.player_id,
+                            name: result.team1.received.name,
+                            position: result.team1.received.position
+                        }
+                    },
+                    team2: {
+                        name: team2.team_name,
+                        gave: {
+                            id: result.team2.gave.player_id,
+                            name: result.team2.gave.name,
+                            position: result.team2.gave.position
+                        },
+                        received: {
+                            id: result.team2.received.player_id,
+                            name: result.team2.received.name,
+                            position: result.team2.received.position
+                        }
+                    }
                 }
+            });
+        } catch (error) {
+            throw new APIError(error.message, 400);
+        }
+    } else {
+        // Handle regular moves (ir, supplemental, ir_return)
+        if (!teamId || !dropPlayerId || !addPlayerId) {
+            throw new APIError('Team ID, Drop Player ID, and Add Player ID are required', 400);
+        }
+
+        // Validate team exists
+        const team = await db.getTeam(parseInt(teamId));
+        if (!team) {
+            throw new APIError('Team not found', 404);
+        }
+
+        try {
+            const result = await db.executeRosterMove(
+                parseInt(teamId),
+                dropPlayerId,
+                addPlayerId,
+                moveType
+            );
+
+            let message;
+            if (moveType === 'ir') {
+                message = `Roster move completed: ${result.dropped.name} to IR, ${result.added.name} added`;
+            } else if (moveType === 'ir_return') {
+                message = `IR return completed: ${result.added.name} activated from IR, ${result.dropped.name} dropped`;
+            } else {
+                message = `Roster move completed: ${result.dropped.name} dropped, ${result.added.name} added`;
             }
-        });
-    } catch (error) {
-        throw new APIError(error.message, 400);
+
+            res.json({
+                success: true,
+                message: message,
+                data: {
+                    team: team.team_name,
+                    moveType: moveType,
+                    dropped: {
+                        id: result.dropped.player_id,
+                        name: result.dropped.name,
+                        position: result.dropped.position
+                    },
+                    added: {
+                        id: result.added.player_id,
+                        name: result.added.name,
+                        position: result.added.position
+                    }
+                }
+            });
+        } catch (error) {
+            throw new APIError(error.message, 400);
+        }
     }
 }));
 

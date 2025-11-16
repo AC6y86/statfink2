@@ -124,6 +124,23 @@ router.get('/:teamId/roster', asyncHandler(async (req, res) => {
     // Get current season and week info
     const { season, week } = await db.getCurrentSeasonAndWeek();
 
+    // For IR players, add the week they were moved to IR
+    const irPlayers = roster.filter(p => p.roster_position === 'injured_reserve');
+    for (const player of irPlayers) {
+        // Look up when this player was moved to IR
+        const irMove = await db.get(`
+            SELECT week
+            FROM roster_moves
+            WHERE team_id = ? AND dropped_player_id = ? AND move_type = 'ir' AND season = ?
+            ORDER BY week DESC
+            LIMIT 1
+        `, [parseInt(teamId), player.player_id, season]);
+
+        if (irMove) {
+            player.ir_week = irMove.week;
+        }
+    }
+
     // Group players by position for easier frontend consumption
     const groupedRoster = roster.reduce((acc, player) => {
         const position = player.position;
@@ -140,7 +157,7 @@ router.get('/:teamId/roster', asyncHandler(async (req, res) => {
             roster,
             groupedByPosition: groupedRoster,
             active: roster.filter(p => p.roster_position === 'active'),
-            injured_reserve: roster.filter(p => p.roster_position === 'injured_reserve'),
+            injured_reserve: irPlayers,
             dataSource: {
                 season: season,
                 week: week

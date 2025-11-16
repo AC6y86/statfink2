@@ -358,19 +358,56 @@
                     <select id="move-type-select" onchange="updateMoveTypeUI()">
                         <option value="ir">IR Move (player to IR)</option>
                         <option value="supplemental">Supplemental (drop player)</option>
+                        <option value="ir_return">Bring Back from IR</option>
+                        <option value="trade">Trade</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="drop-player-group">
                     <label for="drop-player-select" id="drop-label">Player to IR:</label>
                     <select id="drop-player-select" onchange="updateMovePreview()">
                         <option value="">Select player to drop...</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="add-player-group">
                     <label for="add-player-select">Add Player:</label>
                     <select id="add-player-select" onchange="updateMovePreview()">
                         <option value="">Select player to add...</option>
                     </select>
+                </div>
+                <!-- Trade-specific elements -->
+                <div id="trade-section" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 1rem;">
+                        <div style="border: 2px solid #667eea; padding: 15px; border-radius: 8px;">
+                            <h4 style="margin-top: 0; color: #667eea;">Team 1</h4>
+                            <div class="form-group">
+                                <label for="trade-team1-select">Select Team:</label>
+                                <select id="trade-team1-select" onchange="loadTradeTeam1Roster()">
+                                    <option value="">Select team...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="trade-team1-player-select">Select Player:</label>
+                                <select id="trade-team1-player-select" onchange="updateMovePreview()">
+                                    <option value="">Select player...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="border: 2px solid #764ba2; padding: 15px; border-radius: 8px;">
+                            <h4 style="margin-top: 0; color: #764ba2;">Team 2</h4>
+                            <div class="form-group">
+                                <label for="trade-team2-select">Select Team:</label>
+                                <select id="trade-team2-select" onchange="loadTradeTeam2Roster()">
+                                    <option value="">Select team...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="trade-team2-player-select">Select Player:</label>
+                                <select id="trade-team2-player-select" onchange="updateMovePreview()">
+                                    <option value="">Select player...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="move-preview" style="display: none; padding: 1rem; background: #fffbf0; border: 1px solid #ffc107; border-radius: 8px; margin: 1rem 0;">
                     <strong>Move Preview:</strong>
@@ -488,7 +525,7 @@
             try {
                 const response = await fetch(`/api/teams/${teamId}/roster`);
                 const data = await response.json();
-                
+
                 if (!data.success) {
                     throw new Error(data.error || 'Failed to load roster');
                 }
@@ -502,18 +539,129 @@
                 displayRoster(data.data);
 
                 // Populate drop player select
+                loadTeamRosterForDropdown();
+
+            } catch (error) {
+                showMessage(`Error loading roster: ${error.message}`, 'error');
+                document.getElementById('roster-sections').innerHTML = '<div class="loading">Error loading roster</div>';
+            }
+        }
+
+        async function loadTeamRosterForDropdown() {
+            if (!currentTeamId) return;
+
+            try {
+                const response = await fetch(`/api/teams/${currentTeamId}/roster`);
+                const data = await response.json();
+
+                if (!data.success) return;
+
                 const dropSelect = document.getElementById('drop-player-select');
-                let dropOptionsHTML = '<option value="">Select player to drop...</option>';
+                let dropOptionsHTML = '<option value="">Select player...</option>';
                 if (data.data.active) {
                     data.data.active.forEach(player => {
                         dropOptionsHTML += `<option value="${player.player_id}">${player.name} (${player.position})</option>`;
                     });
                 }
                 dropSelect.innerHTML = dropOptionsHTML;
-                
             } catch (error) {
-                showMessage(`Error loading roster: ${error.message}`, 'error');
-                document.getElementById('roster-sections').innerHTML = '<div class="loading">Error loading roster</div>';
+                console.error('Error loading team roster for dropdown:', error);
+            }
+        }
+
+        async function loadIRPlayersForAdd() {
+            if (!currentTeamId) return;
+
+            try {
+                const response = await fetch(`/api/teams/${currentTeamId}/roster`);
+                const data = await response.json();
+
+                if (!data.success) return;
+
+                const addSelect = document.getElementById('add-player-select');
+                let addOptionsHTML = '<option value="">Select IR player to activate...</option>';
+                if (data.data.injured_reserve) {
+                    data.data.injured_reserve.forEach(player => {
+                        addOptionsHTML += `<option value="${player.player_id}">${player.name} (${player.position}) - IR Week ${player.ir_week || '?'}</option>`;
+                    });
+                }
+                addSelect.innerHTML = addOptionsHTML;
+            } catch (error) {
+                console.error('Error loading IR players:', error);
+            }
+        }
+
+        async function loadTeamsForTrade() {
+            try {
+                const response = await fetch('/api/teams');
+                const data = await response.json();
+
+                const team1Select = document.getElementById('trade-team1-select');
+                const team2Select = document.getElementById('trade-team2-select');
+                let optionsHTML = '<option value="">Select team...</option>';
+
+                data.data.forEach(team => {
+                    optionsHTML += `<option value="${team.team_id}">${team.team_name}</option>`;
+                });
+
+                team1Select.innerHTML = optionsHTML;
+                team2Select.innerHTML = optionsHTML;
+            } catch (error) {
+                console.error('Error loading teams for trade:', error);
+            }
+        }
+
+        async function loadTradeTeam1Roster() {
+            const team1Id = document.getElementById('trade-team1-select').value;
+            if (!team1Id) {
+                document.getElementById('trade-team1-player-select').innerHTML = '<option value="">Select team first...</option>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/teams/${team1Id}/roster`);
+                const data = await response.json();
+
+                if (!data.success) return;
+
+                const playerSelect = document.getElementById('trade-team1-player-select');
+                let optionsHTML = '<option value="">Select player...</option>';
+                if (data.data.active) {
+                    data.data.active.forEach(player => {
+                        optionsHTML += `<option value="${player.player_id}">${player.name} (${player.position})</option>`;
+                    });
+                }
+                playerSelect.innerHTML = optionsHTML;
+                updateMovePreview();
+            } catch (error) {
+                console.error('Error loading team 1 roster:', error);
+            }
+        }
+
+        async function loadTradeTeam2Roster() {
+            const team2Id = document.getElementById('trade-team2-select').value;
+            if (!team2Id) {
+                document.getElementById('trade-team2-player-select').innerHTML = '<option value="">Select team first...</option>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/teams/${team2Id}/roster`);
+                const data = await response.json();
+
+                if (!data.success) return;
+
+                const playerSelect = document.getElementById('trade-team2-player-select');
+                let optionsHTML = '<option value="">Select player...</option>';
+                if (data.data.active) {
+                    data.data.active.forEach(player => {
+                        optionsHTML += `<option value="${player.player_id}">${player.name} (${player.position})</option>`;
+                    });
+                }
+                playerSelect.innerHTML = optionsHTML;
+                updateMovePreview();
+            } catch (error) {
+                console.error('Error loading team 2 roster:', error);
             }
         }
 
@@ -591,7 +739,6 @@
         // Execute paired roster move
         async function executeRosterMove() {
             const dropPlayerId = document.getElementById('drop-player-select').value;
-            const addPlayerId = document.getElementById('add-player-select').value;
             const moveType = document.getElementById('move-type-select').value;
 
             if (!currentTeamId) {
@@ -599,20 +746,76 @@
                 return;
             }
 
-            if (!dropPlayerId || !addPlayerId) {
-                showMessage('Please select both a player to drop and a player to add', 'error');
+            if (!dropPlayerId) {
+                showMessage('Please select a player', 'error');
                 return;
             }
 
-            // Confirm the move
-            const dropOption = document.querySelector(`#drop-player-select option[value="${dropPlayerId}"]`);
-            const addOption = document.querySelector(`#add-player-select option[value="${addPlayerId}"]`);
-            const dropName = dropOption ? dropOption.textContent : 'Unknown';
-            const addName = addOption ? addOption.textContent : 'Unknown';
+            let confirmMessage, requestBody;
 
-            const confirmMessage = moveType === 'ir'
-                ? `Move ${dropName} to IR and add ${addName}?`
-                : `Drop ${dropName} and add ${addName}?`;
+            if (moveType === 'trade') {
+                const team1Id = document.getElementById('trade-team1-select').value;
+                const team1PlayerId = document.getElementById('trade-team1-player-select').value;
+                const team2Id = document.getElementById('trade-team2-select').value;
+                const team2PlayerId = document.getElementById('trade-team2-player-select').value;
+
+                if (!team1Id || !team1PlayerId || !team2Id || !team2PlayerId) {
+                    showMessage('Please select both teams and players for the trade', 'error');
+                    return;
+                }
+
+                if (team1Id === team2Id) {
+                    showMessage('Cannot trade between the same team', 'error');
+                    return;
+                }
+
+                const team1Option = document.querySelector(`#trade-team1-select option[value="${team1Id}"]`);
+                const team1PlayerOption = document.querySelector(`#trade-team1-player-select option[value="${team1PlayerId}"]`);
+                const team2Option = document.querySelector(`#trade-team2-select option[value="${team2Id}"]`);
+                const team2PlayerOption = document.querySelector(`#trade-team2-player-select option[value="${team2PlayerId}"]`);
+
+                const team1Name = team1Option ? team1Option.textContent : 'Unknown';
+                const team1PlayerName = team1PlayerOption ? team1PlayerOption.textContent : 'Unknown';
+                const team2Name = team2Option ? team2Option.textContent : 'Unknown';
+                const team2PlayerName = team2PlayerOption ? team2PlayerOption.textContent : 'Unknown';
+
+                confirmMessage = `${team1Name} trades ${team1PlayerName} to ${team2Name} for ${team2PlayerName}?`;
+
+                requestBody = {
+                    teamId: team1Id,
+                    dropPlayerId: team1PlayerId,
+                    partnerTeamId: team2Id,
+                    partnerPlayerId: team2PlayerId,
+                    moveType: moveType
+                };
+            } else {
+                const addPlayerId = document.getElementById('add-player-select').value;
+
+                if (!addPlayerId) {
+                    showMessage('Please select a player to add', 'error');
+                    return;
+                }
+
+                const dropOption = document.querySelector(`#drop-player-select option[value="${dropPlayerId}"]`);
+                const addOption = document.querySelector(`#add-player-select option[value="${addPlayerId}"]`);
+                const dropName = dropOption ? dropOption.textContent : 'Unknown';
+                const addName = addOption ? addOption.textContent : 'Unknown';
+
+                if (moveType === 'ir') {
+                    confirmMessage = `Move ${dropName} to IR and add ${addName}?`;
+                } else if (moveType === 'ir_return') {
+                    confirmMessage = `Activate ${addName} from IR and drop ${dropName}?`;
+                } else {
+                    confirmMessage = `Drop ${dropName} and add ${addName}?`;
+                }
+
+                requestBody = {
+                    teamId: currentTeamId,
+                    dropPlayerId: dropPlayerId,
+                    addPlayerId: addPlayerId,
+                    moveType: moveType
+                };
+            }
 
             if (!confirm(confirmMessage)) {
                 return;
@@ -624,23 +827,26 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        teamId: currentTeamId,
-                        dropPlayerId: dropPlayerId,
-                        addPlayerId: addPlayerId,
-                        moveType: moveType
-                    })
+                    body: JSON.stringify(requestBody)
                 });
 
                 const result = await response.json();
 
                 if (result.success) {
                     showMessage(result.message, 'success');
-                    loadTeamRoster(currentTeamId); // Refresh roster
-                    loadAvailablePlayers(); // Refresh available players
-                    // Reset selections
-                    document.getElementById('drop-player-select').value = '';
-                    document.getElementById('add-player-select').value = '';
+                    if (moveType === 'trade') {
+                        // Reset trade selections
+                        document.getElementById('trade-team1-select').value = '';
+                        document.getElementById('trade-team1-player-select').innerHTML = '<option value="">Select player...</option>';
+                        document.getElementById('trade-team2-select').value = '';
+                        document.getElementById('trade-team2-player-select').innerHTML = '<option value="">Select player...</option>';
+                    } else {
+                        loadTeamRoster(currentTeamId); // Refresh roster
+                        loadAvailablePlayers(); // Refresh available players
+                        // Reset selections
+                        document.getElementById('drop-player-select').value = '';
+                        document.getElementById('add-player-select').value = '';
+                    }
                     document.getElementById('move-preview').style.display = 'none';
                 } else {
                     showMessage(result.message || result.error || 'Failed to execute move', 'error');
@@ -725,36 +931,84 @@
         function updateMoveTypeUI() {
             const moveType = document.getElementById('move-type-select').value;
             const dropLabel = document.getElementById('drop-label');
+            const dropPlayerGroup = document.getElementById('drop-player-group');
+            const addPlayerGroup = document.getElementById('add-player-group');
+            const tradeSection = document.getElementById('trade-section');
+
+            // Reset UI elements
+            dropPlayerGroup.style.display = 'block';
+            addPlayerGroup.style.display = 'block';
+            tradeSection.style.display = 'none';
 
             if (moveType === 'ir') {
                 dropLabel.textContent = 'Player to IR:';
+                loadTeamRosterForDropdown();  // Load all active players
+            } else if (moveType === 'ir_return') {
+                dropLabel.textContent = 'Drop Player:';
+                loadTeamRosterForDropdown();  // Load all active players for drop
+                // For IR return, the add player select should show IR players
+                loadIRPlayersForAdd();
+            } else if (moveType === 'trade') {
+                // Hide regular move fields, show trade section
+                dropPlayerGroup.style.display = 'none';
+                addPlayerGroup.style.display = 'none';
+                tradeSection.style.display = 'block';
+                loadTeamsForTrade();  // Load teams for both selectors
             } else {
                 dropLabel.textContent = 'Drop Player:';
+                loadTeamRosterForDropdown();  // Load all active players
             }
             updateMovePreview();
         }
 
         function updateMovePreview() {
-            const dropPlayerId = document.getElementById('drop-player-select').value;
-            const addPlayerId = document.getElementById('add-player-select').value;
             const moveType = document.getElementById('move-type-select').value;
             const previewDiv = document.getElementById('move-preview');
             const previewText = document.getElementById('move-preview-text');
 
-            if (dropPlayerId && addPlayerId) {
-                const dropOption = document.querySelector(`#drop-player-select option[value="${dropPlayerId}"]`);
-                const addOption = document.querySelector(`#add-player-select option[value="${addPlayerId}"]`);
-                const dropName = dropOption ? dropOption.textContent : 'Unknown';
-                const addName = addOption ? addOption.textContent : 'Unknown';
+            if (moveType === 'trade') {
+                const team1Id = document.getElementById('trade-team1-select').value;
+                const team1PlayerId = document.getElementById('trade-team1-player-select').value;
+                const team2Id = document.getElementById('trade-team2-select').value;
+                const team2PlayerId = document.getElementById('trade-team2-player-select').value;
 
-                if (moveType === 'ir') {
-                    previewText.innerHTML = `${dropName} → IR, Add ${addName}`;
+                if (team1Id && team1PlayerId && team2Id && team2PlayerId) {
+                    const team1Option = document.querySelector(`#trade-team1-select option[value="${team1Id}"]`);
+                    const team1PlayerOption = document.querySelector(`#trade-team1-player-select option[value="${team1PlayerId}"]`);
+                    const team2Option = document.querySelector(`#trade-team2-select option[value="${team2Id}"]`);
+                    const team2PlayerOption = document.querySelector(`#trade-team2-player-select option[value="${team2PlayerId}"]`);
+
+                    const team1Name = team1Option ? team1Option.textContent : 'Unknown';
+                    const team1PlayerName = team1PlayerOption ? team1PlayerOption.textContent : 'Unknown';
+                    const team2Name = team2Option ? team2Option.textContent : 'Unknown';
+                    const team2PlayerName = team2PlayerOption ? team2PlayerOption.textContent : 'Unknown';
+
+                    previewText.innerHTML = `${team1Name} trades ${team1PlayerName} to ${team2Name} for ${team2PlayerName}`;
+                    previewDiv.style.display = 'block';
                 } else {
-                    previewText.innerHTML = `Drop ${dropName}, Add ${addName}`;
+                    previewDiv.style.display = 'none';
                 }
-                previewDiv.style.display = 'block';
             } else {
-                previewDiv.style.display = 'none';
+                const dropPlayerId = document.getElementById('drop-player-select').value;
+                const addPlayerId = document.getElementById('add-player-select').value;
+
+                if (dropPlayerId && addPlayerId) {
+                    const dropOption = document.querySelector(`#drop-player-select option[value="${dropPlayerId}"]`);
+                    const addOption = document.querySelector(`#add-player-select option[value="${addPlayerId}"]`);
+                    const dropName = dropOption ? dropOption.textContent : 'Unknown';
+                    const addName = addOption ? addOption.textContent : 'Unknown';
+
+                    if (moveType === 'ir') {
+                        previewText.innerHTML = `${dropName} → IR, Add ${addName}`;
+                    } else if (moveType === 'ir_return') {
+                        previewText.innerHTML = `Activate ${addName} from IR, Drop ${dropName}`;
+                    } else {
+                        previewText.innerHTML = `Drop ${dropName}, Add ${addName}`;
+                    }
+                    previewDiv.style.display = 'block';
+                } else {
+                    previewDiv.style.display = 'none';
+                }
             }
         }
 

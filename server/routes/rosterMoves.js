@@ -29,7 +29,10 @@ router.get('/', asyncHandler(async (req, res) => {
                 added_player_name,
                 added_player_position,
                 week,
-                move_timestamp
+                move_timestamp,
+                partner_team_id,
+                trade_id,
+                notes
             FROM roster_moves
             WHERE team_id = ? AND season = ?
             ORDER BY move_timestamp DESC
@@ -38,6 +41,8 @@ router.get('/', asyncHandler(async (req, res) => {
         // Separate moves by type
         const irMoves = moves.filter(m => m.move_type === 'ir');
         const supplementalMoves = moves.filter(m => m.move_type === 'supplemental');
+        const irReturnMoves = moves.filter(m => m.move_type === 'ir_return');
+        const tradeMoves = moves.filter(m => m.move_type === 'trade');
 
         rosterMoves[team.team_id] = {
             team_id: team.team_id,
@@ -47,6 +52,10 @@ router.get('/', asyncHandler(async (req, res) => {
             ir_move_count: irMoves.length,
             supplemental_moves: supplementalMoves,
             supplemental_move_count: supplementalMoves.length,
+            ir_return_moves: irReturnMoves,
+            ir_return_count: irReturnMoves.length,
+            trade_moves: tradeMoves,
+            trade_count: tradeMoves.length,
             all_moves: moves
         };
     }
@@ -90,7 +99,10 @@ router.get('/team/:teamId', asyncHandler(async (req, res) => {
             added_player_name,
             added_player_position,
             week,
-            move_timestamp
+            move_timestamp,
+            partner_team_id,
+            trade_id,
+            notes
         FROM roster_moves
         WHERE team_id = ? AND season = ?
         ORDER BY move_timestamp DESC
@@ -99,6 +111,8 @@ router.get('/team/:teamId', asyncHandler(async (req, res) => {
     // Separate moves by type
     const irMoves = moves.filter(m => m.move_type === 'ir');
     const supplementalMoves = moves.filter(m => m.move_type === 'supplemental');
+    const irReturnMoves = moves.filter(m => m.move_type === 'ir_return');
+    const tradeMoves = moves.filter(m => m.move_type === 'trade');
 
     res.json({
         success: true,
@@ -111,6 +125,10 @@ router.get('/team/:teamId', asyncHandler(async (req, res) => {
             ir_move_count: irMoves.length,
             supplemental_moves: supplementalMoves,
             supplemental_move_count: supplementalMoves.length,
+            ir_return_moves: irReturnMoves,
+            ir_return_count: irReturnMoves.length,
+            trade_moves: tradeMoves,
+            trade_count: tradeMoves.length,
             all_moves: moves
         }
     });
