@@ -278,11 +278,6 @@ class StandingsExportService {
                 fantasyPoints: player.fantasyPoints || 0,
                 stats: this.extractPlayerStats(player)
             }));
-            
-            // Verify roster has 19 players
-            if (team.roster.length !== 19) {
-                logError(`Warning: Team ${team.team_name} has ${team.roster.length} players instead of 19`);
-            }
         }
         
         return teams;

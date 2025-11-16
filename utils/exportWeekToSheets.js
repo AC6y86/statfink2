@@ -154,15 +154,12 @@ async function main() {
             
             for (const week of weeks) {
                 console.log(`\nExporting Week ${week}...`);
-                const exportData = await exportService.getWeeklyExportData(week, options.season);
-                const gridData = await exportService.getRosteredPlayersGrid(week, options.season);
-                
+                const gridData = await exportService.getHorizontalGridData(week, options.season);
+
                 // Verify data
-                console.log(`  - Teams: ${exportData.teams.length}`);
-                console.log(`  - Matchups: ${exportData.matchups.length}`);
-                console.log(`  - Players: ${gridData.playerCount}`);
-                
-                await googleSheets.writeWeeklyData(spreadsheetId, week, options.season, exportData, gridData);
+                console.log(`  - Teams: ${gridData.teams.length}`);
+
+                await googleSheets.writeWeeklyData(spreadsheetId, week, options.season, null, gridData);
                 console.log(`  ✓ Week ${week} exported successfully`);
             }
             
@@ -170,22 +167,12 @@ async function main() {
         } else {
             // Export single week
             console.log(`Exporting Week ${options.week}...`);
-            const exportData = await exportService.getWeeklyExportData(options.week, options.season);
-            const gridData = await exportService.getRosteredPlayersGrid(options.week, options.season);
-            
+            const gridData = await exportService.getHorizontalGridData(options.week, options.season);
+
             // Verify data
-            console.log(`  - Teams: ${exportData.teams.length}`);
-            console.log(`  - Matchups: ${exportData.matchups.length}`);
-            console.log(`  - Players: ${gridData.playerCount}`);
-            
-            // Check for roster issues
-            for (const team of exportData.teams) {
-                if (team.roster.length !== 19) {
-                    console.warn(`  ⚠ Warning: ${team.team_name} has ${team.roster.length} players (expected 19)`);
-                }
-            }
-            
-            await googleSheets.writeWeeklyData(spreadsheetId, options.week, options.season, exportData, gridData);
+            console.log(`  - Teams: ${gridData.teams.length}`);
+
+            await googleSheets.writeWeeklyData(spreadsheetId, options.week, options.season, null, gridData);
             console.log(`\n✓ Week ${options.week} exported successfully!`);
         }
         

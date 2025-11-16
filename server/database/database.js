@@ -381,6 +381,34 @@ class DatabaseManager {
             throw new DatabaseError(availability.reason || 'Player to add is not available', 'roster_constraint');
         }
 
+        // Check if player is being brought back from IR on this team
+        const playerOnIR = await this.get(`
+            SELECT * FROM weekly_rosters
+            WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+                AND roster_position = 'injured_reserve'
+        `, [teamId, addPlayerId, latestWeek.week, currentSeason]);
+
+        // If bringing back from IR, validate 3-week minimum
+        if (playerOnIR) {
+            // Find when player was moved to IR (they would be the dropped player)
+            const irMove = await this.get(`
+                SELECT week FROM roster_moves
+                WHERE team_id = ? AND dropped_player_id = ? AND move_type = 'ir'
+                    AND season = ?
+                ORDER BY week DESC LIMIT 1
+            `, [teamId, addPlayerId, currentSeason]);
+
+            if (irMove) {
+                const weeksSinceIR = latestWeek.week - irMove.week;
+                if (weeksSinceIR < 3) {
+                    throw new DatabaseError(
+                        `Player must be on IR for at least 3 weeks before returning (currently ${weeksSinceIR} weeks)`,
+                        'roster_constraint'
+                    );
+                }
+            }
+        }
+
         // Start transaction
         await this.run('BEGIN TRANSACTION');
 
@@ -400,13 +428,23 @@ class DatabaseManager {
                 `, [teamId, dropPlayerId, latestWeek.week, currentSeason]);
             }
 
-            // Add the new player
-            await this.run(`
-                INSERT INTO weekly_rosters (team_id, player_id, week, season, roster_position,
-                                           player_name, player_position, player_team)
-                VALUES (?, ?, ?, ?, 'active', ?, ?, ?)
-            `, [teamId, addPlayerId, latestWeek.week, currentSeason,
-                addPlayer.name, addPlayer.position, addPlayer.team]);
+            // Add the new player (or activate from IR)
+            if (playerOnIR) {
+                // Player is being brought back from IR - UPDATE their position
+                await this.run(`
+                    UPDATE weekly_rosters
+                    SET roster_position = 'active', ir_date = NULL
+                    WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
+                `, [teamId, addPlayerId, latestWeek.week, currentSeason]);
+            } else {
+                // New player being added - INSERT
+                await this.run(`
+                    INSERT INTO weekly_rosters (team_id, player_id, week, season, roster_position,
+                                               player_name, player_position, player_team)
+                    VALUES (?, ?, ?, ?, 'active', ?, ?, ?)
+                `, [teamId, addPlayerId, latestWeek.week, currentSeason,
+                    addPlayer.name, addPlayer.position, addPlayer.team]);
+            }
 
             // Log the move
             await this.run(`
@@ -419,6 +457,20 @@ class DatabaseManager {
                 dropPlayerId, dropPlayer.name, dropPlayer.position,
                 addPlayerId, addPlayer.name, addPlayer.position,
                 latestWeek.week, currentSeason]);
+
+            // Validate roster count is still 19 (excluding IR players)
+            const rosterCount = await this.get(`
+                SELECT COUNT(*) as count FROM weekly_rosters
+                WHERE team_id = ? AND week = ? AND season = ?
+                    AND roster_position != 'injured_reserve'
+            `, [teamId, latestWeek.week, currentSeason]);
+
+            if (rosterCount.count !== 19) {
+                throw new DatabaseError(
+                    `Roster move resulted in invalid active roster size: ${rosterCount.count} (expected 19)`,
+                    'roster_constraint'
+                );
+            }
 
             // Commit transaction
             await this.run('COMMIT');

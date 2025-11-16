@@ -28,7 +28,7 @@ router.get('/', asyncHandler(async (req, res) => {
     // Filter available players (not on any roster) if requested
     if (available === 'true') {
         // Get current season and latest week
-        const currentSeason = 2024; // TODO: Make this dynamic
+        const { season: currentSeason } = await db.getCurrentSeasonAndWeek();
         const latestWeek = await db.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
@@ -79,9 +79,9 @@ router.get('/position/:position', asyncHandler(async (req, res) => {
 // Get all available players (not on any roster)
 router.get('/available', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
-    
+
     // Get current season and latest week
-    const currentSeason = 2024; // TODO: Make this dynamic
+    const { season: currentSeason } = await db.getCurrentSeasonAndWeek();
     const latestWeek = await db.get(`
         SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
     `, [currentSeason]);
@@ -109,14 +109,14 @@ router.get('/available', asyncHandler(async (req, res) => {
 router.get('/available/:position', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const { position } = req.params;
-    
+
     const validPositions = ['QB', 'RB', 'WR', 'TE', 'K', 'DST'];
     if (!validPositions.includes(position.toUpperCase())) {
         throw new APIError(`Invalid position. Must be one of: ${validPositions.join(', ')}`, 400);
     }
-    
+
     // Get current season and latest week
-    const currentSeason = 2024; // TODO: Make this dynamic
+    const { season: currentSeason } = await db.getCurrentSeasonAndWeek();
     const latestWeek = await db.get(`
         SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
     `, [currentSeason]);
@@ -182,19 +182,19 @@ router.get('/search/:query', asyncHandler(async (req, res) => {
 router.get('/:playerId', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const { playerId } = req.params;
-    
+
     if (!playerId) {
         throw new APIError('Player ID is required', 400);
     }
-    
+
     const player = await db.get('SELECT * FROM nfl_players WHERE player_id = ?', [playerId]);
-    
+
     if (!player) {
         throw new APIError('Player not found', 404);
     }
-    
+
     // Get current season and latest week
-    const currentSeason = 2024; // TODO: Make this dynamic
+    const { season: currentSeason } = await db.getCurrentSeasonAndWeek();
     const latestWeek = await db.get(`
         SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
     `, [currentSeason]);

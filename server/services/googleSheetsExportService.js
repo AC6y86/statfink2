@@ -15,16 +15,16 @@ class GoogleSheetsExportService {
             const sheetsTokenPath = path.join(__dirname, '../config/sheets-token.json');
             const rosterMovesCredsPath = path.join(__dirname, '../../roster_moves/credentials.json');
             const rosterMovesTokenPath = path.join(__dirname, '../../roster_moves/token.json');
-            
+
             let credentials, token;
-            
+
             // Load credentials from roster_moves
             if (fs.existsSync(rosterMovesCredsPath)) {
                 credentials = JSON.parse(fs.readFileSync(rosterMovesCredsPath, 'utf8'));
             } else {
                 throw new Error('Google credentials not found. Please set up authentication.');
             }
-            
+
             // Check for sheets token with proper scopes
             if (fs.existsSync(sheetsTokenPath)) {
                 token = JSON.parse(fs.readFileSync(sheetsTokenPath, 'utf8'));
@@ -33,7 +33,7 @@ class GoogleSheetsExportService {
                 // Fall back to roster_moves token (might not have sheets scope)
                 token = JSON.parse(fs.readFileSync(rosterMovesTokenPath, 'utf8'));
                 logInfo('Using Google token from roster_moves (may lack spreadsheet access)');
-                
+
                 // Check if token has spreadsheet scope
                 if (!token.scope || !token.scope.includes('spreadsheets')) {
                     throw new Error('Token lacks Google Sheets access. Please run: node utils/setupGoogleSheetsAuth.js');
@@ -45,22 +45,52 @@ class GoogleSheetsExportService {
             // Create OAuth2 client
             const { client_secret, client_id, redirect_uris } = credentials.installed || credentials.web;
             const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
-            
+
             if (token) {
                 oAuth2Client.setCredentials(token);
+
+                // Set up automatic token refresh handler
+                oAuth2Client.on('tokens', (tokens) => {
+                    if (tokens.refresh_token) {
+                        // Save the new refresh token
+                        logInfo('Received new refresh token, updating stored token');
+                        const updatedToken = { ...token, ...tokens };
+                        fs.writeFileSync(sheetsTokenPath, JSON.stringify(updatedToken, null, 2));
+                    }
+                });
             } else {
                 throw new Error('No authentication token found. Please run authentication setup.');
             }
 
             this.auth = oAuth2Client;
+            this.tokenPath = sheetsTokenPath;
             this.sheets = google.sheets({ version: 'v4', auth: this.auth });
-            
+
             logInfo('Google Sheets API initialized successfully');
             return true;
         } catch (error) {
             logError('Failed to initialize Google Sheets API:', error);
             throw error;
         }
+    }
+
+    /**
+     * Handle API errors with better error messages
+     */
+    handleApiError(error, context = 'Google Sheets API') {
+        if (error.response && error.response.data && error.response.data.error) {
+            const apiError = error.response.data.error;
+
+            // Handle invalid_grant errors specifically
+            if (apiError === 'invalid_grant' || (typeof apiError === 'object' && apiError.message && apiError.message.includes('invalid_grant'))) {
+                const helpMessage = 'Authentication token expired or revoked. Please re-authenticate by running: node utils/setupGoogleSheetsAuth.js';
+                logError('invalid_grant error - token needs refresh:', helpMessage);
+                throw new Error(helpMessage);
+            }
+        }
+
+        // Re-throw original error with context
+        throw new Error(`${context} error: ${error.message}`);
     }
 
     /**
@@ -73,10 +103,10 @@ class GoogleSheetsExportService {
                 spreadsheetId,
                 fields: 'sheets.properties'
             });
-            
+
             const sheets = response.data.sheets || [];
             const existingSheet = sheets.find(s => s.properties.title === tabName);
-            
+
             if (existingSheet) {
                 logInfo(`Tab "${tabName}" already exists, will update it`);
                 // Clear the existing sheet
@@ -86,7 +116,7 @@ class GoogleSheetsExportService {
                 });
                 return existingSheet.properties.sheetId;
             }
-            
+
             // Create new sheet
             const addSheetResponse = await this.sheets.spreadsheets.batchUpdate({
                 spreadsheetId,
@@ -104,13 +134,12 @@ class GoogleSheetsExportService {
                     }]
                 }
             });
-            
+
             const newSheetId = addSheetResponse.data.replies[0].addSheet.properties.sheetId;
             logInfo(`Created new tab "${tabName}"`);
             return newSheetId;
         } catch (error) {
-            logError('Error creating tab:', error);
-            throw error;
+            this.handleApiError(error, 'Get or create tab');
         }
     }
 
@@ -307,15 +336,19 @@ class GoogleSheetsExportService {
         rows.push(recordRow);
         
         // Write to sheet
-        await this.sheets.spreadsheets.values.update({
-            spreadsheetId,
-            range: `${tabName}!A1`,
-            valueInputOption: 'RAW',
-            resource: { values: rows }
-        });
-        
-        // Apply basic formatting
-        await this.applyWeekTabFormatting(spreadsheetId, tabName);
+        try {
+            await this.sheets.spreadsheets.values.update({
+                spreadsheetId,
+                range: `${tabName}!A1`,
+                valueInputOption: 'RAW',
+                resource: { values: rows }
+            });
+
+            // Apply basic formatting
+            await this.applyWeekTabFormatting(spreadsheetId, tabName);
+        } catch (error) {
+            this.handleApiError(error, 'Write week tab data');
+        }
     }
 
     /**
@@ -390,15 +423,19 @@ class GoogleSheetsExportService {
         }
         
         // Write to sheet
-        await this.sheets.spreadsheets.values.update({
-            spreadsheetId,
-            range: `${tabName}!A1`,
-            valueInputOption: 'RAW',
-            resource: { values: rows }
-        });
-        
-        // Apply basic formatting
-        await this.applySummaryTabFormatting(spreadsheetId, tabName);
+        try {
+            await this.sheets.spreadsheets.values.update({
+                spreadsheetId,
+                range: `${tabName}!A1`,
+                valueInputOption: 'RAW',
+                resource: { values: rows }
+            });
+
+            // Apply basic formatting
+            await this.applySummaryTabFormatting(spreadsheetId, tabName);
+        } catch (error) {
+            this.handleApiError(error, 'Write summary tab data');
+        }
     }
 
     /**

@@ -30,16 +30,16 @@ function getOpponentFromGameId(gameId, playerTeam) {
 async function getPlayerOpponent(db, player, week, season, stats) {
     // Get the team abbreviation for the player
     const teamCode = getTeamAbbreviation(player.team);
-    
+
     // Look up the game from nfl_games table
     const game = await db.get(`
-        SELECT home_team, away_team 
+        SELECT home_team, away_team
         FROM nfl_games
-        WHERE week = ? AND season = ? 
+        WHERE week = ? AND season = ?
         AND (home_team = ? OR away_team = ?)
         LIMIT 1
     `, [week, season, teamCode, teamCode]);
-    
+
     if (game) {
         // Determine if player's team is home or away
         if (teamCode === game.away_team) {
@@ -48,8 +48,8 @@ async function getPlayerOpponent(db, player, week, season, stats) {
             return game.away_team; // Playing at home - just show opponent team
         }
     }
-    
-    return null;
+
+    return 'BYE';
 }
 
 // Mock API endpoints for testing (must be first to avoid conflicts)
@@ -362,7 +362,7 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
                 name: player.name,
                 position: player.position,
                 team: player.team,
-                opp: player.opp || '@OPP',
+                opp: player.opp || 'BYE',
                 is_scoring: player.is_scoring !== undefined ? player.is_scoring : true,
                 game_status: player.game_status || 'InProgress',
                 game_time: player.game_quarter ? `Q${player.game_quarter[0]} ${player.game_time_remaining}` : null,
@@ -459,7 +459,7 @@ router.get('/mock-game/:matchupId', asyncHandler(async (req, res) => {
                 name: `${teamName} ${pos}${idx > 0 && positions.slice(0, idx).filter(p => p === pos).length > 0 ? positions.slice(0, idx + 1).filter(p => p === pos).length : ''}`,
                 position: pos,
                 team: pos === 'DST' ? ['BAL', 'KC', 'DAL', 'PHI', 'GB', 'SF'][teamId % 6] : 'TST',
-                opp: '@OPP', // Will be replaced by actual opponent lookup
+                opp: 'BYE', // Will be replaced by actual opponent lookup
                 stats: {
                     fantasy_points: 0
                 },
@@ -783,7 +783,7 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
                 is_scoring: player.is_scoring === 1,
                 scoring_slot: player.scoring_slot,
                 stats: stats || { fantasy_points: 0 },
-                opp: opponent || '@OPP',
+                opp: opponent || 'BYE',
                 game_time: gameInfo?.game_time || null,
                 game_time_epoch: gameInfo?.game_time_epoch || null,
                 game_status: gameInfo?.status || 'Final',
@@ -827,7 +827,7 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
                 is_scoring: player.is_scoring === 1,
                 scoring_slot: player.scoring_slot,
                 stats: stats || { fantasy_points: 0 },
-                opp: opponent || '@OPP',
+                opp: opponent || 'BYE',
                 game_time: gameInfo?.game_time || null,
                 game_time_epoch: gameInfo?.game_time_epoch || null,
                 game_status: gameInfo?.status || 'Final',

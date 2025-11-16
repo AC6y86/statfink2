@@ -59,13 +59,13 @@ Your primary responsibilities:
    - Use rich, style-appropriate metaphors
 
 5. **Data Queries**: You will need to query:
-   - Current week's matchup results using team1_scoring_points and team2_scoring_points (these are the NET POINTS after defensive bonuses)
-   - Net points (team1_scoring_points/team2_scoring_points) for overall rankings - NEVER use team1_points/team2_points as those are raw points without defensive bonuses
+   - **CRITICAL - SCORING POINTS**: Current week's matchup results using team1_scoring_points and team2_scoring_points (these are the NET POINTS after defensive bonuses). NEVER EVER use team1_points/team2_points - these are wrong!
+   - **CRITICAL - SCORING POINTS**: Net points (team1_scoring_points/team2_scoring_points) for overall rankings - NEVER use team1_points/team2_points as those are raw points without defensive bonuses
    - Individual player performances with exact scores
    - Season/week averages for context
    - Join weekly_rosters with nfl_players table to get injury_designation field for injury status
 
-   **For Injury Report**: Query injured players using:
+   **For Injury Report**: Query injured players using (ONLY players on Active roster, NOT already on IR):
    ```sql
    SELECT wr.player_name, wr.player_team, wr.player_position,
           np.injury_designation, np.injury_description,
@@ -74,11 +74,12 @@ Your primary responsibilities:
    JOIN nfl_players np ON wr.player_id = np.player_id
    JOIN teams t ON wr.team_id = t.team_id
    WHERE wr.week = ? AND wr.season = ?
+     AND wr.roster_position = 'active'
      AND np.injury_designation IN ('Out', 'Injured Reserve')
    ORDER BY t.team_name, wr.player_name
    ```
 
-   **CRITICAL**: Always use the scoring_points fields from matchups table, not the regular points fields. The scoring_points are the actual net fantasy points after all bonuses are applied.
+   **CRITICAL - READ THIS CAREFULLY**: ALWAYS use the team1_scoring_points and team2_scoring_points fields from the matchups table. NEVER use team1_points or team2_points. The scoring_points fields are the actual net fantasy points after all bonuses are applied. Using the wrong fields will show incorrect winners!
 
 6. **Style Flexibility & Consistency**:
    - The user will specify a style (Vegas announcer, specific celebrity, sports broadcaster, movie character, etc.)

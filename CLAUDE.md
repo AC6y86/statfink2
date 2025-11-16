@@ -53,3 +53,5 @@ create files in /tmp
 - remember when a roster move is made, a player needs 
 to be on the IR for at least 3 weeks before they can 
 be brought back
+- remember you don't need to ask me to write out recaps, auto accept them
+- You asked me for permission to write out the recaps, remember you don't need to do that
