@@ -1,228 +1,253 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roster Moves - Peninsula Football League</title>
+    <title>StatFink Fantasy League - Roster Moves</title>
+    <link href="/statfink-styles.css" rel="stylesheet" type="text/css" media="all" />
     <style>
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            background: #fff;
+            font-family: arial, sans-serif;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            color: white;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .loading {
-            text-align: center;
-            color: white;
-            font-size: 1.2em;
-            margin-top: 50px;
-        }
-
-        .error {
-            background: #ff4757;
-            color: white;
+        .page-header {
+            background-color: #556;
+            color: #fff;
+            font-size: 24px;
+            font-family: arial;
+            font-weight: 900;
             padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
             text-align: center;
+            border-bottom: 2px solid #343443;
         }
 
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .team-card {
-            background: white;
-            border-radius: 12px;
+        .content-wrapper {
             padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .team-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        .controls {
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
         }
 
-        .team-header {
-            border-bottom: 2px solid #e1e8ed;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-
-        .team-name {
-            font-size: 1.4em;
+        .controls label {
+            font-size: 12px;
             font-weight: bold;
             color: #333;
         }
 
-        .owner-name {
-            color: #666;
-            font-size: 0.9em;
-            margin-top: 5px;
+        .controls select {
+            padding: 6px 10px;
+            font-size: 12px;
+            border: 1px solid #556;
+            background: #fff;
+            color: #333;
+        }
+
+        .ir-summary {
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border: 1px solid #556;
+        }
+
+        .ir-summary-header {
+            background-color: #556;
+            color: #fff;
+            padding: 8px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .ir-summary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .ir-summary-table th {
+            background-color: #ddd;
+            color: #000;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 5px 8px;
+            text-align: left;
+            border-bottom: 1px solid #556;
+        }
+
+        .ir-summary-table td {
+            padding: 4px 8px;
+            font-size: 11px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .ir-summary-table tbody tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        .ir-summary-table tbody tr:nth-child(even) {
+            background-color: #f0f0f0;
+        }
+
+        .moves-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 15px;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .team-moves {
+            background: #fff;
+            border: 1px solid #556;
+            border-collapse: collapse;
+            margin-bottom: 0;
+        }
+
+        .team-header {
+            background-color: #556;
+            color: #fff;
+            padding: 8px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid #343443;
         }
 
         .moves-section {
-            margin: 15px 0;
+            padding: 10px;
         }
 
         .section-title {
+            background-color: #ddd;
+            color: #000;
+            font-size: 11px;
             font-weight: bold;
-            color: #444;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .move-count {
-            background: #667eea;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.85em;
+            padding: 5px 8px;
+            margin: 0 0 8px 0;
+            border-bottom: 1px solid #556;
         }
 
         .move-list {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         .move-item {
-            padding: 8px;
-            background: #f8f9fa;
-            margin-bottom: 8px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 6px 8px;
+            margin-bottom: 6px;
+            background: #f0f0f0;
+            border-left: 3px solid #556;
+            font-size: 11px;
+        }
+
+        .move-item.ir-move {
+            border-left-color: #b83535;
+            background: #ffe0e0;
+        }
+
+        .move-item.ir-return-move {
+            border-left-color: #17a2b8;
+            background: #d1ecf1;
+        }
+
+        .move-item.trade-move {
+            border-left-color: #ffc107;
+            background: #fff3cd;
         }
 
         .player-info {
-            flex: 1;
+            margin-bottom: 3px;
         }
 
-        .player-name {
-            font-weight: 500;
-            color: #333;
-        }
-
-        .player-position {
-            display: inline-block;
-            background: #e1e8ed;
+        .move-meta {
             color: #666;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.75em;
-            margin-left: 8px;
+            font-size: 10px;
         }
 
         .week-badge {
-            background: #28a745;
+            background: #556;
             color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.85em;
-            font-weight: 500;
-        }
-
-        .ir-move .week-badge {
-            background: #dc3545;
-        }
-
-        .activation-move .week-badge {
-            background: #17a2b8;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            margin-right: 5px;
         }
 
         .no-moves {
             color: #999;
             font-style: italic;
-            padding: 10px 0;
+            padding: 8px;
+            font-size: 11px;
         }
 
-        .stats-summary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .stat-item {
+        .loading {
             text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 12px;
         }
 
-        .stat-value {
-            font-size: 2em;
-            font-weight: bold;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-            margin-top: 5px;
+        .error {
+            background: #b83535;
+            color: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Roster Moves</h1>
+    <div class="page-header">
+        Roster Moves - 2025 Season
+    </div>
 
-        <div id="stats-summary" class="stats-summary" style="display: none;">
-            <div class="stat-item">
-                <div class="stat-value" id="total-ir-moves">0</div>
-                <div class="stat-label">Total IR Moves</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="total-supplemental">0</div>
-                <div class="stat-label">Supplemental Draft Picks</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="total-ir-returns">0</div>
-                <div class="stat-label">IR Returns</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="total-trades">0</div>
-                <div class="stat-label">Trades</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="active-teams">0</div>
-                <div class="stat-label">Teams with Moves</div>
-            </div>
+    <div class="content-wrapper">
+        <div class="controls">
+            <label for="weekFilter">Filter by Week:</label>
+            <select id="weekFilter">
+                <option value="all">All Weeks</option>
+            </select>
         </div>
 
-        <div id="loading" class="loading">Loading roster moves...</div>
-        <div id="error" class="error" style="display: none;"></div>
-        <div id="teams-container" class="team-grid" style="display: none;"></div>
+        <div id="irSummary" class="ir-summary" style="display: none;">
+            <div class="ir-summary-header">IR Moves by Team</div>
+            <table class="ir-summary-table">
+                <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>Owner</th>
+                        <th style="text-align: center;">IR Moves</th>
+                        <th style="text-align: center;">IR Returns</th>
+                        <th style="text-align: center;">Supplemental</th>
+                        <th style="text-align: center;">Trades</th>
+                    </tr>
+                </thead>
+                <tbody id="irSummaryBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div id="loadingMessage" class="loading">Loading roster moves...</div>
+        <div id="errorMessage" class="error" style="display: none;"></div>
+
+        <div class="moves-grid" id="movesGrid" style="display: none;">
+            <!-- Team moves will be populated here -->
+        </div>
     </div>
 
     <script>
+        let allTeamsData = {};
+        let currentWeekFilter = 'all';
+
         async function loadRosterMoves() {
             try {
                 const response = await fetch('/api/roster-moves?season=2025');
@@ -235,82 +260,133 @@
                     throw new Error(result.message || 'Failed to load data');
                 }
 
-                displayRosterMoves(result.data);
+                allTeamsData = result.data;
+                populateWeekFilter();
+                displayIRSummary();
+                displayRosterMoves();
 
             } catch (error) {
                 console.error('Error loading roster moves:', error);
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('error').style.display = 'block';
-                document.getElementById('error').textContent = 'Error loading roster moves: ' + error.message;
+                document.getElementById('loadingMessage').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorMessage').textContent = 'Error loading roster moves: ' + error.message;
             }
         }
 
-        function displayRosterMoves(data) {
-            const container = document.getElementById('teams-container');
-            const loading = document.getElementById('loading');
-            const statsDiv = document.getElementById('stats-summary');
+        function populateWeekFilter() {
+            const weekSet = new Set();
 
-            container.innerHTML = '';
+            Object.values(allTeamsData).forEach(team => {
+                [...team.ir_moves, ...(team.supplemental_moves || []),
+                 ...(team.ir_return_moves || []), ...(team.trade_moves || [])].forEach(move => {
+                    weekSet.add(move.week);
+                });
+            });
 
-            let totalIRMoves = 0;
-            let totalSupplemental = 0;
-            let totalIRReturns = 0;
-            let totalTrades = 0;
-            let activeTeams = 0;
+            const weeks = Array.from(weekSet).sort((a, b) => a - b);
+            const select = document.getElementById('weekFilter');
 
-            // Sort teams by owner name
-            const teams = Object.values(data).sort((a, b) =>
+            weeks.forEach(week => {
+                const option = document.createElement('option');
+                option.value = week;
+                option.textContent = `Week ${week}`;
+                select.appendChild(option);
+            });
+
+            select.addEventListener('change', (e) => {
+                currentWeekFilter = e.target.value;
+                displayRosterMoves();
+            });
+        }
+
+        function displayIRSummary() {
+            const tbody = document.getElementById('irSummaryBody');
+            tbody.innerHTML = '';
+
+            const teams = Object.values(allTeamsData).sort((a, b) =>
                 a.owner_name.localeCompare(b.owner_name)
             );
 
             teams.forEach(team => {
-                const hasAnyMoves = team.ir_moves.length > 0 ||
-                                   (team.supplemental_moves && team.supplemental_moves.length > 0) ||
-                                   (team.ir_return_moves && team.ir_return_moves.length > 0) ||
-                                   (team.trade_moves && team.trade_moves.length > 0);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${team.team_name}</td>
+                    <td>${team.owner_name}</td>
+                    <td style="text-align: center;">${team.ir_move_count}</td>
+                    <td style="text-align: center;">${team.ir_return_count || 0}</td>
+                    <td style="text-align: center;">${team.supplemental_move_count || 0}</td>
+                    <td style="text-align: center;">${team.trade_count || 0}</td>
+                `;
+                tbody.appendChild(row);
+            });
 
-                if (hasAnyMoves) activeTeams++;
+            document.getElementById('irSummary').style.display = 'block';
+        }
 
-                totalIRMoves += team.ir_move_count;
-                totalSupplemental += team.supplemental_move_count || 0;
-                totalIRReturns += team.ir_return_count || 0;
-                totalTrades += team.trade_count || 0;
+        function filterMovesByWeek(moves) {
+            if (currentWeekFilter === 'all') {
+                return moves;
+            }
+            return moves.filter(move => move.week === parseInt(currentWeekFilter));
+        }
+
+        function displayRosterMoves() {
+            const container = document.getElementById('movesGrid');
+            const loading = document.getElementById('loadingMessage');
+
+            container.innerHTML = '';
+
+            const teams = Object.values(allTeamsData).sort((a, b) =>
+                a.owner_name.localeCompare(b.owner_name)
+            );
+
+            teams.forEach(team => {
+                const filteredIRMoves = filterMovesByWeek(team.ir_moves);
+                const filteredSupplemental = filterMovesByWeek(team.supplemental_moves || []);
+                const filteredIRReturns = filterMovesByWeek(team.ir_return_moves || []);
+                const filteredTrades = filterMovesByWeek(team.trade_moves || []);
+
+                const hasAnyMoves = filteredIRMoves.length > 0 ||
+                                   filteredSupplemental.length > 0 ||
+                                   filteredIRReturns.length > 0 ||
+                                   filteredTrades.length > 0;
+
+                // Skip teams with no moves if filtering by week
+                if (currentWeekFilter !== 'all' && !hasAnyMoves) {
+                    return;
+                }
 
                 const teamCard = document.createElement('div');
-                teamCard.className = 'team-card';
+                teamCard.className = 'team-moves';
+
+                // Extract first name from owner_name
+                const firstName = team.owner_name ? team.owner_name.split(' ')[0].replace("'s", '') : team.team_name;
 
                 let html = `
-                    <div class="team-header">
-                        <div class="team-name">${team.team_name}</div>
-                        <div class="owner-name">${team.owner_name}</div>
-                    </div>
+                    <div class="team-header">${firstName}</div>
                 `;
 
                 // IR Moves section
                 html += `
                     <div class="moves-section">
-                        <div class="section-title">
-                            IR Moves
-                            <span class="move-count">${team.ir_move_count}</span>
-                        </div>
+                        <div class="section-title">IR Moves (${filteredIRMoves.length})</div>
                         <ul class="move-list">
                 `;
 
-                if (team.ir_moves.length > 0) {
-                    team.ir_moves.forEach(move => {
+                if (filteredIRMoves.length > 0) {
+                    filteredIRMoves.forEach(move => {
                         const moveDate = new Date(move.move_timestamp);
                         const dateStr = moveDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                         const timeStr = moveDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
                         html += `
                             <li class="move-item ir-move">
                                 <div class="player-info">
-                                    <span class="player-name">${move.dropped_player_name} (${move.dropped_player_position})</span>
-                                    <span style="margin: 0 10px;">→ IR</span>
-                                    <span class="player-name">${move.added_player_name} (${move.added_player_position}) added</span>
+                                    <strong>${move.dropped_player_name}</strong> (${move.dropped_player_position}) → IR<br>
+                                    <strong>${move.added_player_name}</strong> (${move.added_player_position}) added
                                 </div>
-                                <div>
+                                <div class="move-meta">
                                     <span class="week-badge">Week ${move.week}</span>
-                                    <span style="font-size: 0.8em; color: #666; margin-left: 8px;">${dateStr} ${timeStr}</span>
+                                    ${dateStr} ${timeStr}
                                 </div>
                             </li>
                         `;
@@ -324,27 +400,24 @@
                 // Supplemental Moves section
                 html += `
                     <div class="moves-section">
-                        <div class="section-title">
-                            Supplemental Moves
-                        </div>
+                        <div class="section-title">Supplemental Moves (${filteredSupplemental.length})</div>
                         <ul class="move-list">
                 `;
 
-                if (team.supplemental_moves && team.supplemental_moves.length > 0) {
-                    team.supplemental_moves.forEach(move => {
+                if (filteredSupplemental.length > 0) {
+                    filteredSupplemental.forEach(move => {
                         const moveDate = new Date(move.move_timestamp);
                         const dateStr = moveDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                         const timeStr = moveDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
                         html += `
                             <li class="move-item">
                                 <div class="player-info">
-                                    <span class="player-name">Dropped: ${move.dropped_player_name} (${move.dropped_player_position})</span>
-                                    <span style="margin: 0 10px;">→</span>
-                                    <span class="player-name">Added: ${move.added_player_name} (${move.added_player_position})</span>
+                                    Dropped: <strong>${move.dropped_player_name}</strong> (${move.dropped_player_position})<br>
+                                    Added: <strong>${move.added_player_name}</strong> (${move.added_player_position})
                                 </div>
-                                <div>
+                                <div class="move-meta">
                                     <span class="week-badge">Week ${move.week}</span>
-                                    <span style="font-size: 0.8em; color: #666; margin-left: 8px;">${dateStr} ${timeStr}</span>
+                                    ${dateStr} ${timeStr}
                                 </div>
                             </li>
                         `;
@@ -358,28 +431,24 @@
                 // IR Returns section
                 html += `
                     <div class="moves-section">
-                        <div class="section-title">
-                            IR Returns
-                            <span class="move-count">${team.ir_return_count || 0}</span>
-                        </div>
+                        <div class="section-title">IR Returns (${filteredIRReturns.length})</div>
                         <ul class="move-list">
                 `;
 
-                if (team.ir_return_moves && team.ir_return_moves.length > 0) {
-                    team.ir_return_moves.forEach(move => {
+                if (filteredIRReturns.length > 0) {
+                    filteredIRReturns.forEach(move => {
                         const moveDate = new Date(move.move_timestamp);
                         const dateStr = moveDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                         const timeStr = moveDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
                         html += `
-                            <li class="move-item">
+                            <li class="move-item ir-return-move">
                                 <div class="player-info">
-                                    <span class="player-name">${move.added_player_name} (${move.added_player_position})</span>
-                                    <span style="margin: 0 10px;">← IR</span>
-                                    <span class="player-name">Dropped: ${move.dropped_player_name} (${move.dropped_player_position})</span>
+                                    <strong>${move.added_player_name}</strong> (${move.added_player_position}) ← IR<br>
+                                    Dropped: <strong>${move.dropped_player_name}</strong> (${move.dropped_player_position})
                                 </div>
-                                <div>
+                                <div class="move-meta">
                                     <span class="week-badge">Week ${move.week}</span>
-                                    <span style="font-size: 0.8em; color: #666; margin-left: 8px;">${dateStr} ${timeStr}</span>
+                                    ${dateStr} ${timeStr}
                                 </div>
                             </li>
                         `;
@@ -393,29 +462,25 @@
                 // Trades section
                 html += `
                     <div class="moves-section">
-                        <div class="section-title">
-                            Trades
-                            <span class="move-count">${team.trade_count || 0}</span>
-                        </div>
+                        <div class="section-title">Trades (${filteredTrades.length})</div>
                         <ul class="move-list">
                 `;
 
-                if (team.trade_moves && team.trade_moves.length > 0) {
-                    team.trade_moves.forEach(move => {
+                if (filteredTrades.length > 0) {
+                    filteredTrades.forEach(move => {
                         const moveDate = new Date(move.move_timestamp);
                         const dateStr = moveDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                         const timeStr = moveDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
                         html += `
-                            <li class="move-item" style="background: #fff3cd; border-left: 4px solid #ffc107;">
+                            <li class="move-item trade-move">
                                 <div class="player-info">
-                                    <span class="player-name">Traded: ${move.dropped_player_name} (${move.dropped_player_position})</span>
-                                    <span style="margin: 0 10px;">⇄</span>
-                                    <span class="player-name">Received: ${move.added_player_name} (${move.added_player_position})</span>
-                                    ${move.notes ? `<div style="font-size: 0.85em; color: #666; margin-top: 4px;">${move.notes}</div>` : ''}
+                                    Traded: <strong>${move.dropped_player_name}</strong> (${move.dropped_player_position})<br>
+                                    Received: <strong>${move.added_player_name}</strong> (${move.added_player_position})
+                                    ${move.notes ? `<br><em style="color: #666;">${move.notes}</em>` : ''}
                                 </div>
-                                <div>
+                                <div class="move-meta">
                                     <span class="week-badge">Week ${move.week}</span>
-                                    <span style="font-size: 0.8em; color: #666; margin-left: 8px;">${dateStr} ${timeStr}</span>
+                                    ${dateStr} ${timeStr}
                                 </div>
                             </li>
                         `;
@@ -430,16 +495,8 @@
                 container.appendChild(teamCard);
             });
 
-            // Update summary stats
-            document.getElementById('total-ir-moves').textContent = totalIRMoves;
-            document.getElementById('total-supplemental').textContent = totalSupplemental;
-            document.getElementById('total-ir-returns').textContent = totalIRReturns;
-            document.getElementById('total-trades').textContent = totalTrades;
-            document.getElementById('active-teams').textContent = activeTeams;
-
             // Show content and hide loading
             loading.style.display = 'none';
-            statsDiv.style.display = 'grid';
             container.style.display = 'grid';
         }
 
