@@ -408,26 +408,29 @@
         try {
             // Check if we're in mock mode
             const isMockMode = window.location.pathname.includes('/statfink/mock');
-            const apiUrl = isMockMode 
+            const apiUrl = isMockMode
                 ? `/api/matchups/mock/${currentWeek}/${currentSeason}`
                 : `/api/matchups/${currentWeek}/${currentSeason}`;
-            
+
             const response = await fetch(apiUrl);
             const data = await response.json();
-            
+
             if (data.success) {
                 // Save scores and get deltas
                 const scoreData = saveTeamScores(data.data);
-                
+
                 const tbody = document.getElementById("leaguetable").getElementsByTagName("tbody")[0];
-                
+
                 // Keep the header row
                 while (tbody.rows.length > 1) {
                     tbody.deleteRow(1);
                 }
-                
-                // Add matchup rows in original format
-                data.data.forEach((matchup, index) => {
+
+                // Helper function to render a matchup's rows
+                let rowIndex = 0;
+                function renderMatchupRows(matchup) {
+                    const index = rowIndex++;
+
                     // Team 1 row
                     const row1 = tbody.insertRow(-1);
                     row1.className = index % 2 ? "matchuprow2" : "matchuprow1";
@@ -437,24 +440,22 @@
                     row1.onclick = () => selectMatchup(matchup.matchup_id);
                     row1.onmouseover = matchupmouseover;
                     row1.onmouseout = matchupmouseout;
-                    
+
                     const team1Cell = row1.insertCell(0);
-                    // Use cached count if available, otherwise don't show count
                     const team1Remaining = remainingPlayersCache[`${matchup.matchup_id}_team1`];
-                    team1Cell.textContent = team1Remaining !== undefined 
+                    team1Cell.textContent = team1Remaining !== undefined
                         ? `${matchup.team1_owner} (${team1Remaining})`
                         : matchup.team1_owner;
                     team1Cell.nowrap = true;
-                    
+
                     const score1Cell = row1.insertCell(1);
                     const matchupScoreData = scoreData?.matchups?.[matchup.matchup_id];
-                    // Check global deltas first, then local
                     const globalTeam1Delta = globalDeltas.teams[`${matchup.matchup_id}_team1`];
                     const globalTeam1Within30 = globalTeam1Delta && (Date.now() - globalTeam1Delta.timestamp <= 30000);
                     const team1Delta = globalTeam1Within30 ? globalTeam1Delta.delta : (matchupScoreData?.team1_delta || 0);
-                    const team1Changed = globalTeam1Within30 || (matchupScoreData?.team1_lastChanged && 
+                    const team1Changed = globalTeam1Within30 || (matchupScoreData?.team1_lastChanged &&
                         (Date.now() - matchupScoreData.team1_lastChanged <= 30 * 1000));
-                    
+
                     if (team1Changed && Math.abs(team1Delta) > 0.01) {
                         score1Cell.innerHTML = `<span class="score-delta">${team1Delta > 0 ? '+' : ''}${team1Delta.toFixed(2)}</span> ${matchup.team1_points.toFixed(2)}`;
                         score1Cell.className = "fanpts score-changed";
@@ -464,7 +465,7 @@
                     }
                     score1Cell.align = "right";
                     score1Cell.nowrap = true;
-                    
+
                     // Team 2 row
                     const row2 = tbody.insertRow(-1);
                     row2.className = index % 2 ? "matchuprow2" : "matchuprow1";
@@ -474,23 +475,21 @@
                     row2.onclick = () => selectMatchup(matchup.matchup_id);
                     row2.onmouseover = matchupmouseover;
                     row2.onmouseout = matchupmouseout;
-                    
+
                     const team2Cell = row2.insertCell(0);
-                    // Use cached count if available, otherwise don't show count
                     const team2Remaining = remainingPlayersCache[`${matchup.matchup_id}_team2`];
-                    team2Cell.textContent = team2Remaining !== undefined 
+                    team2Cell.textContent = team2Remaining !== undefined
                         ? `${matchup.team2_owner} (${team2Remaining})`
                         : matchup.team2_owner;
                     team2Cell.nowrap = true;
-                    
+
                     const score2Cell = row2.insertCell(1);
-                    // Check global deltas first, then local
                     const globalTeam2Delta = globalDeltas.teams[`${matchup.matchup_id}_team2`];
                     const globalTeam2Within30 = globalTeam2Delta && (Date.now() - globalTeam2Delta.timestamp <= 30000);
                     const team2Delta = globalTeam2Within30 ? globalTeam2Delta.delta : (matchupScoreData?.team2_delta || 0);
-                    const team2Changed = globalTeam2Within30 || (matchupScoreData?.team2_lastChanged && 
+                    const team2Changed = globalTeam2Within30 || (matchupScoreData?.team2_lastChanged &&
                         (Date.now() - matchupScoreData.team2_lastChanged <= 30 * 1000));
-                    
+
                     if (team2Changed && Math.abs(team2Delta) > 0.01) {
                         score2Cell.innerHTML = `<span class="score-delta">${team2Delta > 0 ? '+' : ''}${team2Delta.toFixed(2)}</span> ${matchup.team2_points.toFixed(2)}`;
                         score2Cell.className = "fanpts score-changed";
@@ -500,25 +499,76 @@
                     }
                     score2Cell.align = "right";
                     score2Cell.nowrap = true;
-                    
-                    // Only set default matchup if none is currently selected
+
+                    // Set default matchup if none selected
                     if (!currentMatchupId && index === 0) {
                         currentMatchupId = matchup.matchup_id;
                     }
-                });
-                
+                }
+
+                // Week 16 2025: Playoff bracket display with section headers
+                if (currentWeek === 16 && currentSeason === 2025) {
+                    const championshipTeamIds = [1, 12]; // Chris, Matt
+                    const thirdPlaceTeamIds = [3, 8];    // Dan, Bruce
+
+                    // Filter matchups by bracket (matchup contains both teams from the bracket)
+                    const championshipMatchups = data.data.filter(m =>
+                        championshipTeamIds.includes(m.team1_id) && championshipTeamIds.includes(m.team2_id));
+                    const thirdPlaceMatchups = data.data.filter(m =>
+                        thirdPlaceTeamIds.includes(m.team1_id) && thirdPlaceTeamIds.includes(m.team2_id));
+                    const cumulativeMatchups = data.data.filter(m =>
+                        !championshipTeamIds.includes(m.team1_id) && !championshipTeamIds.includes(m.team2_id) &&
+                        !thirdPlaceTeamIds.includes(m.team1_id) && !thirdPlaceTeamIds.includes(m.team2_id));
+
+                    // Championship section - Chris vs Matt
+                    if (championshipMatchups.length > 0) {
+                        const headerRow = tbody.insertRow(-1);
+                        headerRow.innerHTML = '<td colspan="2" class="matchup-section-header">🏆 CHAMPIONSHIP (1st/2nd)</td>';
+                        championshipMatchups.forEach(renderMatchupRows);
+                    }
+
+                    // 3rd Place section - Dan vs Bruce
+                    if (thirdPlaceMatchups.length > 0) {
+                        const headerRow = tbody.insertRow(-1);
+                        headerRow.innerHTML = '<td colspan="2" class="matchup-section-header">🥉 3RD PLACE (3rd/4th)</td>';
+                        thirdPlaceMatchups.forEach(renderMatchupRows);
+                    }
+
+                    // Cumulative section - everyone else
+                    if (cumulativeMatchups.length > 0) {
+                        const headerRow = tbody.insertRow(-1);
+                        headerRow.innerHTML = '<td colspan="2" class="matchup-section-header">CUMULATIVE</td>';
+                        cumulativeMatchups.forEach(renderMatchupRows);
+                    }
+                } else {
+                    // Standard display for other weeks
+                    const playoffMatchups = data.data.filter(m => m.is_playoff);
+                    const cumulativeMatchups = data.data.filter(m => !m.is_playoff);
+
+                    // Add section header for playoffs if there are any
+                    if (playoffMatchups.length > 0) {
+                        const headerRow = tbody.insertRow(-1);
+                        headerRow.innerHTML = '<td colspan="2" class="matchup-section-header">Semi-Finals</td>';
+                        playoffMatchups.forEach(renderMatchupRows);
+                    }
+
+                    // Add section header for cumulative if there are any
+                    if (cumulativeMatchups.length > 0) {
+                        const headerRow = tbody.insertRow(-1);
+                        headerRow.innerHTML = '<td colspan="2" class="matchup-section-header">Cumulative</td>';
+                        cumulativeMatchups.forEach(renderMatchupRows);
+                    }
+                }
+
                 updateLastUpdate();
-                
+
                 // Apply the appropriate background class to the logo footer
                 const logoFooter = document.querySelector('.logofooter');
                 if (logoFooter && data.data.length > 0) {
-                    // The last matchup row determines the background pattern
                     const lastMatchupIndex = data.data.length - 1;
                     const bgClass = lastMatchupIndex % 2 ? 'matchuprow1' : 'matchuprow2';
                     logoFooter.className = 'logofooter ' + bgClass;
                 }
-                
-                // No longer need to load scoring totals - backend provides them
             }
         } catch (error) {
             console.error('Error loading matchups:', error);
@@ -1459,6 +1509,8 @@
                     const tpc = (stats.two_point_conversions_run || 0) + (stats.two_point_conversions_rec || 0);
                     details.push(wrapIfChanged(`${tpc} 2PC`, ['two_point_conversions_run', 'two_point_conversions_rec']));
                 }
+                if ((stats.punt_return_tds || 0) > 0) details.push(wrapIfChanged(`${stats.punt_return_tds} PR-TD`, 'punt_return_tds'));
+                if ((stats.kick_return_tds || 0) > 0) details.push(wrapIfChanged(`${stats.kick_return_tds} KR-TD`, 'kick_return_tds'));
                 break;
             case 'WR':
             case 'TE':
@@ -1466,6 +1518,8 @@
                 if ((stats.receiving_yards || 0) > 0) details.push(wrapIfChanged(`${stats.receiving_yards} Recyds`, 'receiving_yards'));
                 if ((stats.receiving_tds || 0) > 0) details.push(wrapIfChanged(`${stats.receiving_tds} TDs`, 'receiving_tds'));
                 if ((stats.two_point_conversions_rec || 0) > 0) details.push(wrapIfChanged(`${stats.two_point_conversions_rec} 2PC`, 'two_point_conversions_rec'));
+                if ((stats.punt_return_tds || 0) > 0) details.push(wrapIfChanged(`${stats.punt_return_tds} PR-TD`, 'punt_return_tds'));
+                if ((stats.kick_return_tds || 0) > 0) details.push(wrapIfChanged(`${stats.kick_return_tds} KR-TD`, 'kick_return_tds'));
                 break;
             case 'K':
                 if ((stats.field_goals_made || 0) > 0) details.push(wrapIfChanged(`${stats.field_goals_made} FG`, 'field_goals_made'));
