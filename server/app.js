@@ -434,12 +434,18 @@ app.use('/api/standings', require('./routes/standings'));
 app.use('/api/rosters', require('./routes/rosters'));
 app.use('/api/export', require('./routes/export'));
 app.use('/api/roster-moves', require('./routes/rosterMoves'));
+app.use('/api/payouts', require('./routes/payouts'));
 
 // Admin routes
 app.use('/api/admin', require('./routes/admin'));
 
 // Internal routes (localhost-only, for cron jobs)
 app.use('/api/internal', require('./routes/internal'));
+
+// Public payouts route
+app.get('/payouts', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/payouts.html'));
+});
 
 // Redirect any unrecognized routes to /statfink
 app.get('*', (req, res) => {
