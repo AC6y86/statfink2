@@ -388,10 +388,10 @@ Response:
 {
   "success": true,
   "data": [{
-    "game_id": "2024_01_GB_PHI",
-    "season": 2024,
+    "game_id": "2025_01_GB_PHI",
+    "season": 2025,
     "week": 1,
-    "game_date": "2024-09-06",
+    "game_date": "2025-09-04",
     "home_team": "PHI",
     "away_team": "GB",
     "home_score": 34,
@@ -521,7 +521,7 @@ Content-Type: application/json
 
 {
   "week": 15,
-  "season": 2024
+  "season": 2025
 }
 ```
 
@@ -532,7 +532,7 @@ Content-Type: application/json
 
 {
   "week": 15,
-  "season": 2024
+  "season": 2025
 }
 ```
 

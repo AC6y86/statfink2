@@ -10,31 +10,29 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
 
 ### Active Scheduled Tasks:
 
-1. **Daily Updates** - Runs at 11am UTC (6am EST / 3am PST)
-2. **Live Game Updates** - Runs hourly during NFL game times
+1. **Daily Updates** - Runs at 10am UTC (3am PDT)
+2. **Live Game Updates** - Runs continuously (every minute, 24/7)
 3. **Weekly Updates** - Runs hourly on Tuesday UTC to check for completion
 
 ## How It Works
 
 ### 1. Daily Update
 - **PM2 Process**: `statfink2-daily`
-- **Schedule**: `0 11 * * *` (11am UTC = 6am EST = 3am PST)
+- **Schedule**: `0 17 * * *` (10am UTC = 3am PDT)
 - **Script**: `/scripts/daily-update.js`
 - **Functions**:
   - Updates NFL game schedule for the current week
   - Backs up database to `/home/joepaley/backups/`
   - Syncs NFL player rosters and injury statuses
 
-### 2. Live Game Updates (Hourly during games)
-- **PM2 Processes & Times**: 
-  - `statfink2-live-sunday` - 6pm-11pm UTC Sunday (1pm-6pm EST / 10am-3pm PST)
-  - `statfink2-live-sunday-late` - 12am-4am UTC Monday (7pm-11pm EST Sun / 4pm-8pm PST Sun)
-  - `statfink2-live-monday` - 1am-4am UTC Tuesday (8pm-11pm EST Mon / 5pm-8pm PST Mon)
-  - `statfink2-live-thursday` - 1am-4am UTC Friday (8pm-11pm EST Thu / 5pm-8pm PST Thu)
-- **Scripts**: `/scripts/live-update.js`
+### 2. Live Game Updates (Continuous)
+- **PM2 Process**: `statfink2-live-continuous`
+- **Schedule**: Runs continuously (every minute, 24/7)
+- **Script**: `/scripts/live-update-continuous.js`
 - **Functions**:
-  - Updates live game scores
+  - Updates live game scores during active games
   - Calculates defensive bonuses when all games complete
+  - Automatically detects when games are in progress
 
 ### 3. Weekly Update (After all games complete)
 - **PM2 Process**: `statfink2-weekly`
@@ -74,45 +72,21 @@ module.exports = {
       name: 'statfink2-daily',
       script: './scripts/daily-update.js',
       cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 11 * * *', // 11am UTC = 6am EST = 3am PST
+      cron_restart: '0 17 * * *', // 10am UTC = 3am PDT
       autorestart: false,
       watch: false,
       time: true
     },
+    // Continuous live update process - runs every minute 24/7
     {
-      name: 'statfink2-live-sunday',
-      script: './scripts/live-update.js',
+      name: 'statfink2-live-continuous',
+      script: './scripts/live-update-continuous.js',
       cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 18-23 * * 0', // 6pm-11pm UTC Sunday = 1pm-6pm EST = 10am-3pm PST
-      autorestart: false,
+      instances: 1,
+      exec_mode: 'fork',
+      autorestart: true,
       watch: false,
-      time: true
-    },
-    {
-      name: 'statfink2-live-sunday-late',
-      script: './scripts/live-update.js',
-      cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 0-4 * * 1', // 12am-4am UTC Monday = 7pm-11pm EST Sunday = 4pm-8pm PST Sunday
-      autorestart: false,
-      watch: false,
-      time: true
-    },
-    {
-      name: 'statfink2-live-monday',
-      script: './scripts/live-update.js',
-      cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 1-4 * * 2', // 1am-4am UTC Tuesday = 8pm-11pm EST Monday = 5pm-8pm PST Monday
-      autorestart: false,
-      watch: false,
-      time: true
-    },
-    {
-      name: 'statfink2-live-thursday',
-      script: './scripts/live-update.js',
-      cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 1-4 * * 5', // 1am-4am UTC Friday = 8pm-11pm EST Thursday = 5pm-8pm PST Thursday
-      autorestart: false,
-      watch: false,
+      max_memory_restart: '500M',
       time: true
     },
     {
@@ -144,9 +118,7 @@ pm2 logs statfink2
 pm2 logs statfink2-daily
 
 # Live update logs
-pm2 logs statfink2-live-sunday
-pm2 logs statfink2-live-monday
-pm2 logs statfink2-live-thursday
+pm2 logs statfink2-live-continuous
 
 # Weekly update logs
 pm2 logs statfink2-weekly
@@ -175,8 +147,8 @@ You can manually trigger any scheduled task in two ways:
 # Daily update
 node /home/joepaley/statfink2/scripts/daily-update.js
 
-# Live update
-node /home/joepaley/statfink2/scripts/live-update.js
+# Live update (continuous process - normally runs automatically)
+node /home/joepaley/statfink2/scripts/live-update-continuous.js
 
 # Weekly update check
 node /home/joepaley/statfink2/scripts/weekly-update-check.js
@@ -228,9 +200,8 @@ pm2 save
 - **Server runs in UTC timezone**
 - All cron times in ecosystem.config.js are in UTC
 - Conversions:
-  - 11am UTC = 6am EST = 3am PST (Daily update)
-  - 6pm UTC = 1pm EST = 10am PST (Sunday games start)
-  - 4am UTC = 11pm EST = 8pm PST (Games end)
+  - 10am UTC = 3am PDT (Daily update)
+  - Live updates run continuously, no time windows needed
 - NFL game times are typically in ET
 - The server tracks timestamps to prevent duplicate runs
 
@@ -245,7 +216,7 @@ The scheduler service includes:
 
 ## Database Backups
 
-Daily backups are automatically created at 6am EST and stored in `/home/joepaley/backups/` with the format:
+Daily backups are automatically created at 3am PDT and stored in `/home/joepaley/backups/` with the format:
 ```
 fantasy_football_YYYY-MM-DD.db
 ```
@@ -295,9 +266,9 @@ To set up backup cleanup (optional):
 
 ## Key Features
 
-- ✅ All tasks managed through PM2 (no system cron needed)
-- ✅ Live game updates only run during game times
-- ✅ Weekly update checks hourly but only runs when games complete
-- ✅ All operations logged with timestamps
-- ✅ State maintained in database to track last run times
-- ✅ Manual trigger available via scripts or API
+- All tasks managed through PM2 (no system cron needed)
+- Live game updates run continuously (every minute, 24/7)
+- Weekly update checks hourly but only runs when games complete
+- All operations logged with timestamps
+- State maintained in database to track last run times
+- Manual trigger available via scripts or API
