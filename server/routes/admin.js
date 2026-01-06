@@ -456,55 +456,6 @@ router.get('/sync/status', requireAdmin, asyncHandler(async (req, res) => {
     });
 }));
 
-// Traffic statistics endpoints
-router.get('/traffic/stats', requireAdmin, asyncHandler(async (req, res) => {
-    const trafficTracker = req.app.locals.trafficTracker;
-    const { days = 30 } = req.query;
-    
-    if (!trafficTracker) {
-        throw new APIError('Traffic tracking not available', 500);
-    }
-    
-    const stats = await trafficTracker.getStats(parseInt(days));
-    
-    res.json({
-        success: true,
-        data: stats
-    });
-}));
-
-router.get('/traffic/realtime', requireAdmin, asyncHandler(async (req, res) => {
-    const trafficTracker = req.app.locals.trafficTracker;
-    
-    if (!trafficTracker) {
-        throw new APIError('Traffic tracking not available', 500);
-    }
-    
-    const activeVisitors = await trafficTracker.getRealTimeCount();
-    
-    res.json({
-        success: true,
-        data: {
-            activeVisitors,
-            timestamp: new Date().toISOString()
-        }
-    });
-}));
-
-router.post('/traffic/cleanup', requireAdmin, asyncHandler(async (req, res) => {
-    const trafficTracker = req.app.locals.trafficTracker;
-    
-    if (!trafficTracker) {
-        throw new APIError('Traffic tracking not available', 500);
-    }
-    
-    await trafficTracker.cleanup();
-    
-    res.json({
-        success: true,
-        message: 'Traffic data older than 90 days has been cleaned up'
-    });
-}));
 
 // Force sync (for testing)
 router.post('/sync/force', requireAdmin, asyncHandler(async (req, res) => {
