@@ -4,8 +4,6 @@ const { exec } = require('child_process');
 const { promisify } = require('util');
 const execAsync = promisify(exec);
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
-const GoogleSheetsExportService = require('./googleSheetsExportService');
-const StandingsExportService = require('./standingsExportService');
 
 class SchedulerService {
     constructor(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService, fantasyPointsCalculationService) {
@@ -193,7 +191,6 @@ class SchedulerService {
         const startTime = Date.now();
         const results = {
             standings: false,
-            sheetsExport: false,
             weekAdvance: false,
             rosterCopy: false,
             errors: []
@@ -241,55 +238,14 @@ class SchedulerService {
                 results.errors.push(`Standings: ${error.message}`);
             }
 
-            // 2. Export to Google Sheets (if configured)
-            const googleSheetsId = process.env.GOOGLE_SHEETS_ID;
-            if (googleSheetsId && results.standings) {
-                try {
-                    logInfo('Exporting week data to Google Sheets');
-                    
-                    // Initialize services
-                    const googleSheets = new GoogleSheetsExportService();
-                    await googleSheets.initialize();
-                    
-                    const exportService = new StandingsExportService(this.db);
-                    
-                    // Extract spreadsheet ID from URL if needed
-                    const spreadsheetId = googleSheets.extractSpreadsheetId(googleSheetsId);
-                    
-                    // Collect data for the completed week
-                    const gridData = await exportService.getHorizontalGridData(
-                        currentSettings.current_week,
-                        currentSettings.season_year
-                    );
-                    
-                    // Write to Google Sheets
-                    await googleSheets.writeWeeklyData(
-                        spreadsheetId,
-                        currentSettings.current_week,
-                        currentSettings.season_year,
-                        null,
-                        gridData
-                    );
-                    
-                    results.sheetsExport = true;
-                    logInfo(`Successfully exported Week ${currentSettings.current_week} to Google Sheets`);
-                } catch (error) {
-                    logError('Failed to export to Google Sheets', error);
-                    results.errors.push(`Sheets export: ${error.message}`);
-                    // Don't block week advancement if export fails
-                }
-            } else if (!googleSheetsId) {
-                logInfo('Google Sheets export skipped (GOOGLE_SHEETS_ID not configured)');
-            }
-
-            // 3. Advance week
+            // 2. Advance week
             try {
                 const advanceResult = await this.advanceWeek();
                 results.weekAdvance = advanceResult.success;
                 if (!advanceResult.success) {
                     results.errors.push(`Week advance: ${advanceResult.message}`);
                 } else {
-                    // 3a. Copy rosters from completed week to new week
+                    // 2a. Copy rosters from completed week to new week
                     try {
                         const rosterCopyResult = await this.db.copyRostersToNextWeek(
                             currentSettings.current_week,

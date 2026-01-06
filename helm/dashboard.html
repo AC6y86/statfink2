@@ -1293,53 +1293,6 @@
                     <div id="update-results-content"></div>
                 </div>
                 
-                <!-- Google Sheets Export Section -->
-                <div class="section" style="background: #f0f8ff; border: 2px solid #4169e1; margin-top: 20px;">
-                    <h3>📊 Google Sheets Export</h3>
-                    <p style="color: #666; margin-bottom: 15px;">Export weekly standings data to Google Sheets</p>
-                    
-                    <div style="display: flex; gap: 15px; align-items: flex-start;">
-                        <div style="flex: 1;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Export Options:</label>
-                            <select id="sheets-export-type" style="padding: 8px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
-                                <option value="current">Current Week</option>
-                                <option value="specific">Specific Week</option>
-                                <option value="all">All Completed Weeks</option>
-                            </select>
-                            
-                            <div id="specific-week-input" style="display: none; margin-top: 10px;">
-                                <label style="display: block; margin-bottom: 5px;">Week Number:</label>
-                                <input type="number" id="sheets-week-number" min="1" max="18" value="1" style="padding: 8px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
-                            </div>
-                        </div>
-                        
-                        <div style="flex: 1;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Season:</label>
-                            <input type="number" id="sheets-season" value="2025" min="2020" max="2030" style="padding: 8px; border: 1px solid #ced4da; border-radius: 4px; width: 100%;">
-                        </div>
-                        
-                        <div style="flex: 2;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Status:</label>
-                            <div id="sheets-export-status" style="padding: 8px; background: white; border: 1px solid #dee2e6; border-radius: 4px; min-height: 38px;">
-                                <span style="color: #6c757d;">Ready to export</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
-                        <button class="btn btn-primary" onclick="exportToGoogleSheets()" id="sheets-export-btn">
-                            📤 Export to Google Sheets
-                        </button>
-                        <a href="https://docs.google.com/spreadsheets/d/1jMMoRej0I9jaQkweZV_ePQ2HVKFETvs4F7swIAgopV0/edit" 
-                           target="_blank" 
-                           style="color: #4169e1; text-decoration: none; font-weight: 500;">
-                            📊 View Google Sheet →
-                        </a>
-                    </div>
-                    
-                    <div id="sheets-export-message" style="margin-top: 15px; display: none;"></div>
-                </div>
-                
                 <div id="sync-messages" class="messages"></div>
             </div>
         </div>
@@ -3734,16 +3687,6 @@
             }, 5000);
         }
 
-        // Google Sheets Export Functions
-        document.getElementById('sheets-export-type').addEventListener('change', function() {
-            const specificWeekInput = document.getElementById('specific-week-input');
-            if (this.value === 'specific') {
-                specificWeekInput.style.display = 'block';
-            } else {
-                specificWeekInput.style.display = 'none';
-            }
-        });
-
         // Test Functions
         async function loadTestWeeks() {
             try {
@@ -4010,102 +3953,6 @@
 
         function clearTestMessages() {
             document.getElementById('test-messages').innerHTML = '';
-        }
-
-        async function exportToGoogleSheets() {
-            const exportType = document.getElementById('sheets-export-type').value;
-            const season = document.getElementById('sheets-season').value;
-            const statusDiv = document.getElementById('sheets-export-status');
-            const messageDiv = document.getElementById('sheets-export-message');
-            const exportBtn = document.getElementById('sheets-export-btn');
-            
-            // Default sheet ID
-            const sheetId = '1jMMoRej0I9jaQkweZV_ePQ2HVKFETvs4F7swIAgopV0';
-            
-            // Clear previous messages
-            messageDiv.style.display = 'none';
-            messageDiv.innerHTML = '';
-            
-            // Disable button and show loading
-            exportBtn.disabled = true;
-            exportBtn.innerHTML = '⏳ Exporting...';
-            statusDiv.innerHTML = '<span style="color: #ffc107;">🔄 Processing export...</span>';
-            
-            try {
-                let response;
-                
-                if (exportType === 'all') {
-                    // Export all weeks
-                    response = await fetch('/api/export/standings/sheet/all', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ sheetId, season: parseInt(season) })
-                    });
-                } else {
-                    // Export single week
-                    let week;
-                    if (exportType === 'current') {
-                        // Get current week from league settings
-                        const settingsResponse = await fetch('/api/league/settings');
-                        const settingsData = await settingsResponse.json();
-                        week = settingsData.data ? settingsData.data.current_week : settingsData.current_week;
-                        console.log('Current week from settings:', week, 'Full data:', settingsData);
-                    } else {
-                        // Use specific week
-                        week = document.getElementById('sheets-week-number').value;
-                    }
-                    
-                    // Ensure week is valid
-                    week = parseInt(week);
-                    if (isNaN(week) || week < 1 || week > 18) {
-                        throw new Error(`Invalid week number: ${week}. Please check league settings.`);
-                    }
-                    
-                    console.log('Exporting - Week:', week, 'Season:', season);
-                    
-                    response = await fetch('/api/export/standings/sheet', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            sheetId, 
-                            week: week, 
-                            season: parseInt(season) 
-                        })
-                    });
-                }
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    statusDiv.innerHTML = '<span style="color: #28a745;">✅ Export successful!</span>';
-                    messageDiv.className = 'message success';
-                    messageDiv.innerHTML = result.message || 'Data exported successfully to Google Sheets';
-                    messageDiv.style.display = 'block';
-                    
-                    // Add link to view sheet
-                    if (result.weeks) {
-                        messageDiv.innerHTML += `<br>Exported weeks: ${result.weeks.join(', ')}`;
-                    }
-                } else {
-                    throw new Error(result.message || 'Export failed');
-                }
-                
-            } catch (error) {
-                console.error('Export error:', error);
-                statusDiv.innerHTML = '<span style="color: #dc3545;">❌ Export failed</span>';
-                messageDiv.className = 'message error';
-                messageDiv.innerHTML = error.message || 'Failed to export data to Google Sheets';
-                messageDiv.style.display = 'block';
-                
-                // Check if it's an auth error
-                if (error.message.includes('auth') || error.message.includes('scope')) {
-                    messageDiv.innerHTML += '<br><br>📝 To set up authentication, run:<br><code>node utils/setupGoogleSheetsAuth.js</code>';
-                }
-            } finally {
-                // Re-enable button
-                exportBtn.disabled = false;
-                exportBtn.innerHTML = '📤 Export to Google Sheets';
-            }
         }
     </script>
 </body>
