@@ -901,10 +901,10 @@ class DatabaseManager {
     }
 
     async updateLeagueSettings(settings) {
-        const { current_week, season_year, league_name } = settings;
+        const { current_week, season_year, league_name, theme } = settings;
         const updateFields = [];
         const values = [];
-        
+
         if (current_week !== undefined) {
             updateFields.push('current_week = ?');
             values.push(current_week);
@@ -917,11 +917,15 @@ class DatabaseManager {
             updateFields.push('league_name = ?');
             values.push(league_name);
         }
-        
+        if (theme !== undefined) {
+            updateFields.push('theme = ?');
+            values.push(theme);
+        }
+
         if (updateFields.length === 0) {
             throw new Error('No valid fields to update');
         }
-        
+
         values.push(1); // league_id
         return this.run(
             `UPDATE league_settings SET ${updateFields.join(', ')} WHERE league_id = ?`,

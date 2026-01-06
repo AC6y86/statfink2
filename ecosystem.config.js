@@ -27,7 +27,7 @@ module.exports = {
       name: 'statfink2-daily',
       script: './scripts/daily-update.js',
       cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 14 * * *', // 10am UTC = 3am PDT (Pacific Daylight Time)
+      cron_restart: '0 17 * * *', // 10am UTC = 3am PDT (Pacific Daylight Time)
       autorestart: false,
       watch: false,
       time: true

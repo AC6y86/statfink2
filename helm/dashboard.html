@@ -1438,7 +1438,16 @@
                         <input type="number" id="season-year" min="2020" max="2030" placeholder="Enter year (2020-2030)">
                         <span class="form-help">Set the fantasy season year</span>
                     </div>
-                    
+
+                    <div class="form-group">
+                        <label for="theme-select">Theme:</label>
+                        <select id="theme-select" class="filter-select">
+                            <option value="plain">Plain (Default)</option>
+                            <option value="christmas">Christmas</option>
+                        </select>
+                        <span class="form-help">Set the site theme</span>
+                    </div>
+
                     <div class="form-actions">
                         <button class="btn" onclick="updateSettings()">Update Settings</button>
                         <button class="btn btn-secondary" onclick="loadCurrentSettings()">Reset to Current</button>
@@ -2348,11 +2357,12 @@
                 
                 if (result.success) {
                     const settings = result.data;
-                    
+
                     // Update form fields
                     document.getElementById('current-week').value = settings.current_week || '';
                     document.getElementById('season-year').value = settings.season_year || '';
-                    
+                    document.getElementById('theme-select').value = settings.theme || 'plain';
+
                     // Update current settings display
                     const settingsDisplay = document.getElementById('current-settings');
                     settingsDisplay.innerHTML = `
@@ -2367,6 +2377,10 @@
                         <div class="setting-item">
                             <span class="setting-label">Season Year:</span>
                             <span class="setting-value">${settings.season_year || 'Not set'}</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Theme:</span>
+                            <span class="setting-value">${settings.theme || 'plain'}</span>
                         </div>
                         <div class="setting-item">
                             <span class="setting-label">Max Teams:</span>
@@ -2388,23 +2402,25 @@
         async function updateSettings() {
             const currentWeek = document.getElementById('current-week').value;
             const seasonYear = document.getElementById('season-year').value;
-            
+            const theme = document.getElementById('theme-select').value;
+
             // Validate inputs
             if (currentWeek && (currentWeek < 1 || currentWeek > 18)) {
                 showSettingsMessage('Week must be between 1 and 18', 'error');
                 return;
             }
-            
+
             if (seasonYear && (seasonYear < 2020 || seasonYear > 2030)) {
                 showSettingsMessage('Season year must be between 2020 and 2030', 'error');
                 return;
             }
-            
+
             // Build update object
             const updates = {};
             if (currentWeek) updates.current_week = parseInt(currentWeek);
             if (seasonYear) updates.season_year = parseInt(seasonYear);
-            
+            if (theme) updates.theme = theme;
+
             if (Object.keys(updates).length === 0) {
                 showSettingsMessage('Please enter at least one value to update', 'error');
                 return;

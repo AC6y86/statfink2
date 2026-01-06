@@ -443,6 +443,7 @@ class NFLGamesService {
                     const rushing = stats.Rushing || {};
                     const receiving = stats.Receiving || {};
                     const kicking = stats.Kicking || {};
+                    const punting = stats.Punting || {};
                     const defense = stats.Defense || {};
                     
                     // Build stats object for our scoring calculation
@@ -463,7 +464,10 @@ class NFLGamesService {
                         // Add two-point conversions if available
                         two_point_conversions_pass: parseInt(passing.passingTwoPointConversion) || 0,
                         two_point_conversions_run: parseInt(rushing.rushingTwoPointConversion) || 0,
-                        two_point_conversions_rec: parseInt(receiving.receivingTwoPointConversion) || 0
+                        two_point_conversions_rec: parseInt(receiving.receivingTwoPointConversion) || 0,
+                        // Add return TDs
+                        kick_return_tds: parseInt(kicking.kickReturnTD) || 0,
+                        punt_return_tds: parseInt(punting.puntReturnTD) || 0
                     };
                     
                     // Calculate fantasy points using our scoring service
@@ -482,10 +486,11 @@ class NFLGamesService {
                             field_goals_made, field_goals_attempted, extra_points_made,
                             fumbles,
                             two_point_conversions_pass, two_point_conversions_run, two_point_conversions_rec,
+                            kick_return_tds, punt_return_tds,
                             fantasy_points,
                             player_name, team, position,
                             last_updated
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
                     `, [
                         playerId,
                         gameInfo.week,
@@ -506,6 +511,8 @@ class NFLGamesService {
                         playerStatsObj.two_point_conversions_pass,
                         playerStatsObj.two_point_conversions_run,
                         playerStatsObj.two_point_conversions_rec,
+                        playerStatsObj.kick_return_tds,
+                        playerStatsObj.punt_return_tds,
                         fantasyPoints,  // Use our calculated value instead of Tank01's
                         stats.longName || '',
                         stats.teamAbv || '',

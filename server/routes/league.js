@@ -182,43 +182,51 @@ router.put('/week', asyncHandler(async (req, res) => {
     });
 }));
 
+// Valid theme values
+const VALID_THEMES = ['plain', 'christmas'];
+
 // Update league settings (admin function for debugging)
 router.put('/settings', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
-    const { current_week, season_year, league_name, adminPassword } = req.body;
-    
+    const { current_week, season_year, league_name, theme, adminPassword } = req.body;
+
     // Simple admin authentication (allow bypass for development)
     const isProduction = process.env.NODE_ENV === 'production';
     if (isProduction && adminPassword !== process.env.ADMIN_PASSWORD) {
         throw new APIError('Unauthorized', 401);
     }
-    
+
     // Validate inputs
     if (current_week !== undefined && (current_week < 1 || current_week > 18)) {
         throw new APIError('Week must be between 1 and 18', 400);
     }
-    
+
     if (season_year !== undefined && (season_year < 2020 || season_year > 2030)) {
         throw new APIError('Season year must be between 2020 and 2030', 400);
     }
-    
+
+    if (theme !== undefined && !VALID_THEMES.includes(theme)) {
+        throw new APIError(`Theme must be one of: ${VALID_THEMES.join(', ')}`, 400);
+    }
+
     // Update settings
     const settingsToUpdate = {};
     if (current_week !== undefined) settingsToUpdate.current_week = current_week;
     if (season_year !== undefined) settingsToUpdate.season_year = season_year;
     if (league_name !== undefined) settingsToUpdate.league_name = league_name;
-    
+    if (theme !== undefined) settingsToUpdate.theme = theme;
+
     if (Object.keys(settingsToUpdate).length === 0) {
         throw new APIError('No valid settings provided to update', 400);
     }
-    
+
     await db.updateLeagueSettings(settingsToUpdate);
     const updatedSettings = await db.getLeagueSettings();
-    
-    const changes = Object.keys(settingsToUpdate).map(key => 
+
+    const changes = Object.keys(settingsToUpdate).map(key =>
         `${key.replace('_', ' ')} updated to ${settingsToUpdate[key]}`
     ).join(', ');
-    
+
     res.json({
         success: true,
         data: updatedSettings,

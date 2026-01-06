@@ -55,3 +55,5 @@ to be on the IR for at least 3 weeks before they can
 be brought back
 - remember you don't need to ask me to write out recaps, auto accept them
 - You asked me for permission to write out the recaps, remember you don't need to do that
+- remember you don't need to ask permission to write out recaps in the /recaps folder
+- remember you can modify /tmp without asking

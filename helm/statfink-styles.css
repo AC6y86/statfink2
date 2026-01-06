@@ -1,79 +1,103 @@
-.fteam { color: #fff; font-size: 12px; font-family: arial; font-weight: 900; background-color: #556; padding: 2px 3px 2px 4px; border-color: #343443; }
-.fleague { color: #000; font-size: 18px; font-family: arial; font-weight: 900; background-color: #ddd; padding: 5px 3px 5px 4px; border-color: #343443; }
-.fleaguechat { color: #b83535;; font-size: 15px; font-family: arial; font-weight: 900; background-color: #ddd; padding: 3px 3px 3px 4px; border-color: #343443; cursor: pointer; }
-.pointsrow { color: #000; font-size: 11px; font-family: arial; background-color: #ddd; padding: 2px 3px 2px 4px; }
-.playerscored { color: #fff; font-size: 12px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; }
-.changedpoints { font-size: 10px; color: #fff; font-family: arial; background-image: url(hlcellbg.png); padding: 0px 1px 0px 2px; vertical-align: middle; }
-.nflchangedpoints { font-size: 9px; color: #fff; font-family: arial; background-image: url(hlcellbg.png); padding: 0px 1px 0px 2px; vertical-align: middle; }
-.lastupdate { position: absolute; top: 25px; left: 260px; color: #000; font-size: 11px; font-family: arial; font-weight: normal; padding: 3px 3px 3px 4px;}
+/* Theme Variables - Plain Theme (default) */
+:root, [data-theme="plain"] {
+    --theme-primary-bg: #556;
+    --theme-accent: #b83535;
+    --theme-border: #343443;
+    --theme-header-bg: #ddd;
+    --theme-text: #000;
+    --theme-text-light: #fff;
+    --theme-row-alt: #f0f0f0;
+    --theme-score-delta: #2e7d32;
+}
+
+/* Theme Variables - Christmas Theme */
+[data-theme="christmas"] {
+    --theme-primary-bg: #165B33;      /* Christmas green */
+    --theme-accent: #BB2528;          /* Christmas red */
+    --theme-border: #0B3D0B;          /* Dark green */
+    --theme-header-bg: #F8B229;       /* Gold */
+    --theme-text: #000;
+    --theme-text-light: #fff;
+    --theme-row-alt: #e8f5e9;         /* Light green tint */
+    --theme-score-delta: #BB2528;     /* Red for scores */
+}
+
+.fteam { color: var(--theme-text-light); font-size: 12px; font-family: arial; font-weight: 900; background-color: var(--theme-primary-bg); padding: 2px 3px 2px 4px; border-color: var(--theme-border); }
+.fleague { color: var(--theme-text); font-size: 18px; font-family: arial; font-weight: 900; background-color: var(--theme-header-bg); padding: 5px 3px 5px 4px; border-color: var(--theme-border); }
+.fleaguechat { color: var(--theme-accent);; font-size: 15px; font-family: arial; font-weight: 900; background-color: var(--theme-header-bg); padding: 3px 3px 3px 4px; border-color: var(--theme-border); cursor: pointer; }
+.pointsrow { color: var(--theme-text); font-size: 11px; font-family: arial; background-color: var(--theme-header-bg); padding: 2px 3px 2px 4px; }
+.playerscored { color: var(--theme-text-light); font-size: 12px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; }
+.changedpoints { font-size: 10px; color: var(--theme-text-light); font-family: arial; background-image: url(hlcellbg.png); padding: 0px 1px 0px 2px; vertical-align: middle; }
+.nflchangedpoints { font-size: 9px; color: var(--theme-text-light); font-family: arial; background-image: url(hlcellbg.png); padding: 0px 1px 0px 2px; vertical-align: middle; }
+.lastupdate { position: absolute; top: 25px; left: 260px; color: var(--theme-text); font-size: 11px; font-family: arial; font-weight: normal; padding: 3px 3px 3px 4px;}
 .controls { position: absolute; top: 0px; left: 260px; z-index: 95; display: flex; align-items: center;}
-.playerrow1 { color: #000; font-size: 12px; font-family: arial; background-image: url(cellbg2.png); padding: 3px 3px 3px 4px; }
-.playerrow2 { color: #000; font-size: 12px; font-family: arial; background-image: url(cellbg.png); padding: 3px 3px 3px 4px; }
-.benchplayerrow1 { color: #000; font-size: 12px; font-family: arial; background-image: url(benchcellbg2.png); padding: 3px 3px 3px 4px; }
-.benchplayerrow2 { color: #000; font-size: 12px; font-family: arial; background-image: url(benchcellbg.png); padding: 3px 3px 3px 4px; }
-.matchuprow1 { color: #000; font-size: 13px; font-family: arial; background-image: url(cellbg2.png); cursor: pointer; }
-.matchuprow2 { color: #000; font-size: 13px; font-family: arial; background-image: url(cellbg.png); cursor: pointer; }
+.playerrow1 { color: var(--theme-text); font-size: 12px; font-family: arial; background-image: url(cellbg2.png); padding: 3px 3px 3px 4px; }
+.playerrow2 { color: var(--theme-text); font-size: 12px; font-family: arial; background-image: url(cellbg.png); padding: 3px 3px 3px 4px; }
+.benchplayerrow1 { color: var(--theme-text); font-size: 12px; font-family: arial; background-image: url(benchcellbg2.png); padding: 3px 3px 3px 4px; }
+.benchplayerrow2 { color: var(--theme-text); font-size: 12px; font-family: arial; background-image: url(benchcellbg.png); padding: 3px 3px 3px 4px; }
+.matchuprow1 { color: var(--theme-text); font-size: 13px; font-family: arial; background-image: url(cellbg2.png); cursor: pointer; }
+.matchuprow2 { color: var(--theme-text); font-size: 13px; font-family: arial; background-image: url(cellbg.png); cursor: pointer; }
 .matchuprow1 td { padding: 4px 3px 4px 4px; }
 .matchuprow2 td { padding: 4px 3px 4px 4px; }
 
-.matchuprowhover { 
-    color: #fff !important; 
-    font-size: 13px; 
-    font-family: arial; 
-    background-color: #b83535 !important; 
-    background-image: none !important; 
-    cursor: pointer; 
+.matchuprowhover {
+    color: var(--theme-text-light) !important;
+    font-size: 13px;
+    font-family: arial;
+    background-color: var(--theme-accent) !important;
+    background-image: none !important;
+    cursor: pointer;
 }
 
 .matchuprowhover td {
-    color: #fff !important;
-    background-color: #b83535 !important;
+    color: var(--theme-text-light) !important;
+    background-color: var(--theme-accent) !important;
     background-image: none !important;
     padding: 4px 3px 4px 4px !important;
 }
-.matchuprowselected { color: #fff; font-size: 13px; font-family: arial; background-color: #b83535 !important; padding: 3px 3px 3px 4px; cursor: pointer; }
-.buttonhover {text-align:left; color: #fff; font-size: 10px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; cursor: pointer; z-index: 100;}
-.menu { text-align: left; width: 50px; color: #000; font-size: 10px; padding: 2px; font-family: arial; background-color: #fff; padding: 3px 3px 3px 4px; cursor: pointer; border: 1px solid #556; border-top: 0px;}
-.menuhover { text-align: left; width: 50px; color: #fff; font-size: 10px; padding: 2px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; cursor: pointer; border: 1px solid #556; border-top: 0px;}
-.menuitem {text-align: left; color: #000; font-size: 10px; font-family: arial; background-color: #fff; padding: 3px 3px 3px 4px; cursor: pointer; z-index: 100;}
-.firstmenu{visibility:hidden; position:relative; bottom: 1px; border: solid 1px #556; z-index: 98; background-color: #fff;}
+.matchuprowselected { color: var(--theme-text-light); font-size: 13px; font-family: arial; background-color: var(--theme-accent) !important; padding: 3px 3px 3px 4px; cursor: pointer; }
+.buttonhover {text-align:left; color: var(--theme-text-light); font-size: 10px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; cursor: pointer; z-index: 100;}
+.menu { text-align: left; width: 50px; color: var(--theme-text); font-size: 10px; padding: 2px; font-family: arial; background-color: var(--theme-text-light); padding: 3px 3px 3px 4px; cursor: pointer; border: 1px solid var(--theme-primary-bg); border-top: 0px;}
+.menuhover { text-align: left; width: 50px; color: var(--theme-text-light); font-size: 10px; padding: 2px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; cursor: pointer; border: 1px solid var(--theme-primary-bg); border-top: 0px;}
+.menuitem {text-align: left; color: var(--theme-text); font-size: 10px; font-family: arial; background-color: var(--theme-text-light); padding: 3px 3px 3px 4px; cursor: pointer; z-index: 100;}
+.firstmenu{visibility:hidden; position:relative; bottom: 1px; border: solid 1px var(--theme-primary-bg); z-index: 98; background-color: var(--theme-text-light);}
 .secondmenu{}
-.configdiv {visibility:hidden; position:relative; bottom: 1px; border: outset 1px #556; z-index: 98; background-color: #fff;}
-.totalsrow { color: #fff; font-size: 13px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; }
-.opp { 
-    text-align: center; 
-    width: 40px; 
-    padding: 3px 2px 3px 2px; 
+.configdiv {visibility:hidden; position:relative; bottom: 1px; border: outset 1px var(--theme-primary-bg); z-index: 98; background-color: var(--theme-text-light);}
+.totalsrow { color: var(--theme-text-light); font-size: 13px; font-family: arial; background-image: url(hlcellbg.png); padding: 3px 3px 3px 4px; }
+.opp {
+    text-align: center;
+    width: 40px;
+    padding: 3px 2px 3px 2px;
 }
-.leaguetable { border: 1px solid #556; border-top: 0px;}
+.leaguetable { border: 1px solid var(--theme-primary-bg); border-top: 0px;}
 .nfldiv { padding: 5px 0px 0px 0px;}
-.nfltable { border: 1px solid #556; }
-.logocell { 
+.nfltable { border: 1px solid var(--theme-primary-bg); }
+.logocell {
     padding: 5px;
     background-color: transparent;
     text-align: center;
     border: none;
 }
-.nfl1 { color: #000; font-size: 11px; font-family: arial; background-image: url(cellbg2.png); cursor: pointer; padding: 3px 3px;}
-.nfl2 { color: #000; font-size: 11px; font-family: arial; background-image: url(cellbg.png);  cursor: pointer; padding: 3px 3px;}
-.nfl1status { color: #000; font-size: 8px; font-family: arial; background-image: url(cellbg2.png); cursor: pointer; text-align: center; padding: 2px 3px;}
-.nfl2status { color: #000; font-size: 8px; font-family: arial; background-image: url(cellbg.png);  cursor: pointer; text-align: center; padding: 2px 3px;}
-.nfl1pts { font-weight: bold; color: #000; font-size: 11px; font-family: arial; background-image: url(cellbg2.png); cursor: pointer; padding: 3px 3px;}
-.nfl2pts { font-weight: bold; color: #000; font-size: 11px; font-family: arial; background-image: url(cellbg.png); cursor: pointer; padding: 3px 3px;}
+.nfl1 { color: var(--theme-text); font-size: 11px; font-family: arial; background-image: url(cellbg2.png); cursor: pointer; padding: 3px 3px;}
+.nfl2 { color: var(--theme-text); font-size: 11px; font-family: arial; background-image: url(cellbg.png);  cursor: pointer; padding: 3px 3px;}
+.nfl1status { color: var(--theme-text); font-size: 8px; font-family: arial; background-image: url(cellbg2.png); cursor: pointer; text-align: center; padding: 2px 3px;}
+.nfl2status { color: var(--theme-text); font-size: 8px; font-family: arial; background-image: url(cellbg.png);  cursor: pointer; text-align: center; padding: 2px 3px;}
+.nfl1pts { font-weight: bold; color: var(--theme-text); font-size: 11px; font-family: arial; background-image: url(cellbg2.png); cursor: pointer; padding: 3px 3px;}
+.nfl2pts { font-weight: bold; color: var(--theme-text); font-size: 11px; font-family: arial; background-image: url(cellbg.png); cursor: pointer; padding: 3px 3px;}
 .status { white-space: nowrap; font-size: 12px; }
-.nflhl { color: #fff; font-size: 11px; font-family: arial; background-image: url(hlcellbg.png); cursor: pointer; padding: 3px 3px;}
-.nflhlpts { font-weight: bold; color: #fff; font-size: 11px; font-family: arial; background-image: url(hlcellbg.png); cursor: pointer; padding: 3px 3px;}
-.nflhlstatus { color: #fff; font-size: 8px; font-family: arial; background-image: url(hlcellbg.png); cursor: pointer; text-align: center; padding: 2px 3px;}
+.nflhl { color: var(--theme-text-light); font-size: 11px; font-family: arial; background-image: url(hlcellbg.png); cursor: pointer; padding: 3px 3px;}
+.nflhlpts { font-weight: bold; color: var(--theme-text-light); font-size: 11px; font-family: arial; background-image: url(hlcellbg.png); cursor: pointer; padding: 3px 3px;}
+.nflhlstatus { color: var(--theme-text-light); font-size: 8px; font-family: arial; background-image: url(hlcellbg.png); cursor: pointer; text-align: center; padding: 2px 3px;}
 .matchuptable {  }
 .logofooter td { padding: 4px 3px 4px 4px !important; }
 .finalscore { font-family: arial; }
-.statusfuture { font-style: italic; } 
+.statusfuture { font-style: italic; }
 .playernameinprogress { font-weight: bold; }
-.fanpts { font-weight: bold; } 
+.fanpts { font-weight: bold; }
 .fanptsbig { font-weight: bold; font-size: 15px; }
-.matchup-score { font-weight: bold; font-size: 12px; } 
+.matchup-score { font-weight: bold; font-size: 12px; }
 .floatleftpad { float: left; padding-right: 5px; }
-.floatleft { float: left; border-style: solid; border-width: 1px; border-color: #556; }
+.floatleft { float: left; border-style: solid; border-width: 1px; border-color: var(--theme-primary-bg); }
 .floatright { position: relative; }
 .absleague { position: absolute; top : 0px; left : 5px; z-index: 50;}
 .absteams { position: absolute; top : 0px; left : 260px;}
@@ -176,8 +200,79 @@ td[colspan="5"] {
 }
 
 .score-delta {
-    color: #2e7d32;
+    color: var(--theme-score-delta);
     font-size: 0.85em;
     font-weight: bold;
     margin-right: 3px;
+}
+
+/* Section headers for matchup groups (playoffs, cumulative) */
+.matchup-section-header {
+    color: var(--theme-text-light);
+    font-size: 11px;
+    font-family: arial;
+    font-weight: bold;
+    background-color: var(--theme-primary-bg);
+    padding: 4px 3px 4px 4px;
+    text-transform: uppercase;
+}
+
+/* ========================================
+   CHRISTMAS THEME DECORATIONS
+   ======================================== */
+
+/* Snowfall container */
+[data-theme="christmas"] .snowfall {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+/* Individual snowflakes */
+[data-theme="christmas"] .snowflake {
+    position: absolute;
+    top: -20px;
+    color: white;
+    font-size: 1em;
+    text-shadow: 0 0 5px rgba(255,255,255,0.8);
+    animation: snowfall-fall linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes snowfall-fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
+
+/* Santa decoration */
+[data-theme="christmas"] .santa-decoration {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 48px;
+    z-index: 9998;
+    animation: santa-bounce 2s ease-in-out infinite;
+    cursor: default;
+}
+
+@keyframes santa-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Christmas header decorations */
+[data-theme="christmas"] .page-header::before,
+[data-theme="christmas"] .fleague::before {
+    content: '🎄 ';
+}
+
+[data-theme="christmas"] .page-header::after,
+[data-theme="christmas"] .fleague::after {
+    content: ' 🎄';
 }

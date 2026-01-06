@@ -4,8 +4,9 @@ const { asyncHandler, APIError, logError } = require('../utils/errorHandler');
 const router = express.Router();
 
 // Constants from PFL Rules (12-team league)
-const WEEKLY_WIN_AMOUNT = 37.78;  // $680 total / 18 weeks
-const OVERALL_POINTS_PRIZES = { 1: 528, 2: 396, 3: 264, 4: 132 };  // $1,320 total
+const WEEKLY_WIN_AMOUNT_STANDARD = 37.78;  // Weeks 1-16
+const WEEKLY_WIN_AMOUNT_REDUCED = 37.76;   // Weeks 17-18 (to make total exactly $680)
+const OVERALL_POINTS_PRIZES = { 1: 500, 2: 300, 3: 200, 4: 150, 5: 100, 6: 70 };  // $1,320 total
 const HEAD_TO_HEAD_PRIZES = { 1: 400, 2: 300, 3: 200, 4: 100 };    // $1,000 total
 const IR_POOL_PERCENTAGES = {
     points_1st: 0.25,
@@ -134,16 +135,17 @@ router.get('/:season', asyncHandler(async (req, res) => {
             };
         });
 
-        // Weekly wins payouts
-        Object.entries(weeklyWinCounts).forEach(([owner, count]) => {
-            if (payouts[owner]) {
-                payouts[owner].weekly_wins = count;
-                payouts[owner].weekly_payout = count * WEEKLY_WIN_AMOUNT;
+        // Weekly wins payouts (variable amounts: $37.78 for weeks 1-16, $37.76 for weeks 17-18)
+        allWeeklyWinners.forEach(w => {
+            if (payouts[w.owner_name]) {
+                const amount = w.week <= 16 ? WEEKLY_WIN_AMOUNT_STANDARD : WEEKLY_WIN_AMOUNT_REDUCED;
+                payouts[w.owner_name].weekly_wins = (payouts[w.owner_name].weekly_wins || 0) + 1;
+                payouts[w.owner_name].weekly_payout += amount;
             }
         });
 
-        // Overall points payouts (top 4)
-        pointsStandings.slice(0, 4).forEach((team, index) => {
+        // Overall points payouts (top 6)
+        pointsStandings.slice(0, 6).forEach((team, index) => {
             const rank = index + 1;
             if (payouts[team.owner_name]) {
                 payouts[team.owner_name].points_rank = rank;
@@ -209,7 +211,8 @@ router.get('/:season', asyncHandler(async (req, res) => {
                     buyIn: BUY_IN,
                     numOwners: NUM_OWNERS,
                     totalBuyIn: BUY_IN * NUM_OWNERS,
-                    weeklyWinAmount: WEEKLY_WIN_AMOUNT,
+                    weeklyWinAmountStandard: WEEKLY_WIN_AMOUNT_STANDARD,
+                    weeklyWinAmountReduced: WEEKLY_WIN_AMOUNT_REDUCED,
                     totalIRMoves,
                     irPool,
                     totalWeeklyPayout,
@@ -224,7 +227,8 @@ router.get('/:season', asyncHandler(async (req, res) => {
                     numOwners: NUM_OWNERS,
                     totalBuyIn: BUY_IN * NUM_OWNERS,
                     irMoveFee: IR_MOVE_FEE,
-                    weeklyWinAmount: WEEKLY_WIN_AMOUNT,
+                    weeklyWinAmountStandard: WEEKLY_WIN_AMOUNT_STANDARD,
+                    weeklyWinAmountReduced: WEEKLY_WIN_AMOUNT_REDUCED,
                     pointsPrizes: OVERALL_POINTS_PRIZES,
                     h2hPrizes: HEAD_TO_HEAD_PRIZES,
                     irPoolPercentages: IR_POOL_PERCENTAGES
@@ -232,8 +236,8 @@ router.get('/:season', asyncHandler(async (req, res) => {
                 // Weekly winners breakdown
                 weeklyWinners: allWeeklyWinners,
                 weeklyWinCounts,
-                // Points standings (top 4 for payout)
-                pointsStandings: pointsStandings.slice(0, 4).map((t, i) => ({
+                // Points standings (top 6 for payout)
+                pointsStandings: pointsStandings.slice(0, 6).map((t, i) => ({
                     rank: i + 1,
                     owner_name: t.owner_name,
                     cumulative_points: t.cumulative_points,

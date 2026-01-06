@@ -16,417 +16,340 @@
             background-color: var(--theme-primary-bg);
             color: var(--theme-text-light);
             font-size: 24px;
-            font-family: arial;
             font-weight: 900;
             padding: 15px;
             text-align: center;
-            border-bottom: 2px solid var(--theme-border);
         }
 
         .content-wrapper {
             padding: 20px;
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
-        .payout-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
+        /* Prize Structure */
+        .prize-structure {
+            background: var(--theme-header-bg);
+            border: 1px solid var(--theme-border);
+            padding: 15px;
             margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 13px;
         }
 
-        .payout-section {
-            background: transparent;
-            margin-bottom: 10px;
+        .prize-structure .prize-title {
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 12px;
+            color: var(--theme-primary-bg);
+            border-bottom: 1px solid var(--theme-border);
+            padding-bottom: 8px;
         }
 
+        .prize-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .prize-category {
+            background: var(--theme-text-light);
+            border: 1px solid var(--theme-border);
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        .prize-category h4 {
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            color: var(--theme-primary-bg);
+        }
+
+        .prize-category ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 12px;
+        }
+
+        .prize-category li {
+            margin-bottom: 3px;
+        }
+
+        .prize-total {
+            font-weight: bold;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid var(--theme-border);
+        }
+
+        /* Main table */
         .payout-table {
             border: 1px solid var(--theme-primary-bg);
             border-collapse: collapse;
-            border-spacing: 0;
             background: var(--theme-text-light);
             width: 100%;
+            margin-bottom: 20px;
         }
 
         .section-title {
             color: var(--theme-text-light);
             font-size: 16px;
-            font-family: arial;
             font-weight: 900;
             background-color: var(--theme-primary-bg);
-            padding: 8px 10px;
+            padding: 10px;
             text-align: center;
-            border: 1px solid var(--theme-border);
         }
 
         .payout-table th {
             color: var(--theme-text);
             font-size: 13px;
-            font-family: arial;
             font-weight: bold;
             background-color: var(--theme-header-bg);
-            padding: 6px 10px;
+            padding: 8px 10px;
             text-align: left;
             border-bottom: 1px solid var(--theme-primary-bg);
         }
 
         .payout-table td {
-            padding: 6px 10px;
+            padding: 8px 10px;
             font-size: 13px;
-            font-family: arial;
-            text-align: left;
         }
 
         .payout-table th.right, .payout-table td.right {
             text-align: right;
         }
 
-        .row1 {
-            color: var(--theme-text);
-            background-color: var(--theme-text-light);
-        }
+        .row1 { background-color: var(--theme-text-light); }
+        .row2 { background-color: var(--theme-row-alt); }
 
-        .row2 {
-            color: var(--theme-text);
-            background-color: var(--theme-row-alt);
-        }
+        .money { font-weight: bold; color: #228B22; }
+        .expense { font-weight: bold; color: #CC0000; }
 
-        .highlight {
-            font-weight: bold;
-            color: var(--theme-accent);
-        }
-
-        .money {
-            font-weight: bold;
-            color: #228B22;
-        }
-
-        .expense {
-            font-weight: bold;
-            color: #CC0000;
-        }
-
-        .total-row {
-            font-weight: bold;
-            background-color: var(--theme-header-bg) !important;
-            border-top: 2px solid var(--theme-primary-bg);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-            font-size: 14px;
-        }
-
-        .error {
-            background: var(--theme-accent);
-            color: var(--theme-text-light);
-            padding: 10px;
-            margin: 10px 0;
-            text-align: center;
-            font-size: 12px;
-        }
-
-        .summary-box {
-            background: var(--theme-header-bg);
-            border: 2px solid var(--theme-primary-bg);
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-
-        .summary-box h3 {
-            margin: 0 0 10px 0;
-            color: var(--theme-text);
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            font-size: 14px;
-        }
-
-        .summary-item.grand-total {
-            border-top: 2px solid var(--theme-primary-bg);
-            margin-top: 8px;
-            padding-top: 8px;
-            font-weight: bold;
+        /* Summary */
+        .summary-line {
+            text-align: right;
+            padding: 10px 0;
             font-size: 16px;
+            font-weight: bold;
+            border-top: 2px solid var(--theme-primary-bg);
         }
 
-        .final-totals-table {
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .crown {
-            color: gold;
-        }
-
-        .rules-box {
+        /* Net Summary */
+        .net-summary {
             background: var(--theme-header-bg);
-            border: 2px solid var(--theme-primary-bg);
-            padding: 15px;
+            border: 1px solid var(--theme-border);
+            padding: 10px 15px;
             margin-bottom: 20px;
             border-radius: 4px;
         }
 
-        .rules-box h3 {
-            margin: 0 0 15px 0;
-            color: var(--theme-text);
-            text-align: center;
-            font-size: 18px;
-        }
-
-        .rules-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .rules-section {
-            background: var(--theme-text-light);
-            border: 1px solid var(--theme-border);
-            padding: 10px;
-            border-radius: 4px;
-        }
-
-        .rules-section h4 {
-            margin: 0 0 8px 0;
+        .net-summary-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
             color: var(--theme-primary-bg);
-            font-size: 13px;
-            border-bottom: 1px solid var(--theme-border);
-            padding-bottom: 5px;
         }
 
-        .rules-section .rule-item {
+        .net-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px 12px;
+            font-size: 12px;
+        }
+
+        .net-summary-item {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
             padding: 2px 0;
         }
 
-        .rules-section .rule-total {
-            border-top: 1px solid var(--theme-border);
-            margin-top: 5px;
-            padding-top: 5px;
+        .net-summary-item span:last-child {
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        /* Collapsible details */
+        details {
+            margin-bottom: 15px;
+            border: 1px solid var(--theme-border);
+            border-radius: 4px;
+        }
+
+        summary {
+            background: var(--theme-header-bg);
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        summary:hover {
+            background: var(--theme-row-alt);
+        }
+
+        details[open] summary {
+            border-bottom: 1px solid var(--theme-border);
+        }
+
+        .details-content {
+            padding: 10px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-table {
+            border: 1px solid var(--theme-border);
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 12px;
+        }
+
+        .detail-table th, .detail-table td {
+            padding: 5px 8px;
+            border-bottom: 1px solid var(--theme-border);
+        }
+
+        .detail-table th {
+            background: var(--theme-header-bg);
+            text-align: left;
             font-weight: bold;
         }
+
+        .loading { text-align: center; padding: 40px; color: #666; }
+        .error { background: #CC0000; color: white; padding: 10px; text-align: center; }
     </style>
 </head>
 <body>
-    <div class="page-header">
-        2025 Season Payouts
-    </div>
+    <div class="page-header">2025 Season Payouts</div>
 
     <div class="content-wrapper">
         <div id="loadingMessage" class="loading">Calculating payouts...</div>
         <div id="errorMessage" class="error" style="display: none;"></div>
 
         <div id="payoutsContent" style="display: none;">
-            <!-- Rules Box -->
-            <div class="rules-box">
-                <h3>PFL Payout Rules (12-Team League)</h3>
-                <div class="rules-grid">
-                    <div class="rules-section">
-                        <h4>Entry & Fees</h4>
-                        <div class="rule-item"><span>Entry Fee:</span><span class="expense">$250/owner</span></div>
-                        <div class="rule-item"><span>IR Move Fee:</span><span class="expense">$10/move</span></div>
-                        <div class="rule-item rule-total"><span>Total Buy-in:</span><span class="expense">$3,000</span></div>
+            <!-- Prize Structure -->
+            <div class="prize-structure">
+                <div class="prize-title">Prize Structure (12-Team League) — $250 Buy-in per Owner = $3,000 Total</div>
+                <div class="prize-grid">
+                    <div class="prize-category">
+                        <h4>Weekly High Score</h4>
+                        <ul>
+                            <li>Weeks 1-16: $37.78/wk</li>
+                            <li>Weeks 17-18: $37.76/wk</li>
+                        </ul>
+                        <div class="prize-total">Total: $680</div>
                     </div>
-                    <div class="rules-section">
-                        <h4>Weekly Wins ($680 total)</h4>
-                        <div class="rule-item"><span>Per Week:</span><span class="money">$37.78</span></div>
-                        <div class="rule-item"><span>Weeks:</span><span>18</span></div>
+                    <div class="prize-category">
+                        <h4>Cumulative Points (Week 17)</h4>
+                        <ul>
+                            <li>1st: $500</li>
+                            <li>2nd: $300</li>
+                            <li>3rd: $200</li>
+                            <li>4th: $150</li>
+                            <li>5th: $100</li>
+                            <li>6th: $70</li>
+                        </ul>
+                        <div class="prize-total">Total: $1,320</div>
                     </div>
-                    <div class="rules-section">
-                        <h4>Cumulative Points ($1,320 = 44% of buy-in)</h4>
-                        <div class="rule-item"><span>1st (20%):</span><span class="money">$528</span></div>
-                        <div class="rule-item"><span>2nd (15%):</span><span class="money">$396</span></div>
-                        <div class="rule-item"><span>3rd (10%):</span><span class="money">$264</span></div>
-                        <div class="rule-item"><span>4th (5%):</span><span class="money">$132</span></div>
+                    <div class="prize-category">
+                        <h4>Head-to-Head Record</h4>
+                        <ul>
+                            <li>1st: $400</li>
+                            <li>2nd: $300</li>
+                            <li>3rd: $200</li>
+                            <li>4th: $100</li>
+                        </ul>
+                        <div class="prize-total">Total: $1,000</div>
                     </div>
-                    <div class="rules-section">
-                        <h4>Head-to-Head ($1,000 = 33.3% of buy-in)</h4>
-                        <div class="rule-item"><span>1st (20%):</span><span class="money">$400</span></div>
-                        <div class="rule-item"><span>2nd (15%):</span><span class="money">$300</span></div>
-                        <div class="rule-item"><span>3rd (10%):</span><span class="money">$200</span></div>
-                        <div class="rule-item"><span>4th (5%):</span><span class="money">$100</span></div>
-                    </div>
-                    <div class="rules-section">
-                        <h4>IR Pool Distribution</h4>
-                        <div class="rule-item"><span>1st Points:</span><span>25%</span></div>
-                        <div class="rule-item"><span>1st H2H:</span><span>25%</span></div>
-                        <div class="rule-item"><span>2nd Points:</span><span>15%</span></div>
-                        <div class="rule-item"><span>2nd H2H:</span><span>15%</span></div>
-                        <div class="rule-item"><span>3rd Points:</span><span>10%</span></div>
-                        <div class="rule-item"><span>3rd H2H:</span><span>10%</span></div>
+                    <div class="prize-category">
+                        <h4>IR Pool ($10/move)</h4>
+                        <ul>
+                            <li>1st Points: 25%</li>
+                            <li>1st H2H: 25%</li>
+                            <li>2nd Points: 15%</li>
+                            <li>2nd H2H: 15%</li>
+                            <li>3rd Points: 10%</li>
+                            <li>3rd H2H: 10%</li>
+                        </ul>
+                        <div class="prize-total">Total: $380 (38 moves)</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Summary Box -->
-            <div class="summary-box" id="summaryBox">
-                <h3>Payout Summary</h3>
-                <div class="summary-item">
-                    <span>Buy-in (12 owners x $250):</span>
-                    <span class="money">$3,000.00</span>
-                </div>
-                <div class="summary-item">
-                    <span>IR Moves Pool:</span>
-                    <span id="summaryIRPool" class="money">$0</span>
-                </div>
-                <div class="summary-item" style="border-top: 1px solid var(--theme-border); padding-top: 6px; margin-top: 6px;">
-                    <span>Weekly Wins Total:</span>
-                    <span id="summaryWeekly" class="money">$0</span>
-                </div>
-                <div class="summary-item">
-                    <span>Overall Points Prizes:</span>
-                    <span id="summaryPoints" class="money">$0</span>
-                </div>
-                <div class="summary-item">
-                    <span>Head-to-Head Prizes:</span>
-                    <span id="summaryH2H" class="money">$0</span>
-                </div>
-                <div class="summary-item">
-                    <span>IR Pool Distributed:</span>
-                    <span id="summaryIRPoolDist" class="money">$0</span>
-                </div>
-                <div class="summary-item grand-total">
-                    <span>Total Distributed:</span>
-                    <span id="summaryGrandTotal" class="money">$0</span>
-                </div>
+            <!-- Net Summary -->
+            <div class="net-summary">
+                <div class="net-summary-title">Net Summary</div>
+                <div class="net-summary-grid" id="netSummaryGrid"></div>
             </div>
 
-            <div class="payout-grid">
-                <!-- Final Totals Per Owner -->
-                <div class="payout-section">
-                    <table class="payout-table final-totals-table">
-                        <tr>
-                            <td colspan="9" class="section-title">Final Payouts By Owner</td>
-                        </tr>
-                        <tr>
-                            <th>Owner</th>
-                            <th class="right">Buy-in</th>
-                            <th class="right">IR Fees</th>
-                            <th class="right">Weekly</th>
-                            <th class="right">Points</th>
-                            <th class="right">H2H</th>
-                            <th class="right">IR Pool</th>
-                            <th class="right">Gross</th>
-                            <th class="right">Net</th>
-                        </tr>
-                        <tbody id="finalTotalsBody">
-                        </tbody>
-                    </table>
-                </div>
+            <!-- Main Results Table -->
+            <table class="payout-table">
+                <tr><td colspan="6" class="section-title">Final Payouts</td></tr>
+                <tr>
+                    <th>Owner</th>
+                    <th class="right">Weekly</th>
+                    <th class="right">Points</th>
+                    <th class="right">H2H</th>
+                    <th class="right">IR Pool</th>
+                    <th class="right">Net</th>
+                </tr>
+                <tbody id="finalTotalsBody"></tbody>
+            </table>
 
-                <!-- Weekly Winners -->
-                <div class="payout-section">
-                    <table class="payout-table">
-                        <tr>
-                            <td colspan="3" class="section-title">Weekly Winners ($30/week)</td>
-                        </tr>
-                        <tr>
-                            <th>Week</th>
-                            <th>Winner</th>
-                            <th class="right">Points</th>
-                        </tr>
-                        <tbody id="weeklyWinnersBody">
-                        </tbody>
-                    </table>
-                </div>
+            <div class="summary-line">
+                Total Distributed: <span id="summaryGrandTotal" class="money">$0</span>
             </div>
 
-            <div class="payout-grid">
-                <!-- Overall Points Standings -->
-                <div class="payout-section">
-                    <table class="payout-table">
-                        <tr>
-                            <td colspan="4" class="section-title">Overall Points (Week 17 Cumulative)</td>
-                        </tr>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Owner</th>
-                            <th class="right">Points</th>
-                            <th class="right">Payout</th>
-                        </tr>
-                        <tbody id="pointsStandingsBody">
-                        </tbody>
-                    </table>
+            <!-- Collapsible Details -->
+            <details open>
+                <summary>Standings & IR Pool Breakdown</summary>
+                <div class="details-content">
+                    <div class="details-grid">
+                        <div>
+                            <h4 style="margin: 0 0 8px 0;">Cumulative Points (Week 17)</h4>
+                            <table class="detail-table">
+                                <tr><th>Rank</th><th>Owner</th><th class="right">Points</th><th class="right">Prize</th></tr>
+                                <tbody id="pointsStandingsBody"></tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0 0 8px 0;">Head-to-Head Record</h4>
+                            <table class="detail-table">
+                                <tr><th>Rank</th><th>Owner</th><th class="right">Prize</th></tr>
+                                <tbody id="h2hStandingsBody"></tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0 0 8px 0;">IR Pool Distribution</h4>
+                            <table class="detail-table">
+                                <tr><th>Category</th><th>Owner</th><th class="right">Amount</th></tr>
+                                <tbody id="irPoolBody"></tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0 0 8px 0;">IR Moves by Team</h4>
+                            <table class="detail-table">
+                                <tr><th>Owner</th><th class="right">Moves</th><th class="right">Fees</th></tr>
+                                <tbody id="irMovesBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
+            </details>
 
-                <!-- Head to Head Standings -->
-                <div class="payout-section">
-                    <table class="payout-table">
-                        <tr>
-                            <td colspan="3" class="section-title">Head-to-Head Record</td>
-                        </tr>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Owner</th>
-                            <th class="right">Payout</th>
-                        </tr>
-                        <tbody id="h2hStandingsBody">
-                        </tbody>
+            <details open>
+                <summary>Weekly Winners (18 weeks)</summary>
+                <div class="details-content">
+                    <table class="detail-table">
+                        <tr><th>Owner</th><th class="right">Wins</th><th class="right">Payout</th></tr>
+                        <tbody id="weeklyWinnersBody"></tbody>
                     </table>
                 </div>
-            </div>
-
-            <div class="payout-grid">
-                <!-- IR Pool Breakdown -->
-                <div class="payout-section">
-                    <table class="payout-table">
-                        <tr>
-                            <td colspan="3" class="section-title">IR Pool Distribution</td>
-                        </tr>
-                        <tr>
-                            <th>Category</th>
-                            <th>Owner</th>
-                            <th class="right">Amount</th>
-                        </tr>
-                        <tbody id="irPoolBody">
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- IR Moves by Team -->
-                <div class="payout-section">
-                    <table class="payout-table">
-                        <tr>
-                            <td colspan="3" class="section-title">IR Moves by Team ($10/move)</td>
-                        </tr>
-                        <tr>
-                            <th>Owner</th>
-                            <th class="right">Moves</th>
-                            <th class="right">Fees</th>
-                        </tr>
-                        <tbody id="irMovesBody">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Weekly Win Counts -->
-            <div class="payout-grid">
-                <div class="payout-section">
-                    <table class="payout-table">
-                        <tr>
-                            <td colspan="3" class="section-title">Weekly Win Summary</td>
-                        </tr>
-                        <tr>
-                            <th>Owner</th>
-                            <th class="right">Wins</th>
-                            <th class="right">Payout</th>
-                        </tr>
-                        <tbody id="weeklyCountsBody">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            </details>
         </div>
     </div>
 
@@ -438,211 +361,126 @@
         async function loadPayouts() {
             try {
                 const response = await fetch('/api/payouts/2025');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch payouts');
-                }
-
+                if (!response.ok) throw new Error('Failed to fetch payouts');
                 const result = await response.json();
-                if (!result.success) {
-                    throw new Error('Failed to load payouts data');
-                }
-
+                if (!result.success) throw new Error('Failed to load payouts data');
                 displayPayouts(result.data);
-
             } catch (error) {
-                console.error('Error loading payouts:', error);
                 document.getElementById('loadingMessage').style.display = 'none';
-                document.getElementById('errorMessage').textContent = 'Failed to load payouts: ' + error.message;
+                document.getElementById('errorMessage').textContent = 'Error: ' + error.message;
                 document.getElementById('errorMessage').style.display = 'block';
             }
         }
 
         function displayPayouts(data) {
-            const { summary, weeklyWinners, weeklyWinCounts, pointsStandings, h2hStandings, irPoolBreakdown, irMovesByTeam, payouts } = data;
+            const { summary, weeklyWinners, pointsStandings, h2hStandings, irPoolBreakdown, irMovesByTeam, payouts } = data;
 
-            // Summary box
-            document.getElementById('summaryIRPool').textContent = formatMoney(summary.irPool);
-            document.getElementById('summaryWeekly').textContent = formatMoney(summary.totalWeeklyPayout);
-            document.getElementById('summaryPoints').textContent = formatMoney(summary.totalPointsPayout);
-            document.getElementById('summaryH2H').textContent = formatMoney(summary.totalH2HPayout);
-            document.getElementById('summaryIRPoolDist').textContent = formatMoney(summary.totalIRPoolPayout);
             document.getElementById('summaryGrandTotal').textContent = formatMoney(summary.grandTotal);
 
-            // Create IR fees lookup by owner
+            // IR fees lookup
             const irFeesByOwner = {};
-            irMovesByTeam.forEach(m => {
-                irFeesByOwner[m.owner_name] = m.fees;
-            });
+            irMovesByTeam.forEach(m => { irFeesByOwner[m.owner_name] = m.fees; });
 
-            // Final totals per owner - show ALL owners, sorted by net
+            // Final payouts table - simplified 6 columns
             const finalTotalsBody = document.getElementById('finalTotalsBody');
             finalTotalsBody.innerHTML = '';
             const BUY_IN = 250;
-
-            // Build complete list of all owners with their financials
-            const allOwnerPayouts = [];
             const ownerNames = ['Chris', 'Mitch', 'Dan', 'Pete', 'Joe', 'Aaron', 'Cal', 'Bruce', 'Mike', 'Sean', 'Eli', 'Matt'];
-            ownerNames.forEach(owner => {
+
+            const allOwnerPayouts = ownerNames.map(owner => {
                 const p = payouts.find(x => x.owner_name === owner) || {
-                    owner_name: owner,
-                    weekly_payout: 0,
-                    points_payout: 0,
-                    h2h_payout: 0,
-                    ir_pool_points_payout: 0,
-                    ir_pool_h2h_payout: 0,
-                    total: 0
+                    owner_name: owner, weekly_payout: 0, points_payout: 0, h2h_payout: 0,
+                    ir_pool_points_payout: 0, ir_pool_h2h_payout: 0, total: 0
                 };
                 const irFees = irFeesByOwner[owner] || 0;
                 const irPoolTotal = p.ir_pool_points_payout + p.ir_pool_h2h_payout;
-                const gross = p.total;
-                const net = gross - BUY_IN - irFees;
-                allOwnerPayouts.push({
-                    ...p,
-                    irFees,
-                    irPoolTotal,
-                    gross,
-                    net
-                });
-            });
+                const net = p.total - BUY_IN - irFees;
+                return { ...p, irFees, irPoolTotal, net };
+            }).sort((a, b) => b.net - a.net);
 
-            // Sort by net descending
-            allOwnerPayouts.sort((a, b) => b.net - a.net);
-
-            allOwnerPayouts.forEach((p, index) => {
+            allOwnerPayouts.forEach((p, i) => {
                 const row = document.createElement('tr');
-                row.className = index % 2 === 0 ? 'row1' : 'row2';
+                row.className = i % 2 === 0 ? 'row1' : 'row2';
                 const netClass = p.net >= 0 ? 'money' : 'expense';
                 row.innerHTML = `
                     <td>${p.owner_name}</td>
-                    <td class="right expense">-${formatMoney(BUY_IN)}</td>
-                    <td class="right expense">${p.irFees > 0 ? '-' + formatMoney(p.irFees) : '-'}</td>
                     <td class="right">${p.weekly_payout > 0 ? formatMoney(p.weekly_payout) : '-'}</td>
                     <td class="right">${p.points_payout > 0 ? formatMoney(p.points_payout) : '-'}</td>
                     <td class="right">${p.h2h_payout > 0 ? formatMoney(p.h2h_payout) : '-'}</td>
                     <td class="right">${p.irPoolTotal > 0 ? formatMoney(p.irPoolTotal) : '-'}</td>
-                    <td class="right money">${formatMoney(p.gross)}</td>
                     <td class="right ${netClass}">${p.net >= 0 ? '+' : ''}${formatMoney(p.net)}</td>
                 `;
                 finalTotalsBody.appendChild(row);
             });
 
-            // Weekly winners
+            // Net Summary grid
+            const netSummaryGrid = document.getElementById('netSummaryGrid');
+            netSummaryGrid.innerHTML = allOwnerPayouts.map(p => {
+                const netClass = p.net >= 0 ? 'money' : 'expense';
+                return `<div class="net-summary-item"><span>${p.owner_name}</span><span class="${netClass}">${p.net >= 0 ? '+' : ''}${formatMoney(p.net)}</span></div>`;
+            }).join('');
+
+            // Weekly winners (by total wins)
             const weeklyWinnersBody = document.getElementById('weeklyWinnersBody');
             weeklyWinnersBody.innerHTML = '';
-            weeklyWinners.forEach((w, index) => {
+            const winCountsArray = Object.entries(data.weeklyWinCounts)
+                .map(([owner, wins]) => ({ owner, wins }))
+                .sort((a, b) => b.wins - a.wins);
+            winCountsArray.forEach((w, i) => {
+                const ownerPayout = payouts.find(p => p.owner_name === w.owner);
+                const payout = ownerPayout ? ownerPayout.weekly_payout : 0;
                 const row = document.createElement('tr');
-                row.className = index % 2 === 0 ? 'row1' : 'row2';
-                row.innerHTML = `
-                    <td>Week ${w.week}</td>
-                    <td>${w.owner_name}</td>
-                    <td class="right">${w.points_for_week ? w.points_for_week.toFixed(1) : 'TBD'}</td>
-                `;
+                row.innerHTML = `<td>${w.owner}</td><td class="right">${w.wins}</td><td class="right money">${formatMoney(payout)}</td>`;
                 weeklyWinnersBody.appendChild(row);
-            });
-
-            // Weekly win counts
-            const weeklyCountsBody = document.getElementById('weeklyCountsBody');
-            weeklyCountsBody.innerHTML = '';
-            const winCountsArray = Object.entries(weeklyWinCounts)
-                .sort((a, b) => b[1] - a[1]);
-            winCountsArray.forEach(([owner, count], index) => {
-                const row = document.createElement('tr');
-                row.className = index % 2 === 0 ? 'row1' : 'row2';
-                row.innerHTML = `
-                    <td>${owner}</td>
-                    <td class="right">${count}</td>
-                    <td class="right money">${formatMoney(count * 30)}</td>
-                `;
-                weeklyCountsBody.appendChild(row);
             });
 
             // Points standings
             const pointsStandingsBody = document.getElementById('pointsStandingsBody');
             pointsStandingsBody.innerHTML = '';
-            pointsStandings.forEach((p, index) => {
+            pointsStandings.forEach(p => {
                 const row = document.createElement('tr');
-                row.className = index % 2 === 0 ? 'row1' : 'row2';
-                const rankDisplay = p.rank === 1 ? '1 <span class="crown">&#x1F451;</span>' : p.rank;
-                row.innerHTML = `
-                    <td>${rankDisplay}</td>
-                    <td>${p.owner_name}</td>
-                    <td class="right">${p.cumulative_points.toFixed(2)}</td>
-                    <td class="right money">${formatMoney(p.payout)}</td>
-                `;
+                row.innerHTML = `<td>${p.rank}</td><td>${p.owner_name}</td><td class="right">${p.cumulative_points.toFixed(1)}</td><td class="right money">${formatMoney(p.payout)}</td>`;
                 pointsStandingsBody.appendChild(row);
             });
 
             // H2H standings
             const h2hStandingsBody = document.getElementById('h2hStandingsBody');
             h2hStandingsBody.innerHTML = '';
-            h2hStandings.forEach((h, index) => {
+            h2hStandings.forEach(h => {
                 const row = document.createElement('tr');
-                row.className = index % 2 === 0 ? 'row1' : 'row2';
-                const rankDisplay = h.rank === 1 ? '1 <span class="crown">&#x1F451;</span>' : h.rank;
-                row.innerHTML = `
-                    <td>${rankDisplay}</td>
-                    <td>${h.owner_name}</td>
-                    <td class="right money">${formatMoney(h.payout)}</td>
-                `;
+                row.innerHTML = `<td>${h.rank}</td><td>${h.owner_name}</td><td class="right money">${formatMoney(h.payout)}</td>`;
                 h2hStandingsBody.appendChild(row);
             });
 
             // IR Pool breakdown
             const irPoolBody = document.getElementById('irPoolBody');
             irPoolBody.innerHTML = '';
-            const irPoolRows = [
-                { category: '1st Most Points (25%)', owner: irPoolBreakdown.points_1st.owner, amount: irPoolBreakdown.points_1st.amount },
-                { category: '1st Head-to-Head (25%)', owner: irPoolBreakdown.h2h_1st.owner, amount: irPoolBreakdown.h2h_1st.amount },
-                { category: '2nd Most Points (15%)', owner: irPoolBreakdown.points_2nd.owner, amount: irPoolBreakdown.points_2nd.amount },
-                { category: '2nd Head-to-Head (15%)', owner: irPoolBreakdown.h2h_2nd.owner, amount: irPoolBreakdown.h2h_2nd.amount },
-                { category: '3rd Most Points (10%)', owner: irPoolBreakdown.points_3rd.owner, amount: irPoolBreakdown.points_3rd.amount },
-                { category: '3rd Head-to-Head (10%)', owner: irPoolBreakdown.h2h_3rd.owner, amount: irPoolBreakdown.h2h_3rd.amount }
-            ];
-            irPoolRows.forEach((r, index) => {
+            [
+                { cat: '1st Points (25%)', owner: irPoolBreakdown.points_1st.owner, amt: irPoolBreakdown.points_1st.amount },
+                { cat: '1st H2H (25%)', owner: irPoolBreakdown.h2h_1st.owner, amt: irPoolBreakdown.h2h_1st.amount },
+                { cat: '2nd Points (15%)', owner: irPoolBreakdown.points_2nd.owner, amt: irPoolBreakdown.points_2nd.amount },
+                { cat: '2nd H2H (15%)', owner: irPoolBreakdown.h2h_2nd.owner, amt: irPoolBreakdown.h2h_2nd.amount },
+                { cat: '3rd Points (10%)', owner: irPoolBreakdown.points_3rd.owner, amt: irPoolBreakdown.points_3rd.amount },
+                { cat: '3rd H2H (10%)', owner: irPoolBreakdown.h2h_3rd.owner, amt: irPoolBreakdown.h2h_3rd.amount }
+            ].forEach(r => {
                 const row = document.createElement('tr');
-                row.className = index % 2 === 0 ? 'row1' : 'row2';
-                row.innerHTML = `
-                    <td>${r.category}</td>
-                    <td>${r.owner || '-'}</td>
-                    <td class="right money">${formatMoney(r.amount)}</td>
-                `;
+                row.innerHTML = `<td>${r.cat}</td><td>${r.owner}</td><td class="right money">${formatMoney(r.amt)}</td>`;
                 irPoolBody.appendChild(row);
             });
 
-            // IR moves by team
+            // IR moves
             const irMovesBody = document.getElementById('irMovesBody');
             irMovesBody.innerHTML = '';
-            const sortedIRMoves = [...irMovesByTeam].sort((a, b) => b.move_count - a.move_count);
-            let totalMoves = 0;
-            let totalFees = 0;
-            sortedIRMoves.forEach((m, index) => {
+            irMovesByTeam.sort((a, b) => b.move_count - a.move_count).forEach(m => {
                 const row = document.createElement('tr');
-                row.className = index % 2 === 0 ? 'row1' : 'row2';
-                row.innerHTML = `
-                    <td>${m.owner_name}</td>
-                    <td class="right">${m.move_count}</td>
-                    <td class="right expense">-${formatMoney(m.fees)}</td>
-                `;
+                row.innerHTML = `<td>${m.owner_name}</td><td class="right">${m.move_count}</td><td class="right expense">-${formatMoney(m.fees)}</td>`;
                 irMovesBody.appendChild(row);
-                totalMoves += m.move_count;
-                totalFees += m.fees;
             });
-            // Add total row
-            const totalRow = document.createElement('tr');
-            totalRow.className = 'total-row';
-            totalRow.innerHTML = `
-                <td><strong>TOTAL</strong></td>
-                <td class="right"><strong>${totalMoves}</strong></td>
-                <td class="right expense"><strong>-${formatMoney(totalFees)}</strong></td>
-            `;
-            irMovesBody.appendChild(totalRow);
 
-            // Show content
             document.getElementById('loadingMessage').style.display = 'none';
             document.getElementById('payoutsContent').style.display = 'block';
         }
 
-        // Load on page load
         document.addEventListener('DOMContentLoaded', loadPayouts);
     </script>
 </body>
