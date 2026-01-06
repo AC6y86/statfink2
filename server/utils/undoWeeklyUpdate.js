@@ -72,10 +72,8 @@ async function undoWeeklyUpdate(db) {
         
         // 6. Reset matchup scores for current week
         const matchupsResult = await db.run(`
-            UPDATE matchups 
-            SET 
-                team1_points = 0,
-                team2_points = 0,
+            UPDATE matchups
+            SET
                 team1_scoring_points = 0,
                 team2_scoring_points = 0
             WHERE week = ? AND season = ?

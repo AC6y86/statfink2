@@ -873,8 +873,8 @@ class DatabaseManager {
 
     async updateMatchupScore(matchupId, team1Points, team2Points) {
         return this.run(`
-            UPDATE matchups 
-            SET team1_points = ?, team2_points = ?
+            UPDATE matchups
+            SET team1_scoring_points = ?, team2_scoring_points = ?
             WHERE matchup_id = ?
         `, [team1Points, team2Points, matchupId]);
     }

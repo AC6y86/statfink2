@@ -687,26 +687,21 @@ router.get('/current', asyncHandler(async (req, res) => {
     
     // Add additional matchup information
     const enrichedMatchups = matchups.map(matchup => {
-        // Use scoring points if they exist, otherwise fall back to total points
-        const team1Points = matchup.team1_scoring_points ?? matchup.team1_points;
-        const team2Points = matchup.team2_scoring_points ?? matchup.team2_points;
-        
+        const team1Points = matchup.team1_scoring_points;
+        const team2Points = matchup.team2_scoring_points;
+
         return {
             ...matchup,
-            // Override with scoring points
             team1_points: team1Points,
             team2_points: team2Points,
-            // Keep original totals available
-            team1_total_points: matchup.team1_points,
-            team2_total_points: matchup.team2_points,
             margin: Math.abs(team1Points - team2Points),
-            winner: team1Points > team2Points ? 'team1' : 
+            winner: team1Points > team2Points ? 'team1' :
                     team2Points > team1Points ? 'team2' : 'tie',
             total_points: team1Points + team2Points,
             is_close_game: Math.abs(team1Points - team2Points) < 10
         };
     });
-    
+
     res.json({
         success: true,
         data: enrichedMatchups,
@@ -842,10 +837,12 @@ router.get('/game/:matchupId', asyncHandler(async (req, res) => {
         data: {
             matchup: {
                 ...matchup,
-                margin: Math.abs(matchup.team1_points - matchup.team2_points),
-                winner: matchup.team1_points > matchup.team2_points ? 'team1' : 
-                        matchup.team2_points > matchup.team1_points ? 'team2' : 'tie',
-                total_points: matchup.team1_points + matchup.team2_points
+                team1_points: matchup.team1_scoring_points,
+                team2_points: matchup.team2_scoring_points,
+                margin: Math.abs(matchup.team1_scoring_points - matchup.team2_scoring_points),
+                winner: matchup.team1_scoring_points > matchup.team2_scoring_points ? 'team1' :
+                        matchup.team2_scoring_points > matchup.team1_scoring_points ? 'team2' : 'tie',
+                total_points: matchup.team1_scoring_points + matchup.team2_scoring_points
             },
             team1: {
                 roster: team1Roster,
@@ -877,118 +874,41 @@ router.get('/h2h/:team1Id/:team2Id', asyncHandler(async (req, res) => {
     
     // Get all matchups between these teams
     const matchups = await db.all(`
-        SELECT * FROM matchups 
-        WHERE (team1_id = ? AND team2_id = ?) 
+        SELECT * FROM matchups
+        WHERE (team1_id = ? AND team2_id = ?)
            OR (team1_id = ? AND team2_id = ?)
         ORDER BY season DESC, week DESC
     `, [team1, team2, team2, team1]);
-    
+
     // Calculate head-to-head record
     let team1Wins = 0;
     let team2Wins = 0;
     let ties = 0;
     let totalPoints1 = 0;
     let totalPoints2 = 0;
-    
+
     matchups.forEach(matchup => {
         if (matchup.team1_id === team1) {
-            totalPoints1 += matchup.team1_points;
-            totalPoints2 += matchup.team2_points;
-            if (matchup.team1_points > matchup.team2_points) team1Wins++;
-            else if (matchup.team2_points > matchup.team1_points) team2Wins++;
+            totalPoints1 += matchup.team1_scoring_points;
+            totalPoints2 += matchup.team2_scoring_points;
+            if (matchup.team1_scoring_points > matchup.team2_scoring_points) team1Wins++;
+            else if (matchup.team2_scoring_points > matchup.team1_scoring_points) team2Wins++;
             else ties++;
         } else {
-            totalPoints1 += matchup.team2_points;
-            totalPoints2 += matchup.team1_points;
-            if (matchup.team2_points > matchup.team1_points) team1Wins++;
-            else if (matchup.team1_points > matchup.team2_points) team2Wins++;
+            totalPoints1 += matchup.team2_scoring_points;
+            totalPoints2 += matchup.team1_scoring_points;
+            if (matchup.team2_scoring_points > matchup.team1_scoring_points) team1Wins++;
+            else if (matchup.team1_scoring_points > matchup.team2_scoring_points) team2Wins++;
             else ties++;
         }
     });
-    
+
     // Get team names
     const [teamInfo1, teamInfo2] = await Promise.all([
         db.getTeam(team1),
         db.getTeam(team2)
     ]);
-    
-    res.json({
-        success: true,
-        data: {
-            team1: teamInfo1,
-            team2: teamInfo2,
-            record: {
-                team1_wins: team1Wins,
-                team2_wins: team2Wins,
-                ties,
-                total_games: matchups.length
-            },
-            points: {
-                team1_total: totalPoints1,
-                team2_total: totalPoints2,
-                team1_average: matchups.length > 0 ? totalPoints1 / matchups.length : 0,
-                team2_average: matchups.length > 0 ? totalPoints2 / matchups.length : 0
-            },
-            recent_matchups: matchups.slice(0, 5) // Last 5 matchups
-        }
-    });
-}));
 
-// This route moved to end of file to avoid conflicts with mock routes
-
-// Get head-to-head record between two teams
-router.get('/h2h/:team1Id/:team2Id', asyncHandler(async (req, res) => {
-    const db = req.app.locals.db;
-    const { team1Id, team2Id } = req.params;
-    
-    if (!team1Id || !team2Id || isNaN(team1Id) || isNaN(team2Id)) {
-        throw new APIError('Invalid team IDs', 400);
-    }
-    
-    const team1 = parseInt(team1Id);
-    const team2 = parseInt(team2Id);
-    
-    if (team1 === team2) {
-        throw new APIError('Cannot compare team to itself', 400);
-    }
-    
-    // Get all matchups between these teams
-    const matchups = await db.all(`
-        SELECT * FROM matchups 
-        WHERE (team1_id = ? AND team2_id = ?) 
-           OR (team1_id = ? AND team2_id = ?)
-        ORDER BY season DESC, week DESC
-    `, [team1, team2, team2, team1]);
-    
-    // Calculate head-to-head record
-    let team1Wins = 0;
-    let team2Wins = 0;
-    let ties = 0;
-    let totalPoints1 = 0;
-    let totalPoints2 = 0;
-    
-    matchups.forEach(matchup => {
-        if (matchup.team1_id === team1) {
-            totalPoints1 += matchup.team1_points;
-            totalPoints2 += matchup.team2_points;
-            if (matchup.team1_points > matchup.team2_points) team1Wins++;
-            else if (matchup.team2_points > matchup.team1_points) team2Wins++;
-            else ties++;
-        } else {
-            totalPoints1 += matchup.team2_points;
-            totalPoints2 += matchup.team1_points;
-            if (matchup.team2_points > matchup.team1_points) team1Wins++;
-            else if (matchup.team1_points > matchup.team2_points) team2Wins++;
-            else ties++;
-        }
-    });
-    
-    // Get team names
-    const [teamInfo1, teamInfo2] = await Promise.all([
-        db.getTeam(team1),
-        db.getTeam(team2)
-    ]);
-    
     res.json({
         success: true,
         data: {
@@ -1067,26 +987,21 @@ router.get('/:week/:season', asyncHandler(async (req, res) => {
     
     // Add additional matchup information
     const enrichedMatchups = matchups.map(matchup => {
-        // Use scoring points if they exist, otherwise fall back to total points
-        const team1Points = matchup.team1_scoring_points ?? matchup.team1_points;
-        const team2Points = matchup.team2_scoring_points ?? matchup.team2_points;
-        
+        const team1Points = matchup.team1_scoring_points;
+        const team2Points = matchup.team2_scoring_points;
+
         return {
             ...matchup,
-            // Override with scoring points
             team1_points: team1Points,
             team2_points: team2Points,
-            // Keep original totals available
-            team1_total_points: matchup.team1_points,
-            team2_total_points: matchup.team2_points,
             margin: Math.abs(team1Points - team2Points),
-            winner: team1Points > team2Points ? 'team1' : 
+            winner: team1Points > team2Points ? 'team1' :
                     team2Points > team1Points ? 'team2' : 'tie',
             total_points: team1Points + team2Points,
             is_close_game: Math.abs(team1Points - team2Points) < 10
         };
     });
-    
+
     res.json({
         success: true,
         data: enrichedMatchups,

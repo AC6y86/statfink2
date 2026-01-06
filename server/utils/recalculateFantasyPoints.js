@@ -155,14 +155,14 @@ async function recalculateTeamScores(db, week, season) {
             
             // Update matchup scores
             await db.run(`
-                UPDATE matchups 
-                SET team1_points = ? 
+                UPDATE matchups
+                SET team1_scoring_points = ?
                 WHERE team1_id = ? AND week = ? AND season = ?
             `, [totalPoints, team.team_id, week, season]);
-            
+
             await db.run(`
-                UPDATE matchups 
-                SET team2_points = ? 
+                UPDATE matchups
+                SET team2_scoring_points = ?
                 WHERE team2_id = ? AND week = ? AND season = ?
             `, [totalPoints, team.team_id, week, season]);
         }

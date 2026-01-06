@@ -164,19 +164,19 @@ class StandingsExportService {
      */
     async getMatchupResults(week, season) {
         const matchups = await this.db.all(`
-            SELECT 
+            SELECT
                 m.team1_id,
                 m.team2_id,
                 t1.team_name as team1_name,
                 t2.team_name as team2_name,
-                COALESCE(m.team1_scoring_points, m.team1_points) as team1_points,
-                COALESCE(m.team2_scoring_points, m.team2_points) as team2_points
+                m.team1_scoring_points as team1_points,
+                m.team2_scoring_points as team2_points
             FROM matchups m
             JOIN teams t1 ON m.team1_id = t1.team_id
             JOIN teams t2 ON m.team2_id = t2.team_id
             WHERE m.week = ? AND m.season = ?
         `, [week, season]);
-        
+
         return matchups;
     }
 

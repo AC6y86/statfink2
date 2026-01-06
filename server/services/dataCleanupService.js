@@ -87,9 +87,7 @@ class DataCleanupService {
             // Reset matchup points to 0 (keep the matchup records but clear the points)
             const matchupsResult = await this.db.run(
                 `UPDATE matchups
-                 SET team1_points = 0,
-                     team2_points = 0,
-                     team1_scoring_points = 0,
+                 SET team1_scoring_points = 0,
                      team2_scoring_points = 0
                  WHERE week = ? AND season = ?`,
                 [week, season]

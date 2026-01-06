@@ -73,15 +73,15 @@ class TeamScoreService {
         try {
             // Update when team is team1
             const result1 = await this.db.run(`
-                UPDATE matchups 
-                SET team1_points = ? 
+                UPDATE matchups
+                SET team1_scoring_points = ?
                 WHERE team1_id = ? AND week = ? AND season = ?
             `, [totalPoints, teamId, week, season]);
-            
+
             // Update when team is team2
             const result2 = await this.db.run(`
-                UPDATE matchups 
-                SET team2_points = ? 
+                UPDATE matchups
+                SET team2_scoring_points = ?
                 WHERE team2_id = ? AND week = ? AND season = ?
             `, [totalPoints, teamId, week, season]);
             
@@ -127,16 +127,16 @@ class TeamScoreService {
     async getWeeklyTeamScores(week, season) {
         try {
             const scores = await this.db.all(`
-                SELECT 
+                SELECT
                     m.matchup_id,
                     m.week,
                     t1.team_name as team1_name,
-                    m.team1_points,
+                    m.team1_scoring_points as team1_points,
                     t2.team_name as team2_name,
-                    m.team2_points,
-                    CASE 
-                        WHEN m.team1_points > m.team2_points THEN m.team1_id
-                        WHEN m.team2_points > m.team1_points THEN m.team2_id
+                    m.team2_scoring_points as team2_points,
+                    CASE
+                        WHEN m.team1_scoring_points > m.team2_scoring_points THEN m.team1_id
+                        WHEN m.team2_scoring_points > m.team1_scoring_points THEN m.team2_id
                         ELSE NULL
                     END as winner_id
                 FROM matchups m
@@ -195,22 +195,22 @@ class TeamScoreService {
     async getSeasonStandings(season) {
         try {
             const standings = await this.db.all(`
-                SELECT 
+                SELECT
                     t.team_id,
                     t.team_name,
-                    SUM(CASE 
-                        WHEN m.team1_id = t.team_id AND m.team1_points > m.team2_points THEN 1
-                        WHEN m.team2_id = t.team_id AND m.team2_points > m.team1_points THEN 1
+                    SUM(CASE
+                        WHEN m.team1_id = t.team_id AND m.team1_scoring_points > m.team2_scoring_points THEN 1
+                        WHEN m.team2_id = t.team_id AND m.team2_scoring_points > m.team1_scoring_points THEN 1
                         ELSE 0
                     END) as wins,
-                    SUM(CASE 
-                        WHEN m.team1_id = t.team_id AND m.team1_points < m.team2_points THEN 1
-                        WHEN m.team2_id = t.team_id AND m.team2_points < m.team1_points THEN 1
+                    SUM(CASE
+                        WHEN m.team1_id = t.team_id AND m.team1_scoring_points < m.team2_scoring_points THEN 1
+                        WHEN m.team2_id = t.team_id AND m.team2_scoring_points < m.team1_scoring_points THEN 1
                         ELSE 0
                     END) as losses,
-                    SUM(CASE 
-                        WHEN m.team1_id = t.team_id THEN m.team1_points
-                        WHEN m.team2_id = t.team_id THEN m.team2_points
+                    SUM(CASE
+                        WHEN m.team1_id = t.team_id THEN m.team1_scoring_points
+                        WHEN m.team2_id = t.team_id THEN m.team2_scoring_points
                         ELSE 0
                     END) as total_points
                 FROM teams t

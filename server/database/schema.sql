@@ -96,9 +96,9 @@ CREATE TABLE IF NOT EXISTS matchups (
     season INTEGER NOT NULL,
     team1_id INTEGER NOT NULL,
     team2_id INTEGER NOT NULL,
-    team1_points REAL DEFAULT 0,
-    team2_points REAL DEFAULT 0,
-    is_complete BOOLEAN DEFAULT 0,
+    team1_scoring_points REAL DEFAULT 0,
+    team2_scoring_points REAL DEFAULT 0,
+    is_playoff INTEGER DEFAULT 0,
     FOREIGN KEY (team1_id) REFERENCES teams(team_id),
     FOREIGN KEY (team2_id) REFERENCES teams(team_id)
 );

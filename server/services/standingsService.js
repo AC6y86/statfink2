@@ -18,11 +18,9 @@ class StandingsService {
             
             // Get matchup results for this week (for W-L calculation)
             const matchups = await this.db.all(`
-                SELECT 
+                SELECT
                     team1_id,
                     team2_id,
-                    team1_points,
-                    team2_points,
                     team1_scoring_points,
                     team2_scoring_points
                 FROM matchups
@@ -110,19 +108,18 @@ class StandingsService {
      * Get team's points for a specific week from matchups
      */
     async getTeamWeekPoints(teamId, week, season, matchups) {
-        const matchup = matchups.find(m => 
+        const matchup = matchups.find(m =>
             m.team1_id === teamId || m.team2_id === teamId
         );
-        
+
         if (!matchup) {
             return 0;
         }
-        
-        // Use team1_scoring_points and team2_scoring_points if available, otherwise fall back to team1_points/team2_points
+
         if (matchup.team1_id === teamId) {
-            return matchup.team1_scoring_points !== null ? matchup.team1_scoring_points : matchup.team1_points;
+            return matchup.team1_scoring_points;
         } else {
-            return matchup.team2_scoring_points !== null ? matchup.team2_scoring_points : matchup.team2_points;
+            return matchup.team2_scoring_points;
         }
     }
     
@@ -143,23 +140,18 @@ class StandingsService {
      * Determine if team won, lost, or tied this week
      */
     getWeekMatchupResult(teamId, matchups) {
-        const matchup = matchups.find(m => 
+        const matchup = matchups.find(m =>
             m.team1_id === teamId || m.team2_id === teamId
         );
-        
+
         if (!matchup) {
             return { win: 0, loss: 0, tie: 0 };
         }
-        
+
         const isTeam1 = matchup.team1_id === teamId;
-        // Use scoring points for determining W-L
-        const teamPoints = isTeam1 
-            ? (matchup.team1_scoring_points !== null ? matchup.team1_scoring_points : matchup.team1_points)
-            : (matchup.team2_scoring_points !== null ? matchup.team2_scoring_points : matchup.team2_points);
-        const opponentPoints = isTeam1 
-            ? (matchup.team2_scoring_points !== null ? matchup.team2_scoring_points : matchup.team2_points)
-            : (matchup.team1_scoring_points !== null ? matchup.team1_scoring_points : matchup.team1_points);
-        
+        const teamPoints = isTeam1 ? matchup.team1_scoring_points : matchup.team2_scoring_points;
+        const opponentPoints = isTeam1 ? matchup.team2_scoring_points : matchup.team1_scoring_points;
+
         if (teamPoints > opponentPoints) {
             return { win: 1, loss: 0, tie: 0 };
         } else if (teamPoints < opponentPoints) {

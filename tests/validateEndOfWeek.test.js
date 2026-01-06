@@ -238,8 +238,8 @@ async function checkStandingsUpdated(db, week, season) {
             m.matchup_id,
             m.team1_id,
             m.team2_id,
-            m.team1_points,
-            m.team2_points,
+            m.team1_scoring_points as team1_points,
+            m.team2_scoring_points as team2_points,
             t1.team_name as team1_name,
             t2.team_name as team2_name
         FROM matchups m

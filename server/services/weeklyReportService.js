@@ -261,12 +261,10 @@ class WeeklyReportService {
     async getMatchups(week, season) {
         try {
             const matchups = await this.db.all(`
-                SELECT 
+                SELECT
                     m.matchup_id,
                     m.team1_id,
                     m.team2_id,
-                    m.team1_points,
-                    m.team2_points,
                     m.team1_scoring_points,
                     m.team2_scoring_points,
                     t1.team_name as team1_name,
@@ -283,17 +281,15 @@ class WeeklyReportService {
                 team1: {
                     id: m.team1_id,
                     name: m.team1_name,
-                    total_points: parseFloat(m.team1_points || 0),
                     scoring_points: parseFloat(m.team1_scoring_points || 0)
                 },
                 team2: {
                     id: m.team2_id,
                     name: m.team2_name,
-                    total_points: parseFloat(m.team2_points || 0),
                     scoring_points: parseFloat(m.team2_scoring_points || 0)
                 },
-                winner: m.team1_scoring_points > m.team2_scoring_points ? m.team1_name : 
-                        m.team2_scoring_points > m.team1_scoring_points ? m.team2_name : 
+                winner: m.team1_scoring_points > m.team2_scoring_points ? m.team1_name :
+                        m.team2_scoring_points > m.team1_scoring_points ? m.team2_name :
                         'Tie',
                 is_complete: true
             }));
