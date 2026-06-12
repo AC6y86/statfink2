@@ -58,3 +58,6 @@ roster_moves/last_check.json
 **/credentials.json
 **/token.json
 server/config/sheets-token.json
+
+# Auto-generated daily report snapshots (derived from fantasy_football.db)
+backup_data/
