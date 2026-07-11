@@ -9,10 +9,10 @@ class IndividualPlayerScoringService {
      * Process individual player scoring from parsed scoring plays
      * Updates player stats with TDs, conversions, etc. that are missed from base stats
      */
-    async processIndividualPlayerScoring(parsedPlays, week, season) {
+    async processIndividualPlayerScoring(parsedPlays, week, season, gameId = null, boxScorePlayerStats = null) {
         try {
             for (const play of parsedPlays) {
-                await this.processIndividualPlay(play, week, season);
+                await this.processIndividualPlay(play, week, season, gameId, boxScorePlayerStats);
             }
         } catch (error) {
             logError('Error processing individual player scoring:', error);
@@ -22,31 +22,42 @@ class IndividualPlayerScoringService {
     /**
      * Process a single scoring play for individual player stats
      */
-    async processIndividualPlay(play, week, season) {
+    async processIndividualPlay(play, week, season, gameId = null, boxScorePlayerStats = null) {
         if (!play.playerName || !play.scoringTeam || !play.playType) {
             return; // Skip plays without essential data
         }
 
         try {
             // Find the player in our database
-            const player = await this.findPlayer(play.playerName, play.scoringTeam);
-            
+            const player = await this.findPlayer(play.playerName, play.scoringTeam, { week, season, gameId });
+
             if (!player) {
                 logWarn(`Player not found: ${play.playerName} (${play.scoringTeam})`);
                 return;
             }
 
             // Get current player stats for this week
-            const currentStats = await this.getPlayerStats(player.player_id, week, season);
-            
+            let currentStats = await this.getPlayerStats(player.player_id, week, season);
+
             if (!currentStats) {
-                logWarn(`No stats found for ${player.name} Week ${week}`);
-                return;
+                // Player scored but has no base stats row (e.g. a returner with no
+                // offensive touches) — create a minimal row so the TD isn't dropped
+                await this.db.run(`
+                    INSERT INTO player_stats (player_id, week, season, game_id, player_name, team, position)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                `, [player.player_id, week, season, gameId, player.name, play.scoringTeam, player.position]);
+                logInfo(`Created stats row for ${player.name} Week ${week} (scoring play with no base stats)`);
+                currentStats = await this.getPlayerStats(player.player_id, week, season);
             }
 
+            // Did the recovering player fumble on the play himself? (Tank01 boxscore
+            // Defense.fumbles — own-fumble recovery TDs are already in rushing_tds)
+            const boxEntry = boxScorePlayerStats ? boxScorePlayerStats[player.player_id] : null;
+            const ownFumble = parseInt(boxEntry?.Defense?.fumbles || 0) > 0;
+
             // Update stats based on play type
-            const updates = this.getStatUpdates(play.playType, currentStats);
-            
+            const updates = this.getStatUpdates(play.playType, currentStats, ownFumble);
+
             if (Object.keys(updates).length > 0) {
                 await this.updatePlayerStats(player.player_id, week, season, updates);
                 logInfo(`Updated ${player.name}: ${Object.entries(updates).map(([key, val]) => `${key}=${val}`).join(', ')}`);
@@ -58,32 +69,50 @@ class IndividualPlayerScoringService {
     }
 
     /**
-     * Find player in database by name and team
+     * Find player in database by name and game context.
+     *
+     * nfl_players.team is the player's CURRENT team, which is wrong for historical
+     * recalculation (players change teams between seasons). Instead of matching on
+     * team, require evidence the player was in THIS game via player_stats.game_id,
+     * falling back to a unique exact name match.
      */
-    async findPlayer(playerName, team) {
-        // Try exact name match first
-        let player = await this.db.get(
-            'SELECT * FROM nfl_players WHERE name = ? AND (team = ? OR team LIKE ?)',
-            [playerName, team, `%${team}%`]
-        );
+    async findPlayer(playerName, team, context = {}) {
+        const { week, season, gameId } = context;
 
-        if (player) return player;
-
-        // Try partial name match (handle name variations)
-        const nameParts = playerName.toLowerCase().split(' ');
-        if (nameParts.length >= 2) {
-            const firstName = nameParts[0];
-            const lastName = nameParts[nameParts.length - 1];
-            
-            player = await this.db.get(`
-                SELECT * FROM nfl_players 
-                WHERE (name LIKE ? OR name LIKE ?) 
-                AND (team = ? OR team LIKE ?)
-                LIMIT 1
-            `, [`${firstName}%${lastName}%`, `%${lastName}%`, team, `%${team}%`]);
+        // 1. Exact name match with proof the player was in this game
+        if (week && season && gameId) {
+            const player = await this.db.get(`
+                SELECT p.* FROM nfl_players p
+                JOIN player_stats ps ON ps.player_id = p.player_id
+                WHERE p.name = ? AND ps.week = ? AND ps.season = ? AND ps.game_id = ?
+            `, [playerName, week, season, gameId]);
+            if (player) return player;
         }
 
-        return player;
+        // 2. Exact full-name match, only if unambiguous (covers players with no
+        //    base stats row that week, e.g. a kick returner with no touches)
+        const exactMatches = await this.db.all(
+            'SELECT * FROM nfl_players WHERE name = ?',
+            [playerName]
+        );
+        if (exactMatches.length === 1) return exactMatches[0];
+
+        // 3. Normalized fallback: require BOTH first and last name, and require
+        //    game evidence. Never match on last name alone.
+        const nameParts = playerName.toLowerCase().split(' ');
+        if (nameParts.length >= 2 && week && season && gameId) {
+            const firstName = nameParts[0];
+            const lastName = nameParts[nameParts.length - 1];
+
+            const candidates = await this.db.all(`
+                SELECT p.* FROM nfl_players p
+                JOIN player_stats ps ON ps.player_id = p.player_id
+                WHERE p.name LIKE ? AND ps.week = ? AND ps.season = ? AND ps.game_id = ?
+            `, [`${firstName}%${lastName}%`, week, season, gameId]);
+            if (candidates.length === 1) return candidates[0];
+        }
+
+        return null;
     }
 
     /**
@@ -99,7 +128,7 @@ class IndividualPlayerScoringService {
     /**
      * Determine what stats need to be updated based on play type
      */
-    getStatUpdates(playType, currentStats) {
+    getStatUpdates(playType, currentStats, ownFumble = false) {
         const updates = {};
 
         switch (playType) {
@@ -121,6 +150,18 @@ class IndividualPlayerScoringService {
 
             case 'passing_td':
                 updates.passing_tds = (currentStats.passing_tds || 0) + 1;
+                break;
+
+            case 'offensive_fumble_recovery_td':
+                // Offensive fumble-recovery TD ("Touchdown Scored by any player" = 8 pts,
+                // see docs/SCORING_SYSTEM.md). Counted in rushing_tds by league decision.
+                // Guard: a player who recovers his OWN fumble and scores is already
+                // credited a rushing TD in the Tank01 base stats (NFL scoring), so only
+                // credit recoveries of a TEAMMATE's fumble. ownFumble comes from the
+                // Tank01 boxscore (Defense.fumbles for the recoverer).
+                if (!ownFumble) {
+                    updates.rushing_tds = (currentStats.rushing_tds || 0) + 1;
+                }
                 break;
 
             // Two-point conversions are handled directly from Tank01 stats
@@ -166,6 +207,22 @@ class IndividualPlayerScoringService {
 
             logInfo(`Processing individual player scoring for ${games.length} games in Week ${week}`);
 
+            // Ensure the parser can resolve ambiguous fumble-recovery TDs by position
+            if (tank01Service && !scoringPlayParser.playerPositions) {
+                try {
+                    const players = await tank01Service.getPlayerList();
+                    const positionsById = {};
+                    for (const p of players) {
+                        if (p.playerID && p.pos) {
+                            positionsById[p.playerID] = p.pos;
+                        }
+                    }
+                    scoringPlayParser.setPlayerPositions(positionsById);
+                } catch (error) {
+                    logWarn('Could not load player positions for fumble-recovery resolution:', error.message);
+                }
+            }
+
             for (const game of games) {
                 try {
                     // Get boxscore data
@@ -180,7 +237,8 @@ class IndividualPlayerScoringService {
                         );
 
                         // Process individual player scoring
-                        await this.processIndividualPlayerScoring(parsedPlays, week, season);
+                        const boxScorePlayerStats = boxScore.playerStats || null;
+                        await this.processIndividualPlayerScoring(parsedPlays, week, season, game.game_id, boxScorePlayerStats);
                     }
                 } catch (error) {
                     logWarn(`Failed to process game ${game.game_id}:`, error.message);

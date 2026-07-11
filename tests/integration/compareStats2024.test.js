@@ -1,4 +1,18 @@
 // Integration test that compares actual 2024 stats between databases
+//
+// IMPORTANT: These 2024 stat tests should ALWAYS pass. The reference database
+// (tests/2024/statfinkv1_2024.db) is the league's official season record,
+// CORRECTED for 3 documented scorekeeping errors (commissioner rulings, see
+// docs/SCORING_SYSTEM.md "Defensive Touchdowns — Exact Award Logic"):
+//   - Trey McBride wk 2:  3 -> 11  (offensive fumble-recovery TD credits the player)
+//   - Cardinals DEF wk 2: 8 -> 0   (that TD was offensive, not defensive)
+//   - Falcons DEF wk 4:  16 -> 8   (Hodge's end-zone recovery was on an ATL offensive drive)
+// Pre-correction copy: backup_data/statfinkv1_2024_pre-correction-2026-07-11.db
+// If a fantasy point mismatch shows up here, it means there is a real error
+// in our scoring/sync logic — fix the logic, never the database or the test.
+// Known failure modes to check first: player lookups that use the CURRENT
+// nfl_players team for a 2024 play (players change teams between seasons),
+// and name parsing that breaks on hyphenated names (e.g. "Smith-Marsette").
 const StatsComparator = require('../2024/StatsComparator');
 
 describe('2024 Stats Database Comparison (Integration)', () => {

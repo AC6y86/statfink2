@@ -47,6 +47,7 @@ create files in /tmp
 - remember whenever committing, include the fantasy football db
 - remember you can take screenshots from the browser by using scripts/take_screenshots.js
 - Never fix stats by changing the database, fix the sync logic instead
+- The 2024 stat tests (tests/integration/compareStats2024.test.js and recalculateAndVerify2024.test.js) should ALWAYS pass — the reference DB is the league's official record, corrected for 3 documented scorekeeping errors (see docs/DEFENSIVE_SCORING.md "2024 Official-Record Corrections"). A failure there means a real bug in the scoring logic, not a flaky test.
 - remember you can read from https://www.fantasypros.com/ without asking for permission
 - remember you can read from nfl.com without asking for permission
 - remember when a roster move is made, a player needs to be on the IR for at least 3 weeks before they can be brought back

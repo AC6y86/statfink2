@@ -146,7 +146,9 @@ class DSTManagementService {
             // Parse scoring plays to get defensive TD breakdown
             let awayDefensiveBreakdown = null;
             let homeDefensiveBreakdown = null;
-            
+
+            await this.ensureParserPlayerPositions();
+
             if (scoringPlaysData && game.away && game.home) {
                 const parsedPlays = this.scoringPlayParser.parseScoringPlays(scoringPlaysData, game.home, game.away);
                 awayDefensiveBreakdown = this.scoringPlayParser.getDefensiveTouchdownBreakdown(parsedPlays, game.away);
@@ -190,6 +192,29 @@ class DSTManagementService {
             }
         } catch (error) {
             logWarn(`Error processing DST stats for game ${gameId}:`, error.message);
+        }
+    }
+
+    /**
+     * Load the Tank01 player list (cached) into the scoring play parser so it
+     * can resolve ambiguous fumble-recovery TDs by player position.
+     */
+    async ensureParserPlayerPositions() {
+        if (!this.tank01Service || this.scoringPlayParser.playerPositions) {
+            return;
+        }
+        try {
+            const players = await this.tank01Service.getPlayerList();
+            const positionsById = {};
+            for (const p of players) {
+                if (p.playerID && p.pos) {
+                    positionsById[p.playerID] = p.pos;
+                }
+            }
+            this.scoringPlayParser.setPlayerPositions(positionsById);
+            logInfo(`Loaded ${Object.keys(positionsById).length} player positions for fumble-recovery resolution`);
+        } catch (error) {
+            logWarn('Could not load player positions for fumble-recovery resolution:', error.message);
         }
     }
 

@@ -107,7 +107,15 @@ class ScoringPlayParserService {
             }
 
             const normalizedText = playText.toLowerCase();
-            const playType = this.categorizePlayType(normalizedText, playText);
+            let playType = this.categorizePlayType(normalizedText, playText);
+
+            // "Fumble Recovery in End Zone" reads identically for an offense
+            // recovering its own side's fumble (offensive TD) and a defense
+            // recovering the opponent's fumble in the end zone (defensive TD).
+            // Resolve using the positions of the players on the play, if known.
+            if (playType === 'offensive_fumble_recovery_td') {
+                playType = this.resolveFumbleRecoverySide(play, playType, playText);
+            }
             
             // Determine scoring team - first try to extract from play data itself
             let scoringTeam = this.extractScoringTeam(playText, homeTeam, awayTeam, play);
@@ -132,6 +140,45 @@ class ScoringPlayParserService {
             logWarn('Error parsing individual play:', error.message);
             return null;
         }
+    }
+
+    /**
+     * Provide a playerID -> position map (from the Tank01 player list) used to
+     * disambiguate fumble-recovery TDs. Optional: without it, text heuristics
+     * classify short/end-zone recoveries as offensive.
+     */
+    setPlayerPositions(positionsById) {
+        this.playerPositions = positionsById || null;
+    }
+
+    /**
+     * Decide which side a short/end-zone fumble recovery belongs to, per
+     * docs/SCORING_SYSTEM.md: a takeaway (defense recovers the opponent's
+     * fumble) is a Team Defense TD; the offense recovering its own side's
+     * fumble is an offensive TD. A defensive-position player on the scoring
+     * play (e.g. CB Taron Johnson, BUF wk 16 2024) means it was a takeaway.
+     */
+    resolveFumbleRecoverySide(play, playType, playText) {
+        const DEFENSIVE_POSITIONS = new Set([
+            'CB', 'S', 'FS', 'SS', 'DB', 'LB', 'ILB', 'OLB', 'MLB',
+            'DE', 'DT', 'DL', 'NT', 'EDGE'
+        ]);
+
+        const playerIDs = (play && typeof play === 'object' && Array.isArray(play.playerIDs))
+            ? play.playerIDs
+            : [];
+
+        if (this.playerPositions && playerIDs.length > 0) {
+            for (const id of playerIDs) {
+                const pos = this.playerPositions[id];
+                if (pos && DEFENSIVE_POSITIONS.has(pos)) {
+                    logInfo(`Defensive fumble recovery (by ${pos}): ${playText}`);
+                    return 'defensive_fumble_return_td';
+                }
+            }
+        }
+
+        return playType;
     }
 
     /**
@@ -170,23 +217,23 @@ class ScoringPlayParserService {
             return 'defensive_int_return_td';
         }
 
-        // Defensive touchdowns - fumble returns (remove "touchdown" requirement)
-        // Only count as defensive if it's likely an opponent's fumble recovered by defense
-        if (normalizedText.includes('fumble') && 
+        // Muffed punt / muffed kick recovered by the coverage team is a
+        // special-teams takeaway → Team Defense TD (docs/SCORING_SYSTEM.md,
+        // "Defensive Touchdowns — Exact Award Logic")
+        if (normalizedText.includes('muff') && !normalizedText.includes('safety')) {
+            return 'defensive_fumble_return_td';
+        }
+
+        // Fumble touchdowns — defensive takeaway vs offensive recovery.
+        // See docs/SCORING_SYSTEM.md "Defensive Touchdowns — Exact Award Logic":
+        // takeaways (opponent's fumble) are Team Defense TDs (8); a team recovering
+        // its OWN side's fumble is an offensive TD credited to the recovering player.
+        if (normalizedText.includes('fumble') &&
             (normalizedText.includes('return') || normalizedText.includes('recovery'))) {
-            
-            // Check if this is likely an offensive fumble recovery vs defensive fumble return
-            // Key indicators for offensive fumble recovery:
-            // 1. Very short yardage (0-3 yards) suggests fumble on current drive
-            // 2. Description says "recovery" instead of "return"
-            // 3. Player name suggests it's same team that was on offense
 
             const yardageMatch = originalText.match(/(\d+)\s*Yd/i);
             const yardage = yardageMatch ? parseInt(yardageMatch[1]) : null;
 
-            // Special cases for offensive fumble recoveries:
-            // 1. Short yardage fumble recovery: "Tank Bigsby 3 Yd Fumble Recovery"
-            // 2. End zone fumble recovery: "Patrick Ricard Fumble Recovery in End Zone"
             if (normalizedText.includes('recovery')) {
                 // Check for defensive indicators FIRST before filtering by yardage
                 // Strip sack pattern: "by [player] for" indicates defensive fumble recovery
@@ -195,32 +242,17 @@ class ScoringPlayParserService {
                     return 'defensive_fumble_return_td';  // Definitely defensive (e.g., "Zaven Collins 3 Yd Fumble Recovery by Josh Sweat For 3 Yd Loss")
                 }
 
-                // Case 1: Short yardage (1-5 yards) WITHOUT defensive indicators suggests offensive fumble recovery
-                if (yardage !== null && yardage >= 1 && yardage <= 5) {
-                    return null;
-                }
-
-                // Case 2: "in End Zone" suggests offensive fumble recovery
-                // But only for known offensive players (more conservative approach)
-                if (normalizedText.includes('in end zone')) {
-                    // Look for typical offensive player indicators
-                    const offensivePlayerPatterns = [
-                        /ricard/i,      // Patrick Ricard (Ravens FB)
-                        /fullback/i,    // Any fullback reference
-                        /\bfb\b/i       // FB abbreviation
-                    ];
-
-                    for (const pattern of offensivePlayerPatterns) {
-                        if (pattern.test(originalText)) {
-                            return null; // Offensive fumble recovery
-                        }
-                    }
-
-                    // Default: treat "in End Zone" as defensive if no clear offensive indicators
-                    // This is more conservative and prevents missing legitimate defensive TDs
+                // Short yardage (0-5 yards) or an end-zone recovery without defensive
+                // indicators is an offensive fumble recovery: the scoring team's own
+                // drive ended with a fumble their player recovered for the TD.
+                // (e.g. "Trey McBride 0 Yd Fumble Recovery",
+                //  "KhaDarel Hodge Fumble Recovery in End Zone")
+                if ((yardage !== null && yardage >= 0 && yardage <= 5) ||
+                    normalizedText.includes('in end zone')) {
+                    return 'offensive_fumble_recovery_td';
                 }
             }
-            
+
             // Everything else is considered defensive fumble return
             return 'defensive_fumble_return_td';
         }
@@ -320,15 +352,15 @@ class ScoringPlayParserService {
             // e.g., "J.Smith 15 yard interception return for touchdown"
             // e.g., "Marcus Jones 84 yard punt return for touchdown"
             
+            // Name tokens must handle hyphens, apostrophes, periods and mixed caps:
+            // "Ihmir Smith-Marsette", "JuJu Smith-Schuster", "Ja'Marr Chase", "J.J. Russell"
             const patterns = [
                 // Pattern 1: Name followed by number then "Yd" or "yard"
-                /^([A-Z][a-z]*\.?\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]*\.?\s*[A-Z][a-z]+)*)\s+\d+\s+(?:Yd|yard)/i,
-                // Pattern 2: Name followed by number then "yard" (case insensitive)  
-                /^([A-Z][a-z]*\.?\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]*\.?\s*[A-Z][a-z]+)*)\s+\d+\s+yard/i,
-                // Pattern 3: Name at start followed by space and action word
-                /^([A-Z][a-z]*\.?\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]*\.?\s*[A-Z][a-z]+)*)\s+(?:return|rush|pass|receiv|intercept)/i,
-                // Pattern 4: Just first two words (First Last)
-                /^([A-Z][a-z]*\.?\s+[A-Z][a-z]+)/
+                /^([A-Z][A-Za-z'.-]*(?:\s+[A-Z][A-Za-z'.-]*)+)\s+\d+\s+(?:Yd|yard)/i,
+                // Pattern 2: Name at start followed by space and action word
+                /^([A-Z][A-Za-z'.-]*(?:\s+[A-Z][A-Za-z'.-]*)+)\s+(?:return|rush|pass|receiv|intercept|fumble)/i,
+                // Pattern 3: Just first two words (First Last)
+                /^([A-Z][A-Za-z'.-]*\s+[A-Z][A-Za-z'.-]*)/
             ];
 
             for (const pattern of patterns) {

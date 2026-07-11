@@ -16,7 +16,10 @@ const StandingsService = require('./standingsService');
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 
 class SeasonRecalculationOrchestrator {
-    constructor(season = 2024, totalWeeks = 17) {
+    constructor(season, totalWeeks = 17) {
+        if (!season) {
+            throw new Error('SeasonRecalculationOrchestrator requires an explicit season (e.g. new SeasonRecalculationOrchestrator(2025))');
+        }
         this.season = season;
         this.totalWeeks = totalWeeks;
         
@@ -452,7 +455,7 @@ class SeasonRecalculationOrchestrator {
             
             // Average points per week
             const avgPoints = await this.db.get(`
-                SELECT AVG(team1_points + team2_points) as avg_points
+                SELECT AVG(team1_scoring_points + team2_scoring_points) as avg_points
                 FROM matchups
                 WHERE season = ?
             `, [this.season]);

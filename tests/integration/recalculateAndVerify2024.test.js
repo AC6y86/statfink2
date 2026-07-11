@@ -4,6 +4,15 @@ const StatsComparator = require('../2024/StatsComparator');
 
 // This is a slow test that runs the full 2024 recalculation
 // Run with: npm run test:slow or npm run test:integration:slow
+//
+// IMPORTANT: These 2024 stat tests should ALWAYS pass. The reference database
+// (tests/2024/statfinkv1_2024.db) is the league's official season record,
+// CORRECTED for 3 documented scorekeeping errors (commissioner rulings, see
+// docs/SCORING_SYSTEM.md "Defensive Touchdowns — Exact Award Logic"):
+//   McBride wk2 3->11, Cardinals DEF wk2 8->0, Falcons DEF wk4 16->8.
+// If a fantasy point mismatch shows up after recalculation, it means there is
+// a real error in our scoring/sync logic — fix the logic, never the database
+// or the test.
 jest.setTimeout(900000); // 15 minutes timeout for this test file
 
 describe('Recalculate and Verify 2024 Stats', () => {
