@@ -45,6 +45,16 @@ module.exports = {
       max_memory_restart: '500M',
       time: true
     },
+    // Nightly regression tests - emails joe.paley@gmail.com ONLY on failure
+    {
+      name: 'statfink2-nightly-tests',
+      script: './scripts/nightly-test-run.js',
+      cwd: '/home/joepaley/statfink2',
+      cron_restart: '0 12 * * *', // 12pm UTC = 4am PDT, after the 10am UTC daily update
+      autorestart: false,
+      watch: false,
+      time: true
+    },
     {
       name: 'statfink2-weekly',
       script: './scripts/weekly-update-check.js',

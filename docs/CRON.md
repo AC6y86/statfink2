@@ -34,6 +34,18 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
   - Calculates defensive bonuses when all games complete
   - Automatically detects when games are in progress
 
+### Nightly Regression Tests
+- **PM2 Process**: `statfink2-nightly-tests`
+- **Schedule**: `0 12 * * *` (12pm UTC = 4am PDT, after the daily update)
+- **Script**: `/scripts/nightly-test-run.js`
+- **Functions**:
+  - Stops the DB-writing services, runs the fast suite plus the 2024+2025
+    scoring regression suites, restarts the services
+  - Emails joe.paley@gmail.com (from peninsula.football.mailer@gmail.com)
+    ONLY if a suite fails; green runs are silent
+  - Requires the Gmail token to have the gmail.send scope
+    (`node roster_moves/authSetup.js` re-authorizes if missing)
+
 ### 3. Weekly Update (After all games complete)
 - **PM2 Process**: `statfink2-weekly`
 - **Schedule**: `0 * * * 2` (Hourly on Tuesday UTC)

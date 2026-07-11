@@ -3,7 +3,11 @@ const path = require('path');
 const readline = require('readline');
 const { google } = require('googleapis');
 
-const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
+const SCOPES = [
+  'https://www.googleapis.com/auth/gmail.readonly',
+  // Send scope used by scripts/nightly-test-run.js failure notifications
+  'https://www.googleapis.com/auth/gmail.send'
+];
 const TOKEN_PATH = path.join(__dirname, 'token.json');
 const CREDENTIALS_PATH = path.join(__dirname, 'credentials.json');
 
@@ -19,14 +23,25 @@ async function authorize() {
       redirect_uris[0]
     );
 
-    // Check if we have a previously stored token
+    // Check if we have a previously stored token AND it still works AND it
+    // covers every required scope - an expired/revoked token, or one minted
+    // before a scope was added (e.g. gmail.send), must fall through to
+    // re-authorization
     try {
-      const token = await fs.readFile(TOKEN_PATH);
-      oAuth2Client.setCredentials(JSON.parse(token));
+      const token = JSON.parse(await fs.readFile(TOKEN_PATH));
+      const grantedScopes = (token.scope || '').split(' ');
+      const missing = SCOPES.filter(s => !grantedScopes.includes(s));
+      if (missing.length > 0) {
+        console.log(`Existing token is missing scopes: ${missing.join(', ')} - re-authorization required`);
+        return getNewToken(oAuth2Client);
+      }
+      oAuth2Client.setCredentials(token);
+      const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
+      await gmail.users.getProfile({ userId: 'me' });
       console.log('Using existing token');
       return oAuth2Client;
     } catch (err) {
-      console.log('No existing token found, need to authorize');
+      console.log(`Existing token missing or unusable (${err.message}), need to authorize`);
       return getNewToken(oAuth2Client);
     }
   } catch (err) {
