@@ -18,7 +18,7 @@
 const { execSync, spawnSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { google } = require('googleapis');
+const { sendGmail } = require('./lib/gmailSend');
 
 const REPO = path.join(__dirname, '..');
 const NOTIFY_EMAIL = 'joe.paley@gmail.com';
@@ -56,13 +56,6 @@ function runSuite(suite) {
 }
 
 async function sendFailureEmail(failures) {
-    const credentials = JSON.parse(fs.readFileSync(path.join(REPO, 'roster_moves/credentials.json')));
-    const token = JSON.parse(fs.readFileSync(path.join(REPO, 'roster_moves/token.json')));
-    const { client_secret, client_id, redirect_uris } = credentials.installed;
-    const auth = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
-    auth.setCredentials(token);
-    const gmail = google.gmail({ version: 'v1', auth });
-
     const date = new Date().toISOString().slice(0, 10);
     const subject = `statfink2 nightly tests FAILED (${date})`;
     const sections = failures.map(f => {
@@ -78,18 +71,7 @@ async function sendFailureEmail(failures) {
         ...sections
     ].join('\n');
 
-    const message = [
-        `To: ${NOTIFY_EMAIL}`,
-        `Subject: ${subject}`,
-        'Content-Type: text/plain; charset=utf-8',
-        '',
-        body
-    ].join('\r\n');
-
-    const raw = Buffer.from(message).toString('base64')
-        .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-
-    await gmail.users.messages.send({ userId: 'me', requestBody: { raw } });
+    await sendGmail({ to: NOTIFY_EMAIL, subject, body });
     log(`Failure notification sent to ${NOTIFY_EMAIL}`);
 }
 

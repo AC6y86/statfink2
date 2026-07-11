@@ -14,15 +14,14 @@ echo ""
 export TEST_SEASON=$SEASON
 export TEST_WEEK=$WEEK
 
-# Run all verification tests
-npm test -- tests/verification
+# Run all verification tests. NB: the default jest config ignores
+# tests/verification/, so the suite must run via the slow config's
+# 'verification' project.
+npx jest --config jest.config.slow.js --selectProjects verification --runInBand
 
 echo ""
 echo "📄 Reports generated in: /tmp/verification-reports/"
 echo ""
 echo "To run individual tests:"
 echo "  export TEST_SEASON=$SEASON TEST_WEEK=$WEEK"
-echo "  npm test -- tests/verification/player-matching.test.js"
-echo "  npm test -- tests/verification/stats-completeness.test.js"
-echo "  npm test -- tests/verification/stats-accuracy.test.js"
-echo "  npm test -- tests/verification/data-reconciliation.test.js"
+echo "  npx jest --config jest.config.slow.js --selectProjects verification tests/verification/<name>.test.js"

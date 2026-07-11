@@ -48,7 +48,7 @@ node scripts/take_screenshots.js      # browser screenshots of the site
 
 ## Server management
 
-- Production runs under pm2 (see ecosystem.config.js and docs/CRON.md): `statfink2` (web app, port 8000), `statfink2-live-continuous` (per-minute live scoring), `statfink2-email-poller` (email roster moves), `statfink2-daily`, `statfink2-weekly`, and `statfink2-nightly-tests` (daily regression run; emails joe.paley@gmail.com only on failure).
+- Production runs under pm2 (see ecosystem.config.js and docs/CRON.md): `statfink2` (web app, port 8000), `statfink2-live-continuous` (per-minute live scoring), `statfink2-email-poller` (email roster moves), `statfink2-daily`, `statfink2-weekly` (disabled; weekly update is manual), `statfink2-weekly-validate` (Tuesday validation of the completed week; always emails joe.paley@gmail.com and feeds the admin dashboard's Weekly Validation panel), and `statfink2-nightly-tests` (daily regression run; emails only on failure).
 - Restart the server with `pm2 restart statfink2`. NEVER run `npm start` while pm2 is running.
 - Development: `npm run dev` (nodemon) — stop pm2 first (`pm2 stop statfink2`).
 - SQLite means one writer: full-season recalcs and the slow test suite contend with the live services (SQLITE_BUSY). Stop `statfink2`, `statfink2-live-continuous`, and `statfink2-email-poller` before recalcs, restart after (scripts/nightly-test-run.js shows the pattern).

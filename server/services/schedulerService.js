@@ -408,22 +408,12 @@ class SchedulerService {
                 results.errors.push(`Scoring players: ${error.message}`);
             }
 
-            // 1c. Recalculate team scores for matchups (based on scoring players)
-            try {
-                if (this.teamScoreService) {
-                    const teamScoresResult = await this.teamScoreService.recalculateTeamScores(
-                        currentSettings.current_week,
-                        currentSettings.season_year
-                    );
-                    results.teamScoresUpdated = teamScoresResult.success;
-                    if (teamScoresResult.success) {
-                        logInfo(`Updated team scores for ${teamScoresResult.teamsUpdated} teams`);
-                    }
-                }
-            } catch (error) {
-                logError('Failed to update team scores', error);
-                results.errors.push(`Team scores: ${error.message}`);
-            }
+            // NB: matchup scoring totals are written by calculateScoringPlayers
+            // (step 1b) from the marked scoring lineups. teamScoreService's
+            // recalculateTeamScores must NOT run here - it overwrites the
+            // matchup totals with full-roster sums (the corruption documented in
+            // docs/DEFENSIVE_SCORING.md; it was removed from the recalc pipeline
+            // for the same reason).
 
             // 2. Check if all games are complete and calculate defensive bonuses
             try {
@@ -470,22 +460,9 @@ class SchedulerService {
                                         }
                                     }
                                     
-                                    // Recalculate team scores again after DST bonuses are applied
-                                    if (this.teamScoreService) {
-                                        try {
-                                            const finalScoresResult = await this.teamScoreService.recalculateTeamScores(
-                                                currentSettings.current_week,
-                                                currentSettings.season_year
-                                            );
-                                            results.finalTeamScores = finalScoresResult.success;
-                                            if (finalScoresResult.success) {
-                                                logInfo(`Final team scores updated after DST bonuses: ${finalScoresResult.teamsUpdated} teams`);
-                                            }
-                                        } catch (error) {
-                                            logError('Failed to update final team scores after DST bonuses', error);
-                                            results.errors.push(`Final team scores: ${error.message}`);
-                                        }
-                                    }
+                                    // (Matchup totals already refreshed by the
+                                    // calculateScoringPlayers call above; see the
+                                    // note at step 1c about teamScoreService.)
                                 }
                             } catch (error) {
                                 logError('Failed to calculate DST fantasy points', error);

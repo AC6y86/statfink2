@@ -144,7 +144,7 @@ describe(`Stats Accuracy Verification (${getTestDescription()})`, () => {
                 JOIN nfl_games ng ON 
                     ps.week = ng.week 
                     AND ps.season = ng.season
-                    AND ng.status = 'Final'
+                    AND ng.status LIKE 'Final%'
                 WHERE ps.season = ?
                 AND ps.week = ?
                 AND ps.fantasy_points > 0

@@ -98,8 +98,12 @@ Fumble-recovery TDs (per "Defensive Touchdowns — Exact Award Logic"):
 
 Matchup/record effects: wk 12 Pete 54→74 (Ray Davis's correctly-scored KR TD
 finally reflected in Pete's scoring lineup) — Pete beats Dan, records become
-Pete 7-5 / Dan 4-8; wk 18 Pete matchup value 102.67→85.67 (as-played value was
-corrupted by the removed teamScoreService full-roster overwrite bug).
+Pete 7-5 / Dan 4-8; wk 18 Pete matchup value 102.67→85.67 and Matt 59.5→50.5
+(both as-played values were corrupted by the removed teamScoreService
+full-roster overwrite bug — they were the full 19-player roster sums, not the
+scoring lineup sums). The matchups table was synced to the scoring lineups on
+2026-07-11; weekly_standings already carried the corrected values. Playoff-week
+W/L records are frozen, so no results changed.
 
 Known limitation: return TDs by defensive players not in nfl_players (Marcus
 Jones wk4+wk13, Deonte Banks wk17 — all CBs) are credited to no one. CBs are

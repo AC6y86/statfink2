@@ -127,9 +127,16 @@ class HealthCheckService {
 
         const checkRunners = [
             ['Roster Invariant (12x19)', () => this.checkRosterInvariant(week, season)],
-            ['Stats Completeness', () => this.checkStatsCompleteness(week, season)],
             ['Freshness', () => this.checkFreshness(week, season)]
         ];
+
+        // The raw missing-stat-rows count is only a standalone check in light
+        // mode (daily). In full mode the End-of-Week Suite runs the same query
+        // and classifies each player against ESPN (inactive/resting vs actually
+        // missing), so the unclassified count would just duplicate it as noise.
+        if (mode !== 'full') {
+            checkRunners.push(['Stats Completeness', () => this.checkStatsCompleteness(week, season)]);
+        }
 
         if (mode === 'full') {
             checkRunners.push(
@@ -222,7 +229,7 @@ class HealthCheckService {
                 AND wr.week = ps.week AND wr.season = ps.season
             WHERE wr.season = ? AND wr.week = ?
                 AND wr.roster_position = 'active'
-                AND ng.status = 'Final'
+                AND ng.status LIKE 'Final%'
                 AND ps.stat_id IS NULL
             ORDER BY wr.team_id, wr.player_name
         `, [season, week]);
@@ -358,7 +365,7 @@ class HealthCheckService {
             "SELECT game_id, home_team, away_team, home_score, away_score, status FROM nfl_games WHERE week = ? AND season = ?",
             [week, season]
         );
-        const finalGames = games.filter(g => g.status === 'Final');
+        const finalGames = games.filter(g => g.status && g.status.startsWith('Final'));
 
         if (games.length === 0) {
             return {
@@ -401,7 +408,7 @@ class HealthCheckService {
             WHERE wr.season = ? AND wr.week = ?
                 AND wr.player_position = 'DST'
                 AND wr.roster_position = 'active'
-                AND ng.status = 'Final'
+                AND ng.status LIKE 'Final%'
                 AND ps.stat_id IS NULL
         `, [season, week]);
         for (const dst of missingDSTs) {

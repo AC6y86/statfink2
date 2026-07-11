@@ -178,6 +178,45 @@ router.post('/roster-email', asyncHandler(async (req, res) => {
     });
 }));
 
+// Run full health validation of a week (for the weekly validation cron).
+// Body: { week, season, mode } - defaults to current week/season from league
+// settings and 'full' mode. Responds with skipped:true when the week has no
+// games (offseason) instead of running checks.
+router.post('/health/validate', asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const healthCheckService = req.app.locals.healthCheckService;
+    const nflGamesService = req.app.locals.nflGamesService;
+
+    if (!healthCheckService) {
+        throw new APIError('Health check service not available', 500);
+    }
+
+    const settings = await db.getLeagueSettings();
+    const week = parseInt(req.body?.week) || settings.current_week;
+    const season = parseInt(req.body?.season) || settings.season_year;
+    const mode = req.body?.mode === 'light' ? 'light' : 'full';
+
+    const completion = nflGamesService
+        ? await nflGamesService.areAllWeekGamesComplete(week, season)
+        : null;
+
+    if (completion && completion.totalGames === 0) {
+        logInfo(`Internal health validation skipped for week ${week}/${season}: no games scheduled (offseason)`);
+        return res.json({
+            success: true,
+            data: { skipped: true, reason: 'offseason', week, season, completion }
+        });
+    }
+
+    logInfo(`Internal health validation triggered for week ${week}, season ${season} (${mode})`);
+    const results = await healthCheckService.runValidation(week, season, { mode });
+
+    res.json({
+        success: true,
+        data: { ...results, completion }
+    });
+}));
+
 // Record a health alert (for cron/continuous scripts running outside the server process)
 router.post('/health/alert', asyncHandler(async (req, res) => {
     const healthCheckService = req.app.locals.healthCheckService;

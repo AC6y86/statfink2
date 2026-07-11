@@ -14,7 +14,8 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
 2. **Live Game Updates** - Runs continuously (every minute, 24/7)
 3. **Email Roster-Move Poller** - Runs continuously (polls Gmail every 2 minutes)
 4. **Nightly Regression Tests** - Runs at 12pm UTC (5am PDT / 4am PST)
-5. **Weekly Updates** - ⚠️ Currently DISABLED (cron commented out in `ecosystem.config.js`); run manually
+5. **Weekly Validation** - Runs Tuesdays at 10am UTC (3am PDT / 2am PST)
+6. **Weekly Updates** - ⚠️ Currently DISABLED (cron commented out in `ecosystem.config.js`); run manually after reviewing the weekly validation report
 
 ## How It Works
 
@@ -57,7 +58,22 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
   - Requires the Gmail token to have the gmail.send scope
     (`node roster_moves/authSetup.js` re-authorizes if missing)
 
-### 5. Weekly Update (After all games complete) — ⚠️ DISABLED
+### 5. Weekly Validation
+- **PM2 Process**: `statfink2-weekly-validate`
+- **Schedule**: `0 10 * * 2` (10am UTC Tuesday = 3am PDT / 2am PST, after Monday night finals; must finish before the 12pm UTC nightly tests stop the server)
+- **Script**: `/scripts/weekly-validate.js`
+- **Functions**:
+  - Runs the full health validation of the current (just-completed, not-yet-advanced)
+    week via `POST /api/internal/health/validate`
+  - Runs the deep ESPN verification suite (`tests/verification/`, read-only)
+  - Writes `logs/weekly-validation-latest.json` (+ capped history) — shown on
+    the admin dashboard's "Weekly Validation" panel
+  - ALWAYS emails joe.paley@gmail.com a PASS/WARN/FAIL summary (offseason weeks
+    send a one-line SKIPPED email; `SEND_OFFSEASON_EMAIL` in the script disables that)
+- **Manual run**: `node scripts/weekly-validate.js [--week N] [--season Y] [--no-email] [--skip-verification]`
+- **Workflow**: review the emailed report, then run the weekly update manually to advance the week
+
+### 6. Weekly Update (After all games complete) — ⚠️ DISABLED
 - **PM2 Process**: `statfink2-weekly`
 - **Schedule**: None — the `cron_restart` is commented out in `ecosystem.config.js`
   ("TEMPORARILY DISABLED"; the last configured value was `0 11 * * 2`, 11am UTC Tuesday)
@@ -71,7 +87,7 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
 
 ## Current PM2 Configuration
 
-The scheduled tasks are configured in `/home/joepaley/statfink2/ecosystem.config.js` (the file itself is the source of truth). Six PM2 apps are defined:
+The scheduled tasks are configured in `/home/joepaley/statfink2/ecosystem.config.js` (the file itself is the source of truth). Seven PM2 apps are defined:
 
 | Process | Type | Schedule (UTC) |
 |---------|------|----------------|
@@ -80,6 +96,7 @@ The scheduled tasks are configured in `/home/joepaley/statfink2/ecosystem.config
 | `statfink2-live-continuous` | Always on | every minute, 24/7 |
 | `statfink2-email-poller` | Always on | polls Gmail every 2 minutes |
 | `statfink2-nightly-tests` | Cron | `0 12 * * *` (12pm UTC = 5am PDT) |
+| `statfink2-weekly-validate` | Cron | `0 10 * * 2` (10am UTC Tue = 3am PDT) |
 | `statfink2-weekly` | Cron — **disabled** | `cron_restart` commented out |
 
 ## Monitoring Commands

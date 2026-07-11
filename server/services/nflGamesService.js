@@ -539,7 +539,7 @@ class NFLGamesService {
             const result = await this.db.get(`
                 SELECT 
                     COUNT(*) as total_games,
-                    COUNT(CASE WHEN status = 'Final' THEN 1 END) as completed_games,
+                    COUNT(CASE WHEN status LIKE 'Final%' THEN 1 END) as completed_games,
                     COUNT(CASE WHEN status IN ('Live', 'In Progress', 'Halftime') THEN 1 END) as live_games,
                     COUNT(CASE WHEN status = 'Scheduled' THEN 1 END) as scheduled_games
                 FROM nfl_games 

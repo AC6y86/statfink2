@@ -257,11 +257,11 @@ class DatabaseManager {
         }
         
         return this.run(`
-            INSERT INTO weekly_rosters (team_id, player_id, week, season, roster_position, 
+            INSERT INTO weekly_rosters (team_id, player_id, week, season, roster_position,
                                        player_name, player_position, player_team)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `, [teamId, playerId, latestWeek.week, currentSeason, rosterPosition, 
-            player.name, player.position, player.team]);
+        `, [teamId, playerId, latestWeek.week, currentSeason, rosterPosition,
+            player.name, player.position, getTeamAbbreviation(player.team)]);
     }
 
     async removePlayerFromRoster(teamId, playerId) {
@@ -480,7 +480,7 @@ class DatabaseManager {
                                                player_name, player_position, player_team)
                     VALUES (?, ?, ?, ?, 'active', ?, ?, ?)
                 `, [teamId, addPlayerId, latestWeek.week, currentSeason,
-                    addPlayer.name, addPlayer.position, addPlayer.team]);
+                    addPlayer.name, addPlayer.position, getTeamAbbreviation(addPlayer.team)]);
             }
 
             // Log the move
@@ -638,7 +638,7 @@ class DatabaseManager {
                                            player_name, player_position, player_team)
                 VALUES (?, ?, ?, ?, 'active', ?, ?, ?)
             `, [team1Id, team2PlayerId, latestWeek.week, currentSeason,
-                player2.name, player2.position, player2.team]);
+                player2.name, player2.position, getTeamAbbreviation(player2.team)]);
 
             // Add player1 to team2
             await this.run(`
@@ -646,7 +646,7 @@ class DatabaseManager {
                                            player_name, player_position, player_team)
                 VALUES (?, ?, ?, ?, 'active', ?, ?, ?)
             `, [team2Id, team1PlayerId, latestWeek.week, currentSeason,
-                player1.name, player1.position, player1.team]);
+                player1.name, player1.position, getTeamAbbreviation(player1.team)]);
 
             // Validate roster counts (both teams should have 19 active players)
             const [team1Count, team2Count] = await Promise.all([

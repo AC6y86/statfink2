@@ -68,6 +68,19 @@ module.exports = {
       watch: false,
       time: true
     },
+    // Weekly validation of the just-completed week - full health checks + deep
+    // ESPN verification suite; ALWAYS emails joe.paley@gmail.com a summary and
+    // writes logs/weekly-validation-latest.json for the admin dashboard.
+    // Must finish before statfink2-nightly-tests (12pm UTC) stops the server.
+    {
+      name: 'statfink2-weekly-validate',
+      script: './scripts/weekly-validate.js',
+      cwd: '/home/joepaley/statfink2',
+      cron_restart: '0 10 * * 2', // 10am UTC Tuesday = 2-3am PT, after Monday night finals
+      autorestart: false,
+      watch: false,
+      time: true
+    },
     {
       name: 'statfink2-weekly',
       script: './scripts/weekly-update-check.js',

@@ -1073,6 +1073,14 @@
                 </div>
             </div>
 
+            <!-- Weekly Validation (last scheduled run) -->
+            <div class="section">
+                <h2>🗓️ Weekly Validation <span style="font-size: 0.7em; color: #666; font-weight: normal;">(last scheduled weekly run)</span></h2>
+                <div id="weekly-validation-panel">
+                    <p style="color: #666;">Loading weekly validation status...</p>
+                </div>
+            </div>
+
             <!-- Health Alerts -->
             <div class="section">
                 <h2>🚨 Health Alerts</h2>
@@ -1729,6 +1737,77 @@
             updateAlertBadge();
         });
 
+        // ---------- Weekly validation (scheduled run status) ----------
+
+        async function loadWeeklyValidation() {
+            const panel = document.getElementById('weekly-validation-panel');
+            try {
+                const response = await fetch('/api/admin/health/weekly-validation');
+                const result = await response.json();
+                const s = result.data;
+
+                if (!s) {
+                    panel.innerHTML = '<p style="color: #666;">No scheduled weekly validation has run yet. ' +
+                        'It runs Tuesdays at 3am PT (<code>pm2 logs statfink2-weekly-validate</code>), or run ' +
+                        '<code>node scripts/weekly-validate.js</code> manually.</p>';
+                    return;
+                }
+
+                const badgeClass = s.overallStatus === 'PASS' ? 'severity-info' :
+                                   s.overallStatus === 'WARN' || s.overallStatus === 'SKIPPED' ? 'severity-warning' :
+                                   'severity-critical';
+                const badgeIcon = s.overallStatus === 'PASS' ? '✅' :
+                                  s.overallStatus === 'WARN' ? '⚠️' :
+                                  s.overallStatus === 'SKIPPED' ? '⏸️' : '❌';
+                const runTime = new Date(s.runAt).toLocaleString();
+                const ageDays = (Date.now() - new Date(s.runAt).getTime()) / 86400000;
+                const staleNote = ageDays > 8 && s.overallStatus !== 'SKIPPED'
+                    ? `<div style="color: #dc3545; margin-top: 0.3rem;">⚠️ Last run is ${Math.floor(ageDays)} days old — check the cron.</div>`
+                    : '';
+
+                const gc = s.gamesComplete;
+                const gamesLine = gc && gc.totalGames > 0
+                    ? ` — games ${gc.completedGames}/${gc.totalGames} final`
+                    : '';
+
+                const checksHtml = (s.healthValidation?.checks || []).map(c => {
+                    const icon = c.status === 'passed' ? '✅' : c.status === 'warning' ? '⚠️' : '❌';
+                    return `<li>${icon} <strong>${escapeHtml(c.name)}</strong>: ${escapeHtml(c.message)}</li>`;
+                }).join('');
+
+                const v = s.verificationSuite;
+                const verificationLine = v && v.ran
+                    ? `<div style="margin-top: 0.4rem;">${v.passed ? '✅' : '❌'} Deep ESPN verification: ${escapeHtml(v.summaryLine || (v.passed ? 'passed' : `failed (exit ${v.exitCode})`))}</div>`
+                    : '<div style="margin-top: 0.4rem; color: #666;">Deep ESPN verification: not run</div>';
+
+                const emailLine = s.email
+                    ? `<div style="font-size: 0.85rem; color: #666; margin-top: 0.3rem;">Email ${s.email.sent ? 'sent to ' + escapeHtml(s.email.to) : (s.email.error ? '❌ failed: ' + escapeHtml(s.email.error) : 'skipped')}</div>`
+                    : '';
+
+                panel.innerHTML = `
+                    <div class="health-alert ${badgeClass}">
+                        <div>${badgeIcon}</div>
+                        <div class="alert-body">
+                            <div><strong>${escapeHtml(s.overallStatus)}</strong> — ${s.season || '?'} week ${s.week || '?'}${gamesLine}</div>
+                            <div class="alert-meta">Run: ${runTime} (${Math.round((s.durationMs || 0) / 1000)}s)</div>
+                            ${staleNote}
+                            ${s.overallStatus === 'SKIPPED'
+                                ? '<div style="margin-top: 0.4rem; color: #666;">No games scheduled (offseason) — checks skipped.</div>'
+                                : s.error
+                                    ? `<div style="margin-top: 0.4rem;">${escapeHtml(s.error)}</div>`
+                                    : `<details style="margin-top: 0.4rem;"><summary>Health checks (${s.healthValidation?.summary?.passed ?? 0} passed, ${s.healthValidation?.summary?.failed ?? 0} failed, ${s.healthValidation?.summary?.warnings ?? 0} warnings)</summary>
+                                        <ul style="margin: 0.5rem 0 0 1rem;">${checksHtml}</ul>
+                                       </details>
+                                       ${verificationLine}`}
+                            ${emailLine}
+                        </div>
+                    </div>`;
+            } catch (error) {
+                console.error('Error loading weekly validation status:', error);
+                panel.innerHTML = '<p style="color: #dc3545;">Failed to load weekly validation status</p>';
+            }
+        }
+
         // ---------- Health alerts ----------
 
         async function updateAlertBadge() {
@@ -1900,6 +1979,7 @@
                 loadSystemStatus();
                 loadDatabaseStats();
                 loadHealthAlerts();
+                loadWeeklyValidation();
             } else if (tabName === 'players') {
                 if (allPlayers.length === 0) {
                     loadPlayers();

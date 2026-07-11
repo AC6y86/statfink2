@@ -16,7 +16,7 @@
     "test:integration:slow": "jest --config jest.config.slow.js recalculateAndVerify2024 compareStats2024 recalculateAndVerify2025 compareStats2025baseline --testTimeout=900000",
     "baseline:2025": "node scripts/snapshot2025Baseline.js",
     "test:browser": "jest tests/browser/ --maxWorkers=1 --testTimeout=60000",
-    "test:verify": "jest tests/verification/ --maxWorkers=2 --testTimeout=60000",
+    "test:verify": "jest --config jest.config.slow.js --selectProjects verification --runInBand",
     "test:watch": "jest --watch --config jest.config.js",
     "test:coverage": "jest --coverage --config jest.config.js",
     "test:coverage:all": "jest --coverage --config jest.config.slow.js",

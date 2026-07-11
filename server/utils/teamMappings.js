@@ -12,7 +12,7 @@ const teamAbbreviations = {
     'Chargers': 'LAC',
     'Chiefs': 'KC',
     'Colts': 'IND',
-    'Commanders': 'WSH',
+    'Commanders': 'WAS',
     'Cowboys': 'DAL',
     'Dolphins': 'MIA',
     'Eagles': 'PHI',
@@ -67,7 +67,8 @@ const teamAbbreviations = {
     'TB': 'TB',
     'TEN': 'TEN',
     'WAS': 'WAS',
-    
+    'WSH': 'WAS',  // Tank01 uses WSH; WAS is canonical internally (see utils/teamNormalization.js)
+
     // Special cases
     'DEF': 'DEF',
     'Defense': 'DEF'

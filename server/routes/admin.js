@@ -1,4 +1,6 @@
 const express = require('express');
+const fs = require('fs').promises;
+const path = require('path');
 const { asyncHandler, APIError, logInfo, logError } = require('../utils/errorHandler');
 const DataCleanupService = require('../services/dataCleanupService');
 const router = express.Router();
@@ -1498,6 +1500,19 @@ router.post('/health/validate', requireAdmin, asyncHandler(async (req, res) => {
         success: true,
         data: results
     });
+}));
+
+// Latest scheduled weekly validation status (written by scripts/weekly-validate.js).
+// Returns data: null when no run has happened yet.
+router.get('/health/weekly-validation', requireAdmin, asyncHandler(async (req, res) => {
+    const statusFile = path.join(__dirname, '../../logs/weekly-validation-latest.json');
+    let data = null;
+    try {
+        data = JSON.parse(await fs.readFile(statusFile, 'utf8'));
+    } catch (error) {
+        // Missing or corrupt file: no run yet
+    }
+    res.json({ success: true, data });
 }));
 
 module.exports = router;
