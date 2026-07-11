@@ -260,7 +260,7 @@ app.get('/admin/settings', (req, res) => {
 });
 
 app.get('/admin/roster', (req, res) => {
-    res.sendFile(path.join(__dirname, '../helm/roster.html'));
+    res.redirect('/admin/dashboard#rosters');
 });
 
 // Redirect root to /statfink
