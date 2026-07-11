@@ -171,6 +171,12 @@ describe('ScoringPlayParserService', () => {
             expect(parser.extractPlayerName('J.J. Russell 23 Yd Return of Blocked Punt (Chase McLaughlin Kick)'))
                 .toBe('J.J. Russell');
         });
+
+        test('compound play prose is stripped — only the scorer remains (HOU wk 15 2025)', () => {
+            expect(parser.extractPlayerName(
+                'C.J. Stroud Aborted Snap C.J. Stroud Fumble Woody Marks 1 Yd Fumble Recovery (Chad Ryland Kick)'
+            )).toBe('Woody Marks');
+        });
     });
 
     describe('laterals and special teams', () => {

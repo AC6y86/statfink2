@@ -173,17 +173,11 @@ class SeasonRecalculationOrchestrator {
                 throw error;
             }
             
-            // Step 7: Recalculate all team scores
-            logInfo('\n📊 Recalculating team scores for all weeks...');
-            await this.db.beginTransaction();
-            try {
-                await this.teamScoreService.recalculateSeasonScores(this.season, 1, this.totalWeeks);
-                await this.db.commit();
-            } catch (error) {
-                await this.db.rollback();
-                throw error;
-            }
-            
+            // Step 7 (removed): teamScoreService.recalculateSeasonScores overwrote the
+            // matchup scoring_points that Step 6 just computed from the official
+            // scoring lineups with SUM(entire active roster) — wrong league scoring
+            // (only the scoring-slot players count). Step 6 is the sole writer now.
+
             // Step 8: Calculate standings for all weeks
             logInfo('\n📈 Calculating standings for all weeks...');
             await this.db.beginTransaction();

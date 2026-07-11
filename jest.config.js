@@ -12,7 +12,9 @@ module.exports = {
     '/tests/integration/recalculateAndVerify2024.test.js',
     '/tests/integration/compareStats2024.test.js',
     '/tests/2024/compareStats2024.test.js',
-    '/tests/2025/compareStats2025.test.js'
+    '/tests/2025/compareStats2025.test.js',
+    '/tests/integration/recalculateAndVerify2025.test.js',
+    '/tests/integration/compareStats2025baseline.test.js'
   ],
   collectCoverageFrom: [
     'server/**/*.js',
@@ -39,7 +41,9 @@ module.exports = {
       testMatch: ['<rootDir>/tests/integration/**/*.test.js'],
       testPathIgnorePatterns: [
         'recalculateAndVerify2024',
-        'compareStats2024'
+        'compareStats2024',
+        'recalculateAndVerify2025',
+        'compareStats2025baseline'
       ],
       testTimeout: 15000,
       maxWorkers: 2

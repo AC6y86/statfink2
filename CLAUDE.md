@@ -48,6 +48,7 @@ create files in /tmp
 - remember you can take screenshots from the browser by using scripts/take_screenshots.js
 - Never fix stats by changing the database, fix the sync logic instead
 - The 2024 stat tests (tests/integration/compareStats2024.test.js and recalculateAndVerify2024.test.js) should ALWAYS pass — the reference DB is the league's official record, corrected for 3 documented scorekeeping errors (see docs/DEFENSIVE_SCORING.md "2024 Official-Record Corrections"). A failure there means a real bug in the scoring logic, not a flaky test.
+- The 2025 stat tests (tests/integration/compareStats2025baseline.test.js and recalculateAndVerify2025.test.js) work the same way against the golden baseline tests/2025/baseline_2025_fantasy_points.json. Any scoring change must pass BOTH the 2024 and 2025 regression suites (npm run test:integration:slow). If a scoring change is intentional (commissioner ruling), re-bless with `npm run baseline:2025` and commit the JSON diff — the diff shows exactly which player-weeks changed.
 - remember you can read from https://www.fantasypros.com/ without asking for permission
 - remember you can read from nfl.com without asking for permission
 - remember when a roster move is made, a player needs to be on the IR for at least 3 weeks before they can be brought back

@@ -76,7 +76,36 @@ scorekeeping errors under the rules above, corrected by commissioner ruling
 3. Week 4: Falcons DEF 16 → 8 — KhaDarel Hodge's end-zone fumble recovery came on
    an 8-play ATL offensive drive (Bijan Robinson's fumble); offensive TD, not defensive
 
-### 5. Known Blocked Returns in 2024
+### 5. 2025 Official-Record Corrections
+The as-played 2025 record (statfink2 was the live scorer) contained 16
+scorekeeping errors, corrected by commissioner ruling on 2026-07-11. Every
+correction was verified against ESPN play-by-play data. Pre-correction copy:
+backup_data/fantasy_football_pre-2025-recalc-2026-07-11.db.
+
+Uncredited return TDs (+20 each, per "Kick or Punt Returner" rule; none rostered):
+Gibson wk2 (90 KR), M. Washington wk2 (74 PR), Lane wk3 (90 PR), Horton wk3
+(95 PR), Raymond wk4 (65 PR), P. Washington wk4 (87 PR) & wk10 (73 PR),
+C. Jones wk9 (98 KR), Dike wk9 (67 PR) & wk12 (90 PR), I. Williams wk10
+(74 PR), Nwangwu wk10 (99 KR).
+
+Fumble-recovery TDs (per "Defensive Touchdowns — Exact Award Logic"):
+- Wk 5: Tyler Lockett +8 / Titans DEF −8 — offensive end-zone recovery on a
+  TEN drive, wrongly credited to the defense
+- Wk 7: Patriots DEF +8 — Chaisson sack-fumble takeaway TD, dropped by the
+  old short-yardage filter (Joe +8 in the wk 7 matchup)
+- Wk 15: Woody Marks +8 — recovered Stroud's aborted-snap fumble on a HOU
+  drive (Pete +8 in the wk 15 matchup)
+
+Matchup/record effects: wk 12 Pete 54→74 (Ray Davis's correctly-scored KR TD
+finally reflected in Pete's scoring lineup) — Pete beats Dan, records become
+Pete 7-5 / Dan 4-8; wk 18 Pete matchup value 102.67→85.67 (as-played value was
+corrupted by the removed teamScoreService full-roster overwrite bug).
+
+Known limitation: return TDs by defensive players not in nfl_players (Marcus
+Jones wk4+wk13, Deonte Banks wk17 — all CBs) are credited to no one. CBs are
+not draftable in this league, so the points could never count for any team.
+
+### 6. Known Blocked Returns in 2024
 These plays need to be categorized as defensive TDs:
 1. Week 1: CHI - Jonathan Owens 21 Yd Return of Blocked Punt
 2. Week 6: NYG - Ihmir Smith-Marsette 68 Yd Return of Blocked Punt  

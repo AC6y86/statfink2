@@ -366,7 +366,14 @@ class ScoringPlayParserService {
             for (const pattern of patterns) {
                 const match = playText.match(pattern);
                 if (match && match[1]) {
-                    const name = match[1].trim();
+                    let name = match[1].trim();
+
+                    // Compound play texts can swallow play prose into the capture,
+                    // e.g. "C.J. Stroud Aborted Snap C.J. Stroud Fumble Woody Marks 1 Yd
+                    // Fumble Recovery" — keep only the name after the last play verb.
+                    const segments = name.split(/\b(?:aborted|snap|fumbled?|sacked?|recover(?:ed|y)|muffed?|blocked|lateral)\b/i);
+                    name = segments[segments.length - 1].trim();
+
                     // Don't return single words or common non-name words
                     if (name.includes(' ') && !name.toLowerCase().includes('safety')) {
                         return name;
