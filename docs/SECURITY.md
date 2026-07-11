@@ -44,30 +44,77 @@ SSL_KEY=./certs/privkey.pem      # or ./certs/key.pem for self-signed
 
 ### 2. Authentication System
 
+Implemented in `server/auth/auth.js`. Session-based auth protects administrative functions while public viewing interfaces stay open to all league members.
+
 #### Password Security
-- **Bcrypt**: Industry-standard password hashing
-- **Salt Rounds**: 10 (configurable)
-- **No Password Recovery**: Admin must reset manually
+- **Bcrypt**: Industry-standard password hashing with **12 salt rounds** (`server/auth/generateHash.js`)
+- **No database storage**: There is a single `admin` account; its hash lives in the `ADMIN_PASSWORD_HASH` environment variable, not in a users table
+- **No Password Recovery**: Admin must reset manually by generating a new hash
+
+#### Setup: Generate the Admin Password
+```bash
+node server/auth/generateHash.js
+# Enter the password you want to hash: [your-secure-password]
+# Hash: $2b$12$...
+
+# Add the output to your .env file:
+ADMIN_PASSWORD_HASH="$2b$12$..."
+SESSION_SECRET=your-strong-random-session-secret
+```
+
+#### Login Flow
+1. User visits `GET /login` (self-contained HTML form; username is hardcoded to `admin`)
+2. Form posts to `POST /login` with the CSRF token; the request passes through the login rate limiter
+3. Password is compared against `ADMIN_PASSWORD_HASH` with bcrypt
+4. On success the session ID is regenerated, `userId`/`username` are stored in the session, and the user is redirected to the originally requested page (fallback: `https://peninsulafootball.com/admin/dashboard`)
+5. On failure the user is redirected back to `/login?error=1`
+
+Logout is `GET /logout` — destroys the session and redirects to `/login?logout=1`.
+
+#### Protected Routes (require login)
+- `/helm` — admin dashboard
+- `/admin` — admin pages (including `/admin/database-browser`)
+- `/api/admin/*` — all admin API endpoints
+- `/2024-season` — archived season pages
+
+#### Public Routes (no login)
+- `/statfink` — live matchup viewer
+- `/standings`, `/rosters` — public league pages
+- `/api/players`, `/api/teams`, etc. — read-only API data
+
+#### Localhost Bypass for API Routes
+`requireAuth` (`server/auth/auth.js:38-63`) allows requests to `/api/*` paths from localhost (`127.0.0.1`, `::1`) **without authentication**. This is why local scripts and cron jobs can call `/api/admin/*` endpoints unauthenticated. Remote requests always require a valid session.
 
 #### Session Management
 ```javascript
-// Session configuration
+// Session configuration (server/auth/auth.js)
 {
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET,  // random fallback generated at boot
+  name: 'sessionId',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: true,        // HTTPS only
+    secure: true,        // production / HTTPS only
     httpOnly: true,      // No JS access
     maxAge: 7200000,     // 2 hours
     sameSite: 'lax'      // CSRF protection
   }
 }
 ```
+- Sessions expire after 2 hours
+- Session IDs are regenerated on login and every 5 minutes thereafter
+- In production, sessions persist to a SQLite store at `data/sessions.db`
+
+#### Troubleshooting
+- **"Too many login attempts"** — wait out the 15-minute rate-limit window (or restart the server in development)
+- **"Session expired. Please try again."** — the CSRF token was stale; the login page reloads with a fresh one
+- **Session expired after inactivity** — sessions time out after 2 hours; log in again
 
 ### 3. Security Headers (Helmet.js)
 
-Automatically configured headers:
+**Production only** — in development (`NODE_ENV !== 'production'`), Helmet is disabled entirely and CSP-related headers are stripped to avoid local development issues (`server/auth/auth.js:83-95`).
+
+Automatically configured headers in production:
 - **Content-Security-Policy**: Prevents XSS attacks
 - **X-DNS-Prefetch-Control**: Controls DNS prefetching
 - **X-Frame-Options**: Prevents clickjacking
@@ -94,13 +141,14 @@ helmet.contentSecurityPolicy({
 
 #### Login Protection
 ```javascript
+// server/auth/auth.js
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,  // 15 minutes
-  max: 5,                     // 5 attempts
-  message: 'Too many login attempts',
+  max: 10,                    // 10 attempts
+  message: 'Too many login attempts, please try again later',
   standardHeaders: true,
   legacyHeaders: false,
-  skipSuccessfulRequests: true
+  skipSuccessfulRequests: true  // counter resets on successful login
 });
 ```
 
@@ -223,6 +271,7 @@ chmod 600 data/sessions.db
 # .env.production
 NODE_ENV=production
 SESSION_SECRET=<64+ character random string>
+ADMIN_PASSWORD_HASH=<bcrypt hash from generateHash.js>
 TANK01_API_KEY=<your-api-key>
 PORT=3000
 HTTPS_PORT=8443
@@ -230,16 +279,7 @@ SSL_CERT=./certs/fullchain.pem
 SSL_KEY=./certs/privkey.pem
 ```
 
-### Security-Related Options
-```bash
-# Optional security configurations
-ENABLE_RATE_LIMIT=true
-RATE_LIMIT_WINDOW=900000      # 15 minutes in ms
-RATE_LIMIT_MAX_REQUESTS=5     # Max attempts
-SESSION_TIMEOUT=7200000        # 2 hours in ms
-BCRYPT_ROUNDS=10              # Password hashing rounds
-ENABLE_AUDIT_LOG=true         # Log security events
-```
+Rate limiting (10 attempts / 15 min), session timeout (2 hours), and bcrypt rounds (12) are hardcoded in `server/auth/auth.js` and `server/auth/generateHash.js` — they are not configurable via environment variables.
 
 ## Common Security Scenarios
 
@@ -339,14 +379,15 @@ Set up alerts for:
 # Block IP address
 iptables -A INPUT -s malicious.ip.address -j DROP
 
-# Disable user account
-sqlite3 fantasy_football.db "UPDATE users SET active = 0 WHERE username = 'compromised'"
+# Rotate the admin password (generate a new hash, update .env, restart)
+node server/auth/generateHash.js
+pm2 restart statfink2
 
 # Force all users to re-authenticate
 sqlite3 data/sessions.db "DELETE FROM sessions"
 
 # Emergency shutdown
-systemctl stop statfink
+pm2 stop statfink2
 ```
 
 ## Security Best Practices

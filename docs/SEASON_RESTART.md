@@ -31,7 +31,9 @@ You should see these processes:
 - `statfink2` - Main web server (should be "online")
 - `statfink2-daily` - Daily sync job
 - `statfink2-live-continuous` - Live game updates
-- `statfink2-weekly` - Weekly advancement
+- `statfink2-email-poller` - Email roster-move poller (should be "online")
+- `statfink2-nightly-tests` - Nightly regression tests
+- `statfink2-weekly` - Weekly advancement (cron currently disabled; run manually)
 
 ### Start/Restart Server
 ```bash
@@ -151,7 +153,7 @@ curl -X POST http://localhost:8000/api/admin/sync/players
 This will pull ~1800+ NFL players with current team/position data.
 
 ### Build Rosters
-Use the roster management interface at https://peninsulafootball.com/roster
+Use the Rosters tab on the admin dashboard at https://peninsulafootball.com/admin/dashboard
 
 Each team needs exactly **19 players**:
 - Minimum: 2 QB, 5 RB, 6 WR/TE, 2 K, 2 DEF
@@ -198,9 +200,11 @@ The following tasks run automatically via PM2:
 
 | Task | Schedule | What it does |
 |------|----------|--------------|
-| `statfink2-daily` | 3am PST daily | Syncs NFL schedule, backs up DB, updates injuries |
+| `statfink2-daily` | 5pm UTC daily (10am PDT / 9am PST) | Syncs NFL schedule, backs up DB, updates injuries |
 | `statfink2-live-continuous` | Every minute | Updates live game scores during games |
-| `statfink2-weekly` | Tuesdays | Creates standings, advances week when games complete |
+| `statfink2-email-poller` | Every 2 minutes | Polls Gmail for roster-move emails (see `EMAIL_ROSTER_MOVES.md`) |
+| `statfink2-nightly-tests` | 12pm UTC daily (5am PDT / 4am PST) | Runs scoring regression suites, emails on failure |
+| `statfink2-weekly` | **Disabled** (was Tuesdays) | Creates standings, advances week — run manually for now |
 
 ### Check Next Run Time
 ```bash
@@ -285,7 +289,7 @@ pm2 logs                      # View all logs
 ### Database Access
 ```bash
 # Open database browser
-https://peninsulafootball.com/database-browser
+https://peninsulafootball.com/admin/database-browser
 
 # Or via command line
 sqlite3 /home/joepaley/statfink2/fantasy_football.db

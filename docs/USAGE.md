@@ -25,15 +25,12 @@ TANK01_API_KEY=your_api_key_here
 
 # Authentication (optional but recommended)
 SESSION_SECRET=your-secure-random-string
-ADMIN_PASSWORD_HASH=$2b$10$... # Generate with node server/auth/generateHash.js
+ADMIN_PASSWORD_HASH=$2b$12$... # Generate with node server/auth/generateHash.js
 
 # HTTPS/SSL Configuration (optional)
-# Option 1: Let's Encrypt certificates
-SSL_KEY_PATH=/etc/letsencrypt/live/yourdomain.com/privkey.pem
-SSL_CERT_PATH=/etc/letsencrypt/live/yourdomain.com/fullchain.pem
-
-# Option 2: Self-signed certificates
-USE_SELF_SIGNED_CERT=true
+# Defaults to ./certs/fullchain.pem and ./certs/privkey.pem if unset
+SSL_CERT=/etc/letsencrypt/live/yourdomain.com/fullchain.pem
+SSL_KEY=/etc/letsencrypt/live/yourdomain.com/privkey.pem
 
 # Additional Options
 HTTPS_PORT=8443
@@ -50,7 +47,7 @@ sqlite3 fantasy_football.db < server/database/migrations/add_nfl_games.sql
 sqlite3 fantasy_football.db < server/database/migrations/add_scoring_players_columns.sql
 sqlite3 fantasy_football.db < server/database/migrations/create_weekly_standings.sql
 sqlite3 fantasy_football.db < server/database/migrations/add_division_to_teams.sql
-sqlite3 fantasy_football.db < server/database/migrations/add_injury_columns.sql
+sqlite3 fantasy_football.db < server/database/migrations/add_injured_reserve.sql
 ```
 
 ### Authentication Setup
@@ -83,15 +80,16 @@ npm run dev
 - **Public Rosters**: http://localhost:3000/rosters
   - Current rosters: `/rosters`
   - Historical: `/rosters/{season}/{week}`
-- **2024 Season Archive**: http://localhost:3000/2024-season
-- **Mock Week Testing**: http://localhost:3000/mockWeek
+- **Mock Week Testing**: http://localhost:3000/mocks
 
 ### Protected Routes (Authentication Required)
 - **Login**: http://localhost:3000/login
-- **Main Dashboard**: http://localhost:3000/dashboard
-- **Database Browser**: http://localhost:3000/database-browser
-- **Roster Management**: http://localhost:3000/roster
-- **Admin Controls**: Via dashboard interface
+- **Main Dashboard**: http://localhost:3000/admin/dashboard (also `/admin`, `/helm`)
+- **Database Browser**: http://localhost:3000/admin/database-browser
+- **Roster Management**: Rosters tab in the dashboard (also `/admin/roster`)
+- **2024 Season Archive**: http://localhost:3000/2024-season
+
+Note: requests to `/api/*` from localhost bypass authentication entirely — see `docs/SECURITY.md` (Localhost Bypass).
 
 ### HTTPS Access (if configured)
 - **Secure Access**: https://localhost:8443/
@@ -99,7 +97,7 @@ npm run dev
 
 ## 🎮 Web Interface Features
 
-### Main Dashboard (`/dashboard`)
+### Main Dashboard (`/admin/dashboard`)
 Comprehensive database management interface with:
 
 #### Players Tab
@@ -123,7 +121,7 @@ Comprehensive database management interface with:
 - Database health monitoring
 - Injury report summary
 
-### Database Browser (`/database-browser`)
+### Database Browser (`/admin/database-browser`)
 Advanced database exploration tool:
 
 #### Features
@@ -144,8 +142,8 @@ Advanced database exploration tool:
 - `weekly_standings` - Historical standings
 - And more...
 
-### Roster Management (`/roster`)
-Dedicated interface for managing team rosters:
+### Roster Management (dashboard Rosters tab, or `/admin/roster`)
+Interface for managing team rosters:
 
 #### Features
 - Select any of the 12 teams
@@ -162,11 +160,11 @@ Dedicated interface for managing team rosters:
 - Only top 11 offensive + 2 DST players score
 - Active roster limited to 19 players
 
-### Mock Week Testing (`/mockWeek`)
-Comprehensive testing interface for simulating live scoring:
+### Mock Week Testing (`/mocks`)
+Testing interface for simulating live scoring (see `docs/MOCK_TESTING.md`):
 
 #### Features
-- Select mock weeks 1-18
+- Select a mock week (weeks 1-2 currently implemented)
 - Test live scoring calculations
 - Validate scoring player selection
 - Simulate different game scenarios
@@ -176,32 +174,7 @@ Comprehensive testing interface for simulating live scoring:
 
 ### Authentication
 
-#### Login
-```http
-POST /login
-Content-Type: application/json
-
-{
-  "username": "admin",
-  "password": "your_password"
-}
-```
-
-#### Logout
-```http
-POST /logout
-```
-
-#### Check Authentication
-```http
-GET /api/auth/check
-
-Response:
-{
-  "authenticated": true,
-  "username": "admin"
-}
-```
+Session-based login for the single `admin` account. `POST /login` (form-encoded, with CSRF token) and `GET /logout`. See `docs/SECURITY.md` for the full login flow, rate limiting, session behavior, and setup.
 
 ### Core Endpoints
 
@@ -540,35 +513,33 @@ Content-Type: application/json
 
 ### Season Management
 ```bash
-# Recalculate entire 2024 season
+# Recalculate an entire season
 node utils/recalculate2024season.js
+node utils/recalculate2025season.js
 
-# This comprehensive utility:
-# 1. Syncs all NFL games for the season
-# 2. Syncs player stats for each week
-# 3. Calculates fantasy points
-# 4. Determines scoring players (top 11 + 2 DST)
-# 5. Updates team scores
-# 6. Calculates weekly standings
-# 7. Maintains data integrity
+# These comprehensive utilities:
+# 1. Sync all NFL games for the season
+# 2. Sync player stats for each week
+# 3. Calculate fantasy points
+# 4. Determine scoring players (top 11 + 2 DST)
+# 5. Update team scores
+# 6. Calculate weekly standings
+# 7. Maintain data integrity
 ```
 
 ### Database Maintenance
 ```bash
-# Add all NFL team defenses
-node server/utils/addTeamDefenses.js
+# Initialize the league database (also: npm run init-league)
+node server/utils/initializeLeague.js
 
-# Remove duplicate players
-node server/utils/deduplicatePlayers.js
+# Import draft results
+node server/utils/draftImporter.js
 
-# Import roster from file
-node server/utils/importRoster.js /path/to/roster.txt
+# Recalculate fantasy points for stored stats
+node server/utils/recalculateFantasyPoints.js
 
-# Clean up duplicate teams
-node server/utils/cleanupTeams.js
-
-# Generate sitemap
-node server/utils/generateSitemap.js
+# Undo the most recent weekly update
+node server/utils/undoWeeklyUpdate.js
 ```
 
 ### Testing Commands
@@ -602,22 +573,21 @@ npm run test:unit -- tests/unit/scoring.test.js
 
 #### Option 1: Let's Encrypt (Production)
 1. Obtain certificates for your domain
-2. Configure in `.env`:
+2. Configure in `.env` (or place them at the default paths `./certs/fullchain.pem` and `./certs/privkey.pem`):
 ```bash
-SSL_KEY_PATH=/etc/letsencrypt/live/yourdomain.com/privkey.pem
-SSL_CERT_PATH=/etc/letsencrypt/live/yourdomain.com/fullchain.pem
+SSL_CERT=/etc/letsencrypt/live/yourdomain.com/fullchain.pem
+SSL_KEY=/etc/letsencrypt/live/yourdomain.com/privkey.pem
 ```
 
 #### Option 2: Self-Signed (Development)
-1. Set in `.env`:
+Generate certificates manually and place them in `./certs/`:
 ```bash
-USE_SELF_SIGNED_CERT=true
+openssl req -x509 -newkey rsa:4096 -keyout certs/privkey.pem -out certs/fullchain.pem -days 365 -nodes
 ```
-2. Server will generate certificates automatically
 
 ### Security Features
 - **Session Management**: Secure session cookies with httpOnly and sameSite
-- **Password Security**: Bcrypt hashing with configurable salt rounds
+- **Password Security**: Bcrypt hashing with 12 salt rounds
 - **Rate Limiting**: Protection against brute force attacks on login
 - **CSRF Protection**: Token validation on state-changing requests
 - **Security Headers**: Helmet.js for XSS and other protections
@@ -648,7 +618,7 @@ USE_SELF_SIGNED_CERT=true
 2. Sync player stats: `POST /api/admin/sync/stats`
 3. View standings: `/standings`
 4. Check matchups: `/statfink`
-5. Manage rosters: `/roster`
+5. Manage rosters: dashboard Rosters tab (`/admin/dashboard`)
 
 ### Roster Management
 1. Check free agents: `GET /api/players/available`
@@ -657,7 +627,7 @@ USE_SELF_SIGNED_CERT=true
 4. Drop player: `DELETE /api/teams/{id}/roster/remove`
 
 ### Testing & Development
-1. Use mock weeks: `/mockWeek`
+1. Use mock weeks: `/mocks`
 2. Test scoring: `/statfink/mock/{week}`
 3. Verify calculations: Check database browser
 4. Run test suite: `npm test`
@@ -668,11 +638,10 @@ USE_SELF_SIGNED_CERT=true
 
 #### "Cannot find player" errors
 - Run player sync: `POST /api/admin/sync/players`
-- Check for duplicates: `node server/utils/deduplicatePlayers.js`
 
 #### Scoring discrepancies
 - Verify scoring players: Check `is_scoring` in rosters
-- Run recalculation: `node utils/recalculate2024season.js`
+- Run recalculation: `node utils/recalculate2025season.js` (or `recalculate2024season.js`)
 - Check scoring rules: See `SCORING_SYSTEM.md`
 
 #### Authentication issues

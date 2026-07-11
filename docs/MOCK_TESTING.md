@@ -2,22 +2,28 @@
 
 ## Overview
 
-The Mock Week Testing System allows developers and league administrators to test live scoring scenarios without waiting for actual NFL games. This system simulates real-time game progression, player statistics updates, and fantasy scoring calculations.
+The Mock Week Testing System allows developers and league administrators to test scoring scenarios without waiting for actual NFL games. Mock weeks use the season identifier `"mock"` and provide deterministic game, player, and DST data.
 
-## Features
+The canonical framework documentation (data structure, loader API, how to add new weeks) lives in `tests/mockWeeks/README.md`. This doc covers how to access and use mock weeks.
 
-- **18 Mock Weeks**: Pre-configured test data for weeks 1-18
-- **Live Score Simulation**: Progressive score updates during "games"
-- **Player Statistics**: Realistic stat generation for all positions
-- **Game Status Updates**: Simulates quarters, timeouts, and final scores
-- **Integration Testing**: Validates scoring calculations and UI updates
+## Available Mock Weeks
+
+| Week | Scenario | Tests |
+|------|----------|-------|
+| 1 | Pre-Game State (Thursday evening, no games started) | Roster validation, pre-game displays |
+| 2 | Post-Week State (all 16 games Final, full stats) | Final scoring, weekly winners, bonus thresholds |
+| 3 | Mid-Sunday Games (mixed game states) | Live scoring, partial-week scoring, in-progress displays |
+| 99 | Games in progress with real player stats and timed updates | Live progression / delta testing |
+
+Other weeks are not implemented — `getMockWeek(n)` throws for missing weeks.
 
 ## Accessing Mock Weeks
 
 ### Web Interface
 ```
-http://localhost:3000/statfink/mock       # Mock week selection page
-http://localhost:3000/statfink/mock/1     # Specific mock week
+http://localhost:3000/mocks               # Mock testing index
+http://localhost:3000/statfink/mock       # Redirects to /mocks
+http://localhost:3000/statfink/mock/1     # Specific mock week in the matchup viewer
 ```
 
 ### API Endpoints
@@ -25,267 +31,67 @@ http://localhost:3000/statfink/mock/1     # Specific mock week
 GET /api/nfl-games/mock/{week}/{season}  # Get mock game data
 ```
 
-## Mock Week Structure
+## Mock Week Data
 
-### Game Data Format
+Each week file (`tests/mockWeeks/week{N}.js`) exports:
+- `games` — array of game objects (teams, scores, status, quarter, time)
+- `playerStats` — offensive player stat lines, including edge cases (e.g., players at exact bonus thresholds)
+- `dstStats` — team defense stats for all 32 teams
+- `metadata` — scenario description and expected behaviors
+
+## Using Mock Weeks in Tests
+
 ```javascript
-{
-  game_id: "mock_2024_01_KC_BAL",
-  week: 1,
-  season: 2024,
-  home_team: "KC",
-  away_team: "BAL", 
-  home_score: 27,
-  away_score: 24,
-  status: "Final",
-  quarter: "F",
-  time_remaining: "0:00",
-  game_time: "1:00 PM ET"
-}
+const { getMockWeek, loadMockWeek } = require('../mockWeeks/mockWeekLoader');
+
+// Get week data
+const week2Data = getMockWeek(2);
+
+// Load into a test database
+await loadMockWeek(db, 2);
 ```
 
-### Player Statistics
-Mock weeks include realistic statistics for:
-- **Quarterbacks**: Passing yards, TDs, INTs
-- **Running Backs**: Rushing/receiving yards, TDs, receptions
-- **Wide Receivers**: Receiving yards, TDs, receptions
-- **Tight Ends**: Receiving yards, TDs, receptions
-- **Kickers**: FG attempts/makes by distance, XPs
-- **Defenses**: Points allowed, yards allowed, sacks, turnovers
+The loader (`tests/mockWeeks/mockWeekLoader.js`) also supports time progression within a week, and `tests/mockWeeks/index.js` provides game-progression utilities (`initializeGameProgression`, `simulateGameProgression`) for simulating live updates. Delta/live-update scenarios live in `tests/mockWeeks/deltaScenarios.js` with `/mocks/delta-test` as the browser harness.
 
-## Available Mock Weeks
+## Running Tests
 
-### Week 1-3: Regular Season Games
-- Standard scoring scenarios
-- Mix of high and low scoring games
-- Various player performance levels
+```bash
+# Browser tests (Puppeteer), including mock week game-time tests
+npm run test:browser
 
-### Week 4-8: Edge Cases
-- Overtime games
-- Defensive/special teams TDs
-- Injured player scenarios
-- Weather-affected games
+# Specific browser test
+npm run test:browser -- mockWeekGameTimes.test.js
 
-### Week 9-12: Division Games
-- Rivalry matchups
-- Playoff implications
-- Close scoring scenarios
-
-### Week 13-17: Fantasy Playoffs
-- High-stakes matchups
-- Boom/bust performances
-- Championship scenarios
-
-### Week 18: Testing Scenarios
-- Extreme scoring cases
-- System stress testing
-- Error condition testing
+# Integration tests
+npm run test:integration
+```
 
 ## Creating Custom Mock Weeks
 
-### 1. Create Mock Week File
-```javascript
-// tests/mockWeeks/week19.js
-module.exports = {
-  games: [
-    {
-      game_id: "mock_2024_19_TB_NO",
-      home_team: "TB",
-      away_team: "NO",
-      home_score: 31,
-      away_score: 28,
-      status: "Final"
-    }
-  ],
-  stats: {
-    "player_123": {
-      passing_yards: 350,
-      passing_tds: 3,
-      interceptions: 1
-    }
-  }
-};
-```
+1. Create a new file: `tests/mockWeeks/week{N}.js`
+2. Follow the structure of an existing week (e.g., `week2.js`): `games`, `playerStats`, `dstStats`, `metadata`
+3. The framework auto-discovers `week*.js` files — no registration needed
+4. Document the scenario in `tests/mockWeeks/README.md`
 
-### 2. Register Mock Week
-```javascript
-// tests/mockWeeks/index.js
-const mockWeeks = {
-  1: require('./week1'),
-  // ...
-  19: require('./week19')  // Add new week
-};
-```
+### Guidelines
+- Always use the `"mock"` season identifier
+- Ensure deterministic data (no random values)
+- Include edge cases specific to the scenario (0-0 games, exact bonus-threshold yardage, defensive TDs)
+- Never write mock data to the production database
 
-## Live Progression Testing
+## Debugging
 
-### Simulating Game Progress
-Mock weeks can simulate live game progression:
-
-```javascript
-// Enable progression for week 1
-const progression = {
-  enabled: true,
-  currentQuarter: 2,
-  timeRemaining: "7:23",
-  updates: [
-    { time: "14:00", type: "touchdown", team: "home", points: 7 },
-    { time: "10:30", type: "field_goal", team: "away", points: 3 }
-  ]
-};
-```
-
-### Testing Live Updates
-1. Start server with mock mode enabled
-2. Navigate to mock week
-3. Use browser console to trigger updates:
-```javascript
-// Simulate quarter change
-window.mockGameUpdate('Q3');
-
-// Simulate scoring play
-window.mockScoringPlay('touchdown', 'KC');
-```
-
-## Integration Testing
-
-### Running Mock Week Tests
-```bash
-# Run all mock week tests
-npm run test:mock
-
-# Test specific week
-npm run test:mock -- --week=1
-
-# Test with live progression
-npm run test:mock -- --live
-```
-
-### Validating Scoring
-Mock weeks automatically validate:
-- Player fantasy point calculations
-- Team total scoring
-- Scoring player selection (top 11 + 2 DST)
-- Standings updates
-
-### Browser Testing
-```bash
-# Run Puppeteer tests for mock weeks
-npm run test:browser -- mockWeek.test.js
-```
-
-## Common Use Cases
-
-### 1. Testing New Scoring Rules
-- Modify scoring settings
-- Run mock week
-- Verify point calculations
-
-### 2. UI Development
-- Use mock weeks for consistent data
-- Test responsive design
-- Validate loading states
-
-### 3. Performance Testing
-- Load test with multiple concurrent users
-- Measure response times
-- Identify bottlenecks
-
-### 4. Bug Reproduction
-- Create mock week matching bug conditions
-- Consistent reproduction environment
-- Regression testing
-
-## Debugging Mock Weeks
-
-### Enable Debug Logging
-```javascript
-// Set in environment
-DEBUG=mock:* npm start
-
-// Or in code
-process.env.DEBUG = 'mock:*';
-```
-
-### Inspect Mock Data
 ```bash
 # View mock week data
 node -e "console.log(JSON.stringify(require('./tests/mockWeeks/week1'), null, 2))"
-
-# Check player stats
-sqlite3 fantasy_football.db "SELECT * FROM player_stats WHERE week=1 AND player_id LIKE 'mock_%'"
 ```
 
 ### Common Issues
 
 #### Stats Not Updating
 - Verify player IDs match between games and stats
-- Check week/season parameters
-- Ensure stats sync is enabled
+- Check week/season parameters (season must be `"mock"`)
 
-#### Scoring Discrepancies  
-- Review scoring rules configuration
-- Check player position mappings
-- Validate DST scoring logic
-
-#### UI Not Refreshing
-- Verify WebSocket connections (if used)
-- Check API polling intervals
-- Clear browser cache
-
-## Best Practices
-
-### Mock Data Guidelines
-- Use realistic scores and stats
-- Include variety of game scenarios
-- Test edge cases (0-0 games, 70+ point games)
-- Match actual NFL constraints
-
-### Testing Strategy
-1. **Unit Tests**: Individual scoring calculations
-2. **Integration Tests**: Full mock week flows
-3. **Browser Tests**: UI interactions
-4. **Load Tests**: Multiple concurrent users
-
-### Maintenance
-- Update mock data each season
-- Add new edge cases as discovered
-- Document special test scenarios
-- Keep mock weeks synchronized with schema changes
-
-## Advanced Features
-
-### Conditional Logic
-```javascript
-// Random events during games
-if (Math.random() > 0.9) {
-  mockInjuryEvent(playerId);
-}
-
-// Weather effects
-if (mockWeek.weather === 'snow') {
-  reducePassingStats(0.8);
-}
-```
-
-### API Mocking
-```javascript
-// Override Tank01 API responses
-mockTank01Response('/scores', mockWeekData);
-
-// Simulate API failures
-mockTank01Error('/stats', 500);
-```
-
-### Time Travel
-```javascript
-// Test specific game times
-setMockGameTime('2024-09-08 16:25:00');
-
-// Advance time
-advanceMockTime(minutes: 15);
-```
-
-## Conclusion
-
-The Mock Week Testing System is an essential tool for development, testing, and demonstration of the StatFink fantasy football platform. It provides consistent, repeatable test scenarios that help ensure system reliability and accuracy.
+#### Scoring Discrepancies
+- Check scoring rules: `docs/SCORING_SYSTEM.md`
+- Validate DST scoring logic: `docs/DEFENSIVE_SCORING.md`

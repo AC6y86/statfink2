@@ -1,6 +1,6 @@
 # Scheduler Configuration (CRON)
 
-This document describes the automated scheduling implementation for StatFink2's three main scheduled tasks using PM2's built-in cron functionality.
+This document describes the automated scheduling implementation for StatFink2's scheduled tasks using PM2's built-in cron functionality.
 
 ## Current Implementation Status ✅
 
@@ -10,15 +10,17 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
 
 ### Active Scheduled Tasks:
 
-1. **Daily Updates** - Runs at 10am UTC (3am PDT)
+1. **Daily Updates** - Runs at 5pm UTC (10am PDT / 9am PST)
 2. **Live Game Updates** - Runs continuously (every minute, 24/7)
-3. **Weekly Updates** - Runs hourly on Tuesday UTC to check for completion
+3. **Email Roster-Move Poller** - Runs continuously (polls Gmail every 2 minutes)
+4. **Nightly Regression Tests** - Runs at 12pm UTC (5am PDT / 4am PST)
+5. **Weekly Updates** - ⚠️ Currently DISABLED (cron commented out in `ecosystem.config.js`); run manually
 
 ## How It Works
 
 ### 1. Daily Update
 - **PM2 Process**: `statfink2-daily`
-- **Schedule**: `0 17 * * *` (10am UTC = 3am PDT)
+- **Schedule**: `0 17 * * *` (5pm UTC = 10am PDT / 9am PST)
 - **Script**: `/scripts/daily-update.js`
 - **Functions**:
   - Updates NFL game schedule for the current week
@@ -34,9 +36,18 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
   - Calculates defensive bonuses when all games complete
   - Automatically detects when games are in progress
 
-### Nightly Regression Tests
+### 3. Email Roster-Move Poller (Continuous)
+- **PM2 Process**: `statfink2-email-poller`
+- **Schedule**: Runs continuously (polls Gmail every 2 minutes)
+- **Script**: `/scripts/roster-email-poller.js`
+- **Functions**:
+  - Forwards new roster-move emails to the server, which parses them and
+    queues moves for commissioner approval
+  - See `docs/EMAIL_ROSTER_MOVES.md` for the full system
+
+### 4. Nightly Regression Tests
 - **PM2 Process**: `statfink2-nightly-tests`
-- **Schedule**: `0 12 * * *` (12pm UTC = 4am PDT, after the daily update)
+- **Schedule**: `0 12 * * *` (12pm UTC = 5am PDT / 4am PST)
 - **Script**: `/scripts/nightly-test-run.js`
 - **Functions**:
   - Stops the DB-writing services, runs the fast suite plus the 2024+2025
@@ -46,73 +57,30 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
   - Requires the Gmail token to have the gmail.send scope
     (`node roster_moves/authSetup.js` re-authorizes if missing)
 
-### 3. Weekly Update (After all games complete)
+### 5. Weekly Update (After all games complete) — ⚠️ DISABLED
 - **PM2 Process**: `statfink2-weekly`
-- **Schedule**: `0 * * * 2` (Hourly on Tuesday UTC)
+- **Schedule**: None — the `cron_restart` is commented out in `ecosystem.config.js`
+  ("TEMPORARILY DISABLED"; the last configured value was `0 11 * * 2`, 11am UTC Tuesday)
 - **Script**: `/scripts/weekly-update-check.js`
-- **Functions**:
+- **Functions** (when run manually):
   - Checks if all games are complete
   - Creates weekly standings
   - Advances to next week
+- **To run manually**: `node scripts/weekly-update-check.js` or
+  `curl -X POST http://localhost:8000/api/admin/scheduler/weekly`
 
 ## Current PM2 Configuration
 
-The scheduled tasks are configured in `/home/joepaley/statfink2/ecosystem.config.js`. Here's the active configuration:
+The scheduled tasks are configured in `/home/joepaley/statfink2/ecosystem.config.js` (the file itself is the source of truth). Six PM2 apps are defined:
 
-```javascript
-// ecosystem.config.js (ACTIVE)
-module.exports = {
-  apps: [
-    // Main application
-    {
-      name: 'statfink2',
-      script: './server/app.js',
-      cwd: '/home/joepaley/statfink2',
-      instances: 1,
-      exec_mode: 'fork',
-      autorestart: true,
-      watch: false,
-      max_memory_restart: '1G',
-      env: {
-        NODE_ENV: 'development',
-        PORT: process.env.PORT || 8000,
-        // ... other env vars
-      }
-    },
-    // Scheduled tasks
-    {
-      name: 'statfink2-daily',
-      script: './scripts/daily-update.js',
-      cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 17 * * *', // 10am UTC = 3am PDT
-      autorestart: false,
-      watch: false,
-      time: true
-    },
-    // Continuous live update process - runs every minute 24/7
-    {
-      name: 'statfink2-live-continuous',
-      script: './scripts/live-update-continuous.js',
-      cwd: '/home/joepaley/statfink2',
-      instances: 1,
-      exec_mode: 'fork',
-      autorestart: true,
-      watch: false,
-      max_memory_restart: '500M',
-      time: true
-    },
-    {
-      name: 'statfink2-weekly',
-      script: './scripts/weekly-update-check.js',
-      cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 * * * 2', // Hourly on Tuesday UTC (after Monday night games)
-      autorestart: false,
-      watch: false,
-      time: true
-    }
-  ]
-};
-```
+| Process | Type | Schedule (UTC) |
+|---------|------|----------------|
+| `statfink2` | Main server, always on | — |
+| `statfink2-daily` | Cron | `0 17 * * *` (5pm UTC = 10am PDT) |
+| `statfink2-live-continuous` | Always on | every minute, 24/7 |
+| `statfink2-email-poller` | Always on | polls Gmail every 2 minutes |
+| `statfink2-nightly-tests` | Cron | `0 12 * * *` (12pm UTC = 5am PDT) |
+| `statfink2-weekly` | Cron — **disabled** | `cron_restart` commented out |
 
 ## Monitoring Commands
 
@@ -131,6 +99,12 @@ pm2 logs statfink2-daily
 
 # Live update logs
 pm2 logs statfink2-live-continuous
+
+# Email poller logs
+pm2 logs statfink2-email-poller
+
+# Nightly test logs
+pm2 logs statfink2-nightly-tests
 
 # Weekly update logs
 pm2 logs statfink2-weekly
@@ -192,12 +166,12 @@ pm2 restart statfink2-weekly
 
 ### Stop a Task Temporarily:
 ```bash
-pm2 stop statfink2-live-sunday
+pm2 stop statfink2-live-continuous
 ```
 
 ### Start a Stopped Task:
 ```bash
-pm2 start statfink2-live-sunday
+pm2 start statfink2-live-continuous
 ```
 
 ### Update Configuration:
@@ -211,11 +185,14 @@ pm2 save
 
 - **Server runs in UTC timezone**
 - All cron times in ecosystem.config.js are in UTC
-- Conversions:
-  - 10am UTC = 3am PDT (Daily update)
+- Conversions (PDT = UTC−7, PST = UTC−8):
+  - Daily update: 5pm UTC = 10am PDT / 9am PST
+  - Nightly tests: 12pm UTC = 5am PDT / 4am PST
   - Live updates run continuously, no time windows needed
 - NFL game times are typically in ET
 - The server tracks timestamps to prevent duplicate runs
+
+⚠️ Note: some inline comments in `ecosystem.config.js` still say "10am UTC = 3am PDT" — the cron expression has been moved several times without updating the comments. The expressions above are what actually runs.
 
 ## Error Handling
 
@@ -228,22 +205,12 @@ The scheduler service includes:
 
 ## Database Backups
 
-Daily backups are automatically created at 3am PDT and stored in `/home/joepaley/backups/` with the format:
+Daily backups are created as part of the daily update (5pm UTC = 10am PDT) and stored in `/home/joepaley/backups/` with the format:
 ```
 fantasy_football_YYYY-MM-DD.db
 ```
 
-To set up backup cleanup (optional):
-```bash
-# Add to PM2 config for weekly cleanup of backups older than 30 days
-{
-  name: 'statfink2-cleanup',
-  script: 'find /home/joepaley/backups -name "fantasy_football_*.db" -mtime +30 -delete',
-  cron_restart: '0 0 * * 0', // Weekly on Sunday midnight
-  autorestart: false,
-  interpreter: 'bash'
-}
-```
+Pruning is automated — after each backup, the retention policy keeps the last 14 daily backups plus the first backup of each month. See `docs/BACKUPS.md` for details and restore procedures.
 
 ## Troubleshooting
 

@@ -2,7 +2,7 @@
 
 ## Roster Composition
 
-Each team scores any player they draft and accumulates a weekly score based on the following 11 players:
+Each team scores any player they draft and accumulates a weekly score based on the following 11 offensive players:
 
 - 1 each **Quarterback**
 - 4 each **Running Backs**
@@ -10,7 +10,7 @@ Each team scores any player they draft and accumulates a weekly score based on t
 - 1 each **Kicker**
 - 1 each **Bonus Players**
 
-**Defense:**
+**Defense** (2 more scoring slots, for 13 scoring players total):
 - 1 each **Team Defense** (fewest points allowed)
 - 1 each **Team Defense** (fewest yards allowed)
 

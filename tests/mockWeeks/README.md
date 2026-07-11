@@ -25,9 +25,14 @@ Mock weeks use the season identifier `"mock"` and provide deterministic test dat
   - Realistic scoring scenarios including high-scoring games and defensive battles
 
 ### Week 3: Mid-Sunday Games
-- **Status**: 🔲 Not implemented
+- **Status**: ✅ Implemented
 - **Scenario**: Sunday 2:30 PM ET - Mixed game states
 - **Tests**: Live scoring, partial week scoring, in-progress displays
+
+### Week 99: Live Progression / Delta Testing
+- **Status**: ✅ Implemented
+- **Scenario**: Games in progress with real player stats and timed updates
+- **Tests**: Live update deltas (see `deltaScenarios.js` and `/mocks/delta-test`)
 
 ### Week 4: Active Live Scoring
 - **Status**: 🔲 Not implemented
