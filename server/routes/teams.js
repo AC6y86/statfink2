@@ -29,7 +29,7 @@ async function validateRosterConstraints(db, teamId, position, action) {
         WHERE r.team_id = ? 
           AND r.week = ? 
           AND r.season = ?
-          AND r.roster_position IN ('starter', 'bench')
+          AND r.roster_position = 'active'
         GROUP BY p.position
     `, [teamId, currentWeek.week, currentSeason]);
     
@@ -392,7 +392,7 @@ router.put('/:teamId/roster/move', asyncHandler(async (req, res) => {
     // For moving to IR, we need to update the weekly_rosters table
     // This would typically be handled by creating a new weekly snapshot
     // For now, we'll update the current week's entry
-    const newRosterPosition = rosterPosition === 'active' ? 'starter' : 'injured_reserve';
+    const newRosterPosition = rosterPosition === 'active' ? 'active' : 'injured_reserve';
     
     await db.run(
         `UPDATE weekly_rosters 

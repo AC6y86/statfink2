@@ -2341,10 +2341,11 @@
 
         // ---------- Pending email moves ----------
 
+        const typeLabels = { ir: 'IR move', supplemental: 'Supplemental', ir_return: 'IR return', trade: 'Trade' };
+
         function describePendingMove(item) {
             if (!item.move) return escapeHtml(item.parse?.summary || 'No move could be extracted');
             const m = item.move;
-            const typeLabels = { ir: 'IR move', supplemental: 'Supplemental', ir_return: 'IR return', trade: 'Trade' };
             if (m.move_type === 'trade') {
                 return `<strong>${typeLabels.trade}</strong>: Team ${m.team_id} sends <strong>${escapeHtml(m.drop_player_name)}</strong> to Team ${m.partner_team_id} for <strong>${escapeHtml(m.partner_player_name)}</strong>`;
             }
@@ -2380,10 +2381,18 @@
                         ? `<div style="background: #fffbf0; border: 1px solid #ffc107; border-radius: 6px; padding: 0.5rem; margin: 0.4rem 0;">
                              <strong>Needs your judgment:</strong><ul style="margin: 0.25rem 0 0 1.25rem;">${item.parse.questions_for_commissioner.map(q => `<li>${escapeHtml(q)}</li>`).join('')}</ul>
                            </div>` : '';
+                    const typeSelect = item.move && item.move.move_type !== 'trade'
+                        ? `<label style="font-size: 0.85em; color: #555;">as
+                             <select id="move-type-${item.id}" style="padding: 0.2rem; border-radius: 4px;">
+                               ${['ir', 'supplemental', 'ir_return'].map(t =>
+                                   `<option value="${t}" ${t === item.move.move_type ? 'selected' : ''}>${typeLabels[t] || t}</option>`).join('')}
+                             </select>
+                           </label>` : '';
                     const buttons = isReview
                         ? `<button class="btn" onclick="rejectPendingMove('${item.id}')" style="background: #6c757d;">Reject</button>
                            <span style="font-size: 0.85em; color: #666;">— or handle it with the manual form below</span>`
                         : `<button class="btn btn-success" onclick="approvePendingMove('${item.id}')">Approve &amp; Execute</button>
+                           ${typeSelect}
                            <button class="btn" onclick="rejectPendingMove('${item.id}')" style="background: #6c757d;">Reject</button>`;
                     return `
                         <div style="border: 2px solid ${isReview ? '#ffc107' : '#667eea'}; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; background: white;">
@@ -2404,9 +2413,14 @@
         }
 
         async function approvePendingMove(id) {
-            if (!confirm('Approve and execute this roster move?')) return;
+            const moveType = document.getElementById(`move-type-${id}`)?.value || null;
+            if (!confirm(`Approve and execute this roster move${moveType ? ` as ${typeLabels[moveType] || moveType}` : ''}?`)) return;
             try {
-                const response = await fetch(`/api/admin/pending-moves/${id}/approve`, { method: 'POST' });
+                const response = await fetch(`/api/admin/pending-moves/${id}/approve`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ moveType })
+                });
                 const result = await response.json();
                 showRosterMessage(result.message || (result.success ? 'Move executed' : 'Move failed'), result.success ? 'success' : 'error');
                 loadPendingMoves();

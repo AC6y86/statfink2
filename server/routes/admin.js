@@ -46,14 +46,14 @@ const requireAdmin = (req, res, next) => {
 // Add player to team roster
 router.post('/roster/add', requireAdmin, asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
-    const { teamId, playerId, rosterPosition = 'starter' } = req.body;
-    
+    const { teamId, playerId, rosterPosition = 'active' } = req.body;
+
     if (!teamId || !playerId) {
         throw new APIError('Team ID and Player ID are required', 400);
     }
-    
-    if (!['starter', 'injured_reserve'].includes(rosterPosition)) {
-        throw new APIError('Invalid roster position. Must be: starter or injured_reserve', 400);
+
+    if (!['active', 'injured_reserve'].includes(rosterPosition)) {
+        throw new APIError('Invalid roster position. Must be: active or injured_reserve', 400);
     }
     
     // Validate team exists
@@ -267,7 +267,7 @@ router.get('/roster/check-availability/:playerId', requireAdmin, asyncHandler(as
     });
 }));
 
-// Update roster position (starter/bench)
+// Update roster position (active/injured_reserve)
 router.post('/roster/position', requireAdmin, asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const { teamId, playerId, rosterPosition } = req.body;
@@ -276,8 +276,8 @@ router.post('/roster/position', requireAdmin, asyncHandler(async (req, res) => {
         throw new APIError('Team ID, Player ID, and roster position are required', 400);
     }
 
-    if (!['starter', 'injured_reserve'].includes(rosterPosition)) {
-        throw new APIError('Invalid roster position. Must be: starter or injured_reserve', 400);
+    if (!['active', 'injured_reserve'].includes(rosterPosition)) {
+        throw new APIError('Invalid roster position. Must be: active or injured_reserve', 400);
     }
 
     // Get player and team info for response
@@ -307,43 +307,6 @@ router.post('/roster/position', requireAdmin, asyncHandler(async (req, res) => {
     });
 }));
 
-// Validate lineup for a team
-router.post('/lineup/validate', requireAdmin, asyncHandler(async (req, res) => {
-    const db = req.app.locals.db;
-    const scoringService = req.app.locals.scoringService;
-    const { teamId } = req.body;
-    
-    if (!teamId) {
-        throw new APIError('Team ID is required', 400);
-    }
-    
-    const roster = await db.getTeamRoster(parseInt(teamId));
-    
-    try {
-        const isValid = scoringService.validateLineup(roster);
-        
-        res.json({
-            success: true,
-            isValid: true,
-            message: 'Lineup is valid',
-            data: {
-                starters: roster.filter(p => p.roster_position === 'starter').length,
-                bench: roster.filter(p => p.roster_position === 'bench').length
-            }
-        });
-    } catch (error) {
-        res.json({
-            success: true,
-            isValid: false,
-            message: error.message,
-            data: {
-                starters: roster.filter(p => p.roster_position === 'starter').length,
-                bench: roster.filter(p => p.roster_position === 'bench').length
-            }
-        });
-    }
-}));
-
 // Get admin dashboard summary
 router.get('/dashboard', requireAdmin, asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
@@ -355,7 +318,7 @@ router.get('/dashboard', requireAdmin, asyncHandler(async (req, res) => {
     ]);
     
     // Count total rostered players from current week
-    const currentSeason = 2024; // TODO: Make this dynamic
+    const currentSeason = settings.season_year;
     const latestWeek = await db.get(`
         SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
     `, [currentSeason]);
@@ -365,17 +328,17 @@ router.get('/dashboard', requireAdmin, asyncHandler(async (req, res) => {
         WHERE week = ? AND season = ?
     `, [latestWeek.week, currentSeason]);
     
-    // Get teams with roster issues
+    // Get teams with roster issues (every team must have exactly 19 active players)
     const teamsWithIssues = [];
     for (const team of teams) {
         const roster = await db.getTeamRoster(team.team_id);
-        const starters = roster.filter(p => p.roster_position === 'starter');
-        
-        if (starters.length !== 9) {
+        const active = roster.filter(p => p.roster_position === 'active');
+
+        if (active.length !== 19) {
             teamsWithIssues.push({
                 ...team,
-                starterCount: starters.length,
-                issue: starters.length < 9 ? 'Too few starters' : 'Too many starters'
+                activeCount: active.length,
+                issue: active.length < 19 ? 'Too few active players' : 'Too many active players'
             });
         }
     }
@@ -748,10 +711,12 @@ router.post('/sync/games/specific-week', requireAdmin, asyncHandler(async (req, 
     const seasonNum = parseInt(season);
     const weekNum = parseInt(week);
 
-    if (isNaN(seasonNum) || seasonNum < 2024 || seasonNum > 2025) {
+    const settings = await db.getLeagueSettings();
+    const maxSeason = (settings?.season_year || new Date().getFullYear()) + 1;
+    if (isNaN(seasonNum) || seasonNum < 2024 || seasonNum > maxSeason) {
         return res.status(400).json({
             success: false,
-            message: 'Invalid season. Must be 2024 or 2025'
+            message: `Invalid season. Must be between 2024 and ${maxSeason}`
         });
     }
 
@@ -1341,7 +1306,8 @@ const TestRunnerService = require('../services/testRunnerService');
 // Clear data for a specific week
 router.post('/test/clear-week-data', requireAdmin, asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
-    const { week, season = 2025 } = req.body;
+    const { week } = req.body;
+    const season = req.body.season ? parseInt(req.body.season) : (await db.getLeagueSettings()).season_year;
 
     if (!week) {
         throw new APIError('Week number is required', 400);
@@ -1373,7 +1339,7 @@ router.post('/test/clear-week-data', requireAdmin, asyncHandler(async (req, res)
 router.get('/test/available-weeks', requireAdmin, asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const testRunner = new TestRunnerService(db);
-    const season = parseInt(req.query.season) || 2025;
+    const season = parseInt(req.query.season) || (await db.getLeagueSettings()).season_year;
 
     const weeks = await testRunner.getAvailableWeeks(season);
 
@@ -1388,7 +1354,8 @@ router.get('/test/available-weeks', requireAdmin, asyncHandler(async (req, res) 
 router.post('/test/validate-week', requireAdmin, asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const testRunner = new TestRunnerService(db);
-    const { week, season = 2025 } = req.body;
+    const { week } = req.body;
+    const season = req.body.season ? parseInt(req.body.season) : (await db.getLeagueSettings()).season_year;
 
     if (!week) {
         throw new APIError('Week number is required', 400);
@@ -1408,7 +1375,8 @@ router.post('/test/validate-week', requireAdmin, asyncHandler(async (req, res) =
 router.post('/test/stats-completeness', requireAdmin, asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const testRunner = new TestRunnerService(db);
-    const { week, season = 2025 } = req.body;
+    const { week } = req.body;
+    const season = req.body.season ? parseInt(req.body.season) : (await db.getLeagueSettings()).season_year;
 
     if (!week) {
         throw new APIError('Week number is required', 400);
@@ -1421,6 +1389,114 @@ router.post('/test/stats-completeness', requireAdmin, asyncHandler(async (req, r
     res.json({
         success: true,
         results: results
+    });
+}));
+
+// List pending email moves. ?status=pending|needs_review|approved|rejected|failed
+router.get('/pending-moves', requireAdmin, asyncHandler(async (req, res) => {
+    const pendingMovesService = req.app.locals.pendingMovesService;
+    if (!pendingMovesService) {
+        throw new APIError('Pending moves service not available', 500);
+    }
+
+    const items = await pendingMovesService.getItems({ status: req.query.status || null });
+    const pendingCount = await pendingMovesService.getPendingCount();
+
+    res.json({ success: true, data: { items, pendingCount } });
+}));
+
+// Approve a pending email move - re-validates, then executes the move
+router.post('/pending-moves/:id/approve', requireAdmin, asyncHandler(async (req, res) => {
+    const pendingMovesService = req.app.locals.pendingMovesService;
+    if (!pendingMovesService) {
+        throw new APIError('Pending moves service not available', 500);
+    }
+
+    const moveTypeOverride = req.body?.moveType || null;
+    logInfo(`Approving pending email move ${req.params.id}${moveTypeOverride ? ` as ${moveTypeOverride}` : ''}`);
+    const item = await pendingMovesService.approveItem(req.params.id, 'commissioner', { moveTypeOverride });
+
+    res.json({
+        success: item.status === 'approved',
+        data: item,
+        message: item.status === 'approved'
+            ? `Move executed: ${item.executionResult.message}`
+            : `Move failed: ${item.executionResult?.message || 'unknown error'}`
+    });
+}));
+
+// Reject a pending email move
+router.post('/pending-moves/:id/reject', requireAdmin, asyncHandler(async (req, res) => {
+    const pendingMovesService = req.app.locals.pendingMovesService;
+    if (!pendingMovesService) {
+        throw new APIError('Pending moves service not available', 500);
+    }
+
+    logInfo(`Rejecting pending email move ${req.params.id}`);
+    const item = await pendingMovesService.rejectItem(req.params.id, req.body?.reason || null);
+
+    res.json({ success: true, data: item });
+}));
+
+// Get health alerts (newest first). ?unacknowledged=true to filter.
+router.get('/health/alerts', requireAdmin, asyncHandler(async (req, res) => {
+    const healthCheckService = req.app.locals.healthCheckService;
+    if (!healthCheckService) {
+        throw new APIError('Health check service not available', 500);
+    }
+
+    const unacknowledgedOnly = req.query.unacknowledged === 'true';
+    const alerts = await healthCheckService.getAlerts({ unacknowledgedOnly });
+    const unacknowledgedCount = unacknowledgedOnly
+        ? alerts.length
+        : alerts.filter(a => !a.acknowledged).length;
+
+    res.json({
+        success: true,
+        data: {
+            alerts,
+            unacknowledgedCount
+        }
+    });
+}));
+
+// Acknowledge health alerts. Body: { ids: [...] } or empty to ack all.
+router.post('/health/alerts/ack', requireAdmin, asyncHandler(async (req, res) => {
+    const healthCheckService = req.app.locals.healthCheckService;
+    if (!healthCheckService) {
+        throw new APIError('Health check service not available', 500);
+    }
+
+    const { ids } = req.body || {};
+    const result = await healthCheckService.acknowledgeAlerts(ids || null);
+
+    res.json({
+        success: true,
+        data: result
+    });
+}));
+
+// Manually run health validation. Body: { week, season, mode } (defaults to
+// current week/season from league settings, full mode).
+router.post('/health/validate', requireAdmin, asyncHandler(async (req, res) => {
+    const db = req.app.locals.db;
+    const healthCheckService = req.app.locals.healthCheckService;
+    if (!healthCheckService) {
+        throw new APIError('Health check service not available', 500);
+    }
+
+    const settings = await db.getLeagueSettings();
+    const week = parseInt(req.body?.week) || settings.current_week;
+    const season = parseInt(req.body?.season) || settings.season_year;
+    const mode = req.body?.mode === 'light' ? 'light' : 'full';
+
+    logInfo(`Manual health validation triggered for week ${week}, season ${season} (${mode})`);
+
+    const results = await healthCheckService.runValidation(week, season, { mode });
+
+    res.json({
+        success: true,
+        data: results
     });
 }));
 

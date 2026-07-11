@@ -7,8 +7,23 @@ class TestRunnerService {
         this.db = db;
     }
 
-    async getAvailableWeeks(season = 2025) {
+    /**
+     * Resolve the season to use: explicit param wins, otherwise league_settings.
+     */
+    async resolveSeason(season) {
+        if (season) return season;
+        const settings = await this.db.get(
+            'SELECT season_year FROM league_settings WHERE league_id = 1'
+        );
+        if (!settings?.season_year) {
+            throw new Error('No season specified and league_settings.season_year is not set');
+        }
+        return settings.season_year;
+    }
+
+    async getAvailableWeeks(season = null) {
         try {
+            season = await this.resolveSeason(season);
             // Get current week from league settings
             const currentSettings = await this.db.get(`
                 SELECT current_week
@@ -39,7 +54,8 @@ class TestRunnerService {
         }
     }
 
-    async runValidateEndOfWeekTest(week, season = 2025) {
+    async runValidateEndOfWeekTest(week, season = null) {
+        season = await this.resolveSeason(season);
         logInfo(`Running validateEndOfWeek test for week ${week}, season ${season}`);
 
         try {
@@ -100,7 +116,8 @@ class TestRunnerService {
         };
     }
 
-    async runStatsCompletenessTest(week, season = 2025) {
+    async runStatsCompletenessTest(week, season = null) {
+        season = await this.resolveSeason(season);
         logInfo(`Running stats completeness test for week ${week}, season ${season}`);
 
         return new Promise((resolve, reject) => {

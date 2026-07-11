@@ -1,5 +1,4 @@
 const ScoringService = require('../../server/services/scoringService');
-const { ValidationError } = require('../../server/database/validation');
 
 // Mock database
 const mockDb = {
@@ -111,80 +110,6 @@ describe('ScoringService', () => {
         const points = await scoringService.calculateFantasyPoints(dstStats);
         expect(points).toBe(testCase.expected_total);
       }
-    });
-  });
-
-  describe('validateLineup', () => {
-    test('should validate correct starting lineup', () => {
-      const validRoster = [
-        { position: 'QB', roster_position: 'starter' },      // 1 QB
-        { position: 'RB', roster_position: 'starter' },      // 4 RBs
-        { position: 'RB', roster_position: 'starter' },
-        { position: 'RB', roster_position: 'starter' },
-        { position: 'RB', roster_position: 'starter' },
-        { position: 'WR', roster_position: 'starter' },      // 3 WR/TE combined
-        { position: 'WR', roster_position: 'starter' },
-        { position: 'TE', roster_position: 'starter' },
-        { position: 'K', roster_position: 'starter' },       // 1 K
-        { position: 'DST', roster_position: 'starter' },     // 2 DST
-        { position: 'DST', roster_position: 'starter' },
-        { position: 'QB', roster_position: 'starter' },      // 2 Bonus players (any position)
-        { position: 'RB', roster_position: 'starter' },
-        { position: 'RB', roster_position: 'bench' },
-        { position: 'WR', roster_position: 'bench' }
-      ];
-
-      expect(() => scoringService.validateLineup(validRoster)).not.toThrow();
-    });
-
-    test('should reject lineup with missing QB', () => {
-      const invalidRoster = [
-        { position: 'RB', roster_position: 'starter' },
-        { position: 'RB', roster_position: 'starter' },
-        { position: 'WR', roster_position: 'starter' },
-        { position: 'WR', roster_position: 'starter' },
-        { position: 'TE', roster_position: 'starter' },
-        { position: 'K', roster_position: 'starter' },
-        { position: 'DST', roster_position: 'starter' },
-        { position: 'WR', roster_position: 'starter' },
-        { position: 'WR', roster_position: 'starter' }
-      ];
-
-      expect(() => scoringService.validateLineup(invalidRoster)).toThrow(ValidationError);
-      expect(() => scoringService.validateLineup(invalidRoster)).toThrow('Need at least 1 QB');
-    });
-
-    test('should reject lineup with insufficient RBs', () => {
-      const invalidRoster = [
-        { position: 'QB', roster_position: 'starter' },
-        { position: 'RB', roster_position: 'starter' },
-        { position: 'RB', roster_position: 'starter' },
-        { position: 'RB', roster_position: 'starter' }, // Only 3 RBs instead of 4
-        { position: 'WR', roster_position: 'starter' },
-        { position: 'WR', roster_position: 'starter' },
-        { position: 'WR', roster_position: 'starter' },
-        { position: 'TE', roster_position: 'starter' },
-        { position: 'K', roster_position: 'starter' },
-        { position: 'DST', roster_position: 'starter' },
-        { position: 'DST', roster_position: 'starter' },
-        { position: 'WR', roster_position: 'starter' },
-        { position: 'TE', roster_position: 'starter' }
-      ];
-
-      expect(() => scoringService.validateLineup(invalidRoster)).toThrow(ValidationError);
-      expect(() => scoringService.validateLineup(invalidRoster)).toThrow('Need at least 4 RB');
-    });
-
-    test('should reject lineup with wrong total players', () => {
-      const invalidRoster = [
-        { position: 'QB', roster_position: 'starter' },
-        { position: 'RB', roster_position: 'starter' },
-        { position: 'WR', roster_position: 'starter' },
-        { position: 'TE', roster_position: 'starter' }
-        // Missing players
-      ];
-
-      expect(() => scoringService.validateLineup(invalidRoster)).toThrow('Starting lineup must have exactly 13 players');
     });
   });
 

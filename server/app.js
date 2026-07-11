@@ -25,6 +25,10 @@ const ScoringPlayersService = require('./services/scoringPlayersService');
 const WeeklyReportService = require('./services/weeklyReportService');
 const DSTManagementService = require('./services/dstManagementService');
 const FantasyPointsCalculationService = require('./services/fantasyPointsCalculationService');
+const TestRunnerService = require('./services/testRunnerService');
+const HealthCheckService = require('./services/healthCheckService');
+const EmailMoveParsingService = require('./services/emailMoveParsingService');
+const PendingMovesService = require('./services/pendingMovesService');
 const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
 
 const app = express();
@@ -38,7 +42,7 @@ app.set('trust proxy', true);
 const { setupAuth } = require('./auth/auth');
 
 // Initialize services
-let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService, weeklyReportService, dstManagementService, fantasyPointsCalculationService;
+let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService, weeklyReportService, dstManagementService, fantasyPointsCalculationService, healthCheckService, emailMoveParsingService, pendingMovesService;
 
 async function initializeServices() {
     try {
@@ -96,8 +100,20 @@ async function initializeServices() {
         logInfo('Fantasy points calculation service initialized');
         
         
+        // Initialize health check service (alerts + data validation)
+        healthCheckService = new HealthCheckService(db, {
+            teamScoreService,
+            testRunnerService: new TestRunnerService(db)
+        });
+        logInfo('Health check service initialized');
+
+        // Initialize email-driven roster move services
+        emailMoveParsingService = new EmailMoveParsingService(db);
+        pendingMovesService = new PendingMovesService(db);
+        logInfo('Email move services initialized');
+
         // Initialize scheduler service
-        schedulerService = new SchedulerService(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService, fantasyPointsCalculationService);
+        schedulerService = new SchedulerService(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService, fantasyPointsCalculationService, healthCheckService);
         logInfo('Scheduler service initialized');
         
         
@@ -114,6 +130,9 @@ async function initializeServices() {
         app.locals.schedulerService = schedulerService;
         app.locals.dstManagementService = dstManagementService;
         app.locals.fantasyPointsCalculationService = fantasyPointsCalculationService;
+        app.locals.healthCheckService = healthCheckService;
+        app.locals.emailMoveParsingService = emailMoveParsingService;
+        app.locals.pendingMovesService = pendingMovesService;
         
         logInfo('Services initialized successfully');
     } catch (error) {

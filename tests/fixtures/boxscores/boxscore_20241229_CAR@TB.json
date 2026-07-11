@@ -1,0 +1,316 @@
+{
+  "gameStatus": "Completed",
+  "DST": {
+    "away": {
+      "teamAbv": "CAR",
+      "teamID": "5",
+      "defTD": "0",
+      "defensiveInterceptions": "0",
+      "sacks": "2",
+      "ydsAllowed": "551",
+      "fumblesRecovered": "0",
+      "ptsAllowed": "48",
+      "safeties": "0"
+    },
+    "home": {
+      "teamAbv": "TB",
+      "teamID": "30",
+      "defTD": "0",
+      "defensiveInterceptions": "0",
+      "sacks": "5",
+      "ydsAllowed": "204",
+      "fumblesRecovered": "0",
+      "ptsAllowed": "14",
+      "safeties": "0"
+    }
+  },
+  "teamStats": {
+    "away": {
+      "totalYards": "204",
+      "rushingAttempts": "13",
+      "rushingYards": "39",
+      "fumblesLost": "0",
+      "penalties": "4-30",
+      "totalPlays": "46",
+      "possession": "18:49",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "15-28",
+      "passingFirstDowns": "10",
+      "interceptionsThrown": "0",
+      "sacksAndYardsLost": "5-38",
+      "thirdDownEfficiency": "2-9",
+      "blockedPunt": "0",
+      "yardsPerPlay": "4.4",
+      "redZoneScoredAndAttempted": "1-1",
+      "teamID": "5",
+      "defensiveInterceptions": "0",
+      "defensiveOrSpecialTeamsTds": "0",
+      "totalDrives": "10",
+      "rushingFirstDowns": "2",
+      "blockedFG": "0",
+      "rushTD": "0",
+      "twoPointConversions": "0",
+      "firstDowns": "13",
+      "passTD": "2",
+      "team": "CAR",
+      "blockedXP": "0",
+      "teamAbv": "CAR",
+      "firstDownsFromPenalties": "1",
+      "fourthDownEfficiency": "0-1",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "165",
+      "yardsPerRush": "3.0",
+      "snapCounts": {
+        "totalSpecialTeams": "30",
+        "totalOffensive": "47",
+        "totalDefensive": "77"
+      },
+      "turnovers": "0",
+      "yardsPerPass": "5.0"
+    },
+    "home": {
+      "totalYards": "551",
+      "rushingAttempts": "40",
+      "rushingYards": "202",
+      "fumblesLost": "0",
+      "penalties": "5-40",
+      "totalPlays": "74",
+      "possession": "41:11",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "27-32",
+      "passingFirstDowns": "17",
+      "interceptionsThrown": "0",
+      "sacksAndYardsLost": "2-10",
+      "thirdDownEfficiency": "10-14",
+      "blockedPunt": "1",
+      "yardsPerPlay": "7.4",
+      "redZoneScoredAndAttempted": "5-8",
+      "teamID": "30",
+      "defensiveInterceptions": "0",
+      "defensiveOrSpecialTeamsTds": "1",
+      "totalDrives": "9",
+      "rushingFirstDowns": "14",
+      "blockedFG": "0",
+      "rushTD": "0",
+      "twoPointConversions": "0",
+      "firstDowns": "33",
+      "passTD": "5",
+      "team": "TB",
+      "blockedXP": "0",
+      "teamAbv": "TB",
+      "firstDownsFromPenalties": "2",
+      "fourthDownEfficiency": "0-0",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "349",
+      "yardsPerRush": "5.1",
+      "snapCounts": {
+        "totalSpecialTeams": "30",
+        "totalOffensive": "77",
+        "totalDefensive": "47"
+      },
+      "turnovers": "0",
+      "yardsPerPass": "10.3"
+    }
+  },
+  "gameDate": "20241229",
+  "scoringPlays": [
+    {
+      "score": "Mike Evans 2 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+      "scorePeriod": "Q1",
+      "homeScore": "7",
+      "awayScore": "0",
+      "teamID": "30",
+      "scoreDetails": "6 plays, 70 yards, 3:25",
+      "scoreType": "TD",
+      "scoreTime": "11:35",
+      "team": "TB",
+      "playerIDs": [
+        "3052587",
+        "16737",
+        "3150744"
+      ]
+    },
+    {
+      "score": "Adam Thielen 17 Yd pass from Bryce Young (Eddy Pineiro Kick)",
+      "scorePeriod": "Q1",
+      "homeScore": "7",
+      "awayScore": "7",
+      "teamID": "5",
+      "scoreDetails": "6 plays, 70 yards, 3:20",
+      "scoreType": "TD",
+      "scoreTime": "8:15",
+      "team": "CAR",
+      "playerIDs": [
+        "4685720",
+        "16460",
+        "4034949"
+      ]
+    },
+    {
+      "score": "Chase McLaughlin 23 Yd Field Goal",
+      "scorePeriod": "Q1",
+      "homeScore": "10",
+      "awayScore": "7",
+      "teamID": "30",
+      "scoreDetails": "12 plays, 75 yards, 7:02",
+      "scoreType": "FG",
+      "scoreTime": "1:13",
+      "team": "TB",
+      "playerIDs": [
+        "3150744"
+      ]
+    },
+    {
+      "score": "Chase McLaughlin 34 Yd Field Goal",
+      "scorePeriod": "Q2",
+      "homeScore": "13",
+      "awayScore": "7",
+      "teamID": "30",
+      "scoreDetails": "10 plays, 45 yards, 4:20",
+      "scoreType": "FG",
+      "scoreTime": "10:31",
+      "team": "TB",
+      "playerIDs": [
+        "3150744"
+      ]
+    },
+    {
+      "score": "Mike Evans 1 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+      "scorePeriod": "Q2",
+      "homeScore": "20",
+      "awayScore": "7",
+      "teamID": "30",
+      "scoreDetails": "4 plays, 81 yards, 1:50",
+      "scoreType": "TD",
+      "scoreTime": "8:19",
+      "team": "TB",
+      "playerIDs": [
+        "3052587",
+        "16737",
+        "3150744"
+      ]
+    },
+    {
+      "score": "Jalen McMillan 10 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+      "scorePeriod": "Q2",
+      "homeScore": "27",
+      "awayScore": "7",
+      "teamID": "30",
+      "scoreDetails": "11 plays, 64 yards, 5:38",
+      "scoreType": "TD",
+      "scoreTime": "1:11",
+      "team": "TB",
+      "playerIDs": [
+        "3052587",
+        "4430834",
+        "3150744"
+      ]
+    },
+    {
+      "score": "Adam Thielen 40 Yd pass from Bryce Young (Eddy Pineiro Kick)",
+      "scorePeriod": "Q2",
+      "homeScore": "27",
+      "awayScore": "14",
+      "teamID": "5",
+      "scoreDetails": "4 plays, 70 yards, 0:21",
+      "scoreType": "TD",
+      "scoreTime": "0:50",
+      "team": "CAR",
+      "playerIDs": [
+        "4685720",
+        "16460",
+        "4034949"
+      ]
+    },
+    {
+      "score": "Payne Durham 5 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+      "scorePeriod": "Q3",
+      "homeScore": "34",
+      "awayScore": "14",
+      "teamID": "30",
+      "scoreDetails": "10 plays, 94 yards, 5:50",
+      "scoreType": "TD",
+      "scoreTime": "5:48",
+      "team": "TB",
+      "playerIDs": [
+        "3052587",
+        "4372505",
+        "3150744"
+      ]
+    },
+    {
+      "score": "J.J. Russell 23 Yd Return of Blocked Punt (Chase McLaughlin Kick)",
+      "scorePeriod": "Q3",
+      "homeScore": "41",
+      "awayScore": "14",
+      "teamID": "30",
+      "scoreDetails": "3 plays, 0 yards, 0:25",
+      "scoreType": "TD",
+      "scoreTime": "5:23",
+      "team": "TB",
+      "playerIDs": [
+        "3150744"
+      ]
+    },
+    {
+      "score": "Jalen McMillan 16 Yd pass from Baker Mayfield (Chase McLaughlin Kick)",
+      "scorePeriod": "Q4",
+      "homeScore": "48",
+      "awayScore": "14",
+      "teamID": "30",
+      "scoreDetails": "9 plays, 85 yards, 5:03",
+      "scoreType": "TD",
+      "scoreTime": "13:30",
+      "team": "TB",
+      "playerIDs": [
+        "3052587",
+        "4430834",
+        "3150744"
+      ]
+    }
+  ],
+  "network": "CBS",
+  "teamIDHome": "30",
+  "homeResult": "W",
+  "away": "CAR",
+  "gameWeek": "Week 17",
+  "attendance": "64,434",
+  "lineScore": {
+    "period": "Final",
+    "gameClock": "",
+    "away": {
+      "Q1": "7",
+      "Q2": "7",
+      "Q3": "0",
+      "Q4": "0",
+      "teamID": "5",
+      "currentlyInPossession": "False",
+      "totalPts": "14",
+      "teamAbv": "CAR"
+    },
+    "home": {
+      "Q1": "10",
+      "Q2": "17",
+      "Q3": "14",
+      "Q4": "7",
+      "teamID": "30",
+      "currentlyInPossession": "False",
+      "totalPts": "48",
+      "teamAbv": "TB"
+    }
+  },
+  "currentPeriod": "Final",
+  "gameLocation": "Tampa, FL",
+  "home": "TB",
+  "arenaCapacity": "65,844",
+  "arena": "Raymond James Stadium",
+  "homePts": "48",
+  "awayResult": "L",
+  "teamIDAway": "5",
+  "Referees": "Greg Wilson, Clay Martin, Jerod Phillips, Dave Hawkshaw, Alonzo Ramsey III, James Carter II, Brian Perry",
+  "gameClock": "",
+  "awayPts": "14",
+  "gameID": "20241229_CAR@TB",
+  "seasonType": "Regular Season",
+  "gameStatusCode": "2"
+}

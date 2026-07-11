@@ -547,8 +547,15 @@ class Tank01Service {
                 throw new Error('Invalid current week response from Tank01 API');
             }
 
-            // Return a mock current week for now since this is just for health check
-            return { currentWeek: 1, season: 2024 };
+            // This endpoint is only used as a health check; report the configured
+            // week/season from league_settings rather than a hardcoded value
+            const settings = await this.db.get(
+                'SELECT current_week, season_year FROM league_settings WHERE league_id = 1'
+            );
+            return {
+                currentWeek: settings?.current_week || 1,
+                season: settings?.season_year || new Date().getFullYear()
+            };
         } catch (error) {
             logError('Failed to fetch current week', error);
             throw error;

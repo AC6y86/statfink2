@@ -1,0 +1,268 @@
+{
+  "gameStatus": "Completed",
+  "DST": {
+    "away": {
+      "teamAbv": "SF",
+      "teamID": "28",
+      "defTD": "0",
+      "defensiveInterceptions": "0",
+      "sacks": "0",
+      "ydsAllowed": "372",
+      "fumblesRecovered": "0",
+      "ptsAllowed": "35",
+      "safeties": "0"
+    },
+    "home": {
+      "teamAbv": "BUF",
+      "teamID": "4",
+      "defTD": "0",
+      "defensiveInterceptions": "0",
+      "sacks": "1",
+      "ydsAllowed": "239",
+      "fumblesRecovered": "3",
+      "ptsAllowed": "10",
+      "safeties": "0"
+    }
+  },
+  "teamStats": {
+    "away": {
+      "totalYards": "239",
+      "rushingAttempts": "27",
+      "rushingYards": "153",
+      "fumblesLost": "3",
+      "penalties": "2-10",
+      "totalPlays": "47",
+      "possession": "26:33",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "11-18",
+      "passingFirstDowns": "4",
+      "interceptionsThrown": "0",
+      "sacksAndYardsLost": "2-8",
+      "thirdDownEfficiency": "3-10",
+      "blockedPunt": "0",
+      "yardsPerPlay": "5.1",
+      "redZoneScoredAndAttempted": "1-3",
+      "teamID": "28",
+      "defensiveInterceptions": "0",
+      "defensiveOrSpecialTeamsTds": "0",
+      "totalDrives": "10",
+      "rushingFirstDowns": "10",
+      "blockedFG": "0",
+      "rushTD": "1",
+      "twoPointConversions": "0",
+      "firstDowns": "15",
+      "passTD": "0",
+      "team": "SF",
+      "blockedXP": "0",
+      "teamAbv": "SF",
+      "firstDownsFromPenalties": "1",
+      "fourthDownEfficiency": "1-1",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "86",
+      "yardsPerRush": "5.7",
+      "snapCounts": {
+        "totalSpecialTeams": "25",
+        "totalOffensive": "48",
+        "totalDefensive": "58"
+      },
+      "turnovers": "3",
+      "yardsPerPass": "4.3"
+    },
+    "home": {
+      "totalYards": "372",
+      "rushingAttempts": "38",
+      "rushingYards": "220",
+      "fumblesLost": "0",
+      "penalties": "5-35",
+      "totalPlays": "56",
+      "possession": "33:27",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "14-18",
+      "passingFirstDowns": "7",
+      "interceptionsThrown": "0",
+      "sacksAndYardsLost": "0-0",
+      "thirdDownEfficiency": "6-12",
+      "blockedPunt": "0",
+      "yardsPerPlay": "6.6",
+      "redZoneScoredAndAttempted": "4-4",
+      "teamID": "4",
+      "defensiveInterceptions": "0",
+      "defensiveOrSpecialTeamsTds": "0",
+      "totalDrives": "10",
+      "rushingFirstDowns": "12",
+      "blockedFG": "0",
+      "rushTD": "3",
+      "twoPointConversions": "0",
+      "firstDowns": "20",
+      "passTD": "2",
+      "team": "BUF",
+      "blockedXP": "0",
+      "teamAbv": "BUF",
+      "firstDownsFromPenalties": "1",
+      "fourthDownEfficiency": "1-1",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "152",
+      "yardsPerRush": "5.8",
+      "snapCounts": {
+        "totalSpecialTeams": "25",
+        "totalOffensive": "58",
+        "totalDefensive": "48"
+      },
+      "turnovers": "0",
+      "yardsPerPass": "8.4"
+    }
+  },
+  "gameDate": "20241201",
+  "scoringPlays": [
+    {
+      "score": "Jake Moody 33 Yd Field Goal",
+      "scorePeriod": "Q1",
+      "homeScore": "0",
+      "awayScore": "3",
+      "teamID": "28",
+      "scoreDetails": "9 plays, 48 yards, 4:40",
+      "scoreType": "FG",
+      "scoreTime": "7:41",
+      "team": "SF",
+      "playerIDs": [
+        "4372066"
+      ]
+    },
+    {
+      "score": "Ray Davis 5 Yd Rush (Tyler Bass Kick)",
+      "scorePeriod": "Q1",
+      "homeScore": "7",
+      "awayScore": "3",
+      "teamID": "4",
+      "scoreDetails": "13 plays, 70 yards, 7:38",
+      "scoreType": "TD",
+      "scoreTime": "0:03",
+      "team": "BUF",
+      "playerIDs": [
+        "4429501",
+        "3917232"
+      ]
+    },
+    {
+      "score": "James Cook 65 Yd Rush (Tyler Bass Kick)",
+      "scorePeriod": "Q2",
+      "homeScore": "14",
+      "awayScore": "3",
+      "teamID": "4",
+      "scoreDetails": "1 play, 65 yards, 0:10",
+      "scoreType": "TD",
+      "scoreTime": "8:38",
+      "team": "BUF",
+      "playerIDs": [
+        "4379399",
+        "3917232"
+      ]
+    },
+    {
+      "score": "Mack Hollins 7 Yd pass from Josh Allen (Tyler Bass Kick)",
+      "scorePeriod": "Q2",
+      "homeScore": "21",
+      "awayScore": "3",
+      "teamID": "4",
+      "scoreDetails": "9 plays, 97 yards, 2:50",
+      "scoreType": "TD",
+      "scoreTime": "0:41",
+      "team": "BUF",
+      "playerIDs": [
+        "3918298",
+        "2991662",
+        "3917232"
+      ]
+    },
+    {
+      "score": "Amari Cooper pass from Josh Allen, lateral to Josh Allen for 7 Yd Touchdown (Tyler Bass Kick)",
+      "scorePeriod": "Q3",
+      "homeScore": "28",
+      "awayScore": "3",
+      "teamID": "4",
+      "scoreDetails": "6 plays, 44 yards, 3:05",
+      "scoreType": "TD",
+      "scoreTime": "5:58",
+      "team": "BUF",
+      "playerIDs": [
+        "3918298",
+        "2976499",
+        "3917232"
+      ]
+    },
+    {
+      "score": "Isaac Guerendo 15 Yd Rush (Jake Moody Kick)",
+      "scorePeriod": "Q3",
+      "homeScore": "28",
+      "awayScore": "10",
+      "teamID": "28",
+      "scoreDetails": "6 plays, 48 yards, 3:04",
+      "scoreType": "TD",
+      "scoreTime": "2:54",
+      "team": "SF",
+      "playerIDs": [
+        "4372561",
+        "4372066"
+      ]
+    },
+    {
+      "score": "Josh Allen 8 Yd Rush (Tyler Bass Kick)",
+      "scorePeriod": "Q4",
+      "homeScore": "35",
+      "awayScore": "10",
+      "teamID": "4",
+      "scoreDetails": "4 plays, 25 yards, 2:22",
+      "scoreType": "TD",
+      "scoreTime": "12:31",
+      "team": "BUF",
+      "playerIDs": [
+        "3918298",
+        "3917232"
+      ]
+    }
+  ],
+  "network": "NBC/Peacock",
+  "teamIDHome": "4",
+  "homeResult": "W",
+  "away": "SF",
+  "gameWeek": "Week 13",
+  "attendance": "70,437",
+  "lineScore": {
+    "period": "Final",
+    "gameClock": "",
+    "away": {
+      "Q1": "3",
+      "Q2": "0",
+      "Q3": "7",
+      "Q4": "0",
+      "teamID": "28",
+      "currentlyInPossession": "False",
+      "totalPts": "10",
+      "teamAbv": "SF"
+    },
+    "home": {
+      "Q1": "7",
+      "Q2": "14",
+      "Q3": "7",
+      "Q4": "7",
+      "teamID": "4",
+      "currentlyInPossession": "False",
+      "totalPts": "35",
+      "teamAbv": "BUF"
+    }
+  },
+  "currentPeriod": "Final",
+  "gameLocation": "Orchard Park, NY",
+  "home": "BUF",
+  "arenaCapacity": "71,621",
+  "arena": "Highmark Stadium",
+  "homePts": "35",
+  "awayResult": "L",
+  "teamIDAway": "28",
+  "Referees": "Rusty Baynes, Sean Petty, Scott Helverson, Alex Kemp, Mike Morton, Lo van Pham, Robert Richeson",
+  "gameClock": "",
+  "awayPts": "10",
+  "gameID": "20241201_SF@BUF",
+  "seasonType": "Regular Season",
+  "gameStatusCode": "2"
+}

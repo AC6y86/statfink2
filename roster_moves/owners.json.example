@@ -1,0 +1,15 @@
+{
+  "_comment": "Copy to owners.json (gitignored) and fill in the real owner email addresses. Maps email sender -> fantasy team. Emails from addresses not listed here are ignored by the roster-move parser.",
+  "chris@example.com": { "teamId": 1, "ownerName": "Chris" },
+  "mitch@example.com": { "teamId": 2, "ownerName": "Mitch" },
+  "dan@example.com": { "teamId": 3, "ownerName": "Dan" },
+  "owner4@example.com": { "teamId": 4, "ownerName": "Owner4" },
+  "joe.paley@gmail.com": { "teamId": 5, "ownerName": "Joe" },
+  "owner6@example.com": { "teamId": 6, "ownerName": "Owner6" },
+  "owner7@example.com": { "teamId": 7, "ownerName": "Owner7" },
+  "owner8@example.com": { "teamId": 8, "ownerName": "Owner8" },
+  "owner9@example.com": { "teamId": 9, "ownerName": "Owner9" },
+  "owner10@example.com": { "teamId": 10, "ownerName": "Owner10" },
+  "owner11@example.com": { "teamId": 11, "ownerName": "Owner11" },
+  "owner12@example.com": { "teamId": 12, "ownerName": "Owner12" }
+}

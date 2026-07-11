@@ -231,7 +231,7 @@ class DatabaseManager {
         }));
     }
 
-    async addPlayerToRoster(teamId, playerId, rosterPosition = 'starter') {
+    async addPlayerToRoster(teamId, playerId, rosterPosition = 'active') {
         // Get current season and latest week
         const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
@@ -348,8 +348,13 @@ class DatabaseManager {
         };
     }
 
-    // Execute a paired roster move (drop + add)
-    async executeRosterMove(teamId, dropPlayerId, addPlayerId, moveType) {
+    // Read-only dry-run of all pre-transaction roster move checks.
+    // Returns { valid, errors, context } - context carries the lookups so
+    // executeRosterMove can reuse them without re-querying. Used both by
+    // executeRosterMove and by the pending email-move queue to show
+    // "would pass / would fail" before the commissioner approves.
+    async validateRosterMove(teamId, dropPlayerId, addPlayerId, moveType) {
+        const errors = [];
         const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
@@ -361,8 +366,17 @@ class DatabaseManager {
             this.get('SELECT * FROM nfl_players WHERE player_id = ?', [addPlayerId])
         ]);
 
+        const context = {
+            currentSeason,
+            latestWeek,
+            dropPlayer,
+            addPlayer,
+            playerOnIR: null
+        };
+
         if (!dropPlayer || !addPlayer) {
-            throw new DatabaseError('One or both players not found', 'not_found');
+            errors.push('One or both players not found');
+            return { valid: false, errors, context };
         }
 
         // Verify drop player is on the team
@@ -372,13 +386,13 @@ class DatabaseManager {
         `, [teamId, dropPlayerId, latestWeek.week, currentSeason]);
 
         if (!onRoster) {
-            throw new DatabaseError('Player to drop is not on this team', 'roster_constraint');
+            errors.push('Player to drop is not on this team');
         }
 
         // Verify add player is available
         const availability = await this.isPlayerAvailable(addPlayerId);
         if (!availability.available) {
-            throw new DatabaseError(availability.reason || 'Player to add is not available', 'roster_constraint');
+            errors.push(availability.reason || 'Player to add is not available');
         }
 
         // Check if player is being brought back from IR on this team
@@ -387,13 +401,11 @@ class DatabaseManager {
             WHERE team_id = ? AND player_id = ? AND week = ? AND season = ?
                 AND roster_position = 'injured_reserve'
         `, [teamId, addPlayerId, latestWeek.week, currentSeason]);
+        context.playerOnIR = playerOnIR;
 
         // If move type is 'ir_return', validate player is on IR
         if (moveType === 'ir_return' && !playerOnIR) {
-            throw new DatabaseError(
-                'Cannot perform IR return - player is not on this team\'s injured reserve',
-                'roster_constraint'
-            );
+            errors.push('Cannot perform IR return - player is not on this team\'s injured reserve');
         }
 
         // If bringing back from IR, validate 3-week minimum
@@ -409,13 +421,23 @@ class DatabaseManager {
             if (irMove) {
                 const weeksSinceIR = latestWeek.week - irMove.week;
                 if (weeksSinceIR < 3) {
-                    throw new DatabaseError(
-                        `Player must be on IR for at least 3 weeks before returning (currently ${weeksSinceIR} weeks)`,
-                        'roster_constraint'
-                    );
+                    errors.push(`Player must be on IR for at least 3 weeks before returning (currently ${weeksSinceIR} weeks)`);
                 }
             }
         }
+
+        return { valid: errors.length === 0, errors, context };
+    }
+
+    // Execute a paired roster move (drop + add)
+    async executeRosterMove(teamId, dropPlayerId, addPlayerId, moveType) {
+        const validation = await this.validateRosterMove(teamId, dropPlayerId, addPlayerId, moveType);
+        if (!validation.valid) {
+            const errorType = validation.errors[0] === 'One or both players not found' ? 'not_found' : 'roster_constraint';
+            throw new DatabaseError(validation.errors[0], errorType);
+        }
+
+        const { currentSeason, latestWeek, dropPlayer, addPlayer, playerOnIR } = validation.context;
 
         // Start transaction
         await this.run('BEGIN TRANSACTION');
@@ -1040,24 +1062,6 @@ class DatabaseManager {
         `, [teamId, latestWeek.week, currentSeason]);
         
         return result ? result.roster_size : 0;
-    }
-
-    // Get starter count for a team
-    async getTeamStarterCount(teamId) {
-        // Get current season and latest week
-        const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
-        const latestWeek = await this.get(`
-            SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
-        `, [currentSeason]);
-
-        const result = await this.get(`
-            SELECT COUNT(*) as starter_count
-            FROM weekly_rosters
-            WHERE team_id = ? AND roster_position = 'starter'
-              AND week = ? AND season = ?
-        `, [teamId, latestWeek.week, currentSeason]);
-
-        return result ? result.starter_count : 0;
     }
 
     // Copy rosters from one week to another

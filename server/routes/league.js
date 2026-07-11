@@ -239,20 +239,23 @@ router.get('/sync-status', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     
     try {
+        const settings = await db.getLeagueSettings();
+        const seasonYear = settings?.season_year || new Date().getFullYear();
+
         // Get the latest data information from player_stats
         const syncStatus = await db.get(`
-            SELECT 
+            SELECT
                 MAX(week) as latest_week,
                 COUNT(DISTINCT week) as weeks_synced,
                 COUNT(DISTINCT player_id) as players_synced,
                 MAX(season) as latest_season
             FROM player_stats
-            WHERE season = 2024
-        `);
-        
+            WHERE season = ?
+        `, [seasonYear]);
+
         // For now, use current time as last sync time since we don't track it
         const lastSyncTime = new Date().toISOString();
-        
+
         res.json({
             success: true,
             data: {
@@ -260,7 +263,7 @@ router.get('/sync-status', asyncHandler(async (req, res) => {
                 latest_week: syncStatus?.latest_week || 0,
                 weeks_synced: syncStatus?.weeks_synced || 0,
                 players_synced: syncStatus?.players_synced || 0,
-                latest_season: syncStatus?.latest_season || 2024
+                latest_season: syncStatus?.latest_season || seasonYear
             }
         });
     } catch (error) {
@@ -272,7 +275,7 @@ router.get('/sync-status', asyncHandler(async (req, res) => {
                 latest_week: 0,
                 weeks_synced: 0,
                 players_synced: 0,
-                latest_season: 2024
+                latest_season: null
             }
         });
     }

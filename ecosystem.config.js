@@ -45,6 +45,19 @@ module.exports = {
       max_memory_restart: '500M',
       time: true
     },
+    // Gmail poller for email-driven roster moves - forwards new emails to the
+    // server, which parses them and queues moves for commissioner approval
+    {
+      name: 'statfink2-email-poller',
+      script: './scripts/roster-email-poller.js',
+      cwd: '/home/joepaley/statfink2',
+      instances: 1,
+      exec_mode: 'fork',
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '300M',
+      time: true
+    },
     // Nightly regression tests - emails joe.paley@gmail.com ONLY on failure
     {
       name: 'statfink2-nightly-tests',

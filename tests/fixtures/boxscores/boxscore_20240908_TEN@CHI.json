@@ -1,0 +1,280 @@
+{
+  "gameStatus": "Completed",
+  "DST": {
+    "away": {
+      "teamAbv": "TEN",
+      "teamID": "31",
+      "defTD": "0",
+      "defensiveInterceptions": "0",
+      "sacks": "2",
+      "ydsAllowed": "148",
+      "fumblesRecovered": "1",
+      "ptsAllowed": "12",
+      "safeties": "0"
+    },
+    "home": {
+      "teamAbv": "CHI",
+      "teamID": "6",
+      "defTD": "2",
+      "defensiveInterceptions": "2",
+      "sacks": "3",
+      "ydsAllowed": "244",
+      "fumblesRecovered": "1",
+      "ptsAllowed": "17",
+      "safeties": "0"
+    }
+  },
+  "teamStats": {
+    "away": {
+      "totalYards": "244",
+      "rushingAttempts": "26",
+      "rushingYards": "140",
+      "fumblesLost": "1",
+      "penalties": "8-50",
+      "totalPlays": "61",
+      "possession": "34:54",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "19-32",
+      "passingFirstDowns": "6",
+      "interceptionsThrown": "2",
+      "sacksAndYardsLost": "3-23",
+      "thirdDownEfficiency": "3-14",
+      "blockedPunt": "0",
+      "yardsPerPlay": "4.0",
+      "redZoneScoredAndAttempted": "1-2",
+      "teamID": "31",
+      "defensiveInterceptions": "0",
+      "defensiveOrSpecialTeamsTds": "0",
+      "totalDrives": "13",
+      "rushingFirstDowns": "9",
+      "blockedFG": "0",
+      "rushTD": "1",
+      "twoPointConversions": "0",
+      "firstDowns": "16",
+      "passTD": "1",
+      "team": "TEN",
+      "blockedXP": "0",
+      "teamAbv": "TEN",
+      "firstDownsFromPenalties": "1",
+      "fourthDownEfficiency": "1-2",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "104",
+      "yardsPerRush": "5.4",
+      "snapCounts": {
+        "totalSpecialTeams": "29",
+        "totalOffensive": "64",
+        "totalDefensive": "56"
+      },
+      "turnovers": "3",
+      "yardsPerPass": "3.0"
+    },
+    "home": {
+      "totalYards": "148",
+      "rushingAttempts": "22",
+      "rushingYards": "84",
+      "fumblesLost": "1",
+      "penalties": "7-55",
+      "totalPlays": "53",
+      "possession": "25:06",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "14-29",
+      "passingFirstDowns": "5",
+      "interceptionsThrown": "0",
+      "sacksAndYardsLost": "2-29",
+      "thirdDownEfficiency": "2-13",
+      "blockedPunt": "1",
+      "yardsPerPlay": "2.8",
+      "redZoneScoredAndAttempted": "0-1",
+      "teamID": "6",
+      "defensiveInterceptions": "2",
+      "defensiveOrSpecialTeamsTds": "2",
+      "totalDrives": "10",
+      "rushingFirstDowns": "6",
+      "blockedFG": "0",
+      "rushTD": "0",
+      "twoPointConversions": "1",
+      "firstDowns": "11",
+      "passTD": "0",
+      "team": "CHI",
+      "blockedXP": "0",
+      "teamAbv": "CHI",
+      "firstDownsFromPenalties": "0",
+      "fourthDownEfficiency": "2-2",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "64",
+      "yardsPerRush": "3.8",
+      "snapCounts": {
+        "totalSpecialTeams": "29",
+        "totalOffensive": "56",
+        "totalDefensive": "64"
+      },
+      "turnovers": "1",
+      "yardsPerPass": "2.1"
+    }
+  },
+  "gameDate": "20240908",
+  "scoringPlays": [
+    {
+      "score": "Tony Pollard 26 Yd Run (Nick Folk Kick)",
+      "scorePeriod": "Q1",
+      "homeScore": "0",
+      "awayScore": "7",
+      "teamID": "31",
+      "scoreDetails": "8 plays, 79 yards, 4:45",
+      "scoreType": "TD",
+      "scoreTime": "0:41",
+      "team": "TEN",
+      "playerIDs": [
+        "3916148",
+        "10621"
+      ]
+    },
+    {
+      "score": "Nick Folk 40 Yd Field Goal  ",
+      "scorePeriod": "Q2",
+      "homeScore": "0",
+      "awayScore": "10",
+      "teamID": "31",
+      "scoreDetails": "4 plays, 1 yard, 1:35",
+      "scoreType": "FG",
+      "scoreTime": "14:06",
+      "team": "TEN",
+      "playerIDs": [
+        "10621"
+      ]
+    },
+    {
+      "score": "Chig Okonkwo 17 Yd pass from Will Levis (Nick Folk Kick)",
+      "scorePeriod": "Q2",
+      "homeScore": "0",
+      "awayScore": "17",
+      "teamID": "31",
+      "scoreDetails": "14 plays, 73 yards, 8:23",
+      "scoreType": "TD",
+      "scoreTime": "3:44",
+      "team": "TEN",
+      "playerIDs": [
+        "4361418",
+        "4360635",
+        "10621"
+      ]
+    },
+    {
+      "score": "Cairo Santos 24 Yd Field Goal  ",
+      "scorePeriod": "Q2",
+      "homeScore": "3",
+      "awayScore": "17",
+      "teamID": "6",
+      "scoreDetails": "9 plays, 28 yards, 3:17",
+      "scoreType": "FG",
+      "scoreTime": "0:27",
+      "team": "CHI",
+      "playerIDs": [
+        "17427"
+      ]
+    },
+    {
+      "score": "Jonathan Owens 21 Yd Return of Blocked Punt (Cairo Santos Kick)",
+      "scorePeriod": "Q3",
+      "homeScore": "10",
+      "awayScore": "17",
+      "teamID": "6",
+      "scoreDetails": "6 plays, 8 yards, 3:19",
+      "scoreType": "TD",
+      "scoreTime": "9:07",
+      "team": "CHI",
+      "playerIDs": [
+        "4331768",
+        "17427"
+      ]
+    },
+    {
+      "score": "Cairo Santos 50 Yd Field Goal  ",
+      "scorePeriod": "Q4",
+      "homeScore": "13",
+      "awayScore": "17",
+      "teamID": "6",
+      "scoreDetails": "11 plays, 44 yards, 3:59",
+      "scoreType": "FG",
+      "scoreTime": "14:47",
+      "team": "CHI",
+      "playerIDs": [
+        "17427"
+      ]
+    },
+    {
+      "score": "Cairo Santos 48 Yd Field Goal  ",
+      "scorePeriod": "Q4",
+      "homeScore": "16",
+      "awayScore": "17",
+      "teamID": "6",
+      "scoreDetails": "4 plays, 1 yard, 1:52",
+      "scoreType": "FG",
+      "scoreTime": "9:52",
+      "team": "CHI",
+      "playerIDs": [
+        "17427"
+      ]
+    },
+    {
+      "score": "Tyrique Stevenson 43 Yd Interception Return (Caleb Williams Pass to D'Andre Swift for Two-Point Conversion)",
+      "scorePeriod": "Q4",
+      "homeScore": "24",
+      "awayScore": "17",
+      "teamID": "6",
+      "scoreDetails": "4 plays, 15 yards, 2:17",
+      "scoreType": "TD",
+      "scoreTime": "7:35",
+      "team": "CHI",
+      "playerIDs": [
+        "4431611",
+        "4259545",
+        "4426374"
+      ]
+    }
+  ],
+  "network": "FOX",
+  "teamIDHome": "6",
+  "homeResult": "W",
+  "away": "TEN",
+  "gameWeek": "Week 1",
+  "attendance": "59,403",
+  "lineScore": {
+    "period": "Final",
+    "gameClock": "",
+    "away": {
+      "Q1": "7",
+      "Q2": "10",
+      "Q3": "0",
+      "Q4": "0",
+      "teamID": "31",
+      "currentlyInPossession": "False",
+      "totalPts": "17",
+      "teamAbv": "TEN"
+    },
+    "home": {
+      "Q1": "0",
+      "Q2": "3",
+      "Q3": "7",
+      "Q4": "14",
+      "teamID": "6",
+      "currentlyInPossession": "False",
+      "totalPts": "24",
+      "teamAbv": "CHI"
+    }
+  },
+  "currentPeriod": "Final",
+  "gameLocation": "Chicago, IL",
+  "home": "CHI",
+  "arenaCapacity": "61,500",
+  "arena": "Soldier Field",
+  "homePts": "24",
+  "awayResult": "L",
+  "teamIDAway": "31",
+  "Referees": "Dyrol Prioleau, Jeff Seeman, Carl Paganelli, Boris Cheek, Shawn Smith, Alex Moore, Jay Bilbo",
+  "gameClock": "",
+  "awayPts": "17",
+  "gameID": "20240908_TEN@CHI",
+  "seasonType": "Regular Season",
+  "gameStatusCode": "2"
+}

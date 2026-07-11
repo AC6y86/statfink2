@@ -1,0 +1,308 @@
+{
+  "gameStatus": "Completed",
+  "DST": {
+    "away": {
+      "teamAbv": "NYG",
+      "teamID": "24",
+      "defTD": "1",
+      "defensiveInterceptions": "0",
+      "sacks": "7",
+      "ydsAllowed": "333",
+      "fumblesRecovered": "1",
+      "ptsAllowed": "14",
+      "safeties": "0"
+    },
+    "home": {
+      "teamAbv": "SEA",
+      "teamID": "29",
+      "defTD": "1",
+      "defensiveInterceptions": "0",
+      "sacks": "3",
+      "ydsAllowed": "420",
+      "fumblesRecovered": "1",
+      "ptsAllowed": "23",
+      "safeties": "0"
+    }
+  },
+  "teamStats": {
+    "away": {
+      "totalYards": "420",
+      "rushingAttempts": "34",
+      "rushingYards": "175",
+      "fumblesLost": "1",
+      "penalties": "2-20",
+      "totalPlays": "71",
+      "possession": "37:22",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "23-34",
+      "passingFirstDowns": "14",
+      "interceptionsThrown": "0",
+      "sacksAndYardsLost": "3-12",
+      "thirdDownEfficiency": "7-16",
+      "blockedPunt": "0",
+      "yardsPerPlay": "5.9",
+      "redZoneScoredAndAttempted": "1-4",
+      "teamID": "24",
+      "defensiveInterceptions": "0",
+      "defensiveOrSpecialTeamsTds": "1",
+      "totalDrives": "12",
+      "rushingFirstDowns": "8",
+      "blockedFG": "1",
+      "rushTD": "0",
+      "twoPointConversions": "0",
+      "firstDowns": "24",
+      "passTD": "2",
+      "team": "NYG",
+      "blockedXP": "0",
+      "teamAbv": "NYG",
+      "firstDownsFromPenalties": "2",
+      "fourthDownEfficiency": "0-1",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "245",
+      "yardsPerRush": "5.1",
+      "snapCounts": {
+        "totalSpecialTeams": "30",
+        "totalOffensive": "72",
+        "totalDefensive": "58"
+      },
+      "turnovers": "1",
+      "yardsPerPass": "6.6"
+    },
+    "home": {
+      "totalYards": "333",
+      "rushingAttempts": "11",
+      "rushingYards": "102",
+      "fumblesLost": "1",
+      "penalties": "6-30",
+      "totalPlays": "58",
+      "possession": "22:38",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "28-40",
+      "passingFirstDowns": "14",
+      "interceptionsThrown": "0",
+      "sacksAndYardsLost": "7-53",
+      "thirdDownEfficiency": "3-11",
+      "blockedPunt": "0",
+      "yardsPerPlay": "5.7",
+      "redZoneScoredAndAttempted": "1-1",
+      "teamID": "29",
+      "defensiveInterceptions": "0",
+      "defensiveOrSpecialTeamsTds": "1",
+      "totalDrives": "11",
+      "rushingFirstDowns": "3",
+      "blockedFG": "0",
+      "rushTD": "0",
+      "twoPointConversions": "0",
+      "firstDowns": "17",
+      "passTD": "1",
+      "team": "SEA",
+      "blockedXP": "0",
+      "teamAbv": "SEA",
+      "firstDownsFromPenalties": "0",
+      "fourthDownEfficiency": "0-2",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "231",
+      "yardsPerRush": "9.3",
+      "snapCounts": {
+        "totalSpecialTeams": "30",
+        "totalOffensive": "58",
+        "totalDefensive": "72"
+      },
+      "turnovers": "1",
+      "yardsPerPass": "4.9"
+    }
+  },
+  "gameDate": "20241006",
+  "scoringPlays": [
+    {
+      "score": "Rayshawn Jenkins 102 Yd Fumble Return (Jason Myers Kick)",
+      "scorePeriod": "Q1",
+      "homeScore": "7",
+      "awayScore": "0",
+      "teamID": "29",
+      "scoreDetails": "16 plays, 79 yards, 10:01",
+      "scoreType": "TD",
+      "scoreTime": "2:14",
+      "team": "SEA",
+      "playerIDs": [
+        "2969961",
+        "2473037"
+      ]
+    },
+    {
+      "score": "Wan'Dale Robinson 7 Yd pass from Daniel Jones (Greg Joseph Kick)",
+      "scorePeriod": "Q2",
+      "homeScore": "7",
+      "awayScore": "7",
+      "teamID": "24",
+      "scoreDetails": "8 plays, 81 yards, 4:26",
+      "scoreType": "TD",
+      "scoreTime": "9:09",
+      "team": "NYG",
+      "playerIDs": [
+        "3917792",
+        "4569587",
+        "3975763"
+      ]
+    },
+    {
+      "score": "Greg Joseph 38 Yd Field Goal  ",
+      "scorePeriod": "Q2",
+      "homeScore": "7",
+      "awayScore": "10",
+      "teamID": "24",
+      "scoreDetails": "12 plays, 58 yards, 5:12",
+      "scoreType": "FG",
+      "scoreTime": "0:22",
+      "team": "NYG",
+      "playerIDs": [
+        "3975763"
+      ]
+    },
+    {
+      "score": "Jason Myers 43 Yd Field Goal  ",
+      "scorePeriod": "Q2",
+      "homeScore": "10",
+      "awayScore": "10",
+      "teamID": "29",
+      "scoreDetails": "3 plays, 45 yards, 0:20",
+      "scoreType": "FG",
+      "scoreTime": "0:02",
+      "team": "SEA",
+      "playerIDs": [
+        "2473037"
+      ]
+    },
+    {
+      "score": "Darius Slayton 30 Yd pass from Daniel Jones (Greg Joseph Kick)",
+      "scorePeriod": "Q3",
+      "homeScore": "10",
+      "awayScore": "17",
+      "teamID": "24",
+      "scoreDetails": "4 plays, 77 yards, 1:30",
+      "scoreType": "TD",
+      "scoreTime": "10:41",
+      "team": "NYG",
+      "playerIDs": [
+        "3917792",
+        "3916945",
+        "3975763"
+      ]
+    },
+    {
+      "score": "Jason Myers 48 Yd Field Goal  ",
+      "scorePeriod": "Q3",
+      "homeScore": "13",
+      "awayScore": "17",
+      "teamID": "29",
+      "scoreDetails": "8 plays, 41 yards, 4:08",
+      "scoreType": "FG",
+      "scoreTime": "6:33",
+      "team": "SEA",
+      "playerIDs": [
+        "2473037"
+      ]
+    },
+    {
+      "score": "Greg Joseph 31 Yd Field Goal  ",
+      "scorePeriod": "Q3",
+      "homeScore": "13",
+      "awayScore": "20",
+      "teamID": "24",
+      "scoreDetails": "11 plays, 60 yards, 5:47",
+      "scoreType": "FG",
+      "scoreTime": "0:46",
+      "team": "NYG",
+      "playerIDs": [
+        "3975763"
+      ]
+    },
+    {
+      "score": "Greg Joseph 24 Yd Field Goal  ",
+      "scorePeriod": "Q4",
+      "homeScore": "13",
+      "awayScore": "23",
+      "teamID": "24",
+      "scoreDetails": "6 plays, 21 yards, 2:15",
+      "scoreType": "FG",
+      "scoreTime": "11:54",
+      "team": "NYG",
+      "playerIDs": [
+        "3975763"
+      ]
+    },
+    {
+      "score": "Jaxon Smith-Njigba 5 Yd pass from Geno Smith (Jason Myers Kick)",
+      "scorePeriod": "Q4",
+      "homeScore": "20",
+      "awayScore": "23",
+      "teamID": "29",
+      "scoreDetails": "14 plays, 95 yards, 3:44",
+      "scoreType": "TD",
+      "scoreTime": "2:09",
+      "team": "SEA",
+      "playerIDs": [
+        "15864",
+        "4430878",
+        "2473037"
+      ]
+    },
+    {
+      "score": "Bryce Ford-Wheaton 60 Yd Return of Blocked Field Goal (Two-Point Run Conversion Failed)",
+      "scorePeriod": "Q4",
+      "homeScore": "20",
+      "awayScore": "29",
+      "teamID": "24",
+      "scoreDetails": "5 plays, 38 yards, 0:45",
+      "scoreType": "TD",
+      "scoreTime": "0:55",
+      "team": "NYG",
+      "playerIDs": [
+        "4362227"
+      ]
+    }
+  ],
+  "network": "CBS",
+  "teamIDHome": "29",
+  "homeResult": "L",
+  "away": "NYG",
+  "gameWeek": "Week 5",
+  "attendance": "68,306",
+  "lineScore": {
+    "period": "Final",
+    "gameClock": "",
+    "away": {
+      "Q1": "0",
+      "Q2": "10",
+      "Q3": "10",
+      "Q4": "9",
+      "teamID": "24",
+      "currentlyInPossession": "False",
+      "totalPts": "29",
+      "teamAbv": "NYG"
+    },
+    "home": {
+      "Q1": "7",
+      "Q2": "3",
+      "Q3": "3",
+      "Q4": "7",
+      "teamID": "29",
+      "currentlyInPossession": "False",
+      "totalPts": "20",
+      "teamAbv": "SEA"
+    }
+  },
+  "currentPeriod": "Final",
+  "gameLocation": "Seattle, WA",
+  "home": "SEA",
+  "arenaCapacity": "68,740",
+  "arena": "Lumen Field",
+  "homePts": "20",
+  "awayResult": "W",
+  "teamIDAway": "24",
+  "gameClock": "",
+  "awayPts": "29",
+  "gameID": "20241006_NYG@SEA",
+  "seasonType": "Regular Season",
+  "gameStatusCode": "2"
+}

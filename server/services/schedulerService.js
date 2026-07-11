@@ -6,7 +6,7 @@ const execAsync = promisify(exec);
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 
 class SchedulerService {
-    constructor(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService, fantasyPointsCalculationService) {
+    constructor(db, nflGamesService, playerSyncService, scoringService, standingsService, teamScoreService, scoringPlayersService, weeklyReportService, fantasyPointsCalculationService, healthCheckService = null) {
         this.db = db;
         this.nflGamesService = nflGamesService;
         this.playerSyncService = playerSyncService;
@@ -16,6 +16,7 @@ class SchedulerService {
         this.scoringPlayersService = scoringPlayersService;
         this.weeklyReportService = weeklyReportService;
         this.fantasyPointsCalculationService = fantasyPointsCalculationService;
+        this.healthCheckService = healthCheckService;
         
         // Track last run times
         this.lastDailyUpdate = null;
@@ -79,12 +80,26 @@ class SchedulerService {
         try {
             logInfo('Starting daily update operations');
 
-            // 1. Update game schedule
+            // 1. Backup database FIRST, before any sync mutates the DB - every
+            // backup then captures pre-sync state, so recovery from a botched
+            // sync is "restore backup + re-run sync"
+            try {
+                const backupResult = await this.backupDatabase();
+                results.backup = backupResult.success;
+                if (!backupResult.success) {
+                    results.errors.push(`Backup: ${backupResult.message}`);
+                }
+            } catch (error) {
+                logError('Failed to backup database', error);
+                results.errors.push(`Backup: ${error.message}`);
+            }
+
+            // 2. Update game schedule
             try {
                 const currentSettings = await this.getCurrentSettings();
                 if (currentSettings.current_week && currentSettings.season_year) {
                     const gamesResult = await this.nflGamesService.syncWeekGames(
-                        currentSettings.current_week, 
+                        currentSettings.current_week,
                         currentSettings.season_year
                     );
                     results.gameSchedule = gamesResult.success;
@@ -97,18 +112,6 @@ class SchedulerService {
             } catch (error) {
                 logError('Failed to update game schedule', error);
                 results.errors.push(`Game schedule: ${error.message}`);
-            }
-
-            // 2. Backup database
-            try {
-                const backupResult = await this.backupDatabase();
-                results.backup = backupResult.success;
-                if (!backupResult.success) {
-                    results.errors.push(`Backup: ${backupResult.message}`);
-                }
-            } catch (error) {
-                logError('Failed to backup database', error);
-                results.errors.push(`Backup: ${error.message}`);
             }
 
             // 3. Update NFL rosters/injuries
@@ -147,6 +150,28 @@ class SchedulerService {
 
             this.lastDailyUpdate = new Date();
             await this.db.updateSchedulerTimestamp('daily');
+
+            // 5. Health checks + alerting: any collected errors become alerts,
+            // then run the light validation suite (roster invariant, stats
+            // completeness, freshness)
+            if (this.healthCheckService) {
+                try {
+                    for (const errMsg of results.errors) {
+                        await this.healthCheckService.recordAlert('critical', 'daily-update', errMsg);
+                    }
+                    const settings = await this.getCurrentSettings();
+                    if (settings.current_week && settings.season_year) {
+                        results.validation = await this.healthCheckService.runValidation(
+                            settings.current_week,
+                            settings.season_year,
+                            { mode: 'light' }
+                        );
+                    }
+                } catch (error) {
+                    logError('Post-daily-update health checks failed', error);
+                }
+            }
+
             const duration = Date.now() - startTime;
 
             logInfo('Daily update completed', {
@@ -271,6 +296,24 @@ class SchedulerService {
 
             this.lastWeeklyUpdate = new Date();
             await this.db.updateSchedulerTimestamp('weekly');
+
+            // 3. Health checks + alerting: full validation of the week that was
+            // just completed (currentSettings.current_week is the pre-advance week)
+            if (this.healthCheckService) {
+                try {
+                    for (const errMsg of results.errors) {
+                        await this.healthCheckService.recordAlert('critical', 'weekly-update', errMsg);
+                    }
+                    results.validation = await this.healthCheckService.runValidation(
+                        currentSettings.current_week,
+                        currentSettings.season_year,
+                        { mode: 'full' }
+                    );
+                } catch (error) {
+                    logError('Post-weekly-update health checks failed', error);
+                }
+            }
+
             const duration = Date.now() - startTime;
 
             logInfo('Weekly update completed', {
@@ -510,9 +553,21 @@ class SchedulerService {
             if (stderr) {
                 throw new Error(`SQLite backup error: ${stderr}`);
             }
-            
+
             logInfo(`Database backed up to ${backupPath}`);
-            
+
+            // Prune old backups so the directory doesn't grow unbounded
+            try {
+                const pruneResult = await this.pruneBackups(backupDir);
+                if (pruneResult.pruned.length > 0 && this.healthCheckService) {
+                    await this.healthCheckService.recordAlert('info', 'backup',
+                        `Pruned ${pruneResult.pruned.length} old backup(s), keeping ${pruneResult.kept.length}`,
+                        pruneResult.pruned);
+                }
+            } catch (error) {
+                logError('Backup pruning failed (backup itself succeeded)', error);
+            }
+
             return {
                 success: true,
                 message: `Database backed up to ${backupPath}`,
@@ -525,6 +580,62 @@ class SchedulerService {
                 message: error.message
             };
         }
+    }
+
+    /**
+     * Prune old backups: keep the last 14 daily backups plus the first backup
+     * of each month. Only touches files named fantasy_football_YYYY-MM-DD.db.
+     */
+    async pruneBackups(backupDir, { dryRun = false } = {}) {
+        const BACKUP_PATTERN = /^fantasy_football_(\d{4}-\d{2}-\d{2})\.db$/;
+        const KEEP_DAILY = 14;
+
+        const files = await fs.readdir(backupDir);
+        const backups = files
+            .map(f => {
+                const match = f.match(BACKUP_PATTERN);
+                return match ? { file: f, date: match[1] } : null;
+            })
+            .filter(Boolean)
+            .sort((a, b) => a.date.localeCompare(b.date));
+
+        const keep = new Set();
+
+        // Last 14 dailies
+        for (const b of backups.slice(-KEEP_DAILY)) {
+            keep.add(b.file);
+        }
+
+        // First backup of each month (backups are date-sorted ascending)
+        const seenMonths = new Set();
+        for (const b of backups) {
+            const month = b.date.slice(0, 7); // YYYY-MM
+            if (!seenMonths.has(month)) {
+                seenMonths.add(month);
+                keep.add(b.file);
+            }
+        }
+
+        const toPrune = backups.filter(b => !keep.has(b.file)).map(b => b.file);
+
+        if (!dryRun) {
+            for (const file of toPrune) {
+                await fs.unlink(path.join(backupDir, file));
+            }
+        }
+
+        if (toPrune.length > 0) {
+            logInfo(`${dryRun ? '[dry-run] Would prune' : 'Pruned'} ${toPrune.length} old backup(s)`, {
+                pruned: toPrune,
+                kept: keep.size
+            });
+        }
+
+        return {
+            pruned: toPrune,
+            kept: [...keep].sort(),
+            dryRun
+        };
     }
 
     /**

@@ -5,7 +5,7 @@ const router = express.Router();
 // Get all roster moves for the current season
 router.get('/', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
-    const season = req.query.season || 2025;
+    const season = req.query.season || (await db.getLeagueSettings()).season_year;
 
     // Get all teams with owner info
     const teams = await db.all(`
@@ -71,7 +71,7 @@ router.get('/', asyncHandler(async (req, res) => {
 router.get('/team/:teamId', asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const { teamId } = req.params;
-    const season = req.query.season || 2025;
+    const season = req.query.season || (await db.getLeagueSettings()).season_year;
 
     if (!teamId || isNaN(teamId)) {
         throw new APIError('Invalid team ID', 400);

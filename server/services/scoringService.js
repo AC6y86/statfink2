@@ -1,5 +1,3 @@
-const { ValidationError } = require('../database/validation');
-
 class ScoringService {
     constructor(db, nflGamesService = null) {
         this.db = db;
@@ -129,52 +127,6 @@ class ScoringService {
         query += ' ORDER BY ps.fantasy_points DESC';
 
         return this.db.all(query, params);
-    }
-
-    validateLineup(roster) {
-        const positionCounts = {};
-        const starters = roster.filter(player => player.roster_position === 'starter');
-
-        // Count positions
-        starters.forEach(player => {
-            positionCounts[player.position] = (positionCounts[player.position] || 0) + 1;
-        });
-
-        const errors = [];
-
-        // Core requirements (minimum required positions)
-        const coreRequirements = {
-            QB: 1,      // 1 each Quarterback
-            RB: 4,      // 4 each Running Backs
-            K: 1,       // 1 each Kicker
-            DST: 2      // 2 each Team Defense (points + yards allowed)
-        };
-
-        // Check core position requirements
-        Object.entries(coreRequirements).forEach(([position, required]) => {
-            const count = positionCounts[position] || 0;
-            if (count < required) {
-                errors.push(`Need at least ${required} ${position}, currently have ${count}`);
-            }
-        });
-
-        // Check WR/TE combined requirement (3 each Wide Receivers or Tight Ends)
-        const wrTeCount = (positionCounts['WR'] || 0) + (positionCounts['TE'] || 0);
-        if (wrTeCount < 3) {
-            errors.push(`Need at least 3 Wide Receivers or Tight Ends combined, currently have ${wrTeCount}`);
-        }
-
-        // Total lineup size should be: 1 QB + 4 RB + 3 WR/TE + 1 K + 2 DST + 2 Bonus = 13
-        const totalStarters = starters.length;
-        if (totalStarters !== 13) {
-            errors.push(`Starting lineup must have exactly 13 players, currently has ${totalStarters}`);
-        }
-
-        if (errors.length > 0) {
-            throw new ValidationError(`Lineup validation failed: ${errors.join(', ')}`);
-        }
-
-        return true;
     }
 
     async calculateDefensiveBonuses(week, season) {

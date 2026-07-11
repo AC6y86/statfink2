@@ -1,0 +1,235 @@
+{
+  "gameStatus": "Completed",
+  "DST": {
+    "away": {
+      "teamAbv": "ARI",
+      "teamID": "1",
+      "defTD": "0",
+      "defensiveInterceptions": "1",
+      "sacks": "5",
+      "ydsAllowed": "285",
+      "fumblesRecovered": "0",
+      "ptsAllowed": "10",
+      "safeties": "0"
+    },
+    "home": {
+      "teamAbv": "SEA",
+      "teamID": "29",
+      "defTD": "1",
+      "defensiveInterceptions": "1",
+      "sacks": "5",
+      "ydsAllowed": "298",
+      "fumblesRecovered": "0",
+      "ptsAllowed": "6",
+      "safeties": "0"
+    }
+  },
+  "teamStats": {
+    "away": {
+      "totalYards": "298",
+      "rushingAttempts": "14",
+      "rushingYards": "49",
+      "fumblesLost": "0",
+      "penalties": "5-60",
+      "totalPlays": "56",
+      "possession": "26:47",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "24-37",
+      "passingFirstDowns": "15",
+      "interceptionsThrown": "1",
+      "sacksAndYardsLost": "5-36",
+      "thirdDownEfficiency": "3-12",
+      "blockedPunt": "0",
+      "yardsPerPlay": "5.3",
+      "redZoneScoredAndAttempted": "0-2",
+      "teamID": "1",
+      "defensiveInterceptions": "2",
+      "defensiveOrSpecialTeamsTds": "0",
+      "totalDrives": "10",
+      "rushingFirstDowns": "0",
+      "blockedFG": "0",
+      "rushTD": "0",
+      "twoPointConversions": "0",
+      "firstDowns": "15",
+      "passTD": "0",
+      "team": "ARI",
+      "blockedXP": "0",
+      "teamAbv": "ARI",
+      "firstDownsFromPenalties": "0",
+      "fourthDownEfficiency": "0-1",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "249",
+      "yardsPerRush": "3.5",
+      "snapCounts": {
+        "totalSpecialTeams": "24",
+        "totalOffensive": "58",
+        "totalDefensive": "64"
+      },
+      "turnovers": "1",
+      "yardsPerPass": "5.9"
+    },
+    "home": {
+      "totalYards": "285",
+      "rushingAttempts": "25",
+      "rushingYards": "65",
+      "fumblesLost": "0",
+      "penalties": "5-51",
+      "totalPlays": "61",
+      "possession": "33:13",
+      "safeties": "0",
+      "passCompletionsAndAttempts": "22-31",
+      "passingFirstDowns": "12",
+      "interceptionsThrown": "1",
+      "sacksAndYardsLost": "5-34",
+      "thirdDownEfficiency": "7-14",
+      "blockedPunt": "0",
+      "yardsPerPlay": "4.7",
+      "redZoneScoredAndAttempted": "1-2",
+      "teamID": "29",
+      "defensiveInterceptions": "1",
+      "defensiveOrSpecialTeamsTds": "1",
+      "totalDrives": "10",
+      "rushingFirstDowns": "4",
+      "blockedFG": "0",
+      "rushTD": "0",
+      "twoPointConversions": "0",
+      "firstDowns": "17",
+      "passTD": "1",
+      "team": "SEA",
+      "blockedXP": "0",
+      "teamAbv": "SEA",
+      "firstDownsFromPenalties": "1",
+      "fourthDownEfficiency": "0-0",
+      "defensiveTwoPointConversionReturns": "0",
+      "passingYards": "220",
+      "yardsPerRush": "2.6",
+      "snapCounts": {
+        "totalSpecialTeams": "24",
+        "totalOffensive": "64",
+        "totalDefensive": "58"
+      },
+      "turnovers": "1",
+      "yardsPerPass": "6.1"
+    }
+  },
+  "gameDate": "20241124",
+  "scoringPlays": [
+    {
+      "score": "Chad Ryland 35 Yd Field Goal",
+      "scorePeriod": "Q2",
+      "homeScore": "0",
+      "awayScore": "3",
+      "teamID": "1",
+      "scoreDetails": "6 plays, 33 yards, 2:55",
+      "scoreType": "FG",
+      "scoreTime": "9:43",
+      "team": "ARI",
+      "playerIDs": [
+        "4363538"
+      ]
+    },
+    {
+      "score": "Jaxon Smith-Njigba 3 Yd pass from Geno Smith (Jason Myers Kick)",
+      "scorePeriod": "Q2",
+      "homeScore": "7",
+      "awayScore": "3",
+      "teamID": "29",
+      "scoreDetails": "7 plays, 61 yards, 3:25",
+      "scoreType": "TD",
+      "scoreTime": "1:14",
+      "team": "SEA",
+      "playerIDs": [
+        "15864",
+        "4430878",
+        "2473037"
+      ]
+    },
+    {
+      "score": "Coby Bryant 69 Yd Interception Return (Jason Myers PAT Failed)",
+      "scorePeriod": "Q3",
+      "homeScore": "13",
+      "awayScore": "3",
+      "teamID": "29",
+      "scoreDetails": "8 plays, 42 yards, 4:17",
+      "scoreType": "TD",
+      "scoreTime": "7:12",
+      "team": "SEA",
+      "playerIDs": [
+        "4239094",
+        "2473037"
+      ]
+    },
+    {
+      "score": "Chad Ryland 22 Yd Field Goal",
+      "scorePeriod": "Q4",
+      "homeScore": "13",
+      "awayScore": "6",
+      "teamID": "1",
+      "scoreDetails": "11 plays, 76 yards, 4:43",
+      "scoreType": "FG",
+      "scoreTime": "10:08",
+      "team": "ARI",
+      "playerIDs": [
+        "4363538"
+      ]
+    },
+    {
+      "score": "Jason Myers 50 Yd Field Goal",
+      "scorePeriod": "Q4",
+      "homeScore": "16",
+      "awayScore": "6",
+      "teamID": "29",
+      "scoreDetails": "13 plays, 49 yards, 8:12",
+      "scoreType": "FG",
+      "scoreTime": "1:56",
+      "team": "SEA",
+      "playerIDs": [
+        "2473037"
+      ]
+    }
+  ],
+  "network": "FOX",
+  "teamIDHome": "29",
+  "homeResult": "W",
+  "away": "ARI",
+  "gameWeek": "Week 12",
+  "attendance": "68,649",
+  "lineScore": {
+    "period": "Final",
+    "gameClock": "",
+    "away": {
+      "Q1": "0",
+      "Q2": "3",
+      "Q3": "0",
+      "Q4": "3",
+      "teamID": "1",
+      "currentlyInPossession": "False",
+      "totalPts": "6",
+      "teamAbv": "ARI"
+    },
+    "home": {
+      "Q1": "0",
+      "Q2": "7",
+      "Q3": "6",
+      "Q4": "3",
+      "teamID": "29",
+      "currentlyInPossession": "False",
+      "totalPts": "16",
+      "teamAbv": "SEA"
+    }
+  },
+  "currentPeriod": "Final",
+  "gameLocation": "Seattle, WA",
+  "home": "SEA",
+  "arenaCapacity": "68,740",
+  "arena": "Lumen Field",
+  "homePts": "16",
+  "awayResult": "L",
+  "teamIDAway": "1",
+  "Referees": "Terry Brown, Terrence Miles, David Meslow, Scott Novak, Mark Pellis, Mark Stewart, Brian Sakowski",
+  "gameClock": "",
+  "awayPts": "6",
+  "gameID": "20241124_ARI@SEA",
+  "seasonType": "Regular Season",
+  "gameStatusCode": "2"
+}

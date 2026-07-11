@@ -55,9 +55,20 @@ certs/
 roster_moves/credentials.json
 roster_moves/token.json
 roster_moves/last_check.json
+
+# Email-driven roster moves (owner emails + queue contain private email content)
+roster_moves/owners.json
+roster_moves/pending_moves.json
+roster_moves/eval/
 **/credentials.json
 **/token.json
 server/config/sheets-token.json
 
 # Auto-generated daily report snapshots (derived from fantasy_football.db)
 backup_data/
+
+# Generated debug screenshots (scripts/take_screenshots.js)
+screenshots/
+
+# Stray empty db accidentally created by a misconfigured script run
+server/league.db
