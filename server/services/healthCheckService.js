@@ -122,7 +122,8 @@ class HealthCheckService {
 
         const checkRunners = [
             ['Roster Invariant (12x19)', () => this.checkRosterInvariant(week, season)],
-            ['Freshness', () => this.checkFreshness(week, season)]
+            ['Freshness', () => this.checkFreshness(week, season)],
+            ['Week Advance Deadline', () => this.checkWeekAdvanceDeadline(week, season)]
         ];
 
         // The raw missing-stat-rows count is only a standalone check in light
@@ -297,6 +298,72 @@ class HealthCheckService {
                 : issues.join('; '),
             details: issues
         };
+    }
+
+    /**
+     * The weekly update (advance current_week) is deliberately manual, but it
+     * must happen before the next week's first kickoff: live updates poll
+     * current_week, so an unadvanced week silently loses the new week's stats.
+     * Fails when the current week is complete and the next week's first game
+     * is under 24h away; warns when the week has been complete >72h with no
+     * next-week schedule to judge by.
+     */
+    async checkWeekAdvanceDeadline(week, season) {
+        const name = 'Week Advance Deadline';
+        const pass = message => ({ name, status: 'passed', message });
+
+        const current = await this.db.get(`
+            SELECT COUNT(*) as total,
+                   SUM(CASE WHEN status LIKE 'Final%' THEN 1 ELSE 0 END) as final,
+                   MAX(game_time_epoch) as last_epoch
+            FROM nfl_games WHERE week = ? AND season = ?
+        `, [week, season]);
+
+        if (!current || current.total === 0) {
+            return pass(`No games for week ${week}/${season} (offseason) - nothing to advance`);
+        }
+        if (current.final < current.total) {
+            return pass(`Week ${week} still in progress (${current.final}/${current.total} final)`);
+        }
+
+        const nowEpoch = Math.floor(Date.now() / 1000);
+
+        const nextWeek = await this.db.get(`
+            SELECT MIN(game_time_epoch) as first_epoch, COUNT(*) as total
+            FROM nfl_games WHERE week = ? AND season = ?
+        `, [week + 1, season]);
+
+        if (nextWeek && nextWeek.total > 0 && nextWeek.first_epoch) {
+            const hoursToKickoff = (nextWeek.first_epoch - nowEpoch) / 3600;
+            if (hoursToKickoff < 24) {
+                return {
+                    name,
+                    status: 'failed',
+                    message: `ADVANCE THE WEEK: week ${week} is complete and week ${week + 1} kicks off ` +
+                        (hoursToKickoff <= 0
+                            ? `${Math.abs(hoursToKickoff).toFixed(0)}h AGO - its stats are NOT being collected`
+                            : `in ${hoursToKickoff.toFixed(0)}h - live updates only poll the current week`)
+                };
+            }
+            return pass(`Week ${week} complete; ${hoursToKickoff.toFixed(0)}h until week ${week + 1} kickoff`);
+        }
+
+        // No next-week schedule to judge by (daily sync only pulls the current
+        // week). Season's final week has nothing to advance to; otherwise a
+        // long-complete week deserves a nudge.
+        if (week >= 18) {
+            return pass(`Week ${week} is the final week - nothing to advance to`);
+        }
+        const hoursSinceEnd = current.last_epoch ? (nowEpoch - current.last_epoch) / 3600 : null;
+        if (hoursSinceEnd !== null && hoursSinceEnd > 72) {
+            return {
+                name,
+                status: 'warning',
+                message: `Week ${week} has been complete for ${hoursSinceEnd.toFixed(0)}h and week ${week + 1}'s ` +
+                    `schedule is not synced - advance the week (and sync the new week's games)`
+            };
+        }
+        return pass(`Week ${week} complete; no week ${week + 1} schedule yet, within the grace window`);
     }
 
     /**

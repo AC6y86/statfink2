@@ -2,6 +2,66 @@
 
 This document describes the automated scheduling implementation for StatFink2's scheduled tasks using PM2's built-in cron functionality.
 
+## A Week in the Life (in-season timeline)
+
+All times UTC (server timezone). In-season ET = UTC−4/−5. NFL game windows in UTC: TNF ≈ Fri 00:20–04:00, Sunday 17:00–04:00 Mon, MNF ≈ Tue 00:15–04:30.
+
+```
+CONTINUOUS (24/7, all season)
+  statfink2                 web app + all internal endpoints (port 8000)
+  statfink2-live-continuous every 60s -> POST /api/internal/scheduler/live
+                            during games: sync live scores/stats, re-mark scoring
+                            lineups + matchup totals; once ALL games are final:
+                            defensive bonuses -> DST points -> final lineups
+                            (no-ops quickly when nothing is live)
+  statfink2-email-poller    every ~2min: Gmail -> parse roster-move emails ->
+                            queue moves for commissioner approval
+
+EVERY DAY
+  12:00  statfink2-nightly-tests   STOPS statfink2 + live + email-poller,
+                                   runs fast suite + 2024/2025 golden scoring
+                                   regression (~3 min), restarts services.
+                                   Emails joe.paley@gmail.com ONLY on failure.
+                                   (Safe window: even international games kick
+                                   off no earlier than ~13:30 UTC; the ~3min
+                                   test outage at 12:00 never overlaps a game.)
+  13:00  statfink2-daily           backup DB FIRST, then sync week games,
+                                   players/injuries, weekly report, light
+                                   validation (roster invariant, freshness,
+                                   week-advance deadline) -> health alerts;
+                                   emails joe.paley@gmail.com if the completed
+                                   week hasn't been advanced and the next
+                                   kickoff is <24h away. (13:00 UTC = 6am PT,
+                                   before every kickoff window.)
+
+TUESDAY (the week rollover)
+  ~04:30  MNF ends; live-continuous marks the last games Final and applies
+          defensive bonuses within a few minutes
+  10:00   statfink2-weekly-validate  full health validation + deep ESPN
+          verification of the completed week; writes
+          logs/weekly-validation-latest.json (admin dashboard panel);
+          ALWAYS emails a PASS/WARN/FAIL summary
+  12:00   nightly tests (as every day)
+  MANUAL  Joe reviews the validation email, then triggers the weekly update
+          (admin dashboard, or POST /api/internal/scheduler/weekly):
+          standings -> advance current_week -> copy rosters to the new week
+          (guarded: refuses if any team != 19 active players)
+
+  *** DEADLINE: the manual advance MUST happen before Thursday night
+  kickoff (~Fri 00:20 UTC). Live updates poll games for current_week -
+  if the week hasn't advanced, Thursday's stats are not collected. ***
+
+WED-SAT   roster-move emails processed continuously against the new week;
+          daily update + nightly tests as every day
+
+statfink2-weekly (the automated version of the manual advance) exists but its
+cron is deliberately DISABLED: validation gates the advance, a human pulls the
+trigger.
+
+Offseason: everything still runs; live updates and validation no-op ("no games"),
+weekly-validate emails a one-line SKIPPED, nightly tests keep guarding scoring.
+```
+
 ## Current Implementation Status ✅
 
 StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is active and running in production.
@@ -10,7 +70,7 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
 
 ### Active Scheduled Tasks:
 
-1. **Daily Updates** - Runs at 5pm UTC (10am PDT / 9am PST)
+1. **Daily Updates** - Runs at 1pm UTC (6am PDT / 5am PST)
 2. **Live Game Updates** - Runs continuously (every minute, 24/7)
 3. **Email Roster-Move Poller** - Runs continuously (polls Gmail every 2 minutes)
 4. **Nightly Regression Tests** - Runs at 12pm UTC (5am PDT / 4am PST)
@@ -21,7 +81,7 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
 
 ### 1. Daily Update
 - **PM2 Process**: `statfink2-daily`
-- **Schedule**: `0 17 * * *` (5pm UTC = 10am PDT / 9am PST)
+- **Schedule**: `0 13 * * *` (1pm UTC = 6am PDT / 5am PST, before every kickoff window)
 - **Script**: `/scripts/daily-update.js`
 - **Functions**:
   - Updates NFL game schedule for the current week
@@ -92,7 +152,7 @@ The scheduled tasks are configured in `/home/joepaley/statfink2/ecosystem.config
 | Process | Type | Schedule (UTC) |
 |---------|------|----------------|
 | `statfink2` | Main server, always on | — |
-| `statfink2-daily` | Cron | `0 17 * * *` (5pm UTC = 10am PDT) |
+| `statfink2-daily` | Cron | `0 13 * * *` (1pm UTC = 6am PDT) |
 | `statfink2-live-continuous` | Always on | every minute, 24/7 |
 | `statfink2-email-poller` | Always on | polls Gmail every 2 minutes |
 | `statfink2-nightly-tests` | Cron | `0 12 * * *` (12pm UTC = 5am PDT) |
@@ -203,7 +263,7 @@ pm2 save
 - **Server runs in UTC timezone**
 - All cron times in ecosystem.config.js are in UTC
 - Conversions (PDT = UTC−7, PST = UTC−8):
-  - Daily update: 5pm UTC = 10am PDT / 9am PST
+  - Daily update: 1pm UTC = 6am PDT / 5am PST
   - Nightly tests: 12pm UTC = 5am PDT / 4am PST
   - Live updates run continuously, no time windows needed
 - NFL game times are typically in ET
@@ -222,7 +282,7 @@ The scheduler service includes:
 
 ## Database Backups
 
-Daily backups are created as part of the daily update (5pm UTC = 10am PDT) and stored in `/home/joepaley/backups/` with the format:
+Daily backups are created as part of the daily update (1pm UTC = 6am PDT) and stored in `/home/joepaley/backups/` with the format:
 ```
 fantasy_football_YYYY-MM-DD.db
 ```

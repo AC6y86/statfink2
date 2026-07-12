@@ -27,7 +27,10 @@ module.exports = {
       name: 'statfink2-daily',
       script: './scripts/daily-update.js',
       cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 17 * * *', // 10am UTC = 3am PDT (Pacific Daylight Time)
+      // 13:00 UTC = 6am PDT / 9am EDT: before every kickoff window (Sunday
+      // 17:00 UTC games, international ~13:30 UTC) so the heavy player/roster
+      // sync and backup never contend with live scoring
+      cron_restart: '0 13 * * *',
       autorestart: false,
       watch: false,
       time: true
@@ -63,7 +66,7 @@ module.exports = {
       name: 'statfink2-nightly-tests',
       script: './scripts/nightly-test-run.js',
       cwd: '/home/joepaley/statfink2',
-      cron_restart: '0 12 * * *', // 12pm UTC = 4am PDT, after the 10am UTC daily update
+      cron_restart: '0 12 * * *', // 12pm UTC = 4-5am PT; ~3min outage never overlaps a game window
       autorestart: false,
       watch: false,
       time: true
