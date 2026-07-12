@@ -15,20 +15,29 @@ class DatabaseManager {
         console.log('Current working directory:', process.cwd());
         console.log('Database file exists:', fs.existsSync(absolutePath));
         
+        // Resolved once pragmas + schema init have finished (or been skipped);
+        // close() waits on it so shutdown can't race the init chain.
+        this.initComplete = new Promise(resolve => { this._initResolve = resolve; });
+
         this.db = new sqlite3.Database(absolutePath, (err) => {
             if (err) {
                 console.error('Error opening database:', err);
                 console.error('Database path was:', absolutePath);
+                this._initResolve();
                 throw new DatabaseError('Failed to connect to database', 'connect');
             } else {
                 console.log('Connected to SQLite database at:', absolutePath);
-                this.initializeDatabase();
+                // serialize(): the driver defaults to parallel execution, so on
+                // a fresh database the WAL pragma could interleave with the
+                // multi-statement schema exec and fail with "cannot change into
+                // wal mode from within a transaction"
+                this.db.serialize(() => {
+                    this.db.run('PRAGMA foreign_keys = ON');
+                    this.db.run('PRAGMA journal_mode = WAL');
+                    this.initializeDatabase();
+                });
             }
         });
-        
-        // Enable foreign keys and WAL mode
-        this.db.run('PRAGMA foreign_keys = ON');
-        this.db.run('PRAGMA journal_mode = WAL');
     }
 
     initializeDatabase() {
@@ -40,22 +49,26 @@ class DatabaseManager {
         // In production, skip schema initialization to preserve data
         if (process.env.NODE_ENV === 'production') {
             console.log('Production mode: Skipping schema initialization');
+            this._initResolve();
             return;
         }
-        
+
         try {
             const schema = fs.readFileSync(schemaPath, 'utf8');
-            
+
             this.db.exec(schema, (err) => {
                 if (err) {
+                    // NB: don't throw here - an exception inside an async
+                    // sqlite3 callback is uncatchable and kills the process
                     console.error('Error initializing database:', err);
-                    throw new DatabaseError('Failed to initialize database schema', 'schema_init');
                 } else {
                     console.log('Database initialized successfully');
                 }
+                this._initResolve();
             });
         } catch (err) {
             console.error('Error reading schema file:', err);
+            this._initResolve();
             throw new DatabaseError('Failed to read database schema', 'schema_read');
         }
     }
@@ -1084,6 +1097,30 @@ class DatabaseManager {
                 };
             }
 
+            // League invariant guard: every team must have exactly 19 active
+            // players in the SOURCE week before it is propagated. A past
+            // incident (commit f327966) advanced the week with missing rosters;
+            // refuse loudly rather than copy a corrupt week forward.
+            const badTeams = await this.all(`
+                SELECT t.team_id, t.team_name, COUNT(wr.player_id) as active_players
+                FROM teams t
+                LEFT JOIN weekly_rosters wr ON t.team_id = wr.team_id
+                    AND wr.week = ? AND wr.season = ? AND wr.roster_position = 'active'
+                GROUP BY t.team_id, t.team_name
+                HAVING active_players != 19
+            `, [fromWeek, season]);
+
+            if (badTeams.length > 0) {
+                const detail = badTeams.map(t => `${t.team_name}: ${t.active_players}`).join(', ');
+                const message = `Refusing to copy rosters: week ${fromWeek} violates the 19-active-players-per-team invariant (${detail})`;
+                logError(message);
+                return { success: false, message, badTeams };
+            }
+
+            const sourceCount = await this.get(
+                'SELECT COUNT(*) as count FROM weekly_rosters WHERE week = ? AND season = ?',
+                [fromWeek, season]);
+
             // Copy all rosters from previous week to new week
             const result = await this.run(`
                 INSERT INTO weekly_rosters (team_id, player_id, week, season, roster_position,
@@ -1095,6 +1132,15 @@ class DatabaseManager {
                 FROM weekly_rosters
                 WHERE week = ? AND season = ?
             `, [toWeek, fromWeek, season]);
+
+            // Post-copy assertion: the target week must contain exactly what the
+            // source week did. On mismatch, remove the partial copy and fail.
+            if (result.changes !== sourceCount.count) {
+                await this.run('DELETE FROM weekly_rosters WHERE week = ? AND season = ?', [toWeek, season]);
+                const message = `Roster copy incomplete (${result.changes}/${sourceCount.count} rows) - target week ${toWeek} rolled back`;
+                logError(message);
+                return { success: false, message };
+            }
 
             logInfo(`Copied ${result.changes} roster entries from week ${fromWeek} to week ${toWeek}`);
 
@@ -1166,13 +1212,18 @@ class DatabaseManager {
     }
 
     // Close database connection
-    close() {
+    async close() {
+        // Never close mid-initialization - the queued pragma/schema statements
+        // would fail against a closed handle
+        if (this.initComplete) {
+            await this.initComplete;
+        }
         return new Promise((resolve, reject) => {
             if (!this.db) {
                 resolve();
                 return;
             }
-            
+
             this.db.close((err) => {
                 if (err) {
                     logError('Error closing database', err);

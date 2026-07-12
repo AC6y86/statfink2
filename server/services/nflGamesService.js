@@ -243,12 +243,12 @@ class NFLGamesService {
                 FROM nfl_games
                 WHERE season = ?
                   AND week = ?
-                  AND ((status != 'Final' AND status != 'Scheduled')
+                  AND ((status NOT LIKE 'Final%' AND status != 'Scheduled')
                        OR (status = 'Scheduled' AND
                            game_time_epoch IS NOT NULL AND
                            game_time_epoch BETWEEN ? AND ?)
                        OR (status = 'Scheduled' AND (home_score > 0 OR away_score > 0))
-                       OR (status = 'Final' AND
+                       OR (status LIKE 'Final%' AND
                            game_time_epoch IS NOT NULL AND
                            game_time_epoch > ?))
                 ORDER BY game_time_epoch
@@ -339,7 +339,8 @@ class NFLGamesService {
 
             // Update game in database
             // For live games (not scheduled), we clear game_time to avoid confusion with kickoff time
-            const isLiveGame = gameStatus !== 'Scheduled' && gameStatus !== 'Final';
+            // NB: overtime finals arrive as 'Final/OT' - startsWith, never exact-match
+            const isLiveGame = gameStatus !== 'Scheduled' && !gameStatus.startsWith('Final');
             
             if (isLiveGame) {
                 // Clear game_time for live games, keep time_remaining for actual game clock

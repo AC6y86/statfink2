@@ -164,4 +164,4 @@ if (require.main === module) {
     addTeamDefenses();
 }
 
-module.exports = { addTeamDefenses, createDefensePreservationHook };
+module.exports = { addTeamDefenses, createDefensePreservationHook, NFL_TEAMS };

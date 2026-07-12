@@ -5,121 +5,13 @@ class TeamScoreService {
         this.db = db;
     }
 
-    /**
-     * Recalculate team scores for a specific week
-     */
-    async recalculateTeamScores(week, season) {
-        try {
-            // Get all teams
-            const teams = await this.db.all('SELECT team_id FROM teams');
-            
-            let updated = 0;
-            
-            for (const team of teams) {
-                // Calculate total points for active players
-                const totalPoints = await this.calculateTeamTotalPoints(team.team_id, week, season);
-                
-                // Update matchup scores
-                const matchupUpdates = await this.updateMatchupScores(team.team_id, week, season, totalPoints);
-                
-                if (matchupUpdates > 0) {
-                    updated++;
-                }
-            }
-            
-            logInfo(`  ✓ Recalculated team scores for Week ${week}: ${updated} teams updated`);
-            
-            return {
-                success: true,
-                week,
-                teamsUpdated: updated,
-                totalTeams: teams.length
-            };
-            
-        } catch (error) {
-            logError(`Error recalculating team scores for Week ${week}:`, error);
-            throw error;
-        }
-    }
-
-    /**
-     * Calculate total fantasy points for a team's active roster
-     */
-    async calculateTeamTotalPoints(teamId, week, season) {
-        try {
-            const result = await this.db.get(`
-                SELECT SUM(ps.fantasy_points) as total_points
-                FROM weekly_rosters wr
-                JOIN player_stats ps ON wr.player_id = ps.player_id
-                WHERE wr.team_id = ? 
-                AND ps.week = ? 
-                AND ps.season = ?
-                AND wr.week = ? 
-                AND wr.season = ?
-                AND wr.roster_position = 'active'
-            `, [teamId, week, season, week, season]);
-            
-            return result?.total_points || 0;
-        } catch (error) {
-            logError(`Error calculating total points for team ${teamId}:`, error);
-            throw error;
-        }
-    }
-
-    /**
-     * Update matchup scores for a team
-     */
-    async updateMatchupScores(teamId, week, season, totalPoints) {
-        try {
-            // Update when team is team1
-            const result1 = await this.db.run(`
-                UPDATE matchups
-                SET team1_scoring_points = ?
-                WHERE team1_id = ? AND week = ? AND season = ?
-            `, [totalPoints, teamId, week, season]);
-
-            // Update when team is team2
-            const result2 = await this.db.run(`
-                UPDATE matchups
-                SET team2_scoring_points = ?
-                WHERE team2_id = ? AND week = ? AND season = ?
-            `, [totalPoints, teamId, week, season]);
-            
-            return result1.changes + result2.changes;
-        } catch (error) {
-            logError(`Error updating matchup scores for team ${teamId}:`, error);
-            throw error;
-        }
-    }
-
-    /**
-     * Recalculate all team scores for an entire season
-     */
-    async recalculateSeasonScores(season, startWeek = 1, endWeek = 17) {
-        try {
-            logInfo(`📊 Recalculating team scores for ${season} season (weeks ${startWeek}-${endWeek})...`);
-            
-            let totalUpdated = 0;
-            
-            for (let week = startWeek; week <= endWeek; week++) {
-                const weekResult = await this.recalculateTeamScores(week, season);
-                totalUpdated += weekResult.teamsUpdated;
-            }
-            
-            logInfo(`✓ Season recalculation complete: ${totalUpdated} team-weeks updated`);
-            
-            return {
-                success: true,
-                season,
-                weeksProcessed: endWeek - startWeek + 1,
-                totalUpdated
-            };
-            
-        } catch (error) {
-            logError(`Error recalculating season scores:`, error);
-            throw error;
-        }
-    }
+    // NB: this service must never write matchups.teamX_scoring_points. Its old
+    // recalculateTeamScores/recalculateSeasonScores summed the FULL active
+    // roster (19 players) instead of the marked scoring lineup, corrupting
+    // official matchup scores from three different call paths (recalc, live
+    // updates, admin sync) before being removed for good. The sole legitimate
+    // writer is scoringPlayersService.updateMatchupScoringTotals.
+    // Guarded by tests/integration/matchupScoreIntegrity.test.js.
 
     /**
      * Get team scores for a specific week

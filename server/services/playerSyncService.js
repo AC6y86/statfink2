@@ -1,5 +1,6 @@
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 const { createDefensePreservationHook } = require('../utils/nfl/teamDefenses');
+const { getTeamAbbreviation } = require('../utils/teamMappings');
 
 class PlayerSyncService {
     constructor(db, tank01Service) {
@@ -204,49 +205,13 @@ class PlayerSyncService {
         return positionMap[pos] || null;
     }
 
-    // Normalize team abbreviations
+    // Normalize team abbreviations - delegates to the single source of truth
+    // in utils/teamMappings (codes, alt codes, nicknames, city names). A local
+    // partial copy of this map previously let nicknames like 'Colts' leak into
+    // nfl_players unnormalized.
     normalizeTeam(team) {
         if (!team) return null;
-
-        const teamAbv = team.toUpperCase();
-        
-        // Handle common team abbreviation variations
-        const teamMap = {
-            'ARI': 'ARI', 'ARIZONA': 'ARI',
-            'ATL': 'ATL', 'ATLANTA': 'ATL',
-            'BAL': 'BAL', 'BALTIMORE': 'BAL',
-            'BUF': 'BUF', 'BUFFALO': 'BUF',
-            'CAR': 'CAR', 'CAROLINA': 'CAR',
-            'CHI': 'CHI', 'CHICAGO': 'CHI',
-            'CIN': 'CIN', 'CINCINNATI': 'CIN',
-            'CLE': 'CLE', 'CLEVELAND': 'CLE',
-            'DAL': 'DAL', 'DALLAS': 'DAL',
-            'DEN': 'DEN', 'DENVER': 'DEN',
-            'DET': 'DET', 'DETROIT': 'DET',
-            'GB': 'GB', 'GREEN BAY': 'GB', 'GNB': 'GB',
-            'HOU': 'HOU', 'HOUSTON': 'HOU',
-            'IND': 'IND', 'INDIANAPOLIS': 'IND',
-            'JAX': 'JAX', 'JACKSONVILLE': 'JAX', 'JAC': 'JAX',
-            'KC': 'KC', 'KANSAS CITY': 'KC', 'KAN': 'KC',
-            'LV': 'LV', 'LAS VEGAS': 'LV', 'RAIDERS': 'LV',
-            'LAC': 'LAC', 'LA CHARGERS': 'LAC', 'CHARGERS': 'LAC',
-            'LAR': 'LAR', 'LA RAMS': 'LAR', 'RAMS': 'LAR',
-            'MIA': 'MIA', 'MIAMI': 'MIA',
-            'MIN': 'MIN', 'MINNESOTA': 'MIN',
-            'NE': 'NE', 'NEW ENGLAND': 'NE', 'PATRIOTS': 'NE',
-            'NO': 'NO', 'NEW ORLEANS': 'NO', 'SAINTS': 'NO',
-            'NYG': 'NYG', 'NY GIANTS': 'NYG', 'GIANTS': 'NYG',
-            'NYJ': 'NYJ', 'NY JETS': 'NYJ', 'JETS': 'NYJ',
-            'PHI': 'PHI', 'PHILADELPHIA': 'PHI',
-            'PIT': 'PIT', 'PITTSBURGH': 'PIT',
-            'SF': 'SF', 'SAN FRANCISCO': 'SF', '49ERS': 'SF',
-            'SEA': 'SEA', 'SEATTLE': 'SEA',
-            'TB': 'TB', 'TAMPA BAY': 'TB', 'BUCCANEERS': 'TB',
-            'TEN': 'TEN', 'TENNESSEE': 'TEN',
-            'WAS': 'WAS', 'WASHINGTON': 'WAS', 'COMMANDERS': 'WAS', 'WSH': 'WAS'
-        };
-
-        return teamMap[teamAbv] || teamAbv;
+        return getTeamAbbreviation(team);
     }
 
     // Sync player stats for a specific week

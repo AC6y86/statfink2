@@ -2,16 +2,11 @@ const fs = require('fs').promises;
 const path = require('path');
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 const ScoringPlayParserService = require('./scoringPlayParserService');
+// Canonical NFL team codes (Washington is WAS internally) - single source of
+// truth in utils/teamMappings, do not redefine locally
+const { CANONICAL_TEAM_CODES } = require('../utils/teamMappings');
 
 const MAX_ALERTS = 200;
-
-// Canonical NFL team codes (Washington is WAS internally, see utils/teamNormalization.js)
-const CANONICAL_TEAM_CODES = new Set([
-    'ARI', 'ATL', 'BAL', 'BUF', 'CAR', 'CHI', 'CIN', 'CLE',
-    'DAL', 'DEN', 'DET', 'GB', 'HOU', 'IND', 'JAX', 'KC',
-    'LAC', 'LAR', 'LV', 'MIA', 'MIN', 'NE', 'NO', 'NYG',
-    'NYJ', 'PHI', 'PIT', 'SEA', 'SF', 'TB', 'TEN', 'WAS'
-]);
 
 /**
  * Health/alert service (2026 reliability hardening, P0-1).

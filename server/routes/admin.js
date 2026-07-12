@@ -425,7 +425,7 @@ router.get('/sync/status', requireAdmin, asyncHandler(async (req, res) => {
 // Force sync (for testing)
 router.post('/sync/force', requireAdmin, asyncHandler(async (req, res) => {
     const playerSyncService = req.app.locals.playerSyncService;
-    const teamScoreService = req.app.locals.teamScoreService;
+    const scoringPlayersService = req.app.locals.scoringPlayersService;
     const db = req.app.locals.db;
 
     if (!playerSyncService) {
@@ -447,19 +447,21 @@ router.post('/sync/force', requireAdmin, asyncHandler(async (req, res) => {
         statsResult = await playerSyncService.syncPlayerStats(currentWeek, currentSeason);
     }
 
-    // Step 4: Recalculate team scores
+    // Step 4: Re-mark scoring lineups and update matchup totals from them.
+    // (Never teamScoreService's old full-roster recalculation - it corrupted
+    // official matchup scores; see teamScoreService.js.)
     let teamScoresUpdated = false;
     let teamsUpdated = 0;
     try {
-        if (teamScoreService) {
-            logInfo('Recalculating team scores after force sync...');
-            const teamScoreResult = await teamScoreService.recalculateTeamScores(currentWeek, currentSeason);
-            teamScoresUpdated = teamScoreResult.success;
-            teamsUpdated = teamScoreResult.teamsUpdated || 0;
-            logInfo(`Team scores recalculated: ${teamsUpdated} teams updated`);
+        if (scoringPlayersService) {
+            logInfo('Recalculating scoring lineups and matchup totals after force sync...');
+            const scoringResult = await scoringPlayersService.calculateScoringPlayers(currentWeek, currentSeason);
+            teamScoresUpdated = scoringResult.success;
+            teamsUpdated = scoringResult.teamsProcessed || 0;
+            logInfo(`Scoring lineups recalculated: ${teamsUpdated} teams updated`);
         }
     } catch (teamScoreError) {
-        logError('Failed to recalculate team scores:', teamScoreError);
+        logError('Failed to recalculate scoring lineups:', teamScoreError);
     }
 
     res.json({
@@ -649,20 +651,22 @@ router.post('/sync/games/current-week', requireAdmin, asyncHandler(async (req, r
             logInfo(`Week ${currentWeek} not complete (${gamesComplete.completedGames}/${gamesComplete.totalGames} games done) - bonuses will be calculated when all games finish`);
         }
         
-        // Recalculate team scores after updating player stats and DST bonuses
+        // Re-mark scoring lineups and update matchup totals from them after
+        // the stats update. (Never teamScoreService's old full-roster
+        // recalculation - it corrupted official matchup scores.)
         let teamScoresUpdated = false;
         let teamsUpdated = 0;
         try {
-            const teamScoreService = req.app.locals.teamScoreService;
-            if (teamScoreService) {
-                logInfo('Recalculating team scores after player stats update...');
-                const teamScoreResult = await teamScoreService.recalculateTeamScores(currentWeek, currentSeason);
-                teamScoresUpdated = teamScoreResult.success;
-                teamsUpdated = teamScoreResult.teamsUpdated || 0;
-                logInfo(`Team scores recalculated: ${teamsUpdated} teams updated`);
+            const scoringPlayersService = req.app.locals.scoringPlayersService;
+            if (scoringPlayersService) {
+                logInfo('Recalculating scoring lineups after player stats update...');
+                const scoringResult = await scoringPlayersService.calculateScoringPlayers(currentWeek, currentSeason);
+                teamScoresUpdated = scoringResult.success;
+                teamsUpdated = scoringResult.teamsProcessed || 0;
+                logInfo(`Scoring lineups recalculated: ${teamsUpdated} teams updated`);
             }
         } catch (teamScoreError) {
-            logError('Failed to recalculate team scores:', teamScoreError);
+            logError('Failed to recalculate scoring lineups:', teamScoreError);
         }
         
         const message = `Full sync completed: ${gamesUpdated} games updated, ${teamsUpdated} team scores recalculated`;

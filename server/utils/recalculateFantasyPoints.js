@@ -1,4 +1,5 @@
 const { logInfo, logError } = require('./errorHandler');
+const ScoringPlayersService = require('../services/scoringPlayersService');
 
 /**
  * Utility script to recalculate fantasy points for all player stats using the new scoring system
@@ -105,12 +106,16 @@ async function recalculateAllFantasyPoints(db, scoringService) {
             logInfo(`Processed batch ${Math.floor(i/batchSize) + 1}/${Math.ceil(allStats.length/batchSize)} - Updated ${updatedCount}/${allStats.length} records`);
         }
         
-        // Update team scores for all weeks/seasons
-        logInfo('Recalculating team scores...');
+        // Re-mark scoring lineups and update matchup totals from them for every
+        // week/season. (The old private recalculateTeamScores here summed the
+        // FULL active roster into matchup scores - the corruption documented in
+        // docs/DEFENSIVE_SCORING.md - and must not come back.)
+        logInfo('Recalculating scoring lineups and matchup totals...');
         const matchups = await db.all('SELECT DISTINCT week, season FROM matchups ORDER BY season DESC, week DESC');
-        
+
+        const scoringPlayersService = new ScoringPlayersService(db);
         for (const matchup of matchups) {
-            await recalculateTeamScores(db, matchup.week, matchup.season);
+            await scoringPlayersService.calculateScoringPlayers(matchup.week, matchup.season);
         }
         
         logInfo(`Fantasy points recalculation completed!`);
@@ -132,48 +137,6 @@ async function recalculateAllFantasyPoints(db, scoringService) {
     }
 }
 
-/**
- * Recalculate team scores for a specific week/season
- */
-async function recalculateTeamScores(db, week, season) {
-    try {
-        // Get all teams
-        const teams = await db.all('SELECT team_id FROM teams');
-        
-        for (const team of teams) {
-            // Calculate total points for starters
-            const result = await db.get(`
-                SELECT SUM(ps.fantasy_points) as total_points
-                FROM weekly_rosters wr
-                JOIN player_stats ps ON wr.player_id = ps.player_id
-                WHERE wr.team_id = ? AND ps.week = ? AND ps.season = ?
-                AND wr.week = ? AND wr.season = ?
-                AND wr.roster_position = 'active'
-            `, [team.team_id, week, season, week, season]);
-            
-            const totalPoints = result?.total_points || 0;
-            
-            // Update matchup scores
-            await db.run(`
-                UPDATE matchups
-                SET team1_scoring_points = ?
-                WHERE team1_id = ? AND week = ? AND season = ?
-            `, [totalPoints, team.team_id, week, season]);
-
-            await db.run(`
-                UPDATE matchups
-                SET team2_scoring_points = ?
-                WHERE team2_id = ? AND week = ? AND season = ?
-            `, [totalPoints, team.team_id, week, season]);
-        }
-        
-    } catch (error) {
-        logError(`Error recalculating team scores for Week ${week}, ${season}:`, error);
-        throw error;
-    }
-}
-
 module.exports = {
-    recalculateAllFantasyPoints,
-    recalculateTeamScores
+    recalculateAllFantasyPoints
 };

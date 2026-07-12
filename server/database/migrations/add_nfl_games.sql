@@ -13,14 +13,14 @@ CREATE TABLE IF NOT EXISTS nfl_games (
     quarter VARCHAR(10),
     time_remaining VARCHAR(20),
     venue VARCHAR(100),
-    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    -- Indexes for common queries
-    INDEX idx_week_season (week, season),
-    INDEX idx_status (status),
-    INDEX idx_game_date (game_date),
-    INDEX idx_teams (home_team, away_team)
+    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Indexes for common queries (SQLite has no inline INDEX syntax)
+CREATE INDEX IF NOT EXISTS idx_nfl_games_week_season ON nfl_games(week, season);
+CREATE INDEX IF NOT EXISTS idx_nfl_games_status ON nfl_games(status);
+CREATE INDEX IF NOT EXISTS idx_nfl_games_game_date ON nfl_games(game_date);
+CREATE INDEX IF NOT EXISTS idx_nfl_games_teams ON nfl_games(home_team, away_team);
 
 -- Add a view for easier querying of current week games
 CREATE VIEW IF NOT EXISTS current_week_games AS

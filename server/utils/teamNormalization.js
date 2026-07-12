@@ -1,30 +1,28 @@
 /**
  * Team code normalization utility
  * Ensures consistent team codes across the application
- * 
- * Tank01 API returns "WSH" for Washington, but we use "WAS" internally
- * This utility normalizes all team codes to our expected format
+ *
+ * Tank01 API returns "WSH" for Washington, but we use "WAS" internally.
+ * All mapping logic lives in utils/teamMappings.js (the single source of
+ * truth) - this module is a thin wrapper kept for its established API.
  */
 
-// Team code mappings (Tank01 format -> Our format)
+const { getTeamAbbreviation } = require('./teamMappings');
+
+// Kept for backward compatibility with existing imports
 const TEAM_CODE_MAPPINGS = {
-    'WSH': 'WAS',  // Washington: WSH -> WAS
-    // Add any other team code inconsistencies here if discovered
+    'WSH': 'WAS'  // Washington: WSH -> WAS
 };
 
 /**
- * Normalize a single team code
+ * Normalize a single team identifier (code, alt code, nickname, city name)
+ * to the canonical team code.
  * @param {string} teamCode - The team code to normalize
  * @returns {string} - The normalized team code
  */
 function normalizeTeamCode(teamCode) {
     if (!teamCode) return teamCode;
-    
-    // Convert to uppercase for consistency
-    const upperCode = teamCode.toUpperCase();
-    
-    // Apply mapping if exists, otherwise return as-is
-    return TEAM_CODE_MAPPINGS[upperCode] || upperCode;
+    return getTeamAbbreviation(teamCode);
 }
 
 /**
@@ -34,7 +32,7 @@ function normalizeTeamCode(teamCode) {
  */
 function normalizeGameTeams(game) {
     if (!game) return game;
-    
+
     return {
         ...game,
         home: normalizeTeamCode(game.home),
