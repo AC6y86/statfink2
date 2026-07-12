@@ -22,18 +22,25 @@ const MIGRATIONS_DIR = path.join(__dirname, '../../server/database/migrations');
 async function createTempDb(label) {
     const dbPath = path.join('/tmp', `statfink-test-${label}-${process.pid}-${Date.now()}.db`);
     process.env.DATABASE_PATH = dbPath;
+    // NODE_ENV=production makes the Database constructor SKIP schema
+    // initialization (database.js) — the temp DB would stay empty forever.
+    // The pm2 nightly-test run inherits NODE_ENV=production from .env via
+    // ecosystem.config.js, so force test mode (jest's own default when the
+    // var is unset) before the constructor reads it.
+    process.env.NODE_ENV = 'test';
 
-    // Require AFTER setting DATABASE_PATH: the constructor reads the env var.
+    // Require AFTER setting the env vars: the constructor reads both.
     const Database = require('../../server/database/database');
     const db = new Database();
 
-    // Wait for async schema initialization to FULLY finish - polling for an
-    // early table races the still-running multi-statement exec (schema.sql's
-    // last statement is the idx_tank01_cache_historical index).
-    await waitFor(async () => {
-        const row = await db.get("SELECT name FROM sqlite_master WHERE name = 'idx_tank01_cache_historical'");
-        return !!row;
-    });
+    // initComplete resolves only after the multi-statement schema exec has
+    // fully finished (schema.sql's last statement is the
+    // idx_tank01_cache_historical index), so no polling is needed.
+    await db.initComplete;
+    const row = await db.get("SELECT name FROM sqlite_master WHERE name = 'idx_tank01_cache_historical'");
+    if (!row) {
+        throw new Error('Temp DB schema initialization did not run — schema.sql exec failed or was skipped (check NODE_ENV and the database logs above)');
+    }
 
     // Apply the pieces of the migrations a schema.sql-only DB lacks
     await db.run('ALTER TABLE weekly_rosters ADD COLUMN is_scoring INTEGER DEFAULT 0');
@@ -59,17 +66,6 @@ async function cleanupTempDb(db) {
             fs.unlinkSync(db.__tempPath + suffix);
         } catch (_) { /* missing is fine */ }
     }
-}
-
-async function waitFor(cond, timeoutMs = 3000) {
-    const start = Date.now();
-    while (Date.now() - start < timeoutMs) {
-        try {
-            if (await cond()) return;
-        } catch (_) { /* not ready */ }
-        await new Promise(r => setTimeout(r, 25));
-    }
-    throw new Error('Timed out waiting for temp DB initialization');
 }
 
 module.exports = { createTempDb, cleanupTempDb };

@@ -2,6 +2,12 @@
 
 All scores use **scoring_points** - the weighted scores where each team can only score a limited number of players per position.
 
+> NOTE (2026-07-12): the week 12 and week 15 Dan vs Pete rows below were
+> updated to the corrected official record (commissioner rulings documented in
+> docs/DEFENSIVE_SCORING.md: wk 12 Pete 54→74, Pete wins; wk 15 Pete 130→138).
+> Derived narrative sections in this file may still reflect pre-correction
+> values - the database is the authoritative record.
+
 ## Final Standings by Cumulative Points
 
 | Rank | Owner | Cumulative Points | Weekly High Scores |
@@ -158,7 +164,7 @@ All scores use **scoring_points** - the weighted scores where each team can only
 | Matchup | Score | Winner |
 |---------|-------|--------|
 | Chris vs Mitch | 79.5 - 53.0 | Chris |
-| Dan vs Pete | 60.5 - 54.0 | Dan |
+| Dan vs Pete | 60.5 - 74.0 | Pete |
 | Joe vs Aaron | 138.0 - 64.5 | Joe |
 | Cal vs Bruce | 124.5 - 63.0 | Cal |
 | Mike vs Sean | 98.5 - 67.0 | Mike |
@@ -188,7 +194,7 @@ All scores use **scoring_points** - the weighted scores where each team can only
 | Chris vs Mike | 137.0 - 74.5 | Chris |
 | Aaron vs Bruce | 81.0 - 91.0 | Bruce |
 | Matt vs Mitch | 108.0 - 77.0 | Matt |
-| Dan vs Pete | 124.5 - 130.0 | Pete |
+| Dan vs Pete | 124.5 - 138.0 | Pete |
 | Joe vs Cal | 136.0 - 174.0 | Cal |
 | Eli vs Sean | 117.0 - 76.0 | Eli |
 
