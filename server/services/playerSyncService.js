@@ -186,6 +186,8 @@ class PlayerSyncService {
             'RB': 'RB',
             'RUNNINGBACK': 'RB',
             'RUNNING_BACK': 'RB',
+            'FB': 'RB',          // PFL rule: fullbacks are RBs
+            'FULLBACK': 'RB',
             'WR': 'WR',
             'WIDERECEIVER': 'WR',
             'WIDE_RECEIVER': 'WR',

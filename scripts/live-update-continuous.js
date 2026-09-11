@@ -43,7 +43,7 @@ async function runLiveUpdate() {
             timeout: 55000 // 55 second timeout (must be less than 60 second interval)
         });
 
-        const result = response.data;
+        const result = response.data.data || response.data;
         if (result.results && result.results.gamesInProgress > 0) {
             console.log(`[${timestamp}] Live update completed: ${result.results.gamesInProgress} games in progress`);
         } else {
