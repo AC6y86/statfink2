@@ -6,7 +6,9 @@ const { google } = require('googleapis');
 const SCOPES = [
   'https://www.googleapis.com/auth/gmail.readonly',
   // Send scope used by scripts/nightly-test-run.js failure notifications
-  'https://www.googleapis.com/auth/gmail.send'
+  'https://www.googleapis.com/auth/gmail.send',
+  // Compose scope used by the admin Recaps tab to create weekly-recap drafts
+  'https://www.googleapis.com/auth/gmail.compose'
 ];
 const TOKEN_PATH = path.join(__dirname, 'token.json');
 const CREDENTIALS_PATH = path.join(__dirname, 'credentials.json');

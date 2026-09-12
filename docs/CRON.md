@@ -41,6 +41,13 @@ TUESDAY (the week rollover)
           verification of the completed week; writes
           logs/weekly-validation-latest.json (admin dashboard panel);
           ALWAYS emails a PASS/WARN/FAIL summary
+  10:30   statfink2-weekly-recaps  headless claude generates 10 recaps of the
+          just-validated week in styles not yet used this season (exclusion
+          list resets each season),
+          fact-checked; writes recaps/{season}/ + logs/weekly-recaps-latest.json
+          (admin dashboard "Recaps" tab); emails ONLY on failure; skips
+          cleanly off-season, on stale/FAILed validation, or if already
+          generated; never commits to git
   12:00   nightly tests (as every day)
   MANUAL  Joe reviews the validation email, then triggers the weekly update
           (admin dashboard, or POST /api/internal/scheduler/weekly):
@@ -75,7 +82,8 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
 3. **Email Roster-Move Poller** - Runs continuously (polls Gmail every 2 minutes)
 4. **Nightly Regression Tests** - Runs at 12pm UTC (5am PDT / 4am PST)
 5. **Weekly Validation** - Runs Tuesdays at 10am UTC (3am PDT / 2am PST)
-6. **Weekly Updates** - ⚠️ Currently DISABLED (cron commented out in `ecosystem.config.js`); run manually after reviewing the weekly validation report
+6. **Weekly Recaps** - Runs Tuesdays at 10:30am UTC, 30 min after validation
+7. **Weekly Updates** - ⚠️ Currently DISABLED (cron commented out in `ecosystem.config.js`); run manually after reviewing the weekly validation report
 
 ## How It Works
 
@@ -133,7 +141,33 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
 - **Manual run**: `node scripts/weekly-validate.js [--week N] [--season Y] [--no-email] [--skip-verification]`
 - **Workflow**: review the emailed report, then run the weekly update manually to advance the week
 
-### 6. Weekly Update (After all games complete) — ⚠️ DISABLED
+### 6. Weekly Recaps
+- **PM2 Process**: `statfink2-weekly-recaps`
+- **Schedule**: `30 10 * * 2` (10:30am UTC Tuesday, 30 min after weekly-validate
+  so `logs/weekly-validation-latest.json` is fresh; worst case ~30 min, done
+  before the 12pm UTC nightly tests)
+- **Script**: `/scripts/weekly-recap-run.js`
+- **Functions**:
+  - Reads `logs/weekly-validation-latest.json` for the just-validated
+    season/week; skips cleanly if the report is missing/stale (off-season),
+    was SKIPPED, or the week's recaps already exist; skips + emails if
+    validation FAILED
+  - Drives the `/recap` slash command headlessly (`claude -p "/recap S W --auto"`,
+    restricted tool allowlist, 30-min timeout): data digest → season storylines →
+    10 styles not yet used this season (`scripts/recap-styles-used.js <season>`
+    is the exclusion list; it resets each season) → 10 narrator agents →
+    fact-check with one automatic regeneration of failures
+  - DB is only ever read (read-only, via `scripts/recap-data.js`); writes only
+    `recaps/{season}/` and `logs/`; never commits to git — new recap files wait
+    for a manual commit
+  - Writes `logs/weekly-recaps-latest.json` (+ capped history) — shown on the
+    admin dashboard's **Recaps** tab, where each recap can be read and turned
+    into a Gmail draft (league mailer account; requires the gmail.compose
+    scope — `node roster_moves/authSetup.js` re-authorizes if missing)
+  - Emails joe.paley@gmail.com ONLY on failure (ERROR/FAIL/validation-FAIL)
+- **Manual run**: `node scripts/weekly-recap-run.js [--season Y --week N] [--force] [--force-regenerate] [--dry-run] [--no-email]`
+
+### 7. Weekly Update (After all games complete) — ⚠️ DISABLED
 - **PM2 Process**: `statfink2-weekly`
 - **Schedule**: None — the `cron_restart` is commented out in `ecosystem.config.js`
   ("TEMPORARILY DISABLED"; the last configured value was `0 11 * * 2`, 11am UTC Tuesday)
@@ -157,6 +191,7 @@ The scheduled tasks are configured in `/home/joepaley/statfink2/ecosystem.config
 | `statfink2-email-poller` | Always on | polls Gmail every 2 minutes |
 | `statfink2-nightly-tests` | Cron | `0 12 * * *` (12pm UTC = 5am PDT) |
 | `statfink2-weekly-validate` | Cron | `0 10 * * 2` (10am UTC Tue = 3am PDT) |
+| `statfink2-weekly-recaps` | Cron | `30 10 * * 2` (10:30am UTC Tue = 3:30am PDT) |
 | `statfink2-weekly` | Cron — **disabled** | `cron_restart` commented out |
 
 ## Monitoring Commands

@@ -84,6 +84,21 @@ module.exports = {
       watch: false,
       time: true
     },
+    // Weekly recap generation - 30 min after weekly-validate so its report is
+    // fresh. Drives the /recap pipeline headlessly (claude -p --auto): 10
+    // styles unused so far this season, fact-checked, written to recaps/{season}/ and
+    // logs/weekly-recaps-latest.json for the admin Recaps tab. Reads the DB
+    // read-only; emails joe.paley@gmail.com ONLY on failure; skips cleanly
+    // off-season or when the week is already generated. Never commits to git.
+    {
+      name: 'statfink2-weekly-recaps',
+      script: './scripts/weekly-recap-run.js',
+      cwd: '/home/joepaley/statfink2',
+      cron_restart: '30 10 * * 2', // 10:30am UTC Tuesday; worst case ~30min, done before nightly-tests at 12:00
+      autorestart: false,
+      watch: false,
+      time: true
+    },
     {
       name: 'statfink2-weekly',
       script: './scripts/weekly-update-check.js',

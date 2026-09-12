@@ -14,3 +14,4 @@ Persona styles already used, per week — consult before proposing new styles to
 - **Week 14**: abercrombie-ad, aesops-fables, maury-povich, new-york-times, shel-silverstein, weird-al
 - **Week 15**: brian-regan, dave-chappelle, eddie-murphy, george-carlin, jerry-seinfeld, jim-gaffigan, john-mulaney, kevin-hart, mitch-hedberg, nate-bargatze
 - **Week 16**: 1920s-radio, agatha-christie, british-royal, country-ballad, film-noir, gospel-preacher, pirate-captain, shel-silverstein, wwe-announcer
+- **Week 18**: class-reunion-catch-up, courtroom-closing-arguments, graduation-commencement-speech, heist-movie-planning, morgan-freeman-narration, nobel-prize-ceremony, oscars-acceptance-speech, planetarium-narrator, state-of-the-union-address, wine-tasting-critique

@@ -1519,4 +1519,157 @@ router.get('/health/weekly-validation', requireAdmin, asyncHandler(async (req, r
     res.json({ success: true, data });
 }));
 
+// ==================== Weekly Recaps ====================
+// Persona-style owner recaps generated under recaps/{season}/ by the /recap
+// pipeline (cron: scripts/weekly-recap-run.js). Read-only over the filesystem
+// except for the Gmail-draft action.
+
+const recapFiles = require('../utils/recapFiles');
+const { createGmailDraft } = require('../../scripts/lib/gmailDraft');
+const RECAPS_ROOT = path.join(__dirname, '../../recaps');
+
+function recapWeekParams(req) {
+    const { season, week } = req.params;
+    if (!recapFiles.isValidSeason(season) || !recapFiles.isValidWeek(week)) {
+        throw new APIError('Invalid season or week', 400);
+    }
+    return { season: parseInt(season), week: parseInt(week) };
+}
+
+async function readFactcheck(season, week) {
+    const file = path.join(RECAPS_ROOT, String(season), 'data', `week${recapFiles.weekPad(week)}-factcheck.md`);
+    try {
+        return recapFiles.parseFactcheckReport(await fs.readFile(file, 'utf8'));
+    } catch (error) {
+        return null; // no fact-check report for this week
+    }
+}
+
+// Inventory of all generated recaps + the latest scheduled run's status
+// (written by scripts/weekly-recap-run.js).
+router.get('/recaps', requireAdmin, asyncHandler(async (req, res) => {
+    let latestRun = null;
+    try {
+        latestRun = JSON.parse(await fs.readFile(path.join(__dirname, '../../logs/weekly-recaps-latest.json'), 'utf8'));
+    } catch (error) {
+        // No scheduled run yet
+    }
+
+    const seasons = [];
+    let seasonDirs = [];
+    try {
+        seasonDirs = (await fs.readdir(RECAPS_ROOT)).filter(d => /^\d{4}$/.test(d)).sort().reverse();
+    } catch (error) {
+        // recaps/ missing entirely
+    }
+    for (const seasonDir of seasonDirs) {
+        let files = [];
+        try {
+            files = await fs.readdir(path.join(RECAPS_ROOT, seasonDir));
+        } catch (error) {
+            continue;
+        }
+        const weekCounts = new Map();
+        for (const f of files) {
+            const parsed = recapFiles.parseRecapFilename(f);
+            if (parsed) weekCounts.set(parsed.week, (weekCounts.get(parsed.week) || 0) + 1);
+        }
+        let dataFiles = [];
+        try {
+            dataFiles = await fs.readdir(path.join(RECAPS_ROOT, seasonDir, 'data'));
+        } catch (error) { /* no data dir */ }
+        const factchecked = new Set(
+            dataFiles.map(f => (/^week(\d{2})-factcheck\.md$/.exec(f) || [])[1])
+                .filter(Boolean).map(Number)
+        );
+        seasons.push({
+            season: parseInt(seasonDir),
+            weeks: [...weekCounts.entries()]
+                .sort((a, b) => b[0] - a[0])
+                .map(([week, count]) => ({ week, count, hasFactcheck: factchecked.has(week) }))
+        });
+    }
+
+    res.json({ success: true, data: { latestRun, seasons } });
+}));
+
+// One week's recaps: style list with fact-check verdicts.
+router.get('/recaps/:season/:week', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    let files = [];
+    try {
+        files = await fs.readdir(path.join(RECAPS_ROOT, String(season)));
+    } catch (error) {
+        throw new APIError('Season not found', 404);
+    }
+    const factcheck = await readFactcheck(season, week);
+    const styles = files
+        .map(f => recapFiles.parseRecapFilename(f))
+        .filter(p => p && p.week === week)
+        .sort((a, b) => a.slug.localeCompare(b.slug))
+        .map(p => ({
+            slug: p.slug,
+            styleName: recapFiles.slugToDisplayName(p.slug),
+            file: recapFiles.recapFilename(season, week, p.slug),
+            factcheck: factcheck ? (factcheck[p.slug]?.verdict || null) : null
+        }));
+    if (!styles.length) throw new APIError('No recaps for that week', 404);
+    res.json({ success: true, data: { season, week, hasFactcheck: !!factcheck, styles } });
+}));
+
+function resolveRecapPath(season, week, slug) {
+    if (!recapFiles.isValidSlug(slug)) throw new APIError('Invalid style slug', 400);
+    const file = path.resolve(RECAPS_ROOT, String(season), recapFiles.recapFilename(season, week, slug));
+    if (!file.startsWith(path.resolve(RECAPS_ROOT) + path.sep)) {
+        throw new APIError('Invalid path', 400);
+    }
+    return file;
+}
+
+// One recap's markdown content.
+router.get('/recaps/:season/:week/:slug', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    const file = resolveRecapPath(season, week, req.params.slug);
+    let markdown;
+    try {
+        markdown = await fs.readFile(file, 'utf8');
+    } catch (error) {
+        throw new APIError('Recap not found', 404);
+    }
+    res.json({ success: true, data: { season, week, slug: req.params.slug, markdown } });
+}));
+
+// Turn the chosen recap into a Gmail draft in the league mailer account.
+// No recipients are set - the commissioner adds them in Gmail and sends.
+router.post('/recaps/:season/:week/:slug/draft', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    const file = resolveRecapPath(season, week, req.params.slug);
+    let markdown;
+    try {
+        markdown = await fs.readFile(file, 'utf8');
+    } catch (error) {
+        throw new APIError('Recap not found', 404);
+    }
+
+    const styleName = recapFiles.slugToDisplayName(req.params.slug);
+    const subject = `PFL ${season} Week ${week} Recap — ${styleName}`;
+    try {
+        const draft = await createGmailDraft({
+            subject,
+            text: markdown,
+            html: recapFiles.markdownToHtml(markdown)
+        });
+        logInfo(`Gmail draft created for ${season} week ${week} ${req.params.slug} (draft ${draft.draftId})`);
+        res.json({ success: true, data: { ...draft, subject } });
+    } catch (error) {
+        const scopeProblem = /insufficient|scope|invalid_grant|forbidden/i.test(error.message);
+        throw new APIError(
+            scopeProblem
+                ? `Gmail refused (${error.message}). The token likely lacks the gmail.compose scope - run: node roster_moves/authSetup.js`
+                : `Failed to create Gmail draft: ${error.message}`,
+            502
+        );
+    }
+}));
+
 module.exports = router;

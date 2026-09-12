@@ -1,9 +1,13 @@
 ---
-argument-hint: [season] [week-number]
+argument-hint: [season] [week-number] [--auto]
 description: Generate 10 creative weekly recap styles for fantasy football
 ---
 
 Generate 10 creative and varied weekly fantasy football recaps for season $1, week $2.
+
+If `$3` is `--auto`, run non-interactively (this is how the weekly cron invokes
+the command via `scripts/weekly-recap-run.js`): never pause for approval, and
+never ask questions — the deviations are marked in Steps 1, 3, and 5 below.
 
 ## Step 1: Generate the data digest (gate)
 
@@ -15,7 +19,8 @@ node scripts/recap-data.js $1 $2
 - If the script refuses (validation not PASS/WARN for this week, or roster
   invariant violated), show me its exact message and STOP. Only re-run with
   `--force` if I explicitly accept generating from unvalidated data (normal
-  for re-recapping older, already-blessed weeks).
+  for re-recapping older, already-blessed weeks). In `--auto` mode a refusal
+  is always terminal: report it verbatim and STOP — never self-apply `--force`.
 - Compute the zero-padded week once: `WEEK` = week number padded to 2 digits
   (e.g. 3 → 03). All paths below use it.
 - The digest lands at `recaps/$1/data/week{WEEK}-digest.md`. Read it — you
@@ -43,16 +48,21 @@ Template sections:
 
 ## Step 3: Pick 10 creative styles (avoiding repeats)
 
-Read `recaps/$1/styles-ledger.md` (if missing, derive it from the filenames in
-`recaps/$1/`). Pick 10 diverse, entertaining styles that do NOT repeat or
-nearly duplicate anything in the ledger. Example flavors (pick varied ones):
-Las Vegas boxing announcer, Morgan Freeman narration, Howard Cosell, film noir
-detective, David Attenborough, WWE announcer, 1920s radio, Tarantino dialogue,
-robot from the future, pirate captain, gospel preacher, British royal
-correspondent, Agatha Christie, courtroom drama, cooking competition.
+Run `node scripts/recap-styles-used.js $1` — it prints every style slug
+already used this season. That output is the exclusion list (it resets each
+season: prior seasons' styles are fair game again). Pick 10 diverse,
+entertaining styles that do NOT repeat or nearly duplicate anything on it
+(near-duplicates count: e.g. `1920s-radio` vs `1920s-radio-broadcaster`, or
+`wwe` vs `wwe-announcer` — a style is a repeat if a league owner would say
+"we've done this one already this year"). Example flavors (pick varied ones): Las Vegas boxing
+announcer, Morgan Freeman narration, Howard Cosell, film noir detective, David
+Attenborough, WWE announcer, 1920s radio, Tarantino dialogue, robot from the
+future, pirate captain, gospel preacher, British royal correspondent, Agatha
+Christie, courtroom drama, cooking competition.
 
 Display the 10 styles as a numbered list and ask me if I'd like to change any
-before generating. **Wait for my approval or edits.**
+before generating. **Wait for my approval or edits.** In `--auto` mode, list
+the 10 chosen styles but do NOT wait — proceed straight to Step 4.
 
 ## Step 4: Generate all recaps in parallel
 
@@ -79,7 +89,11 @@ report output path `recaps/$1/data/week{WEEK}-factcheck.md`. Read its report:
 - If any recap FAILs: show me the discrepancy table for the failing recaps and
   offer to regenerate just those styles (re-spawn those narrators with the
   same prompt plus "Your previous attempt contained these factual errors,
-  which you must not repeat: ...").
+  which you must not repeat: ..."). In `--auto` mode, do the regeneration
+  immediately (once, without asking), then re-run the fact-checker on just the
+  regenerated recaps so the report at `recaps/$1/data/week{WEEK}-factcheck.md`
+  reflects the final files; if a recap still FAILs after one regeneration,
+  leave it FAILed and note it in the summary.
 
 ## Step 6: Bookkeeping and summary
 
