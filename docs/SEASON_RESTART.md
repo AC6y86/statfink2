@@ -1,6 +1,13 @@
 # Season Restart Guide
 
-**Last verified:** January 2026 (2025 season)
+**Last verified:** September 2026 (2026 season rollover)
+
+> **What the 2026 rollover actually took (Sep 11-12, 2026):**
+> - `league_settings` set to season 2026, week 1; players synced.
+> - Rosters loaded from the joepaley.com draft board with `node scripts/import-draft-board.js` (12 x 19, no unmatched player ids) — not built by hand in the admin Rosters tab.
+> - Matchups for 2026 weeks 1-17 already existed (same pairings as 2024). Week 18 has none — decide the playoff/week-18 format before week 13 (see docs/MATCHUPS.md).
+> - The daily update only syncs the *current* week's NFL games, so the full 18-week schedule was loaded up front (one `getNFLGamesForWeek` call per week, no boxscores); the Week Advance Deadline health check needs next week's games to exist.
+> - The Gmail OAuth token (`roster_moves/token.json`) had expired over the summer (`invalid_grant`); re-authorize with `node roster_moves/authSetup.js` if validation emails or the roster-move poller go quiet.
 
 This guide will help you restart the PFL StatFink site after the 9-month off-season. Follow the checklists and commands below to get everything running again.
 

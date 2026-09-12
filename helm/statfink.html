@@ -94,6 +94,9 @@
     var currentMatchupId = null;
     var currentWeek = null;
     var currentSeason = null;
+    // Weeks 1-12 are head-to-head; 13+ are playoffs / cumulative (docs/MATCHUPS.md).
+    // Section headers in the left panel only apply from week 13 on.
+    var REGULAR_SEASON_WEEKS = 12;
     var showDetails = false;
     var currentMatchupData = null;
     var remainingPlayersCache = {}; // Cache for remaining players count
@@ -541,8 +544,11 @@
                         headerRow.innerHTML = '<td colspan="2" class="matchup-section-header">CUMULATIVE</td>';
                         cumulativeMatchups.forEach(renderMatchupRows);
                     }
+                } else if (currentWeek <= REGULAR_SEASON_WEEKS) {
+                    // Regular season: plain head-to-head list, no section headers
+                    data.data.forEach(renderMatchupRows);
                 } else {
-                    // Standard display for other weeks
+                    // Playoff / cumulative weeks (13+)
                     const playoffMatchups = data.data.filter(m => m.is_playoff);
                     const cumulativeMatchups = data.data.filter(m => !m.is_playoff);
 
@@ -1113,36 +1119,27 @@
 
     // Update matchup score display in the left panel
     function updateMatchupScoreDisplay(matchupId, team1Score, team2Score) {
-        // Find the matchup rows
-        const rows = document.getElementById("leaguetable").getElementsByTagName("tbody")[0].rows;
-        
-        for (let i = 1; i < rows.length; i += 2) {
-            const row1 = rows[i];
-            const row2 = rows[i + 1];
-            
-            if (row1 && row1.onclick) {
-                // Extract matchup ID from the onclick handler
-                const onclickStr = row1.onclick.toString();
-                if (onclickStr.includes(`selectMatchup(${matchupId})`)) {
-                    // Update scores
-                    const score1Cell = row1.cells[1];
-                    const score2Cell = row2.cells[1];
-                    
-                    if (score1Cell) {
-                        score1Cell.textContent = team1Score.toFixed(2);
-                        score1Cell.style.fontWeight = 'bold';
-                        score1Cell.style.color = '#000'; // Black for final scoring total
-                        score1Cell.title = "Scoring players total";
-                    }
-                    if (score2Cell) {
-                        score2Cell.textContent = team2Score.toFixed(2);
-                        score2Cell.style.fontWeight = 'bold';
-                        score2Cell.style.color = '#000'; // Black for final scoring total
-                        score2Cell.title = "Scoring players total";
-                    }
-                    break;
-                }
-            }
+        // Look the rows up by matchup id rather than walking the table in pairs,
+        // so section header rows (playoff weeks) don't shift the pairing.
+        const tbody = document.getElementById("leaguetable").getElementsByTagName("tbody")[0];
+        const row1 = tbody.querySelector(`tr[data-matchup-id="${matchupId}"][data-team="team1"]`);
+        const row2 = tbody.querySelector(`tr[data-matchup-id="${matchupId}"][data-team="team2"]`);
+        if (!row1 || !row2) return;
+
+        const score1Cell = row1.cells[1];
+        const score2Cell = row2.cells[1];
+
+        if (score1Cell) {
+            score1Cell.textContent = team1Score.toFixed(2);
+            score1Cell.style.fontWeight = 'bold';
+            score1Cell.style.color = '#000'; // Black for final scoring total
+            score1Cell.title = "Scoring players total";
+        }
+        if (score2Cell) {
+            score2Cell.textContent = team2Score.toFixed(2);
+            score2Cell.style.fontWeight = 'bold';
+            score2Cell.style.color = '#000'; // Black for final scoring total
+            score2Cell.title = "Scoring players total";
         }
     }
 

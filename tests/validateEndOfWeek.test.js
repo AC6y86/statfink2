@@ -397,6 +397,20 @@ async function checkStandingsWinLossDeltas(db, week, season) {
         else previous[row.team_id] = row;
     }
 
+    // Week N standings rows are written by the weekly update, which runs AFTER
+    // the Tuesday validation (Joe reviews the report first). Until then there is
+    // nothing to diff, so defer rather than fail; the weekly update re-runs the
+    // full validation once standings exist.
+    if (matchups.length > 0 && Object.keys(current).length === 0) {
+        return {
+            name: 'Standings Win/Loss Deltas',
+            status: 'warning',
+            message: `Deferred — week ${week} standings not yet calculated (written by the weekly update)`,
+            value: 0,
+            details: []
+        };
+    }
+
     const issues = [];
     let checked = 0;
 
