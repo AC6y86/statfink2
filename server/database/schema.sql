@@ -21,6 +21,18 @@ CREATE TABLE IF NOT EXISTS teams (
     ties INTEGER DEFAULT 0
 );
 
+-- Annual draft position and division assignment. team_id remains a permanent
+-- owner identity; never infer these season-specific fields from team_id.
+CREATE TABLE IF NOT EXISTS season_team_assignments (
+    season INTEGER NOT NULL,
+    draft_slot INTEGER NOT NULL CHECK (draft_slot BETWEEN 1 AND 12),
+    team_id INTEGER NOT NULL,
+    division TEXT NOT NULL CHECK (division IN ('Odd', 'Even')),
+    PRIMARY KEY (season, draft_slot),
+    UNIQUE (season, team_id),
+    FOREIGN KEY (team_id) REFERENCES teams(team_id)
+);
+
 -- NFL Players (includes offensive players, kickers, and team defenses)
 CREATE TABLE IF NOT EXISTS nfl_players (
     player_id VARCHAR(50) PRIMARY KEY,
@@ -130,6 +142,7 @@ CREATE INDEX IF NOT EXISTS idx_weekly_rosters_team_week ON weekly_rosters(team_i
 CREATE INDEX IF NOT EXISTS idx_weekly_rosters_week ON weekly_rosters(week, season);
 CREATE INDEX IF NOT EXISTS idx_weekly_rosters_player ON weekly_rosters(player_id, week, season);
 CREATE INDEX IF NOT EXISTS idx_matchups_week ON matchups(week, season);
+CREATE INDEX IF NOT EXISTS idx_season_team_assignments_team ON season_team_assignments(season, team_id);
 CREATE INDEX IF NOT EXISTS idx_nfl_players_position ON nfl_players(position);
 
 -- Create indexes for tank01_cache

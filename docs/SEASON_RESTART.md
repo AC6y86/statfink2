@@ -5,7 +5,8 @@
 > **What the 2026 rollover actually took (Sep 11-12, 2026):**
 > - `league_settings` set to season 2026, week 1; players synced.
 > - Rosters loaded from the joepaley.com draft board with `node scripts/import-draft-board.js` (12 x 19, no unmatched player ids) — not built by hand in the admin Rosters tab.
-> - Matchups for 2026 weeks 1-17 already existed (same pairings as 2024). Week 18 has none — decide the playoff/week-18 format before week 13 (see docs/MATCHUPS.md).
+> - The official draft order was loaded into `season_team_assignments`; Weeks 1-12 were translated from the slot template in `docs/MATCHUPS.md`. Permanent `team_id` values were not renumbered.
+> - Weeks 13-17 remain playoff rows rather than fixed-owner regular-season matchups. Decide the playoff/week-18 format before Week 13 (see `docs/MATCHUPS.md`).
 > - The daily update only syncs the *current* week's NFL games, so the full 18-week schedule was loaded up front (one `getNFLGamesForWeek` call per week, no boxscores); the Week Advance Deadline health check needs next week's games to exist.
 > - The Gmail OAuth token (`roster_moves/token.json`) had expired over the summer (`invalid_grant`); re-authorize with `node roster_moves/authSetup.js` if validation emails or the roster-move poller go quiet.
 
@@ -21,9 +22,10 @@ Run through these items in order when starting a new season:
 - [ ] 2. Check SSL certificate status
 - [ ] 3. Verify Tank01 API key is active
 - [ ] 4. Update season year in database
-- [ ] 5. Sync NFL players for new season
-- [ ] 6. Build rosters for each team (19 players per team)
-- [ ] 7. Verify everything works
+- [ ] 5. Configure and apply the reviewed annual draft order
+- [ ] 6. Sync NFL players for new season
+- [ ] 7. Build rosters for each team (19 players per team)
+- [ ] 8. Verify everything works
 
 ---
 
@@ -158,6 +160,25 @@ curl -X POST http://localhost:8000/api/admin/sync/players
 ```
 
 This will pull ~1800+ NFL players with current team/position data.
+
+### Configure Draft Order and Matchups
+
+Permanent `teams.team_id` values identify owners and must never be renumbered to
+match a new draft order. Add the reviewed owner order to
+`server/config/seasonMatchups.js`, then apply the annual slot mapping and the
+Weeks 1-12 template from `docs/MATCHUPS.md`:
+
+```bash
+sqlite3 fantasy_football.db < server/database/migrations/add_season_team_assignments.sql
+node scripts/apply-season-matchups.js --season 2026
+node scripts/apply-season-matchups.js --season 2026 --apply
+```
+
+The first command after the migration is a dry run. The applicator refuses to
+continue when the season has no explicitly reviewed draft order, an owner cannot
+be resolved uniquely, or an existing schedule is only partially populated. It
+preserves existing matchup IDs when all 72 regular-season rows already exist and
+does not modify rosters, player stats, transactions, or prior seasons.
 
 ### Build Rosters
 Use the Rosters tab on the admin dashboard at https://peninsulafootball.com/admin/dashboard
