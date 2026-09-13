@@ -103,6 +103,20 @@
 .absteams { position: absolute; top : 0px; left : 260px;}
 .absteamsalone { position: absolute; top : 23px; left : 5px;}
 
+/* Classic statfink page (helm/statfink.html, <body class="statfink-classic">):
+   the page columns (#leaguediv / #teams) sit in normal flow instead of
+   position:absolute. With absolute columns <body> had zero height
+   (body.scrollHeight 0 while the document was ~1700px tall) and mobile Chrome
+   bounced / snapped back on touch scroll. Body is a top-aligned, non-wrapping
+   flex row so the classic geometry is unchanged: league column at x=5 (250px
+   wide), team tables at x=260; narrow windows still overflow horizontally
+   rather than stacking. This stylesheet is shared by other pages, so the
+   rules are scoped to the body class.
+   Regression test: tests/integration/classicScrollGeometry.test.js */
+body.statfink-classic { display: flex; flex-wrap: nowrap; align-items: flex-start; }
+body.statfink-classic .absleague { position: relative; top: auto; left: auto; flex: none; width: 250px; margin-left: 5px; }
+body.statfink-classic .absteams { position: relative; top: auto; left: auto; flex: none; margin-left: 5px; }
+
 /* Table styling */
 table {
     border-collapse: collapse;
