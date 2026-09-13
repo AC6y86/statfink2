@@ -48,6 +48,34 @@ module.exports = {
       max_memory_restart: '500M',
       time: true
     },
+    // Live-scoring watchdog - observes only. Every 2 min asks the server
+    // GET /api/internal/health/live (is anything supposed to be live, and is
+    // data moving?) and appends one JSON line to logs/watchdog/live-*.jsonl.
+    // Never alerts or emails itself; the notifier below reads the log.
+    {
+      name: 'statfink2-watchdog',
+      script: './scripts/live-watchdog.js',
+      cwd: '/home/joepaley/statfink2',
+      instances: 1,
+      exec_mode: 'fork',
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '200M',
+      time: true
+    },
+    // Watchdog notifier - reads the watchdog log from a saved cursor every 5
+    // min, opens/closes incidents (2 consecutive bad checks), posts dashboard
+    // alerts, emails joe.paley@gmail.com for critical incidents (hourly
+    // reminders + recovery). A 15-min silent log means the watchdog is dead.
+    {
+      name: 'statfink2-watchdog-notifier',
+      script: './scripts/watchdog-notifier.js',
+      cwd: '/home/joepaley/statfink2',
+      cron_restart: '*/5 * * * *',
+      autorestart: false,
+      watch: false,
+      time: true
+    },
     // Gmail poller for email-driven roster moves - forwards new emails to the
     // server, which parses them and queues moves for commissioner approval
     {

@@ -1074,6 +1074,14 @@
                 </div>
             </div>
 
+            <!-- Live Scoring Watchdog (latest 2-minute check + notifier incident) -->
+            <div class="section">
+                <h2>🐕 Live Scoring Watchdog <span style="font-size: 0.7em; color: #666; font-weight: normal;">(checked every 2 min; notifier every 5)</span></h2>
+                <div id="live-watchdog-panel">
+                    <p style="color: #666;">Loading live watchdog status...</p>
+                </div>
+            </div>
+
             <!-- Weekly Validation (last scheduled run) -->
             <div class="section">
                 <h2>🗓️ Weekly Validation <span style="font-size: 0.7em; color: #666; font-weight: normal;">(last scheduled weekly run)</span></h2>
@@ -1769,6 +1777,65 @@
             updateAlertBadge();
         });
 
+        // ---------- Live scoring watchdog (logs/watchdog/live-latest.json) ----------
+
+        async function loadLiveWatchdog() {
+            const panel = document.getElementById('live-watchdog-panel');
+            try {
+                const response = await fetch('/api/admin/health/live-watchdog');
+                const result = await response.json();
+                const w = result.data?.latest;
+                const n = result.data?.notifier;
+
+                if (!w) {
+                    panel.innerHTML = '<p style="color: #666;">The live-scoring watchdog has not written a check yet ' +
+                        '(<code>pm2 logs statfink2-watchdog</code>, or run <code>node scripts/live-watchdog.js --once</code>).</p>';
+                    return;
+                }
+
+                const ageMin = Math.floor((Date.now() - new Date(w.ts).getTime()) / 60000);
+                const sev = w.severity || 'critical';
+                const badgeClass = sev === 'ok' ? 'severity-info' : sev === 'warning' ? 'severity-warning' : 'severity-critical';
+                const icon = sev === 'ok' ? (w.status === 'idle' ? '💤' : w.status === 'maintenance' ? '🔧' : '✅')
+                           : sev === 'warning' ? '⚠️' : '❌';
+                const staleNote = ageMin > 15
+                    ? `<div style="color: #dc3545; margin-top: 0.3rem;">⚠️ Last check is ${ageMin}m old — <code>statfink2-watchdog</code> may be down.</div>`
+                    : '';
+
+                const meta = [`Checked ${new Date(w.ts).toLocaleString()} (${ageMin}m ago)`];
+                if (w.expectedGames !== undefined && w.expectedGames !== null) meta.push(`${w.expectedGames} game(s) in live window`);
+                if (w.gamesInProgress !== undefined) meta.push(`${w.gamesInProgress} in progress`);
+                if (w.loopAgeSec !== undefined && w.loopAgeSec !== null) meta.push(`loop ticked ${w.loopAgeSec}s ago`);
+
+                const incidentLine = n?.incident
+                    ? `<div style="margin-top: 0.4rem;"><strong>Open incident:</strong> ${escapeHtml(n.incident.status)} (${escapeHtml(n.incident.severity)}) since ${new Date(n.incident.since).toLocaleString()}${n.incident.emails ? `, emailed ${n.incident.emails}×` : ''}</div>`
+                    : '';
+                const notifierLine = n?.lastRunAt
+                    ? `<div class="alert-meta">Notifier last ran ${new Date(n.lastRunAt).toLocaleString()}</div>`
+                    : '<div class="alert-meta" style="color: #dc3545;">Notifier has never run (<code>pm2 describe statfink2-watchdog-notifier</code>)</div>';
+
+                const signalsHtml = (w.signals || []).map(s =>
+                    `<li>${s.ok ? '✅' : '❌'} <strong>${escapeHtml(s.name)}</strong>${s.detail ? ': ' + escapeHtml(s.detail) : ''}</li>`
+                ).join('');
+
+                panel.innerHTML = `
+                    <div class="health-alert ${badgeClass}">
+                        <div>${icon}</div>
+                        <div class="alert-body">
+                            <div><strong>${escapeHtml(String(w.status).toUpperCase())}</strong> — ${escapeHtml(w.summary || '')}</div>
+                            <div class="alert-meta">${meta.join(' · ')}</div>
+                            ${staleNote}
+                            ${incidentLine}
+                            ${notifierLine}
+                            ${signalsHtml ? `<details style="margin-top: 0.4rem;"><summary>Signals</summary><ul style="margin: 0.5rem 0 0 1rem;">${signalsHtml}</ul></details>` : ''}
+                        </div>
+                    </div>`;
+            } catch (error) {
+                console.error('Error loading live watchdog status:', error);
+                panel.innerHTML = '<p style="color: #dc3545;">Failed to load live watchdog status</p>';
+            }
+        }
+
         // ---------- Weekly validation (scheduled run status) ----------
 
         async function loadWeeklyValidation() {
@@ -2011,6 +2078,7 @@
                 loadSystemStatus();
                 loadDatabaseStats();
                 loadHealthAlerts();
+                loadLiveWatchdog();
                 loadWeeklyValidation();
             } else if (tabName === 'players') {
                 if (allPlayers.length === 0) {

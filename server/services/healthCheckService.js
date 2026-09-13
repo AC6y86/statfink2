@@ -8,6 +8,34 @@ const { CANONICAL_TEAM_CODES } = require('../utils/teamMappings');
 
 const MAX_ALERTS = 200;
 
+// Live-scoring watchdog thresholds (checkLiveScoring / checkFreshness).
+// The live loop ticks every 60s; Tank01 live boxscores are cached 30s, so a
+// healthy in-progress game is rewritten (last_updated bumped) every minute.
+const LIVE = {
+    loopHeartbeatSec: 180,          // last_live_update older than this = loop not ticking
+    gameStaleSec: 300,              // in-progress nfl_games row not rewritten
+    stuckScheduledSec: 20 * 60,     // still 'Scheduled' 0-0 this long after kickoff
+    statsStaleSec: 600,             // newest player_stats row older than this while games run
+    windowBeforeSec: 4 * 3600,      // "expected activity" = kickoff within [-4h, +15m]
+    windowAfterSec: 15 * 60,
+    inProgressMaxAgeSec: 24 * 3600, // ignore ancient rows stuck in a non-final status
+    diskFreeMinBytes: 2 * 1024 * 1024 * 1024,
+    watchdogStaleSec: 15 * 60,      // live-latest.json age (dead-man's switch)
+    notifierStaleSec: 30 * 60       // notifier-state.json lastRunAt age
+};
+const SEVERITY_RANK = { ok: 0, info: 0, warning: 1, critical: 2 };
+
+// SQLite CURRENT_TIMESTAMP is 'YYYY-MM-DD HH:MM:SS' in UTC with no zone
+// marker; Date.parse would read that as local time.
+function dbTimestampMs(value) {
+    if (!value) return null;
+    const s = String(value);
+    const ms = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(s)
+        ? Date.parse(s.replace(' ', 'T') + 'Z')
+        : Date.parse(s);
+    return Number.isNaN(ms) ? null : ms;
+}
+
 /**
  * Health/alert service (2026 reliability hardening, P0-1).
  *
@@ -17,12 +45,18 @@ const MAX_ALERTS = 200;
  *   in-progress) week and records alerts for anything that fails.
  */
 class HealthCheckService {
-    constructor(db, { teamScoreService = null, testRunnerService = null, alertsFile = null, backupDir = null } = {}) {
+    constructor(db, { teamScoreService = null, testRunnerService = null, alertsFile = null, backupDir = null,
+        watchdogDir = undefined, dbPath = null } = {}) {
         this.db = db;
         this.teamScoreService = teamScoreService;
         this.testRunnerService = testRunnerService;
         this.alertsFile = alertsFile || path.join(__dirname, '../../logs/health-alerts.json');
         this.backupDir = backupDir || '/home/joepaley/backups';
+        // logs/watchdog holds the live-scoring watchdog log + notifier state
+        // (scripts/live-watchdog.js, scripts/watchdog-notifier.js). Pass
+        // watchdogDir: false to skip their staleness check (tests).
+        this.watchdogDir = watchdogDir === undefined ? path.join(__dirname, '../../logs/watchdog') : watchdogDir;
+        this.dbPath = path.resolve(dbPath || process.env.DATABASE_PATH || path.join(__dirname, '../../fantasy_football.db'));
         this.scoringPlayParser = new ScoringPlayParserService();
         this.alertSeq = 0;
     }
@@ -290,14 +324,244 @@ class HealthCheckService {
             issues.push(`Could not read backup directory ${this.backupDir}: ${error.message}`);
         }
 
+        if (this.watchdogDir) {
+            issues.push(...await this.watchdogStalenessIssues());
+        }
+
         return {
             name: 'Freshness',
             status: issues.length === 0 ? 'passed' : 'failed',
             message: issues.length === 0
-                ? 'Daily update and backups are fresh'
+                ? 'Daily update, backups and live watchdog are fresh'
                 : issues.join('; '),
             details: issues
         };
+    }
+
+    /**
+     * Dead-man's switch for the live-scoring watchdog: the watchdog rewrites
+     * logs/watchdog/live-latest.json every 2 min and the notifier stamps
+     * lastRunAt in notifier-state.json every 5 min. Either going quiet means
+     * nobody is watching live scoring, and the daily update emails on it.
+     */
+    async watchdogStalenessIssues(now = Date.now()) {
+        const issues = [];
+        const readJson = async file => {
+            try {
+                return JSON.parse(await fs.readFile(path.join(this.watchdogDir, file), 'utf8'));
+            } catch (_) {
+                return null;
+            }
+        };
+
+        const latest = await readJson('live-latest.json');
+        if (!latest || !latest.ts) {
+            issues.push('Live watchdog has never written logs/watchdog/live-latest.json (is statfink2-watchdog running?)');
+        } else {
+            const ageMin = (now - Date.parse(latest.ts)) / 60000;
+            if (!(ageMin <= LIVE.watchdogStaleSec / 60)) {
+                issues.push(`Live watchdog last checked ${ageMin.toFixed(0)}m ago (limit ${LIVE.watchdogStaleSec / 60}m) - statfink2-watchdog may be down`);
+            }
+        }
+
+        const state = await readJson('notifier-state.json');
+        if (!state || !state.lastRunAt) {
+            issues.push('Watchdog notifier has never run (logs/watchdog/notifier-state.json missing)');
+        } else {
+            const ageMin = (now - Date.parse(state.lastRunAt)) / 60000;
+            if (!(ageMin <= LIVE.notifierStaleSec / 60)) {
+                issues.push(`Watchdog notifier last ran ${ageMin.toFixed(0)}m ago (limit ${LIVE.notifierStaleSec / 60}m) - statfink2-watchdog-notifier cron may be broken`);
+            }
+        }
+        return issues;
+    }
+
+    /**
+     * Live-scoring health, judged from data freshness against expected
+     * activity - never from HTTP success (performLiveGameUpdate returns 200
+     * even when every Tank01 call failed). Read-only. Polled every 2 min by
+     * scripts/live-watchdog.js via GET /api/internal/health/live, which
+     * writes the result as one line of logs/watchdog/live-YYYY-MM-DD.jsonl.
+     *
+     * status:   ok | idle | stalled | degraded | misconfigured
+     * severity: ok | warning | critical (worst failing signal)
+     * liveErrors: schedulerService.lastLiveErrors (sub-step errors swallowed
+     * by the last live update).
+     */
+    async checkLiveScoring({ now = Date.now(), liveErrors = null } = {}) {
+        const T = LIVE;
+        const nowSec = Math.floor(now / 1000);
+        const signals = [];
+        const fail = (name, severity, detail) => signals.push({ name, ok: false, severity, detail });
+        const pass = (name, detail) => signals.push(detail ? { name, ok: true, detail } : { name, ok: true });
+        const ageSec = ts => {
+            const ms = dbTimestampMs(ts);
+            return ms === null ? null : Math.max(0, Math.round((now - ms) / 1000));
+        };
+
+        const settings = await this.db.get(
+            'SELECT current_week, season_year, last_live_update FROM league_settings WHERE league_id = 1'
+        );
+        const week = settings ? settings.current_week : null;
+        const season = settings ? settings.season_year : null;
+        const loopAgeSec = settings ? ageSec(settings.last_live_update) : null;
+        const base = { checkedAt: new Date(now).toISOString(), week, season, loopAgeSec };
+
+        if (!week || !season) {
+            fail('settings', 'critical', 'league_settings current_week/season_year not set - live updates cannot run');
+            return { ...base, status: 'misconfigured', severity: 'critical', expectedGames: 0, gamesInProgress: 0, signals, summary: signals[0].detail };
+        }
+
+        // 1. Expected activity: games in the kickoff window or in progress, any
+        //    week of the season (the live loop only polls current_week - that
+        //    difference is exactly what signal 2 catches).
+        const windowGames = await this.db.all(`
+            SELECT game_id, week, COALESCE(status, 'Scheduled') AS status,
+                   home_score, away_score, game_time_epoch, last_updated
+            FROM nfl_games
+            WHERE season = ?
+              AND COALESCE(status, 'Scheduled') NOT LIKE 'Final%'
+              AND game_time_epoch IS NOT NULL
+              AND (game_time_epoch BETWEEN ? AND ?
+                   OR (COALESCE(status, 'Scheduled') != 'Scheduled' AND game_time_epoch > ?))
+            ORDER BY game_time_epoch
+        `, [season, nowSec - T.windowBeforeSec, nowSec + T.windowAfterSec, nowSec - T.inProgressMaxAgeSec]);
+        const expectedGames = windowGames.length;
+        const live = expectedGames > 0;
+        pass('expected_activity', live ? `${expectedGames} game(s) in the live window` : 'no games in the live window');
+
+        // 2. Week mismatch (the "forgot to advance the week" failure)
+        const wrongWeek = windowGames.filter(g => g.week !== week);
+        if (wrongWeek.length) {
+            const weeks = [...new Set(wrongWeek.map(g => g.week))].join(',');
+            fail('week_match', 'critical',
+                `${wrongWeek.length} game(s) live/kicking off in week ${weeks} but current_week is ${week} - ` +
+                'ADVANCE THE WEEK (admin dashboard weekly update); their stats are not being collected');
+        } else {
+            pass('week_match');
+        }
+
+        // 3. Loop heartbeat (the loop should tick 24/7; only critical when games are on)
+        if (loopAgeSec === null) {
+            fail('loop_heartbeat', live ? 'critical' : 'warning', 'last_live_update never recorded');
+        } else if (loopAgeSec > T.loopHeartbeatSec) {
+            fail('loop_heartbeat', live ? 'critical' : 'warning',
+                `last_live_update ${loopAgeSec}s ago (limit ${T.loopHeartbeatSec}s) - statfink2-live-continuous is not ticking`);
+        } else {
+            pass('loop_heartbeat', `loop ticked ${loopAgeSec}s ago`);
+        }
+
+        // 4. Game freshness: current-week games that have kicked off must be
+        //    rewritten every poll (in progress) or have left 'Scheduled'.
+        const currentWeekGames = windowGames.filter(g => g.week === week);
+        const kickedOff = currentWeekGames.filter(g => g.game_time_epoch <= nowSec);
+        const inProgress = kickedOff.filter(g => g.status !== 'Scheduled');
+        const staleGames = [];
+        const stuckGames = [];
+        for (const g of kickedOff) {
+            const sinceKick = nowSec - g.game_time_epoch;
+            if (g.status === 'Scheduled') {
+                if (sinceKick > T.stuckScheduledSec && !(g.home_score > 0 || g.away_score > 0)) {
+                    stuckGames.push(`${g.game_id} still Scheduled 0-0 ${Math.round(sinceKick / 60)}m after kickoff`);
+                }
+            } else {
+                const a = ageSec(g.last_updated);
+                if (a === null || a > T.gameStaleSec) {
+                    staleGames.push(`${g.game_id} (${g.status}) last_updated ${a === null ? 'never' : `${a}s ago`}`);
+                }
+            }
+        }
+        if (staleGames.length || stuckGames.length) {
+            const parts = [];
+            if (staleGames.length) {
+                parts.push(`${staleGames.length} of ${inProgress.length} in-progress game(s) not updated in ${T.gameStaleSec}s: ${staleGames.slice(0, 3).join('; ')}`);
+            }
+            parts.push(...stuckGames.slice(0, 3));
+            fail('game_freshness', 'critical', parts.join('; '));
+        } else {
+            pass('game_freshness', kickedOff.length
+                ? `${inProgress.length} in progress, all updated within ${T.gameStaleSec}s`
+                : 'no current-week game has kicked off');
+        }
+
+        // 5. Stats flow: once a game has been running a while, player_stats rows
+        //    must be moving (catches boxscore parsing dying while status still updates)
+        const matured = inProgress.filter(g => nowSec - g.game_time_epoch > T.statsStaleSec);
+        if (matured.length) {
+            const row = await this.db.get(
+                'SELECT MAX(last_updated) AS newest FROM player_stats WHERE week = ? AND season = ?',
+                [week, season]
+            );
+            const a = row ? ageSec(row.newest) : null;
+            if (a === null || a > T.statsStaleSec) {
+                fail('stats_flow', 'warning',
+                    `newest player_stats row for week ${week} is ${a === null ? 'missing' : `${Math.round(a / 60)}m old`} ` +
+                    `with ${matured.length} game(s) in progress (limit ${T.statsStaleSec / 60}m) - boxscore stats are not being written`);
+            } else {
+                pass('stats_flow', `player_stats written ${a}s ago`);
+            }
+        } else {
+            pass('stats_flow', 'no game in progress long enough to judge');
+        }
+
+        // 6. Matchup totals (matchups has no timestamp; consistency is the only proxy)
+        if (live) {
+            const m = await this.checkMatchupConsistency(week, season);
+            if (m.status === 'passed') {
+                pass('matchup_totals', m.message);
+            } else {
+                const detail = m.details && m.details.length ? `: ${m.details.slice(0, 2).join('; ')}` : '';
+                fail('matchup_totals', 'warning', m.message + detail);
+            }
+        } else {
+            pass('matchup_totals', 'skipped (idle)');
+        }
+
+        // 7. Sub-step errors swallowed by the last live update
+        const errs = Array.isArray(liveErrors) ? liveErrors : [];
+        if (live && errs.length) {
+            fail('live_errors', 'warning', `last live update reported ${errs.length} error(s): ${errs.slice(0, 3).join(' | ')}`);
+        } else {
+            pass('live_errors', errs.length ? `${errs.length} error(s) on last update while idle` : undefined);
+        }
+
+        // 8. Disk: SQLite WAL + unrotated pm2 logs is the likeliest Sunday killer
+        try {
+            const st = await fs.statfs(path.dirname(this.dbPath));
+            const free = Number(st.bavail) * Number(st.bsize);
+            const gb = (free / 1024 ** 3).toFixed(1);
+            if (free < T.diskFreeMinBytes) {
+                fail('disk_free', 'critical',
+                    `${gb} GB free on the database volume (limit ${(T.diskFreeMinBytes / 1024 ** 3).toFixed(0)} GB) - SQLite writes will fail; rotate ~/.pm2/logs`);
+            } else {
+                pass('disk_free', `${gb} GB free`);
+            }
+        } catch (error) {
+            pass('disk_free', `unavailable: ${error.message}`);
+        }
+
+        // Roll up
+        const failing = signals.filter(s => !s.ok);
+        const has = name => failing.some(s => s.name === name);
+        let status;
+        if (has('week_match')) status = 'misconfigured';
+        else if (has('loop_heartbeat') || has('game_freshness')) status = 'stalled';
+        else if (failing.length) status = 'degraded';
+        else status = live ? 'ok' : 'idle';
+        const severity = failing.reduce(
+            (worst, s) => (SEVERITY_RANK[s.severity] > SEVERITY_RANK[worst] ? s.severity : worst), 'ok');
+
+        let summary;
+        if (!failing.length) {
+            summary = live
+                ? `${expectedGames} game(s) in window (${inProgress.length} in progress), loop ticked ${loopAgeSec}s ago, stats flowing`
+                : `No games in the live window; loop ticked ${loopAgeSec === null ? 'never' : `${loopAgeSec}s ago`}`;
+        } else {
+            summary = failing.map(s => s.detail).join('; ');
+        }
+        if (summary.length > 400) summary = `${summary.slice(0, 397)}...`;
+
+        return { ...base, status, severity, expectedGames, gamesInProgress: inProgress.length, signals, summary };
     }
 
     /**

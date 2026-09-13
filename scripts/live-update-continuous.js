@@ -51,6 +51,14 @@ async function runLiveUpdate() {
             console.log(`[${timestamp}] No active games`);
         }
 
+        // The endpoint answers 200 even when a sub-step failed (so the loop keeps
+        // going); surface those here. The live watchdog also reads them via
+        // schedulerService.lastLiveErrors.
+        const errors = (result.results && result.results.errors) || [];
+        if (errors.length && result.results.gamesInProgress > 0) {
+            console.warn(`[${timestamp}] Live update reported ${errors.length} error(s) with games in progress: ${errors.join(' | ')}`);
+        }
+
         if (alertSent) {
             await recordHealthAlert('info', `Live updates recovered after ${consecutiveFailures} consecutive failures`);
         }

@@ -1519,6 +1519,27 @@ router.get('/health/weekly-validation', requireAdmin, asyncHandler(async (req, r
     res.json({ success: true, data });
 }));
 
+// Latest live-scoring watchdog check (scripts/live-watchdog.js writes
+// logs/watchdog/live-latest.json every 2 min) plus the notifier's incident
+// state (scripts/watchdog-notifier.js). Either is null before a first run.
+router.get('/health/live-watchdog', requireAdmin, asyncHandler(async (req, res) => {
+    const dir = path.join(__dirname, '../../logs/watchdog');
+    const readJson = async file => {
+        try {
+            return JSON.parse(await fs.readFile(path.join(dir, file), 'utf8'));
+        } catch (error) {
+            return null; // Missing or corrupt: no run yet
+        }
+    };
+    res.json({
+        success: true,
+        data: {
+            latest: await readJson('live-latest.json'),
+            notifier: await readJson('notifier-state.json')
+        }
+    });
+}));
+
 // ==================== Weekly Recaps ====================
 // Persona-style owner recaps generated under recaps/{season}/ by the /recap
 // pipeline (cron: scripts/weekly-recap-run.js). Read-only over the filesystem

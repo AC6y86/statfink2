@@ -16,6 +16,12 @@ CONTINUOUS (24/7, all season)
                             (no-ops quickly when nothing is live)
   statfink2-email-poller    every ~2min: Gmail -> parse roster-move emails ->
                             queue moves for commissioner approval
+  statfink2-watchdog        every 2min: GET /api/internal/health/live ->
+                            appends one JSON line to logs/watchdog/live-*.jsonl
+                            (observes only: "should stats be flowing? are they?")
+  statfink2-watchdog-notifier  every 5min (cron): reads that log, opens an
+                            incident after 2 bad checks, dashboard alert +
+                            email on critical (hourly reminders, recovery mail)
 
 EVERY DAY
   12:00  statfink2-nightly-tests   STOPS statfink2 + live + email-poller,
@@ -84,6 +90,8 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
 5. **Weekly Validation** - Runs Tuesdays at 10am UTC (3am PDT / 2am PST)
 6. **Weekly Recaps** - Runs Tuesdays at 10:30am UTC, 30 min after validation
 7. **Weekly Updates** - ⚠️ Currently DISABLED (cron commented out in `ecosystem.config.js`); run manually after reviewing the weekly validation report
+8. **Live Scoring Watchdog** - Runs continuously (checks every 2 minutes, logs only)
+9. **Watchdog Notifier** - Runs every 5 minutes (reads the watchdog log, alerts/emails)
 
 ## How It Works
 
@@ -179,9 +187,69 @@ StatFink2 uses **PM2 cron jobs** for all scheduled tasks. The configuration is a
 - **To run manually**: `node scripts/weekly-update-check.js` or
   `curl -X POST http://localhost:8000/api/admin/scheduler/weekly`
 
+### 8. Live Scoring Watchdog (Continuous) + Notifier
+
+External agents: read `WATCHDOG.md` in the repo root (one file, three rules, runbook).
+
+Two processes, one log. Health is judged from **data freshness against expected
+activity**, never from the live endpoint's HTTP status (`performLiveGameUpdate`
+answers 200 even when every Tank01 call failed).
+
+- **PM2 Process**: `statfink2-watchdog` (always on) — `scripts/live-watchdog.js`
+  - Every 2 min: `GET /api/internal/health/live` → `HealthCheckService.checkLiveScoring()`
+  - Appends ONE JSON line per check to `logs/watchdog/live-YYYY-MM-DD.jsonl`
+    (30-day retention) and rewrites `logs/watchdog/live-latest.json` (admin
+    dashboard → Status → Live Scoring Watchdog). Healthy checks are logged
+    too, so a silent log is itself a signal.
+  - Never decides, alerts or emails.
+- **PM2 Process**: `statfink2-watchdog-notifier` (cron `*/5 * * * *`) — `scripts/watchdog-notifier.js`
+  - Reads new lines from a saved byte cursor (`logs/watchdog/notifier-state.json`)
+  - Opens an incident after **2 consecutive bad lines** (~4 min); a single
+    Tank01 hiccup never pages. First `ok`/`idle` line closes it.
+  - Every transition → dashboard alert (`POST /api/internal/health/alert`).
+    **Critical** → email joe.paley@gmail.com, re-sent hourly while open, once
+    on recovery with the duration. Warnings → dashboard only.
+  - No log line for 15 min (and no `logs/maintenance.lock`) → `watchdog_dead`
+    critical incident: the dead-man's switch.
+  - `node scripts/watchdog-notifier.js --dry-run` prints decisions without
+    sending or saving; `--no-email` posts dashboard alerts only.
+
+**Log line shape** (every line has `ts`, `status`, `severity`, `summary`; a
+reader can act on those alone):
+
+```json
+{"ts":"2026-09-20T18:07:02.000Z","status":"stalled","severity":"critical",
+ "week":2,"season":2026,"expectedGames":9,"gamesInProgress":7,"loopAgeSec":412,
+ "signals":[{"name":"loop_heartbeat","ok":false,"severity":"critical",
+             "detail":"last_live_update 412s ago (limit 180s) - statfink2-live-continuous is not ticking"}, ...],
+ "summary":"last_live_update 412s ago ...; 7 of 9 in-progress game(s) not updated in 300s: ...",
+ "maintenance":false,"durationMs":84}
+```
+
+| `status` | meaning | severity |
+|---|---|---|
+| `ok` | games in the live window and data is moving | ok |
+| `idle` | no games in the window (kickoff within −4h…+15m), loop ticking | ok |
+| `stalled` | loop heartbeat stale, an in-progress game not rewritten in 5 min, or a game still `Scheduled` 0-0 20 min after kickoff | critical (warning when idle) |
+| `degraded` | stats not flowing / matchup totals inconsistent / swallowed sub-step errors / low disk | warning (disk: critical) |
+| `misconfigured` | a game is live in a week ≠ `current_week` — **advance the week** | critical |
+| `server_down` | the server did not answer (written by the watchdog itself) | critical |
+| `maintenance` | `logs/maintenance.lock` exists (nightly tests); warning if older than 30 min | ok |
+
+`scripts/nightly-test-run.js` writes `logs/maintenance.lock` while it has the
+live services stopped, so the 12:00 UTC test window never pages.
+
+Quick reads:
+```bash
+tail -1 logs/watchdog/live-$(date -u +%F).jsonl | node -e 'const l=JSON.parse(require("fs").readFileSync(0));console.log(l.ts,l.status,l.severity,"-",l.summary)'
+grep -hv '"severity":"ok"' logs/watchdog/live-*.jsonl | cut -c1-200      # every bad check
+node scripts/live-watchdog.js --once          # one check, printed, also logged
+node scripts/watchdog-notifier.js --dry-run   # what the notifier would do now
+```
+
 ## Current PM2 Configuration
 
-The scheduled tasks are configured in `/home/joepaley/statfink2/ecosystem.config.js` (the file itself is the source of truth). Seven PM2 apps are defined:
+The scheduled tasks are configured in `/home/joepaley/statfink2/ecosystem.config.js` (the file itself is the source of truth). Nine PM2 apps are defined:
 
 | Process | Type | Schedule (UTC) |
 |---------|------|----------------|
@@ -189,6 +257,8 @@ The scheduled tasks are configured in `/home/joepaley/statfink2/ecosystem.config
 | `statfink2-daily` | Cron | `0 13 * * *` (1pm UTC = 6am PDT) |
 | `statfink2-live-continuous` | Always on | every minute, 24/7 |
 | `statfink2-email-poller` | Always on | polls Gmail every 2 minutes |
+| `statfink2-watchdog` | Always on | checks live scoring every 2 minutes, logs only |
+| `statfink2-watchdog-notifier` | Cron | `*/5 * * * *` (reads the watchdog log, alerts/emails) |
 | `statfink2-nightly-tests` | Cron | `0 12 * * *` (12pm UTC = 5am PDT) |
 | `statfink2-weekly-validate` | Cron | `0 10 * * 2` (10am UTC Tue = 3am PDT) |
 | `statfink2-weekly-recaps` | Cron | `30 10 * * 2` (10:30am UTC Tue = 3:30am PDT) |
@@ -214,6 +284,10 @@ pm2 logs statfink2-live-continuous
 
 # Email poller logs
 pm2 logs statfink2-email-poller
+
+# Live scoring watchdog + notifier
+pm2 logs statfink2-watchdog
+pm2 logs statfink2-watchdog-notifier
 
 # Nightly test logs
 pm2 logs statfink2-nightly-tests

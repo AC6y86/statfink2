@@ -19,6 +19,10 @@ const { execSync, spawnSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const { sendGmail } = require('./lib/gmailSend');
+// logs/maintenance.lock tells the live-scoring watchdog that the services are
+// stopped on purpose (scripts/live-watchdog.js logs 'maintenance' instead of
+// 'server_down' while it exists)
+const { writeMaintenanceLock, removeMaintenanceLock } = require('./lib/watchdogLog');
 
 const REPO = path.join(__dirname, '..');
 const NOTIFY_EMAIL = 'joe.paley@gmail.com';
@@ -79,6 +83,7 @@ async function main() {
     log('Nightly test run starting');
     const results = [];
 
+    writeMaintenanceLock('nightly-tests');
     pm2('stop');
     try {
         for (const suite of SUITES) {
@@ -86,6 +91,7 @@ async function main() {
         }
     } finally {
         pm2('start');
+        removeMaintenanceLock();
     }
 
     const failures = results.filter(r => !r.passed);
@@ -113,5 +119,6 @@ async function main() {
 main().catch(err => {
     log(`Fatal error in nightly test run: ${err.message}`);
     pm2('start');
+    removeMaintenanceLock();
     process.exitCode = 1;
 });

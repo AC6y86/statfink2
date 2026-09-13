@@ -22,7 +22,12 @@ class SchedulerService {
         this.lastDailyUpdate = null;
         this.lastWeeklyUpdate = null;
         this.lastLiveUpdate = null;
-        
+        // Sub-step errors from the most recent live update. performLiveGameUpdate
+        // still returns success:true when a step fails (so the loop keeps going),
+        // which is why the live watchdog reads these instead of the HTTP status.
+        this.lastLiveErrors = [];
+        this.lastLiveErrorsAt = null;
+
         // Track if operations are in progress
         this.dailyUpdateInProgress = false;
         this.weeklyUpdateInProgress = false;
@@ -477,6 +482,8 @@ class SchedulerService {
             }
 
             this.lastLiveUpdate = new Date();
+            this.lastLiveErrors = results.errors.slice();
+            this.lastLiveErrorsAt = this.lastLiveUpdate;
             await this.db.updateSchedulerTimestamp('live');
             const duration = Date.now() - startTime;
 
@@ -496,6 +503,8 @@ class SchedulerService {
 
         } catch (error) {
             logError('Live game update failed', error);
+            this.lastLiveErrors = [...results.errors, `Live update: ${error.message}`];
+            this.lastLiveErrorsAt = new Date();
             return {
                 success: false,
                 message: error.message,
@@ -748,6 +757,8 @@ class SchedulerService {
             lastDailyUpdate: this.lastDailyUpdate,
             lastWeeklyUpdate: this.lastWeeklyUpdate,
             lastLiveUpdate: this.lastLiveUpdate,
+            lastLiveErrors: this.lastLiveErrors,
+            lastLiveErrorsAt: this.lastLiveErrorsAt,
             dailyUpdateInProgress: this.dailyUpdateInProgress,
             weeklyUpdateInProgress: this.weeklyUpdateInProgress,
             liveUpdateInProgress: this.liveUpdateInProgress

@@ -234,6 +234,23 @@ router.post('/health/alert', asyncHandler(async (req, res) => {
     res.json({ success: true, data: alert });
 }));
 
+// Live-scoring health for the watchdog (scripts/live-watchdog.js polls this
+// every 2 min and logs the result). Read-only; judges data freshness against
+// expected game activity rather than the live endpoint's HTTP status.
+router.get('/health/live', asyncHandler(async (req, res) => {
+    const healthCheckService = req.app.locals.healthCheckService;
+    const schedulerService = req.app.locals.schedulerService;
+
+    if (!healthCheckService) {
+        throw new APIError('Health check service not available', 500);
+    }
+
+    const result = await healthCheckService.checkLiveScoring({
+        liveErrors: schedulerService ? schedulerService.lastLiveErrors : null
+    });
+    res.json({ success: true, data: result });
+}));
+
 // Status endpoint (for monitoring)
 router.get('/scheduler/status', asyncHandler(async (req, res) => {
     const schedulerService = req.app.locals.schedulerService;
