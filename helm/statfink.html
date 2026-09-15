@@ -1217,6 +1217,17 @@
         return scoringPlayers;
     }
 
+    // Keep roster styling and NFL-grid ordering on one status contract.
+    // Tank01 uses Final/OT and may add other Final suffixes, so completion is
+    // deliberately prefix-based (matching the server's Final% convention).
+    function classifyGameStatus(status) {
+        const normalized = String(status ?? '').trim().toLowerCase();
+        if (!normalized) return 'unknown';
+        if (normalized.startsWith('final') || normalized === 'completed') return 'final';
+        if (normalized === 'scheduled') return 'scheduled';
+        return 'live';
+    }
+
     // Display team roster
     function displayTeamRoster(tableId, starters, teamName, changedPlayers = {}, deltas = {}) {
         const table = document.getElementById(tableId);
@@ -1305,10 +1316,7 @@
             // Keep original name (without suffix) for tooltip
             const originalName = player.name.replace(/\s+(Jr\.?|Sr\.?|III|II|IV|V)$/i, '');
             
-            // Check if game is currently in progress (anything that's not Final or Scheduled)
-            const isGameInProgress = player.game_status && 
-                player.game_status !== 'Final' && 
-                player.game_status !== 'Scheduled';
+            const isGameInProgress = classifyGameStatus(player.game_status) === 'live';
             
             row.innerHTML = `
                 <td class="position position-${player.position}">${player.position}</td>
@@ -1823,35 +1831,20 @@
         const tbody = document.getElementById('nfltable').getElementsByTagName('tbody')[0];
         tbody.innerHTML = ''; // Clear existing content
         
-        // Sort games by: Live games first, then upcoming (soonest first), then finished
+        // Sort games by: live, upcoming (soonest first), finished, unknown.
         const sortedGames = [...games].sort((a, b) => {
-            // Categorize games
-            const isLiveA = a.status !== 'Final' && a.status !== 'Scheduled';
-            const isLiveB = b.status !== 'Final' && b.status !== 'Scheduled';
-            const isScheduledA = a.status === 'Scheduled';
-            const isScheduledB = b.status === 'Scheduled';
-            const isFinalA = a.status === 'Final';
-            const isFinalB = b.status === 'Final';
-            
-            // Live games come first
-            if (isLiveA && !isLiveB) return -1;
-            if (!isLiveA && isLiveB) return 1;
-            
-            // Then scheduled games (sorted by time)
-            if (isScheduledA && !isScheduledB) return -1;
-            if (!isScheduledA && isScheduledB) return 1;
-            
+            const statusA = classifyGameStatus(a.status);
+            const statusB = classifyGameStatus(b.status);
+            const rank = { live: 0, scheduled: 1, final: 2, unknown: 3 };
+            if (rank[statusA] !== rank[statusB]) return rank[statusA] - rank[statusB];
+
             // If both are scheduled, sort by epoch time (soonest first)
-            if (isScheduledA && isScheduledB) {
+            if (statusA === 'scheduled') {
                 const timeA = a.game_time_epoch || 0;
                 const timeB = b.game_time_epoch || 0;
                 return timeA - timeB;
             }
-            
-            // Final games come last
-            if (isFinalA && !isFinalB) return 1;
-            if (!isFinalA && isFinalB) return -1;
-            
+
             // Otherwise keep original order
             return 0;
         });
@@ -1879,6 +1872,7 @@
             // Process each game in this row
             rowGames.forEach((game, colIndex) => {
                 const gameIndex = rowIndex * gamesPerRow + colIndex;
+                const gameStatusKind = classifyGameStatus(game.status);
                 
                 // Create checkered pattern based on row and column position
                 const isEven = (rowIndex + colIndex) % 2 === 0;
@@ -1900,7 +1894,7 @@
                 awayScoreCell.setAttribute('nowrap', '');
                 awayScoreCell.align = 'right';
                 awayScoreCell.title = game.status;
-                awayScoreCell.textContent = game.status === 'Scheduled' ? '0' : game.away_score;
+                awayScoreCell.textContent = gameStatusKind === 'scheduled' ? '0' : game.away_score;
                 
                 tr1.appendChild(awayTeamCell);
                 tr1.appendChild(awayScoreCell);
@@ -1919,7 +1913,7 @@
                 homeScoreCell.setAttribute('nowrap', '');
                 homeScoreCell.align = 'right';
                 homeScoreCell.title = game.status;
-                homeScoreCell.textContent = game.status === 'Scheduled' ? '0' : game.home_score;
+                homeScoreCell.textContent = gameStatusKind === 'scheduled' ? '0' : game.home_score;
                 
                 tr2.appendChild(homeTeamCell);
                 tr2.appendChild(homeScoreCell);
@@ -1932,7 +1926,7 @@
                 statusCell.colSpan = 2;
                 statusCell.title = game.status;
                 // Show game time for scheduled and in-progress games
-                if (game.status === 'Scheduled' && game.game_time) {
+                if (gameStatusKind === 'scheduled' && game.game_time) {
                     const timeWithDay = convertToPST(game.game_time, game.game_time_epoch);
                     // If it includes a day, split it into two lines for the scoreboard
                     if (game.game_time_epoch && timeWithDay.includes(' ')) {

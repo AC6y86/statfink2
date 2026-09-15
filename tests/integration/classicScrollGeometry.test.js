@@ -36,13 +36,14 @@ const OWNERS = ['Chris', 'Matt', 'Dan', 'Bruce', 'Joe', 'Pete', 'Mike', 'Eli', '
 const POSITIONS = ['QB', 'RB', 'RB', 'RB', 'RB', 'WR', 'WR', 'WR', 'WR', 'WR', 'TE', 'TE', 'K', 'DST', 'DST', 'RB', 'WR', 'QB', 'TE'];
 
 function makeStarters(teamId) {
+    const edgeStatuses = { 0: 'Final/OT', 1: 'OT', 2: 'Halftime', 3: null };
     return POSITIONS.map((position, i) => ({
         player_id: `t${teamId}p${i}`,
         name: position === 'DST' ? 'Kansas City Chiefs' : `Player ${teamId}-${i} Lastname`,
         position,
         team: 'KC',
         opp: '@BUF',
-        game_status: 'Final',
+        game_status: Object.prototype.hasOwnProperty.call(edgeStatuses, i) ? edgeStatuses[i] : 'Final',
         is_scoring: i < 13,
         stats: {
             fantasy_points: 10 + i,
@@ -216,6 +217,46 @@ describe('Classic Statfink page scroll geometry (mobile Chrome bounce regression
         const g = await load(DESKTOP);
         expectClassicThreeColumns(g);
         expectNormalFlowGeometry(g);
+    }, 30000);
+
+    test('Final/OT is complete, only live players are bold, and grid status sorting shares the classifier', async () => {
+        await load(DESKTOP);
+        const result = await page.evaluate(() => {
+            const rawStatuses = [
+                'Final', 'Final/OT', ' final overtime ', 'Completed',
+                'scheduled', 'Q4 01:02', 'OT', 'Halftime', '', null, undefined
+            ];
+            const classifications = rawStatuses.map(status => classifyGameStatus(status));
+            const rosterRows = Array.from(document.querySelectorAll('#team0 .playername')).slice(0, 4).map(cell => ({
+                bold: cell.classList.contains('playernameinprogress'),
+                status: cell.parentElement.querySelector('.status').textContent.trim()
+            }));
+
+            displayNFLGames([
+                { away_team: 'FINALOT', home_team: 'A', away_score: 1, home_score: 2, status: 'Final/OT' },
+                { away_team: 'UNKNOWN', home_team: 'B', away_score: 0, home_score: 0, status: null },
+                { away_team: 'LATER', home_team: 'C', away_score: 0, home_score: 0, status: 'Scheduled', game_time_epoch: 200 },
+                { away_team: 'LIVE', home_team: 'D', away_score: 3, home_score: 4, status: 'OT' },
+                { away_team: 'DONE', home_team: 'E', away_score: 5, home_score: 6, status: 'Completed' },
+                { away_team: 'SOONER', home_team: 'F', away_score: 0, home_score: 0, status: ' scheduled ', game_time_epoch: 100 }
+            ]);
+            const gridOrder = Array.from(document.querySelectorAll('#nfltable tr[id$="r0"]')).flatMap(row =>
+                Array.from(row.children).filter((cell, index) => index % 2 === 0).map(cell => cell.textContent)
+            );
+            return { classifications, rosterRows, gridOrder };
+        });
+
+        expect(result.classifications).toEqual([
+            'final', 'final', 'final', 'final',
+            'scheduled', 'live', 'live', 'live', 'unknown', 'unknown', 'unknown'
+        ]);
+        expect(result.rosterRows).toEqual([
+            { bold: false, status: 'Final/OT' },
+            { bold: true, status: 'OT' },
+            { bold: true, status: 'Halftime' },
+            { bold: false, status: 'Final' }
+        ]);
+        expect(result.gridOrder).toEqual(['LIVE', 'SOONER', 'LATER', 'FINALOT', 'DONE', 'UNKNOWN']);
     }, 30000);
 
     test('mobile Chrome (390x844): legacy 980px overview is preserved and body has real height', async () => {
