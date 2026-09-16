@@ -214,7 +214,11 @@ async function main() {
         const prev = prevRank[r.team_id];
         const move = !prev ? '-' : prev === rank ? '=' : prev > rank ? `▲${prev - rank}` : `▼${rank - prev}`;
         const delta = r.points_for_week - (avgByTeam[r.team_id] || 0);
-        L.push(`| ${rank} | ${r.owner_name} | ${r.wins}-${r.losses}${r.ties ? `-${r.ties}` : ''} | ${fmt(r.points_for_week)} (${delta >= 0 ? '+' : ''}${fmt(delta)} vs own avg) | ${r.weekly_rank} | ${fmt(r.cumulative_points)} | ${move} |`);
+        // Week 1: own avg IS this week's score, so 'vs own avg' is always +0 noise
+        const weekPts = week > 1
+            ? `${fmt(r.points_for_week)} (${delta >= 0 ? '+' : ''}${fmt(delta)} vs own avg)`
+            : fmt(r.points_for_week);
+        L.push(`| ${rank} | ${r.owner_name} | ${r.wins}-${r.losses}${r.ties ? `-${r.ties}` : ''} | ${weekPts} | ${r.weekly_rank} | ${fmt(r.cumulative_points)} | ${move} |`);
     });
     L.push('');
     L.push(`League average this week: ${fmt(leagueAvg)} points.`);
@@ -239,7 +243,8 @@ async function main() {
     const busts = scorers.filter(l => ['QB', 'RB', 'WR', 'TE'].includes(l.player_position) && l.pts <= 2);
     L.push('## Busts (skill players in scoring lineups, ≤2 pts)');
     L.push('');
-    L.push(busts.length === 0 ? '(none this week)'
+    L.push(busts.length === 0
+        ? '(none — every player who counted cleared 2 points. Players outside the scoring lineups contribute 0 by rule and are NOT busts, so never claim "no one scored under 2 points"; simply omit bust talk this week.)'
         : busts.map(l => `- ${l.player_name} (${l.player_position}) — ${fmt(l.pts)} pts for ${owners[l.team_id] || `team ${l.team_id}`}`).join('\n'));
     L.push('');
 
