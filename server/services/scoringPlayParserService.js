@@ -1,4 +1,6 @@
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
+const { rulesFor } = require('../config/scoringRulesets');
+const { normalizeTeamCode } = require('../utils/teamNormalization');
 
 class ScoringPlayParserService {
     constructor() {
@@ -43,13 +45,16 @@ class ScoringPlayParserService {
      * Parse scoring plays from boxscore data
      * Returns array of parsed scoring plays with categorization
      */
-    parseScoringPlays(boxScoreData, homeTeam, awayTeam) {
+    parseScoringPlays(boxScoreData, homeTeam, awayTeam, options = {}) {
         try {
+            // Season-gated rule fixes (server/config/scoringRulesets.js): an
+            // omitted season means the legacy rules, so blessed seasons never change.
+            const rules = rulesFor(options.season);
             const scoringPlays = this.extractScoringPlays(boxScoreData);
             const parsedPlays = [];
 
             for (const play of scoringPlays) {
-                const parsedPlay = this.parseIndividualPlay(play, homeTeam, awayTeam);
+                const parsedPlay = this.parseIndividualPlay(play, homeTeam, awayTeam, rules);
                 if (parsedPlay) {
                     parsedPlays.push(parsedPlay);
                 }
@@ -98,7 +103,7 @@ class ScoringPlayParserService {
     /**
      * Parse an individual scoring play and categorize it
      */
-    parseIndividualPlay(play, homeTeam, awayTeam) {
+    parseIndividualPlay(play, homeTeam, awayTeam, rules = rulesFor(undefined)) {
         try {
             // Extract play text/description
             const playText = this.extractPlayText(play);
@@ -107,7 +112,10 @@ class ScoringPlayParserService {
             }
 
             const normalizedText = playText.toLowerCase();
-            let playType = this.categorizePlayType(normalizedText, playText);
+            // Tank01 labels every scoring record (scoreType "TD" / "FG" / "SF" ...).
+            // Passed as context so terse texts can be classified by what scored.
+            const scoreType = this.extractScoreType(play);
+            let playType = this.categorizePlayType(normalizedText, playText, rules, { scoreType });
 
             // "Fumble Recovery in End Zone" reads identically for an offense
             // recovering its own side's fumble (offensive TD) and a defense
@@ -129,6 +137,10 @@ class ScoringPlayParserService {
                 scoringTeam: scoringTeam,
                 playerName: this.extractPlayerName(playText),
                 playType: playType,
+                // Two-point conversion named in the try-for-point parenthetical, if any
+                // (data only; applied by individualPlayerScoringService under the
+                // twoPointFromPlayText rule)
+                twoPoint: this.extractTwoPointConversion(playText),
                 points: this.extractPoints(play, normalizedText),
                 quarter: this.extractQuarter(play),
                 time: this.extractTime(play)
@@ -182,6 +194,16 @@ class ScoringPlayParserService {
     }
 
     /**
+     * Tank01's label for what scored on this record ("TD", "FG", "SF", ...),
+     * upper-cased, or null when the play carries none (plain-string plays).
+     */
+    extractScoreType(play) {
+        if (!play || typeof play !== 'object') return null;
+        const raw = play.scoreType !== undefined && play.scoreType !== null ? String(play.scoreType).trim() : '';
+        return raw ? raw.toUpperCase() : null;
+    }
+
+    /**
      * Extract play text from various play formats
      */
     extractPlayText(play) {
@@ -203,7 +225,34 @@ class ScoringPlayParserService {
     /**
      * Categorize the type of scoring play
      */
-    categorizePlayType(normalizedText, originalText = '') {
+    categorizePlayType(normalizedText, originalText = '', rules = {}, context = {}) {
+        // Ignore try-for-point parentheticals here. Otherwise an ordinary offensive
+        // TD followed by "(PAT/Kick blocked)" can look like a blocked-kick TD.
+        const mainPlayText = normalizedText.replace(/\([^)]*\)/g, ' ');
+
+        // 2026+: a blocked punt/kick/FG that is recovered, returned, or explicitly
+        // described as a touchdown is a Team Defense TD. Feeds do not use one stable
+        // word order (for example, "Punt Blocked by ... returned ... for a Touchdown",
+        // TEN @ IND 2026 wk6). The terse production record for that same play,
+        // "Rigoberto Sanchez Punt Blk'd Kick Blocked by Julius Chestnut (Joey Slye Kick)",
+        // has none of those words: there the record's own scoreType "TD" is the TD
+        // evidence. A bare blocked-kick phrase with no TD evidence stays 'other'.
+        // A blocked punt recovered by the kicking team in its own end zone is a
+        // safety, not a TD, so "safety" wording is left to the safety rule below,
+        // and an offensive TD ("N Yd Rush" / "N Yd pass from") whose blocked try is
+        // written without parentheses is never a blocked-kick TD.
+        const blockedKickPhrase = mainPlayText.includes('blocked') &&
+            (mainPlayText.includes('punt') || mainPlayText.includes('kick') ||
+             mainPlayText.includes('field goal') || /\bfg\b/.test(mainPlayText));
+        const touchdownEvidence = mainPlayText.includes('return') ||
+            mainPlayText.includes('recover') || mainPlayText.includes('touchdown') ||
+            (context && context.scoreType === 'TD');
+        const offensiveScoringPlay = /\d+\s*yd\s+(pass|rush|run)\b|pass from/.test(mainPlayText);
+        if (rules.blockedKickRecovery && blockedKickPhrase && touchdownEvidence &&
+            !mainPlayText.includes('safety') && !offensiveScoringPlay) {
+            return 'defensive_blocked_return_td';
+        }
+
         // Defensive touchdowns - blocked returns (remove "touchdown" requirement)
         if (normalizedText.includes('blocked') && 
             (normalizedText.includes('punt') || normalizedText.includes('kick') || normalizedText.includes('field goal')) &&
@@ -217,11 +266,27 @@ class ScoringPlayParserService {
             return 'defensive_int_return_td';
         }
 
+        // 2026+: a kickoff (or onside kick) recovered by the kicking team in the
+        // end zone is a special-teams takeaway -> Team Defense TD
+        // ("George Holani Recovered Kickoff in End Zone for a Touchdown").
+        if (rules.kickoffRecoveryTakeaway && !normalizedText.includes('fumble') &&
+            /recovered (kickoff|onside)|kickoff recover|onside kick recover/.test(normalizedText)) {
+            return 'defensive_fumble_return_td';
+        }
+
         // Muffed punt / muffed kick recovered by the coverage team is a
         // special-teams takeaway → Team Defense TD (docs/SCORING_SYSTEM.md,
         // "Defensive Touchdowns — Exact Award Logic")
         if (normalizedText.includes('muff') && !normalizedText.includes('safety')) {
             return 'defensive_fumble_return_td';
+        }
+
+        // A completed pass followed by the SAME receiver fumbling and recovering
+        // remains a receiving TD (Saubert, SEA @ WAS, 2026 week 3). Match all
+        // three names, not the initial reception yardage or a different recoverer.
+        if (rules.sameReceiverFumbleRecovery &&
+            /^(.+?)\s+\d+\s+yd\s+pass from\s+.+?\s+\1\s+fumble\s+\1\s+\d+\s+yd\s+fumble recovery\b/i.test(originalText)) {
+            return 'receiving_td';
         }
 
         // Fumble touchdowns — defensive takeaway vs offensive recovery.
@@ -307,12 +372,38 @@ class ScoringPlayParserService {
     }
 
     /**
+     * Parse the try-for-point parenthetical of a scoring play for a successful
+     * two-point conversion. Tank01 and ESPN both write
+     *   "(Jayden Daniels Pass to Luke McCaffrey for Two-Point Conversion)"
+     *   "(Rhamondre Stevenson Run for Two-Point Conversion)"
+     * and Tank01 sometimes truncates the text ("...for Two-Point Conversio").
+     * Failed attempts ("Two-Point Pass Conversion Failed") return null.
+     * Returns { passer, receiver } | { rusher } | null.
+     */
+    extractTwoPointConversion(playText) {
+        if (!playText) return null;
+        const text = String(playText);
+        // the try-for-point is the LAST parenthetical; tolerate a missing ")" (truncation)
+        const m = text.match(/\(([^()]*)\)?\s*$/);
+        const tryText = m ? m[1] : '';
+        if (!/two[- ]?point conversio/i.test(tryText) || /fail|no good|unsuccessful/i.test(tryText)) return null;
+        const pass = tryText.match(/^\s*(.+?)\s+pass to\s+(.+?)\s+for\s+two[- ]?point/i);
+        if (pass) return { passer: pass[1].trim(), receiver: pass[2].trim() };
+        const run = tryText.match(/^\s*(.+?)\s+run for\s+two[- ]?point/i);
+        if (run) return { rusher: run[1].trim() };
+        return null;
+    }
+
+    /**
      * Extract scoring team from play text and API data
      * Priority: API data > text parsing
      */
     extractScoringTeam(playText, homeTeam, awayTeam, playData = null) {
         // First priority: Use team data from the API if available
         if (playData && typeof playData === 'object') {
+            // Preserve source codes on parsed evidence. The defensive breakdown
+            // normalizes BOTH sides: live updates pass canonical database codes,
+            // while cached-season recalculations pass raw boxscore codes.
             if (playData.team) return playData.team;
             if (playData.teamAbbreviation) return playData.teamAbbreviation;
             if (playData.scoringTeam) return playData.scoringTeam;
@@ -447,8 +538,9 @@ class ScoringPlayParserService {
             safeties: 0
         };
 
+        const canonicalTeam = normalizeTeamCode(team);
         for (const play of parsedPlays) {
-            if (play.scoringTeam === team) {
+            if (canonicalTeam && normalizeTeamCode(play.scoringTeam) === canonicalTeam) {
                 switch (play.playType) {
                     case 'defensive_int_return_td':
                         breakdown.def_int_return_tds++;

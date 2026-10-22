@@ -4,7 +4,8 @@ const path = require('path');
 class StatsComparator {
     constructor() {
         // Current database with imported stats
-        this.currentDbPath = path.join(__dirname, '../../fantasy_football.db');
+        // STATFINK_SLOW_DB: the nightly runner recalculates a COPY of the league DB and compares that
+        this.currentDbPath = process.env.STATFINK_SLOW_DB ? path.resolve(process.env.STATFINK_SLOW_DB) : path.join(__dirname, '../../fantasy_football.db');
         // Reference database with manually calculated stats
         this.referenceDbPath = path.join(__dirname, 'statfinkv1_2024.db');
         

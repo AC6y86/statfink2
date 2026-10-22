@@ -2,6 +2,14 @@ const { spawn } = require('child_process');
 const path = require('path');
 const StatsComparator = require('../2024/StatsComparator');
 
+// Never recalculate the official record from a test: the recalc child inherits
+// DATABASE_PATH, which must point at a COPY (STATFINK_SLOW_DB, made by
+// scripts/run-slow-tests.js / scripts/nightly-test-run.js).
+const SLOW_DB = process.env.STATFINK_SLOW_DB;
+if (!SLOW_DB || path.resolve(SLOW_DB) === path.resolve(__dirname, '../../fantasy_football.db')) {
+    throw new Error('Refusing to recalculate the live database. Run via `npm run test:integration:slow` (which copies the DB) or set STATFINK_SLOW_DB to a copy.');
+}
+
 // This is a slow test that runs the full 2024 recalculation
 // Run with: npm run test:slow or npm run test:integration:slow
 //

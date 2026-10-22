@@ -29,27 +29,34 @@ const TestRunnerService = require('./services/testRunnerService');
 const HealthCheckService = require('./services/healthCheckService');
 const EmailMoveParsingService = require('./services/emailMoveParsingService');
 const PendingMovesService = require('./services/pendingMovesService');
+const NflRosterEligibilityService = require('./services/nflRosterEligibilityService');
+const { JobStatusService } = require('./services/jobStatusService');
 const { errorHandler, logInfo, logError } = require('./utils/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 const HTTPS_PORT = process.env.HTTPS_PORT || 8443;
+// Loopback-only listener that `tailscale serve` proxies to; requests on it
+// skip the admin password (server/auth/trust.js).
+const TAILSCALE_PORT = parseInt(process.env.TAILSCALE_PORT || '8001', 10);
 
-// Trust proxy - required for rate limiting when behind nginx/reverse proxy
-app.set('trust proxy', true);
+// Trust only loopback proxies (nginx, tailscale serve). With `true`, req.ip was
+// the LEFTMOST X-Forwarded-For entry - client-controlled - and it gated admin
+// auth. req.ip is now the real peer and is used only for rate limiting/logs.
+app.set('trust proxy', 'loopback');
 
 // Import authentication
-const { setupAuth } = require('./auth/auth');
+const { setupAuth, requireAuth } = require('./auth/auth');
 
 // Initialize services
-let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService, weeklyReportService, dstManagementService, fantasyPointsCalculationService, healthCheckService, emailMoveParsingService, pendingMovesService;
+let db, scoringService, tank01Service, nflGamesService, playerSyncService, standingsService, schedulerService, teamScoreService, scoringPlayersService, weeklyReportService, dstManagementService, fantasyPointsCalculationService, healthCheckService, emailMoveParsingService, pendingMovesService, jobStatusService;
 
 async function initializeServices() {
     try {
         logInfo('Initializing services...');
         
         // Initialize database
-        db = new DatabaseManager();
+        db = new DatabaseManager({ nflEligibilityService: new NflRosterEligibilityService() });
         await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for DB init
         
         // Initialize Tank01 API service with database connection
@@ -107,6 +114,10 @@ async function initializeServices() {
         });
         logInfo('Health check service initialized');
 
+        // Verification status aggregator (/admin/status, /api/admin/status)
+        jobStatusService = new JobStatusService({ db, healthCheckService });
+        logInfo('Job status service initialized');
+
         // Initialize email-driven roster move services
         emailMoveParsingService = new EmailMoveParsingService(db);
         pendingMovesService = new PendingMovesService(db);
@@ -131,6 +142,7 @@ async function initializeServices() {
         app.locals.dstManagementService = dstManagementService;
         app.locals.fantasyPointsCalculationService = fantasyPointsCalculationService;
         app.locals.healthCheckService = healthCheckService;
+        app.locals.jobStatusService = jobStatusService;
         app.locals.emailMoveParsingService = emailMoveParsingService;
         app.locals.pendingMovesService = pendingMovesService;
         
@@ -156,10 +168,24 @@ app.use(cookieParser());
 
 // Serve static files BEFORE setting security headers
 app.use(express.static(path.join(__dirname, '../public')));
-app.use(express.static(path.join(__dirname, '../helm')));
+// helm/ assets (statfink-styles.css, theme-loader.js, logos) are public, but
+// its HTML pages (dashboard, mobile, database-browser, ...) are served only
+// through their auth-guarded routes below - never as bare static files.
+const helmStatic = express.static(path.join(__dirname, '../helm'), { index: false, redirect: false });
+app.use((req, res, next) => (/\.html?$/i.test(req.path) ? next() : helmStatic(req, res, next)));
 
 // Serve Let's Encrypt challenge files
 app.use('/.well-known/acme-challenge', express.static(path.join(__dirname, '../.well-known/acme-challenge')));
+
+// Reachability probe for the tailnet host: the public login page fetches
+// https://<TAILSCALE_HOSTNAME>/tailnet-ping (mode: no-cors, 1.5 s timeout)
+// and, if anything answers, sends the browser to the password-free tailnet
+// URL. Only a tailnet device can reach that host, so answering is the signal;
+// the body carries nothing.
+app.get('/tailnet-ping', (req, res) => {
+    res.set('Cache-Control', 'no-store');
+    res.status(204).end();
+});
 
 // Setup authentication (includes security headers)
 setupAuth(app);
@@ -246,40 +272,43 @@ app.get('/helm', (req, res) => {
 });
 
 app.get('/admin', (req, res) => {
-    res.redirect('/admin/dashboard');
+    res.redirect('/admin/thisweek');
 });
 
-app.get('/admin/dashboard', (req, res) => {
+// The admin app (helm/admin/): one responsive page, areas routed by path.
+// /admin/dashboard keeps working (legacy #hash tabs are mapped client-side);
+// the old single-file dashboard stays reachable at /admin/legacy.
+const adminApp = (req, res) => res.sendFile(path.join(__dirname, '../helm/admin/index.html'));
+app.get('/admin/dashboard', adminApp);
+app.get('/admin/:area(thisweek|status|moves|data|recaps|settings)', adminApp);
+app.use('/admin/assets', express.static(path.join(__dirname, '../helm/admin'), { index: false }));
+app.get('/admin/legacy', (req, res) => {
     res.sendFile(path.join(__dirname, '../helm/dashboard.html'));
 });
-
-// Direct routes to specific dashboard tabs
-app.get('/admin/sync', (req, res) => {
-    res.redirect('/admin/dashboard#sync');
+// The former phone-only portal: the app itself is phone-sized now
+app.get('/admin/m', (req, res) => {
+    res.redirect('/admin/thisweek');
 });
 
-app.get('/admin/status', (req, res) => {
-    res.redirect('/admin/dashboard#status');
+// Old per-tab links → the areas that absorbed them
+app.get('/admin/sync', (req, res) => {
+    res.redirect('/admin/data');
 });
 
 app.get('/admin/players', (req, res) => {
-    res.redirect('/admin/dashboard#players');
+    res.redirect('/admin/moves?tab=players');
 });
 
 app.get('/admin/rosters', (req, res) => {
-    res.redirect('/admin/dashboard#rosters');
+    res.redirect('/admin/moves');
 });
 
 app.get('/admin/database', (req, res) => {
-    res.redirect('/admin/dashboard#database');
-});
-
-app.get('/admin/settings', (req, res) => {
-    res.redirect('/admin/dashboard#settings');
+    res.redirect('/admin/data?tab=database');
 });
 
 app.get('/admin/roster', (req, res) => {
-    res.redirect('/admin/dashboard#rosters');
+    res.redirect('/admin/moves');
 });
 
 // Redirect root to /statfink
@@ -293,7 +322,10 @@ app.get('/statfink', async (req, res) => {
     try {
         const db = req.app.locals.db;
         const settings = await db.getLeagueSettings();
-        res.redirect(`/statfink/${settings.season_year}/${settings.current_week}`);
+        // Follow the active league week (temporary Week 3 pin removed at Joe's request).
+        const displayWeek = settings.current_week;
+        res.set('Cache-Control', 'no-store');
+        res.redirect(`/statfink/${settings.season_year}/${displayWeek}`);
     } catch (error) {
         logError('Failed to get league settings for statfink redirect', error);
         // Fallback to default if settings can't be retrieved
@@ -434,7 +466,7 @@ app.use('/api/stats', require('./routes/stats'));
 app.use('/api/matchups', require('./routes/matchups'));
 app.use('/api/league', require('./routes/league'));
 app.use('/api/nfl-games', require('./routes/nflGames'));
-app.use('/api/database', require('./routes/databaseBrowser'));
+app.use('/api/database', requireAuth, require('./routes/databaseBrowser')); // raw SELECT on the league DB: admin only
 app.use('/api/standings', require('./routes/standings'));
 app.use('/api/rosters', require('./routes/rosters'));
 app.use('/api/roster-moves', require('./routes/rosterMoves'));
@@ -595,6 +627,18 @@ async function startServer() {
         const httpServer = http.createServer(app);
         httpServer.listen(PORT, () => {
             logInfo(`StatFink Fantasy Football HTTP server running on http://localhost:${PORT}`);
+        });
+
+        // Tailscale admin listener: loopback-only, reached via
+        // `tailscale serve --bg http://127.0.0.1:${TAILSCALE_PORT}` at
+        // https://<node>.<tailnet>.ts.net. Every request on it is stamped so
+        // requireAuth/requireAdmin let it through without a password.
+        const tailscaleServer = http.createServer((req, res) => {
+            req.trustedListener = 'tailscale';
+            app(req, res);
+        });
+        tailscaleServer.listen(TAILSCALE_PORT, '127.0.0.1', () => {
+            logInfo(`Tailscale admin listener on http://127.0.0.1:${TAILSCALE_PORT} (password-free via tailscale serve)`);
         });
         
         // Start HTTPS server if certificates exist

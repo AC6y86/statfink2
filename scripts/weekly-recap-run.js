@@ -4,6 +4,12 @@
  * Weekly recap generation run (PM2 cron: statfink2-weekly-recaps, Tuesday
  * 10:30 UTC — 30 minutes after statfink2-weekly-validate writes its report).
  *
+ * Since 2026-09-15 there is NO cron: /admin Recaps runs this (Generate button,
+ * POST /api/admin/recaps/:season/:week/generate) with --season --week after the
+ * commissioner has reviewed the week's themes (recaps/{season}/data/week{NN}-themes.json,
+ * proposed by scripts/recap-setup.js). One recap per theme; without a themes
+ * file the /recap command picks 10 styles itself (legacy behaviour).
+ *
  * 1. Reads logs/weekly-validation-latest.json to find the just-validated
  *    season/week; skips cleanly off-season, on stale validation, or if the
  *    week's recaps already exist.
@@ -29,14 +35,15 @@
  *   --dry-run          run the guards, print the claude command, exit
  */
 
-const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { sendGmail } = require('./lib/gmailSend');
-const { parseRecapFilename, parseFactcheckReport, weekPad } = require('../server/utils/recapFiles');
+const { writeJobStatus } = require('./lib/jobStatus');
+const { runClaude: runClaudeHeadless } = require('./lib/claudeHeadless');
+const { readThemes, writeThemes } = require('../server/utils/recapThemes');
+const { parseRecapFilename, parseFactcheckReport, weekPad, NO_DRAFT_GRADES_RULE } = require('../server/utils/recapFiles');
+const { rateWeek } = require('./recap-rate');
 
 const REPO = path.join(__dirname, '..');
-const NOTIFY_EMAIL = 'joe.paley@gmail.com';
 const VALIDATION_FILE = path.join(REPO, 'logs/weekly-validation-latest.json');
 const LATEST_FILE = path.join(REPO, 'logs/weekly-recaps-latest.json');
 const HISTORY_FILE = path.join(REPO, 'logs/weekly-recaps-history.json');
@@ -110,7 +117,9 @@ function resolveTarget() {
 function buildClaudeArgs(season, week) {
     const force = OPTS.force ? ' --force' : '';
     // --auto: no approval pauses; --force is only ever injected here by a human-run flag
-    const prompt = `/recap ${season} ${week} --auto${force ? '\n\nI explicitly accept generating from unvalidated data: re-run recap-data with --force if it refuses.' : ''}`;
+    const prompt = `/recap ${season} ${week} --auto${force ? '\n\nI explicitly accept generating from unvalidated data: re-run recap-data with --force if it refuses.' : ''}`
+        // Standing rule: applied to the storylines refresh (Step 2), quoted verbatim in every narrator prompt, and enforced by the fact-checker
+        + `\n\n${NO_DRAFT_GRADES_RULE} Apply it when updating the storylines file, include it verbatim in every narrator agent's prompt, and tell the fact-checker that any draft-grade mention is a Critical discrepancy that FAILs the recap.`;
     return [
         '-p', prompt,
         '--output-format', 'json',
@@ -125,45 +134,7 @@ function buildClaudeArgs(season, week) {
 }
 
 function runClaude(claudeArgs) {
-    return new Promise((resolve) => {
-        const proc = spawn('claude', claudeArgs, {
-            cwd: REPO,
-            env: process.env,
-            stdio: ['ignore', 'pipe', 'pipe']
-        });
-        let stdout = '';
-        let stderr = '';
-        let timedOut = false;
-        const timer = setTimeout(() => {
-            timedOut = true;
-            proc.kill('SIGKILL');
-        }, CLAUDE_TIMEOUT_MS);
-
-        proc.stdout.on('data', d => { stdout += d; });
-        proc.stderr.on('data', d => { stderr += d; });
-        proc.on('error', err => {
-            clearTimeout(timer);
-            resolve({ exitCode: null, error: `Failed to spawn claude: ${err.message}` });
-        });
-        proc.on('close', code => {
-            clearTimeout(timer);
-            if (timedOut) {
-                resolve({ exitCode: code, error: `claude timed out after ${CLAUDE_TIMEOUT_MS / 60000} minutes` });
-                return;
-            }
-            let envelope = null;
-            try {
-                envelope = JSON.parse(stdout);
-            } catch (_) { /* non-JSON output */ }
-            resolve({
-                exitCode: code,
-                envelope,
-                error: code !== 0
-                    ? `claude exited ${code}: ${(stderr || stdout).slice(-2000)}`
-                    : (envelope && envelope.is_error ? `claude reported error: ${String(envelope.result).slice(-2000)}` : null)
-            });
-        });
-    });
+    return runClaudeHeadless(claudeArgs, { timeoutMs: CLAUDE_TIMEOUT_MS });
 }
 
 function writeStatusFile(status) {
@@ -188,29 +159,6 @@ function writeStatusFile(status) {
     fs.writeFileSync(HISTORY_FILE, JSON.stringify(history.slice(-HISTORY_CAP), null, 2));
 }
 
-function buildFailureEmail(status) {
-    const subject = `statfink2 weekly recaps ${status.overallStatus} — ` +
-        (status.week ? `${status.season} week ${status.week}` : 'no week');
-    const lines = [
-        `Weekly recap run at ${status.runAt}`,
-        '',
-        `Status: ${status.overallStatus}`,
-        status.reason ? `Reason: ${status.reason}` : null,
-        status.error ? `Error: ${status.error}` : null,
-        ''
-    ].filter(l => l !== null);
-    if (status.styles && status.styles.length) {
-        lines.push('Generated recaps:');
-        for (const s of status.styles) {
-            lines.push(`  [${s.factcheck || '?'}] ${s.slug}`);
-        }
-        lines.push('');
-    }
-    lines.push('Details: http://localhost:8000/admin/dashboard#recaps');
-    lines.push('Manual re-run: node scripts/weekly-recap-run.js --force-regenerate');
-    return { subject, body: lines.join('\n') };
-}
-
 async function main() {
     log('Weekly recap run starting');
     const startTime = Date.now();
@@ -218,17 +166,19 @@ async function main() {
     const status = {
         schemaVersion: 1,
         runAt: new Date().toISOString(),
-        trigger: process.env.PM2_HOME ? 'cron' : 'manual',
+        trigger: process.env.STATFINK_TRIGGER || (process.env.PM2_HOME ? 'cron' : 'manual'),
         season: null,
         week: null,
         overallStatus: 'ERROR',
         reason: null,
         styles: null,
+        themes: null,
         factcheckFile: null,
+        ratings: null,
         claude: null,
         durationMs: 0,
         error: null,
-        email: { sent: false, to: NOTIFY_EMAIL, error: null }
+        email: { sent: false, to: null, error: null }
     };
     let notify = false;
 
@@ -244,11 +194,22 @@ async function main() {
         status.week = target.week;
 
         const preExisting = weekRecapFiles(target.season, target.week);
-        const alreadyDone = preExisting.length >= EXPECTED_RECAPS || fs.existsSync(factcheckPath(target.season, target.week));
-        if (alreadyDone && !OPTS.forceRegenerate) {
+        const themesDoc = readThemes(target.season, target.week);
+        const themeSlugs = themesDoc ? themesDoc.themes.map(t => t.slug) : null;
+        const expected = themeSlugs ? themeSlugs.length : EXPECTED_RECAPS;
+        status.themes = themeSlugs;
+        const alreadyDone = themeSlugs
+            ? themeSlugs.every(slug => preExisting.some(f => parseRecapFilename(f).slug === slug))
+            : preExisting.length >= EXPECTED_RECAPS || fs.existsSync(factcheckPath(target.season, target.week));
+        if (themeSlugs && themeSlugs.length === 0) {
+            status.overallStatus = 'SKIPPED';
+            status.reason = `No themes on the list for ${target.season} week ${target.week} — add some on /admin Recaps`;
+            notify = true;
+            log(`Skipped: ${status.reason}`);
+        } else if (alreadyDone && !OPTS.forceRegenerate) {
             status.overallStatus = 'SKIPPED';
             status.reason = `Recaps already generated for ${target.season} week ${target.week} ` +
-                `(${preExisting.length} files). Use --force-regenerate to add another batch.`;
+                `(${preExisting.length} files). Use --force-regenerate to redo them.`;
             log(`Skipped: ${status.reason}`);
         } else if (OPTS.dryRun) {
             const claudeArgs = buildClaudeArgs(target.season, target.week);
@@ -269,8 +230,13 @@ async function main() {
                 costUsd: result.envelope?.total_cost_usd ?? null
             };
 
+            // Files this run produced: new ones, or (themed regeneration) rewritten since we started
             const preSet = new Set(preExisting);
-            const newFiles = weekRecapFiles(target.season, target.week).filter(f => !preSet.has(f));
+            const newFiles = weekRecapFiles(target.season, target.week).filter(f => {
+                if (!preSet.has(f)) return true;
+                if (!themeSlugs) return false;
+                try { return fs.statSync(path.join(REPO, 'recaps', String(target.season), f)).mtimeMs >= startTime; } catch (_) { return false; }
+            });
             let factcheck = {};
             try {
                 factcheck = parseFactcheckReport(fs.readFileSync(factcheckPath(target.season, target.week), 'utf8'));
@@ -290,43 +256,55 @@ async function main() {
                 status.overallStatus = 'ERROR';
                 status.error = result.error;
                 notify = true;
-            } else if (newFiles.length < EXPECTED_RECAPS) {
+            } else if (newFiles.length < expected) {
                 status.overallStatus = 'FAIL';
-                status.error = `Expected ${EXPECTED_RECAPS} new recap files, found ${newFiles.length}`;
+                status.error = `Expected ${expected} new recap files, found ${newFiles.length}`;
                 notify = true;
             } else if (!status.factcheckFile) {
                 status.overallStatus = 'FAIL';
                 status.error = 'No fact-check report was produced';
                 notify = true;
-            } else if (status.styles.some(s => s.factcheck !== 'PASS')) {
-                status.overallStatus = 'FAIL';
-                status.error = 'One or more recaps failed (or is missing from) the fact-check';
-                notify = true;
             } else {
+                // The run itself succeeded. A recap that fails (or is missing from) the
+                // fact-check is a per-recap problem: it is flagged next to that recap on
+                // /admin Recaps, never as a critical run (commissioner's call, 2026-09-15).
                 status.overallStatus = 'PASS';
+                const fails = status.styles.filter(s => s.factcheck !== 'PASS').map(s => s.slug);
+                if (fails.length) {
+                    status.factcheckFails = fails;
+                    status.note = `${fails.length} of ${status.styles.length} did not pass the fact-check: ${fails.join(', ')}`;
+                }
+            }
+            // Storytelling/interest ratings + the recommended star (non-fatal: the
+            // Rate button on /admin Recaps can redo it)
+            if (newFiles.length > 0) {
+                try {
+                    const rated = await rateWeek(target.season, target.week);
+                    status.ratings = { file: path.relative(REPO, rated.file), recommended: rated.doc.recommended, claude: rated.doc.claude || null };
+                } catch (err) {
+                    status.ratings = { error: err.message };
+                    log(`Rating skipped: ${err.message}`);
+                }
+            }
+            if (themesDoc && newFiles.length > 0) {
+                themesDoc.generatedAt = new Date().toISOString();
+                themesDoc.lastRun = { overallStatus: status.overallStatus, files: newFiles.length, error: status.error || null, note: status.note || null };
+                try { writeThemes(themesDoc); } catch (err) { log(`Could not mark themes generated: ${err.message}`); }
             }
             log(`Generation finished: ${status.overallStatus} — ${newFiles.length} new files` +
-                (status.error ? ` (${status.error})` : ''));
+                (status.error ? ` (${status.error})` : status.note ? ` (${status.note})` : ''));
         }
     }
 
     status.durationMs = Date.now() - startTime;
 
-    if (notify && OPTS.email) {
-        const { subject, body } = buildFailureEmail(status);
-        try {
-            await sendGmail({ to: NOTIFY_EMAIL, subject, body });
-            status.email.sent = true;
-            log(`Failure report emailed to ${NOTIFY_EMAIL}: ${subject}`);
-        } catch (error) {
-            status.email.error = error.message;
-            const fallback = path.join(REPO, 'logs', `weekly-recaps-email-failure-${Date.now()}.log`);
-            try {
-                fs.mkdirSync(path.join(REPO, 'logs'), { recursive: true });
-                fs.writeFileSync(fallback, `${subject}\n\n${body}`);
-            } catch (_) { /* logging only */ }
-            log(`FAILED to send email (${error.message}). Report saved to ${fallback}`);
-        }
+    // No email by policy (dashboard-only): the status page shows the run.
+    if (notify) log(`Attention needed: ${status.overallStatus} — ${status.error || status.reason || ''}`);
+    if (!OPTS.dryRun) {
+        const kind = status.overallStatus === 'PASS' ? 'ok' : status.overallStatus === 'SKIPPED' ? (notify ? 'warning' : 'skipped') : status.overallStatus === 'RUNNING' ? 'running' : 'critical';
+        writeJobStatus('recaps', { status: kind, summary: `${status.overallStatus}${status.season ? ` — ${status.season} week ${status.week}` : ''}${status.error ? `: ${status.error}` : status.reason ? `: ${status.reason}` : status.note ? `: ${status.note}` : ''}`,
+            season: status.season || null, week: status.week || null, durationMs: status.durationMs,
+            details: { styles: (status.styles || []).length, themes: status.themes ? status.themes.length : null, factcheckFile: status.factcheckFile || null, claude: status.claude || null } });
     }
 
     if (!OPTS.dryRun) {

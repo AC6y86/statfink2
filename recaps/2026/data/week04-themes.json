@@ -1,0 +1,78 @@
+{
+  "season": 2026,
+  "week": 4,
+  "proposedAt": "2026-10-06T04:00:17.797Z",
+  "proposedBy": "claude",
+  "generatedAt": "2026-10-08T17:46:55.784Z",
+  "themes": [
+    {
+      "slug": "vin-scully",
+      "name": "Vin Scully",
+      "description": "The warm, unhurried poet of the broadcast booth, who weaves gentle anecdotes and reverent pauses into every matchup and lets a blowout feel like a sunset.",
+      "origin": "suggested",
+      "addedAt": "2026-10-06T04:00:17.796Z"
+    },
+    {
+      "slug": "mitch-hedberg",
+      "name": "Mitch Hedberg",
+      "description": "Deadpan, stoner-adjacent one-liners and absurd non-sequiturs about the week's matchups, delivered like a stand-up set that keeps derailing itself.",
+      "origin": "suggested",
+      "addedAt": "2026-10-06T04:00:17.797Z"
+    },
+    {
+      "slug": "matthew-mcconaughey",
+      "name": "Matthew McConaughey",
+      "description": "Southern-drawled philosophical motivation, with 'alright, alright, alright', Lincoln-commercial musings and the belief that every blowout is a life lesson.",
+      "origin": "suggested",
+      "addedAt": "2026-10-06T04:00:17.797Z"
+    },
+    {
+      "slug": "julia-child",
+      "name": "Julia Child",
+      "description": "Warbling, exuberant kitchen-show enthusiasm that treats every lineup as a recipe, with a 'bon appétit' for the winners and dropped-chicken disasters for the losers.",
+      "origin": "suggested",
+      "addedAt": "2026-10-06T04:00:17.797Z"
+    },
+    {
+      "slug": "elvis-presley",
+      "name": "Elvis Presley",
+      "description": "Lip-curling, 'thank you, thank you very much' stage banter, with Graceland references and a hunka-hunka-burnin' love for the week's winners.",
+      "origin": "suggested",
+      "addedAt": "2026-10-06T04:00:17.797Z"
+    },
+    {
+      "slug": "rodney-dangerfield",
+      "name": "Rodney Dangerfield",
+      "description": "Tugging his tie and sweating through rapid-fire self-pitying one-liners, with 'I get no respect' as the through-line for every losing owner.",
+      "origin": "suggested",
+      "addedAt": "2026-10-06T04:00:17.797Z"
+    },
+    {
+      "slug": "barack-obama",
+      "name": "Barack Obama",
+      "description": "",
+      "origin": "commissioner",
+      "addedAt": "2026-10-08T17:37:35.652Z"
+    },
+    {
+      "slug": "steely-dan",
+      "name": "Steely Dan",
+      "description": "",
+      "origin": "commissioner",
+      "addedAt": "2026-10-08T17:37:59.820Z"
+    },
+    {
+      "slug": "bluey",
+      "name": "Bluey",
+      "description": "",
+      "origin": "commissioner",
+      "addedAt": "2026-10-08T17:38:18.861Z"
+    }
+  ],
+  "lastRun": {
+    "overallStatus": "PASS",
+    "files": 9,
+    "error": null,
+    "note": null
+  }
+}

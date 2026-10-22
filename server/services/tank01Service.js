@@ -33,6 +33,10 @@ class Tank01Service {
         this.liveCacheExpiry = 30 * 1000; // 30 seconds for live games
         this.scheduledCacheExpiry = 30 * 60 * 1000; // 30 minutes for scheduled games
         this.historicalCacheExpiry = null; // Never expire historical data
+        // A boxscore that has just turned "Completed" is refetched once before it
+        // becomes permanent: Tank01 flips the status a few minutes before its play
+        // list and player stats settle (wk12 2025: both game-winning FGs missing).
+        this.completedQuarantineMs = 15 * 60 * 1000;
         this.currentSeasonYear = new Date().getFullYear();
     }
 
@@ -156,6 +160,55 @@ class Tank01Service {
         return false;
     }
 
+    /**
+     * A completed boxscore is "settled" when its scoring plays reach the final
+     * score. Tank01 marks a game Completed before the last play/stat lands, so an
+     * unsettled boxscore must never be cached permanently.
+     */
+    boxscoreLooksSettled(body) {
+        if (!body) return false;
+        const homePts = parseInt(body.homePts ?? body.lineScore?.home?.totalPts);
+        const awayPts = parseInt(body.awayPts ?? body.lineScore?.away?.totalPts);
+        const plays = Array.isArray(body.scoringPlays) ? body.scoringPlays : [];
+        if (!Number.isFinite(homePts) || !Number.isFinite(awayPts)) return false;
+        if (plays.length === 0) return homePts === 0 && awayPts === 0;
+        const last = plays[plays.length - 1];
+        const lastHome = parseInt(last.homeScore), lastAway = parseInt(last.awayScore);
+        if (!Number.isFinite(lastHome) || !Number.isFinite(lastAway)) return true; // no running score to check
+        return lastHome === homePts && lastAway === awayPts;
+    }
+
+    /**
+     * Decide whether a completed boxscore may become permanent. Permanent only
+     * when it looks settled AND a completed copy was first cached at least
+     * completedQuarantineMs ago (so it has been refetched once after settling).
+     */
+    async boxscoreQuarantine(cacheKey, data) {
+        const body = data?.body;
+        if (!this.boxscoreLooksSettled(body)) {
+            return { permanent: false, reason: 'scoring plays do not reach the final score' };
+        }
+        let prior = null;
+        try {
+            prior = await this.db.get('SELECT created_at, response_data FROM tank01_cache WHERE cache_key = ?', [cacheKey]);
+        } catch (error) {
+            return { permanent: false, reason: `cache lookup failed: ${error.message}` };
+        }
+        if (prior) {
+            try {
+                const priorStatus = String(JSON.parse(prior.response_data)?.body?.gameStatus || '').toLowerCase();
+                if (['final', 'completed', 'final ot'].includes(priorStatus)) {
+                    const ts = String(prior.created_at);
+                    const firstSeen = Date.parse(/[TZ]/.test(ts) ? ts : ts.replace(' ', 'T') + 'Z');
+                    const age = Date.now() - firstSeen;
+                    if (Number.isFinite(age) && age >= this.completedQuarantineMs) return { permanent: true };
+                    return { permanent: false, reason: `completed only ${Math.round(age / 60000)} min ago` };
+                }
+            } catch (_) { /* unreadable prior row: treat as first sighting */ }
+        }
+        return { permanent: false, reason: 'first completed sighting' };
+    }
+
     // Determine appropriate cache duration based on game status
     getCacheDuration(endpoint, params, data) {
         // For box scores, check game status
@@ -191,7 +244,7 @@ class Tank01Service {
     async getCachedData(cacheKey) {
         try {
             const cached = await this.db.get(`
-                SELECT response_data, expires_at, is_historical 
+                SELECT response_data, expires_at, is_historical, endpoint 
                 FROM tank01_cache 
                 WHERE cache_key = ?
             `, [cacheKey]);
@@ -211,7 +264,12 @@ class Tank01Service {
             if (!cached.is_historical && cached.expires_at) {
                 const expiresAt = new Date(cached.expires_at).getTime();
                 if (Date.now() > expiresAt) {
-                    await this.db.run('DELETE FROM tank01_cache WHERE cache_key = ?', [cacheKey]);
+                    // Keep an expired boxscore row: its created_at is the
+                    // "first seen completed" clock for boxscoreQuarantine, and
+                    // INSERT OR REPLACE overwrites it on the next fetch anyway.
+                    if (cached.endpoint !== '/getNFLBoxScore') {
+                        await this.db.run('DELETE FROM tank01_cache WHERE cache_key = ?', [cacheKey]);
+                    }
                     return null;
                 }
             }
@@ -228,15 +286,27 @@ class Tank01Service {
     async setCachedData(cacheKey, endpoint, params, data) {
         try {
             // Determine if historical based on actual data
-            const isHistorical = this.isHistoricalData(endpoint, params, data);
+            let isHistorical = this.isHistoricalData(endpoint, params, data);
             
             // Get appropriate cache duration
-            const cacheDuration = this.getCacheDuration(endpoint, params, data);
+            let cacheDuration = this.getCacheDuration(endpoint, params, data);
             
             // Skip caching if duration is 0
             if (cacheDuration === 0) {
                 logInfo(`Skipping cache for ${cacheKey} (no-cache endpoint)`);
                 return;
+            }
+
+            // Completed boxscores go through a short quarantine before becoming permanent
+            if (isHistorical && endpoint === '/getNFLBoxScore') {
+                const verdict = await this.boxscoreQuarantine(cacheKey, data);
+                if (!verdict.permanent) {
+                    isHistorical = false;
+                    cacheDuration = this.completedQuarantineMs;
+                    // Expected cache lifecycle, not a degraded condition: a
+                    // just-completed boxscore is deliberately refetched once.
+                    logInfo(`Boxscore ${cacheKey} is Completed but not yet permanent (${verdict.reason}); refetch in ${Math.round(cacheDuration / 60000)} min`);
+                }
             }
             
             const expiresAt = isHistorical ? null : 

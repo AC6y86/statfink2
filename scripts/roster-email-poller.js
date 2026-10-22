@@ -34,7 +34,8 @@ const FAILURE_ALERT_THRESHOLD = 5;
 const state = {
     consecutiveFailures: 0,
     authAlertSent: false,
-    failureAlertSent: false
+    failureAlertSent: false,
+    polling: false
 };
 
 function log(msg) {
@@ -121,7 +122,7 @@ function extractBody(payload) {
 /** Keep only the latest message in a thread (strip quoted/forwarded content). */
 function extractLatestMessage(body) {
     const quotePatterns = [
-        /On .+? wrote:/i,
+        /(?:^|\s)On (?=(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|\d))[\s\S]{0,350}?\bwrote:/i,
         /-----\s*Original Message\s*-----/i,
         /----------\s*Forwarded message\s*---------/i,
         /From:\s*[^\n]+\nSent:/i,
@@ -139,7 +140,7 @@ function extractLatestMessage(body) {
     return body.substring(0, earliest).trim();
 }
 
-async function fetchRecentEmails(gmail) {
+async function fetchRecentEmails(gmail, { retryIds = [] } = {}) {
     const lastCheck = await getLastCheckTime();
     let query = 'in:inbox';
     if (lastCheck) {
@@ -150,8 +151,14 @@ async function fetchRecentEmails(gmail) {
         query += ' newer_than:2d';
     }
 
-    const res = await gmail.users.messages.list({ userId: 'me', q: query, maxResults: 50 });
-    const messages = res.data.messages || [];
+    const messagesById = new Map(retryIds.map(id => [id, { id }]));
+    let pageToken;
+    do {
+        const res = await gmail.users.messages.list({ userId: 'me', q: query, maxResults: 50, pageToken });
+        for (const message of res.data.messages || []) messagesById.set(message.id, message);
+        pageToken = res.data.nextPageToken;
+    } while (pageToken);
+    const messages = [...messagesById.values()];
     const emails = [];
 
     for (const m of messages) {
@@ -180,9 +187,15 @@ async function submitEmail(email) {
 }
 
 async function poll() {
+    if (state.polling) return; // Long parses must not overlap the next timer.
+    state.polling = true;
     try {
         const gmail = await buildGmailClient();
-        const emails = await fetchRecentEmails(gmail);
+        const recovery = await axios.get(`${BASE_URL}/api/internal/roster-email/retryable`, {
+            headers: { 'X-Internal-Token': INTERNAL_TOKEN }, timeout: 10000
+        });
+        const retryIds = (recovery.data.emails || []).map(e => e.emailId);
+        const emails = await fetchRecentEmails(gmail, { retryIds });
 
         if (emails.length > 0) {
             log(`Fetched ${emails.length} email(s) to submit`);
@@ -231,6 +244,8 @@ async function poll() {
             await recordHealthAlert('critical',
                 `Email poller has failed ${state.consecutiveFailures} times in a row (last error: ${error.message})`);
         }
+    } finally {
+        state.polling = false;
     }
 }
 

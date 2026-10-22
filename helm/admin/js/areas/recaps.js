@@ -46,7 +46,9 @@ export async function render(view, ctx) {
         open: el => openRecap(el.dataset.slug, el.dataset.name),
         draft: el => armed(el, () => createDraft(el), 'Tap again to create the draft'),
         copy: el => copyForGmail(el),
-        close: () => { sel.slug = null; sel.styleName = null; root.querySelector('#reader').innerHTML = ''; },
+        close: () => { sel.slug = null; sel.styleName = null; clearTimeout(regenTimer); root.querySelector('#reader').innerHTML = ''; },
+        'regenerate-one': el => armed(el, () => regenerateOne(el), 'Tap again to rewrite this recap'),
+        'clear-feedback': () => { const t = root.querySelector('#feedback-text'); if (t) { t.value = ''; t.focus(); } },
         'add-theme': el => addTheme(el),
         'remove-theme': el => armed(el, () => removeTheme(el.dataset.slug), 'Tap again to remove'),
         propose: el => armed(el, () => propose(el), 'Tap again to ask for suggestions'),
@@ -325,11 +327,13 @@ export function emailHtml(markdown) {
 }
 
 let currentMarkdown = '';
+let regenTimer = null;
 
 async function openRecap(slug, styleName) {
     const reader = root.querySelector('#reader');
     sel.slug = slug;
     sel.styleName = styleName;
+    clearTimeout(regenTimer);
     reader.innerHTML = '<p class="quiet">Loading…</p>';
     try {
         const d = await getData(`/api/admin/recaps/${sel.season}/${sel.week}/${encodeURIComponent(slug)}`);
@@ -338,13 +342,94 @@ async function openRecap(slug, styleName) {
             title: `${esc(sel.season)} week ${esc(sel.week)} — ${esc(styleName)} ${d.rating ? stars(d.rating.stars) : ''} ${recommendedPill(d.rating)}`,
             actions: `<button class="btn primary" data-action="copy">Copy for Gmail</button><button class="btn" data-action="draft">Create Gmail draft</button><button class="btn ghost" data-action="close">Close</button>`,
             body: `<div id="draft-status"></div>${d.rating && d.rating.blurb ? `<div class="muted" style="margin-bottom:8px">${esc(d.rating.blurb)}</div>` : ''}${factcheckNote(d.factcheck)}
+                ${feedbackBox()}
                 <div class="muted" style="margin-bottom:8px">Shown as it pastes into Gmail. Copy for Gmail puts the formatted recap on the clipboard - paste it into a compose window with Ctrl+V / Cmd+V.</div>
                 <div class="email-preview" id="recap-email">${emailHtml(currentMarkdown)}</div>`
         });
         reader.scrollIntoView({ behavior: 'smooth' });
+        pollRegeneration();
     } catch (error) {
         reader.innerHTML = `<p class="err">${esc(error.message)}</p>`;
     }
+}
+
+// ---------- Give feedback and run again (one recap) ----------
+
+/** The feedback box: free-form notes for the writer; only this recap is rewritten (scripts/recap-regenerate.js). */
+function feedbackBox() {
+    return `<details class="disclosure" id="feedback-box" style="margin-bottom:10px">
+        <summary>Give feedback and run again</summary>
+        <div class="muted" style="margin:6px 0">Tell the writer what to change. Only this recap is rewritten (about five minutes, fact-checked); the current version stays until the new one is ready, then it reopens here.</div>
+        <textarea class="input" id="feedback-text" rows="4" style="width:100%;box-sizing:border-box" placeholder="e.g. Too long - cut the injury jokes, give the Chris/Joe game more room, keep the closing bit."></textarea>
+        <div class="row" style="margin-top:6px;gap:6px;flex-wrap:wrap">
+            <button class="btn sm primary" data-action="regenerate-one">Run again with feedback</button>
+            <button class="btn sm ghost" data-action="clear-feedback">Clear</button>
+        </div>
+    </details>
+    <div id="regen-status"></div>`;
+}
+
+async function regenerateOne(button) {
+    if (!sel.slug) return;
+    const box = root.querySelector('#feedback-text');
+    const feedback = box ? box.value.trim() : '';
+    if (feedback.length < 5) { toast('Say what should change first (a few words at least)', 'error'); if (box) box.focus(); return; }
+    await busy(button, 'Starting…', async () => {
+        try {
+            const body = await api.post(`/api/admin/recaps/${sel.season}/${sel.week}/${encodeURIComponent(sel.slug)}/regenerate`, { feedback });
+            toast(body.data.message, 'success');
+            renderRegenNote({ status: 'running', ts: new Date().toISOString(), summary: body.data.message, details: {} });
+            clearTimeout(regenTimer);
+            regenTimer = setTimeout(() => pollRegeneration(), 15000);
+        } catch (error) {
+            const status = root.querySelector('#regen-status');
+            if (status) status.innerHTML = `<div class="note critical" style="margin-bottom:8px">${esc(error.message)}</div>`;
+            toast(error.message, 'error');
+        }
+    });
+}
+
+/** Ask the server about this recap's rewrite; keep polling while it runs; reopen the recap when it lands. */
+async function pollRegeneration() {
+    if (!sel.slug || !root.querySelector('#regen-status')) return;
+    const slug = sel.slug;
+    let d;
+    try {
+        d = await getData(`/api/admin/recaps/${sel.season}/${sel.week}/${encodeURIComponent(slug)}/regenerate`);
+    } catch (_) { return; }
+    if (sel.slug !== slug) return; // the commissioner opened another recap meanwhile
+    const r = d.regeneration;
+    if (!r) return;
+    const wasRunning = !!(root.querySelector('#regen-status [data-running]'));
+    renderRegenNote(r);
+    if (r.status === 'running') {
+        clearTimeout(regenTimer);
+        regenTimer = setTimeout(() => pollRegeneration(), 15000);
+    } else if (wasRunning) {
+        // Just finished: show the new text (or the error) and refresh the week's list
+        if (r.status === 'ok') toast(`${sel.styleName} rewritten - fact-check ${r.details && r.details.verdict ? r.details.verdict : 'not run'}`, 'success');
+        else if (r.status === 'warning') toast(`${sel.styleName} not replaced - the new draft FAILED the fact-check`, 'error');
+        else toast(r.summary, 'error');
+        await loadWeek();
+        await openRecap(slug, sel.styleName);
+    }
+}
+
+function renderRegenNote(r) {
+    const status = root.querySelector('#regen-status');
+    if (!status) return;
+    const details = r.details || {};
+    const fb = details.feedback ? `<details class="disclosure" style="margin-top:4px"><summary>your feedback</summary><div class="prose">${esc(details.feedback)}</div></details>` : '';
+    const when = r.ts ? ` (${esc(ago(r.ts))})` : '';
+    let html;
+    if (r.status === 'running') html = `<div class="note info" style="margin-bottom:8px" data-running="1">Rewriting from your feedback${when} - about five minutes. The version below stays until the new one is ready.${fb}</div>`;
+    else if (r.status === 'ok') html = `<div class="note ok" style="margin-bottom:8px">Rewritten from your feedback${when}${details.verdict ? ` - fact-check ${esc(details.verdict)}` : ''}${details.words ? ` - ${esc(String(details.words))} words` : ''}. Its rating was dropped; Rate recaps redoes the week.${fb}</div>`;
+    else if (r.status === 'warning') {
+        const found = details.factcheck ? `<details class="disclosure" style="margin-top:6px"><summary>What the fact-checker found in the draft</summary><div class="prose">${renderMarkdown(details.factcheck)}</div></details>` : '';
+        html = `<div class="note warning" style="margin-bottom:8px">The rewrite from your feedback${when} FAILED the fact-check (a wrong fact or an ignored instruction), so the version below was kept. Give feedback again to retry - everything you said before still applies.${found}${fb}</div>`;
+    }
+    else html = `<div class="note critical" style="margin-bottom:8px">Rewrite failed${when}: ${esc(r.summary || 'unknown error')} - the previous version is untouched.${fb}</div>`;
+    status.innerHTML = html;
 }
 
 /** The fact-checker's verdict for this recap, shown right above it (a FAIL here is the only place it's flagged red). */

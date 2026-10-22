@@ -175,8 +175,8 @@ class StatsExtractionService {
             );
             
             if (!player) {
-                // Player doesn't exist - skip this stat entry
-                logWarn(`Skipping stats for unknown player ${stats.player_id}`);
+                // Player doesn't exist (non-draftable position) - skip silently; the
+                // caller reports a count. Logging per player flooded the error log.
                 return false;
             }
             

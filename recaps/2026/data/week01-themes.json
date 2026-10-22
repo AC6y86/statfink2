@@ -1,0 +1,113 @@
+{
+  "season": 2026,
+  "week": 1,
+  "proposedAt": "2026-09-15T14:19:31.014Z",
+  "proposedBy": "claude",
+  "generatedAt": "2026-09-16T04:49:46.972Z",
+  "themes": [
+    {
+      "slug": "christopher-walken",
+      "name": "Christopher Walken",
+      "description": "",
+      "origin": "commissioner",
+      "addedAt": "2026-09-15T03:36:32.412Z"
+    },
+    {
+      "slug": "nicholas-cage",
+      "name": "Nicholas Cage",
+      "description": "",
+      "origin": "commissioner",
+      "addedAt": "2026-09-15T03:36:43.396Z"
+    },
+    {
+      "slug": "shane-gillis",
+      "name": "Shane Gillis",
+      "description": "",
+      "origin": "commissioner",
+      "addedAt": "2026-09-15T03:37:14.141Z"
+    },
+    {
+      "slug": "jim-gaffigan",
+      "name": "Jim Gaffigan",
+      "description": "",
+      "origin": "commissioner",
+      "addedAt": "2026-09-15T03:37:22.909Z"
+    },
+    {
+      "slug": "morgan-freeman",
+      "name": "Morgan Freeman",
+      "description": "That warm, unhurried narrator baritone that somehow makes a 40-point blowout sound like a profound meditation on the human condition.",
+      "origin": "suggested",
+      "addedAt": "2026-09-15T14:19:31.014Z"
+    },
+    {
+      "slug": "david-attenborough",
+      "name": "David Attenborough",
+      "description": "Hushed, reverent nature-documentary narration that studies each owner's roster decisions like rare wildlife behavior in its natural habitat.",
+      "origin": "suggested",
+      "addedAt": "2026-09-15T14:19:31.014Z"
+    },
+    {
+      "slug": "gordon-ramsay",
+      "name": "Gordon Ramsay",
+      "description": "Fiery, insult-slinging chef energy that calls a bad lineup 'RAW' one minute and grudgingly praises a well-cooked win the next.",
+      "origin": "suggested",
+      "addedAt": "2026-09-15T14:19:31.014Z"
+    },
+    {
+      "slug": "yoda",
+      "name": "Yoda",
+      "description": "Inverted Jedi syntax and cryptic fortune-cookie wisdom, dispensing waiver-wire patience and prophecies of the standings to come.",
+      "origin": "suggested",
+      "addedAt": "2026-09-15T14:19:31.014Z"
+    },
+    {
+      "slug": "bob-ross",
+      "name": "Bob Ross",
+      "description": "Soft, soothing PBS-painter cadence that reframes every blown coverage and missed field goal as a happy little accident.",
+      "origin": "suggested",
+      "addedAt": "2026-09-15T14:19:31.014Z"
+    },
+    {
+      "slug": "stephen-a-smith",
+      "name": "Stephen A. Smith",
+      "description": "Hyper-caffeinated sports-debate shouting, complete with 'Blasphemy!' and dramatic pauses, treating waiver claims like league-shaking scandals.",
+      "origin": "suggested",
+      "addedAt": "2026-09-15T14:19:31.014Z"
+    },
+    {
+      "slug": "dolly-parton",
+      "name": "Dolly Parton",
+      "description": "Warm southern charm and rhinestone-sharp wit, dishing matchup gossip like she's on the porch swing with a glass of sweet tea.",
+      "origin": "suggested",
+      "addedAt": "2026-09-15T14:19:31.014Z"
+    },
+    {
+      "slug": "sherlock-holmes",
+      "name": "Sherlock Holmes",
+      "description": "Clipped Victorian deduction that reconstructs exactly how each upset unfolded from the tiniest clue in the box score.",
+      "origin": "suggested",
+      "addedAt": "2026-09-15T14:19:31.014Z"
+    },
+    {
+      "slug": "winston-churchill",
+      "name": "Winston Churchill",
+      "description": "Bulldog wartime oratory that treats every Sunday's matchups like a defining battle for the fate of the league.",
+      "origin": "suggested",
+      "addedAt": "2026-09-15T14:19:31.014Z"
+    },
+    {
+      "slug": "larry-david",
+      "name": "Larry David",
+      "description": "Kvetching, socially-anxious nitpicking over petty roster slights and imagined violations of unwritten fantasy etiquette.",
+      "origin": "suggested",
+      "addedAt": "2026-09-15T14:19:31.014Z"
+    }
+  ],
+  "lastRun": {
+    "overallStatus": "PASS",
+    "files": 14,
+    "error": null,
+    "note": null
+  }
+}

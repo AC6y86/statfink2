@@ -305,3 +305,70 @@ describe('Tank01Service', () => {
     });
   });
 });
+describe('Tank01Service completed-boxscore quarantine', () => {
+    let service;
+    const box = (homePts, awayPts, plays, status = 'Completed') => ({ statusCode: 200, body: { gameID: 'g', gameStatus: status, homePts: String(homePts), awayPts: String(awayPts), scoringPlays: plays } });
+    const play = (homeScore, awayScore) => ({ score: 'x', homeScore: String(homeScore), awayScore: String(awayScore) });
+
+    beforeEach(() => {
+        service = new Tank01Service('k');
+        service.db = { get: jest.fn(), run: jest.fn(), close: jest.fn() };
+    });
+
+    test('boxscoreLooksSettled: last scoring play must reach the final score (wk12 2025 PHI@DAL pattern)', () => {
+        expect(service.boxscoreLooksSettled(box(24, 21, [play(7, 21), play(21, 21)]).body)).toBe(false); // final FG missing
+        expect(service.boxscoreLooksSettled(box(24, 21, [play(7, 21), play(21, 21), play(24, 21)]).body)).toBe(true);
+        expect(service.boxscoreLooksSettled(box(24, 21, []).body)).toBe(false);
+        expect(service.boxscoreLooksSettled(box(0, 0, []).body)).toBe(true);
+        expect(service.boxscoreLooksSettled(null)).toBe(false);
+    });
+
+    test('first Completed sighting is cached with a short expiry, not permanently', async () => {
+        service.db.get.mockResolvedValue(undefined);
+        await service.setCachedData('boxscore_g', '/getNFLBoxScore', {}, box(24, 21, [play(24, 21)]));
+        const args = service.db.run.mock.calls.find(c => /INSERT OR REPLACE INTO tank01_cache/.test(c[0]))[1];
+        expect(args[5]).toBe(0); // is_historical
+        expect(args[4]).not.toBeNull(); // expires_at
+        expect(new Date(args[4]).getTime() - Date.now()).toBeLessThanOrEqual(service.completedQuarantineMs + 1000);
+    });
+
+    test('an unsettled Completed boxscore is never permanent even after the quarantine', async () => {
+        service.db.get.mockResolvedValue({ created_at: '2020-01-01 00:00:00', response_data: JSON.stringify(box(24, 21, [play(21, 21)])) });
+        await service.setCachedData('boxscore_g', '/getNFLBoxScore', {}, box(24, 21, [play(21, 21)]));
+        const args = service.db.run.mock.calls.find(c => /INSERT OR REPLACE INTO tank01_cache/.test(c[0]))[1];
+        expect(args[5]).toBe(0);
+    });
+
+    test('a settled boxscore first seen Completed 15+ minutes ago becomes permanent', async () => {
+        const old = new Date(Date.now() - 20 * 60 * 1000).toISOString().replace('T', ' ').slice(0, 19);
+        service.db.get.mockResolvedValue({ created_at: old, response_data: JSON.stringify(box(24, 21, [play(24, 21)])) });
+        await service.setCachedData('boxscore_g', '/getNFLBoxScore', {}, box(24, 21, [play(24, 21)]));
+        const args = service.db.run.mock.calls.find(c => /INSERT OR REPLACE INTO tank01_cache/.test(c[0]))[1];
+        expect(args[5]).toBe(1);
+        expect(args[4]).toBeNull();
+    });
+
+    test('a settled boxscore first seen Completed 2 minutes ago stays quarantined', async () => {
+        const recent = new Date(Date.now() - 2 * 60 * 1000).toISOString().replace('T', ' ').slice(0, 19);
+        service.db.get.mockResolvedValue({ created_at: recent, response_data: JSON.stringify(box(24, 21, [play(24, 21)])) });
+        const verdict = await service.boxscoreQuarantine('boxscore_g', box(24, 21, [play(24, 21)]));
+        expect(verdict.permanent).toBe(false);
+        expect(verdict.reason).toMatch(/completed only 2 min ago/);
+    });
+
+    test('a prior copy that was still live does not start the quarantine clock', async () => {
+        service.db.get.mockResolvedValue({ created_at: '2020-01-01 00:00:00', response_data: JSON.stringify(box(21, 21, [play(21, 21)], 'Live - In Progress')) });
+        const verdict = await service.boxscoreQuarantine('boxscore_g', box(24, 21, [play(24, 21)]));
+        expect(verdict).toEqual({ permanent: false, reason: 'first completed sighting' });
+    });
+
+    test('expired boxscore rows are kept (their created_at is the quarantine clock); other endpoints are deleted', async () => {
+        const expired = new Date(Date.now() - 1000).toISOString();
+        service.db.get.mockResolvedValueOnce({ response_data: '{}', expires_at: expired, is_historical: 0, endpoint: '/getNFLBoxScore' });
+        expect(await service.getCachedData('boxscore_g')).toBeNull();
+        expect(service.db.run.mock.calls.some(c => /DELETE FROM tank01_cache/.test(c[0]))).toBe(false);
+        service.db.get.mockResolvedValueOnce({ response_data: '{}', expires_at: expired, is_historical: 0, endpoint: '/getNFLGamesForWeek' });
+        expect(await service.getCachedData('gamesForWeek_1_2026')).toBeNull();
+        expect(service.db.run.mock.calls.some(c => /DELETE FROM tank01_cache/.test(c[0]))).toBe(true);
+    });
+});

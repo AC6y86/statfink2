@@ -1,0 +1,2907 @@
+{
+ "gameId": "20251005_TEN@ARI",
+ "season": 2025,
+ "week": 5,
+ "espnEventId": "401772747",
+ "homeTeam": "ARI",
+ "awayTeam": "TEN",
+ "tank01Body": {
+  "gameID": "20251005_TEN@ARI",
+  "gameStatus": "Completed",
+  "home": "ARI",
+  "away": "TEN",
+  "homePts": "21",
+  "awayPts": "22",
+  "teamIDHome": "1",
+  "teamIDAway": "31",
+  "scoringPlays": [
+   {
+    "score": "Michael Carter 1 Yd Rush (Chad Ryland Kick)",
+    "scorePeriod": "Q1",
+    "homeScore": "7",
+    "awayScore": "0",
+    "teamID": "1",
+    "scoreDetails": "8 plays, 67 yards, 4:06",
+    "scoreType": "TD",
+    "scoreTime": "10:54",
+    "team": "ARI",
+    "playerIDs": [
+     "4240657",
+     "4363538"
+    ]
+   },
+   {
+    "score": "Joey Slye 44 Yd Field Goal",
+    "scorePeriod": "Q1",
+    "homeScore": "7",
+    "awayScore": "3",
+    "teamID": "31",
+    "scoreDetails": "12 plays, 44 yards, 5:54",
+    "scoreType": "FG",
+    "scoreTime": "5:00",
+    "team": "TEN",
+    "playerIDs": [
+     "3124084"
+    ]
+   },
+   {
+    "score": "Kyler Murray 12 Yd Rush (Chad Ryland Kick)",
+    "scorePeriod": "Q1",
+    "homeScore": "14",
+    "awayScore": "3",
+    "teamID": "1",
+    "scoreDetails": "7 plays, 65 yards, 4:21",
+    "scoreType": "TD",
+    "scoreTime": "0:39",
+    "team": "ARI",
+    "playerIDs": [
+     "3917315",
+     "4363538"
+    ]
+   },
+   {
+    "score": "Bam Knight 1 Yd Rush (Chad Ryland Kick)",
+    "scorePeriod": "Q2",
+    "homeScore": "21",
+    "awayScore": "3",
+    "teamID": "1",
+    "scoreDetails": "4 plays, 27 yards, 1:32",
+    "scoreType": "TD",
+    "scoreTime": "10:43",
+    "team": "ARI",
+    "playerIDs": [
+     "4427728",
+     "4363538"
+    ]
+   },
+   {
+    "score": "Joey Slye 51 Yd Field Goal",
+    "scorePeriod": "Q2",
+    "homeScore": "21",
+    "awayScore": "6",
+    "teamID": "31",
+    "scoreDetails": "4 plays, 1 yard, 2:14",
+    "scoreType": "FG",
+    "scoreTime": "8:29",
+    "team": "TEN",
+    "playerIDs": [
+     "3124084"
+    ]
+   },
+   {
+    "score": "Tony Pollard 1 Yd Rush (Joey Slye PAT Failed)",
+    "scorePeriod": "Q4",
+    "homeScore": "21",
+    "awayScore": "12",
+    "teamID": "31",
+    "scoreDetails": "6 plays, 80 yards, 2:14",
+    "scoreType": "TD",
+    "scoreTime": "10:26",
+    "team": "TEN",
+    "playerIDs": [
+     "3916148",
+     "3124084"
+    ]
+   },
+   {
+    "score": "Tyler Lockett 0 Yd Fumble Recovery (Joey Slye Kick)",
+    "scorePeriod": "Q4",
+    "homeScore": "21",
+    "awayScore": "19",
+    "teamID": "31",
+    "scoreDetails": "8 plays, 61 yards, 4:06",
+    "scoreType": "TD",
+    "scoreTime": "4:39",
+    "team": "TEN",
+    "playerIDs": [
+     "2577327",
+     "3124084"
+    ]
+   },
+   {
+    "score": "Joey Slye 29 Yd Field Goal",
+    "scorePeriod": "Q4",
+    "homeScore": "21",
+    "awayScore": "22",
+    "teamID": "31",
+    "scoreDetails": "11 plays, 71 yards, 1:53",
+    "scoreType": "FG",
+    "scoreTime": "0:00",
+    "team": "TEN",
+    "playerIDs": [
+     "3124084"
+    ]
+   }
+  ],
+  "DST": {
+   "away": {
+    "teamAbv": "TEN",
+    "teamID": "31",
+    "defTD": "2",
+    "defensiveInterceptions": "0",
+    "sacks": "3",
+    "ydsAllowed": "361",
+    "fumblesRecovered": "3",
+    "ptsAllowed": "21",
+    "safeties": "0"
+   },
+   "home": {
+    "teamAbv": "ARI",
+    "teamID": "1",
+    "defTD": "0",
+    "defensiveInterceptions": "1",
+    "sacks": "2",
+    "ydsAllowed": "327",
+    "fumblesRecovered": "1",
+    "ptsAllowed": "10",
+    "safeties": "0"
+   }
+  },
+  "playerStats": {
+   "2577327": {
+    "playerID": "2577327",
+    "longName": "Tyler Lockett",
+    "team": "TEN",
+    "teamAbv": "TEN",
+    "Defense": {
+     "totalTackles": "0",
+     "fumblesLost": "0",
+     "defTD": "2",
+     "forcedFumbles": "0",
+     "fumbles": "0",
+     "fumblesRecovered": "1",
+     "soloTackles": "0",
+     "tfl": "0",
+     "qbHits": "0",
+     "defensiveInterceptions": "0",
+     "sacks": "0",
+     "passDeflections": "0"
+    }
+   },
+   "3124084": {
+    "playerID": "3124084",
+    "longName": "Joey Slye",
+    "team": "TEN",
+    "teamAbv": "TEN"
+   },
+   "3916148": {
+    "playerID": "3916148",
+    "longName": "Tony Pollard",
+    "team": "TEN",
+    "teamAbv": "TEN",
+    "Defense": {
+     "fumblesLost": "1",
+     "defensiveInterceptions": "0",
+     "forcedFumbles": "0",
+     "fumbles": "1",
+     "fumblesRecovered": "0"
+    },
+    "Rushing": {
+     "rushAvg": "4.8",
+     "rushYds": "67",
+     "carries": "14",
+     "longRush": "14",
+     "rushTD": "1"
+    }
+   },
+   "3917315": {
+    "playerID": "3917315",
+    "longName": "Kyler Murray",
+    "team": "ARI",
+    "teamAbv": "ARI",
+    "Defense": {
+     "fumblesLost": "1",
+     "defensiveInterceptions": "0",
+     "forcedFumbles": "0",
+     "fumbles": "1",
+     "fumblesRecovered": "0"
+    },
+    "Rushing": {
+     "rushAvg": "6.3",
+     "rushYds": "25",
+     "carries": "4",
+     "longRush": "12",
+     "rushTD": "1"
+    }
+   },
+   "4240657": {
+    "playerID": "4240657",
+    "longName": "Michael Carter",
+    "team": "ARI",
+    "teamAbv": "ARI",
+    "Rushing": {
+     "rushAvg": "2.8",
+     "rushYds": "51",
+     "carries": "18",
+     "longRush": "7",
+     "rushTD": "1"
+    }
+   },
+   "4363538": {
+    "playerID": "4363538",
+    "longName": "Chad Ryland",
+    "team": "ARI",
+    "teamAbv": "ARI"
+   },
+   "4427728": {
+    "playerID": "4427728",
+    "longName": "Bam Knight",
+    "team": "ARI",
+    "teamAbv": "ARI",
+    "Rushing": {
+     "rushAvg": "2.8",
+     "rushYds": "11",
+     "carries": "4",
+     "longRush": "10",
+     "rushTD": "1"
+    }
+   }
+  }
+ },
+ "espnSummary": {
+  "header": {
+   "competitions": [
+    {
+     "status": {
+      "type": {
+       "name": "STATUS_FINAL",
+       "completed": true
+      }
+     },
+     "competitors": [
+      {
+       "id": "22",
+       "homeAway": "home",
+       "team": {
+        "abbreviation": "ARI"
+       },
+       "score": "21"
+      },
+      {
+       "id": "10",
+       "homeAway": "away",
+       "team": {
+        "abbreviation": "TEN"
+       },
+       "score": "22"
+      }
+     ]
+    }
+   ]
+  },
+  "scoringPlays": [
+   {
+    "id": "401772747320",
+    "type": {
+     "text": "Rushing Touchdown"
+    },
+    "text": "Michael Carter 1 Yd Rush (Chad Ryland Kick)",
+    "awayScore": 0,
+    "homeScore": 7,
+    "period": {
+     "number": 1
+    },
+    "clock": {
+     "displayValue": "10:54"
+    },
+    "team": {
+     "abbreviation": "ARI"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "401772747705",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Joey Slye 44 Yd Field Goal",
+    "awayScore": 3,
+    "homeScore": 7,
+    "period": {
+     "number": 1
+    },
+    "clock": {
+     "displayValue": "5:00"
+    },
+    "team": {
+     "abbreviation": "TEN"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "401772747895",
+    "type": {
+     "text": "Rushing Touchdown"
+    },
+    "text": "Kyler Murray 12 Yd Rush (Chad Ryland Kick)",
+    "awayScore": 3,
+    "homeScore": 14,
+    "period": {
+     "number": 1
+    },
+    "clock": {
+     "displayValue": "0:39"
+    },
+    "team": {
+     "abbreviation": "ARI"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727471373",
+    "type": {
+     "text": "Rushing Touchdown"
+    },
+    "text": "Bam Knight 1 Yd Rush (Chad Ryland Kick)",
+    "awayScore": 3,
+    "homeScore": 21,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "10:43"
+    },
+    "team": {
+     "abbreviation": "ARI"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727471548",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Joey Slye 51 Yd Field Goal",
+    "awayScore": 6,
+    "homeScore": 21,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "8:29"
+    },
+    "team": {
+     "abbreviation": "TEN"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "4017727473876",
+    "type": {
+     "text": "Rushing Touchdown"
+    },
+    "text": "Tony Pollard 1 Yd Rush (Joey Slye PAT Failed)",
+    "awayScore": 12,
+    "homeScore": 21,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "10:26"
+    },
+    "team": {
+     "abbreviation": "TEN"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727474224",
+    "type": {
+     "text": "Fumble Return Touchdown"
+    },
+    "text": "Tyler Lockett 0 Yd Fumble Recovery (Joey Slye Kick)",
+    "awayScore": 19,
+    "homeScore": 21,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "4:39"
+    },
+    "team": {
+     "abbreviation": "TEN"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727474784",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Joey Slye 29 Yd Field Goal",
+    "awayScore": 22,
+    "homeScore": 21,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "0:00"
+    },
+    "team": {
+     "abbreviation": "TEN"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   }
+  ],
+  "drives": {
+   "previous": [
+    {
+     "team": {
+      "abbreviation": "ARI"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "40177274740",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "J.Slye kicks 60 yards from TEN 35 to ARZ 5. Z.Knight to ARZ 33 for 28 yards (J.Harrell).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "15:00"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "40177274763",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "M.Carter right tackle to ARZ 40 for 7 yards (O.Oladejo, L.Sneed).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "14:54"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "40177274785",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) PENALTY on ARZ-I.Adams, False Start, 5 yards, enforced at ARZ 40 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "14:15"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772747109",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) K.Murray pass short right to T.McBride to ARZ 45 for 10 yards (J.Armour-Davis; A.Hooker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "14:00"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772747134",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) K.Murray pass short middle to M.Carter to TEN 46 for 9 yards (C.Gray; X.Woods).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "13:22"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772747159",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "M.Carter up the middle to TEN 47 for -1 yards (S.Joseph).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "12:49"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772747181",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) K.Murray scrambles left end ran ob at TEN 44 for 3 yards (C.Barton).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "12:08"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772747208",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "K.Murray pass deep right to M.Harrison for 44 yards, TOUCHDOWN.Penalty on TEN-J.Armour-Davis, Illegal Contact, declined.The Replay Official reviewed the runner broke the plane ruling, and the play was REVERSED.K.Murray pass deep right to M.Harrison to TEN 1 for 43 yards (X.Woods; J.Armour-Davis).Penalty on TEN-J.Armour-Davis, Illegal Contact, declined.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "11:26"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772747250",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "K.Murray pass incomplete short left to T.McBride [J.Ward].",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "11:17"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772747285",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "K.Beachum reported in as eligible.  M.Carter left tackle to TEN 1 for no gain (C.Gray).PENALTY on TEN-J.Ward, Defensive Offside, 0 yards, enforced at TEN 1 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "11:11"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772747320",
+       "type": {
+        "text": "Rushing Touchdown"
+       },
+       "text": "M.Carter up the middle for 1 yard, TOUCHDOWN. C.Ryland extra point is GOOD, Center-A.Brewer, Holder-B.Gillikin.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:54"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747351",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 10:54.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:54"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "401772747358",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "C.Ryland kicks 62 yards from ARZ 35 to TEN 3. C.Dike pushed ob at TEN 30 for 27 yards (A.Davis-Gaither).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:54"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747436",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "B.Crenshaw-Dickson reported in as eligible.  T.Pollard right tackle to TEN 39 for 9 yards (Ma.Wilson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:48"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747460",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Pollard up the middle to TEN 39 for no gain (A.Davis-Gaither; C.Campbell).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:10"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747482",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "B.Crenshaw-Dickson and C.Levin reported in as eligible.  J.Chestnut up the middle to TEN 42 for 3 yards (J.Sweat).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "9:32"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747508",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "C.Ward scrambles right end ran ob at TEN 44 for 2 yards (K.Clark).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "8:59"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747535",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass short left to C.Dike pushed ob at 50 for 6 yards (B.Baker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "8:14"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747565",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) T.Spears left tackle to ARZ 45 for 5 yards (Ma.Wilson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "7:36"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747587",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Pollard left tackle to ARZ 39 for 6 yards (Ma.Wilson; J.Sweat).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "7:06"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747609",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) C.Levin reported in as eligible.  T.Pollard right tackle to ARZ 28 for 11 yards (Z.Carter; J.Thompson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "6:32"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747633",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "C.Ward pass incomplete short left.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:57"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747656",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) C.Levin reported in as eligible. Direct snap to T.Spears.  T.Spears right end pushed ob at ARZ 26 for 2 yards (Z.Collins).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:49"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747682",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) C.Ward pass incomplete short right to E.Ayomanor.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:06"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747705",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "J.Slye 44 yard field goal is GOOD, Center-M.Cox, Holder-J.Hekker.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:00"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747715",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 05:00.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:00"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "ARI"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "401772747725",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "J.Slye kicks 65 yards from TEN 35 to end zone, Touchback to the ARZ 35.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:00"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747749",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "M.Carter right tackle to ARZ 38 for 3 yards (C.Gray, A.Key).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:00"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747771",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) K.Murray pass deep right to M.Harrison pushed ob at TEN 42 for 20 yards (J.Armour-Davis).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "4:22"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747801",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) M.Carter left end to TEN 35 for 7 yards (D.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "3:43"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747823",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "K.Murray pass short middle to M.Harrison to TEN 19 for 16 yards (C.Barton).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "3:03"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747848",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) K.Murray pass short left to G.Dortch to TEN 15 for 4 yards (J.Armour-Davis; Q.Diggs).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "2:20"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747873",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) M.Carter left tackle to TEN 12 for 3 yards (C.Barton; S.Joseph).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "1:33"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747884",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #1 by ARZ at 00:46.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:46"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "401772747895",
+       "type": {
+        "text": "Rushing Touchdown"
+       },
+       "text": "(Shotgun) K.Murray scrambles right end for 12 yards, TOUCHDOWN. C.Ryland extra point is GOOD, Center-A.Brewer, Holder-B.Gillikin.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:39"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 14
+      },
+      {
+       "id": "401772747938",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 00:39.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:39"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 14
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "ARI"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017727471283",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) K.Murray pass short left to T.McBride to TEN 24 for 3 yards (J.Simmons).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "12:15"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727471308",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) K.Murray pass short left to Z.Knight pushed ob at TEN 11 for 13 yards (C.Gray).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "11:41"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727471343",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) K.Beachum reported in as eligible.  Z.Knight left end for 11 yards, TOUCHDOWN.The Replay Official reviewed the runner broke the plane ruling, and the play was REVERSED.(Shotgun) K.Beachum reported in as eligible.  Z.Knight left end to TEN 1 for 10 yards (J.Armour-Davis; O.Oladejo).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "11:00"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727471373",
+       "type": {
+        "text": "Rushing Touchdown"
+       },
+       "text": "K.Beachum reported in as eligible.  Z.Knight left tackle for 1 yard, TOUCHDOWN. C.Ryland extra point is GOOD, Center-A.Brewer, Holder-B.Gillikin.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "10:43"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727471406",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 10:43.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "10:43"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 21
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "4017727471413",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "C.Ryland kicks 64 yards from ARZ 35 to TEN 1. C.Dike to ARZ 34 for 65 yards (S.Fehoko; D.Hall).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "10:43"
+       },
+       "start": {
+        "team": {
+         "id": "22"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727471474",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass short left to G.Helm pushed ob at ARZ 31 for 3 yards (D.Burke).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "10:33"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727471504",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "C.Levin reported in as eligible.  T.Spears up the middle to ARZ 29 for 2 yards (D.Tomlinson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "10:00"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727471528",
+       "type": {
+        "text": "Sack"
+       },
+       "text": "(Shotgun) C.Ward sacked at ARZ 33 for -4 yards (J.Sweat).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "9:17"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727471548",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "J.Slye 51 yard field goal is GOOD, Center-M.Cox, Holder-J.Hekker.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "8:29"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727471558",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 08:29.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "8:29"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017727473678",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass short right to E.Ayomanor to TEN 33 for 13 yards (K.Clark; J.Thompson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "12:40"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727473710",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) C.Ward pass incomplete short left to G.Helm.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "12:03"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727473745",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) C.Ward pass incomplete short left to C.Dike.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "11:59"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727473768",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass deep middle to C.Ridley to ARZ 20 for 47 yards (J.Thompson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "11:54"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727473793",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass deep right to G.Helm ran ob at ARZ 1 for 19 yards [Z.Collins].",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "11:09"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727473823",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "B.Crenshaw-Dickson reported in as eligible.  C.Ward pass incomplete short right to G.Helm.PENALTY on ARZ-Ma.Wilson, Defensive Pass Interference, 0 yards, enforced at ARZ 1 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "10:33"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727473876",
+       "type": {
+        "text": "Rushing Touchdown"
+       },
+       "text": "T.Pollard up the middle for 1 yard, TOUCHDOWN. J.Slye extra point is No Good, Wide Right, Center-M.Cox, Holder-J.Hekker.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "10:26"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727473907",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 10:26.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "10:26"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 21
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "FUMBLE RETURN TD",
+     "plays": [
+      {
+       "id": "4017727474049",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass short left to C.Okonkwo to TEN 35 for 16 yards (D.Taylor-Demerson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "8:45"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474074",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass short right to G.Helm to TEN 41 for 6 yards (K.Clark; B.Browning).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "8:07"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474099",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(No Huddle, Shotgun) C.Ward pass short left to E.Ayomanor to TEN 46 for 5 yards (K.Clark).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "7:29"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474124",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Pollard right tackle to ARZ 40 for 14 yards (D.Taylor-Demerson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "6:50"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474146",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(No Huddle, Shotgun) C.Ward pass short left to C.Okonkwo pushed ob at ARZ 28 for 12 yards (J.Thompson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "6:19"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474176",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(No Huddle, Shotgun) C.Ward pass incomplete short left.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "5:46"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474199",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass short left to C.Ridley to ARZ 20 for 8 yards (W.Johnson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "5:39"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474224",
+       "type": {
+        "text": "Fumble Return Touchdown"
+       },
+       "text": "Tyler Lockett 0 Yd Fumble Recovery (Joey Slye Kick)",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "4:39"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "4017727474506",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass short right to T.Pollard pushed ob at TEN 21 for 3 yards (K.Crawford).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "1:53"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474536",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(No Huddle, Shotgun) C.Ward pass short right to T.Pollard to TEN 25 for 4 yards (W.Johnson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "1:47"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474561",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(No Huddle, Shotgun) C.Ward pass short left to G.Helm to TEN 31 for 6 yards (B.Baker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "1:19"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474586",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(No Huddle, Shotgun) C.Ward pass incomplete short left to C.Ridley.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:56"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474609",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass short middle to C.Okonkwo to TEN 47 for 16 yards (B.Baker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:52"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474634",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(No Huddle, Shotgun) C.Ward pass deep right to C.Ridley ran ob at ARZ 15 for 38 yards.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:32"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474669",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Pollard right tackle to ARZ 4 for 11 yards (Ma.Wilson; A.Davis-Gaither). ARZ-J.Thompson was injured during the play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:26"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474682",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #1 by ARZ at 00:19.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:19"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474694",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "C.Ward kneels to ARZ 7 for -3 yards.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:19"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474709",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #2 by ARZ at 00:16.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:16"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474723",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "C.Ward kneels to ARZ 9 for -2 yards. ** Injury Update: ARZ-J.Thompson has returned to the game.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:16"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474738",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #3 by ARZ at 00:14.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:14"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474752",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "C.Ward kneels to ARZ 11 for -2 yards.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:14"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474768",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #3 by TEN at 00:03.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:03"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 19,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474784",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "J.Slye 29 yard field goal is GOOD, Center-M.Cox, Holder-J.Hekker.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:00"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 22,
+       "homeScore": 21
+      },
+      {
+       "id": "4017727474811",
+       "type": {
+        "text": "End of Game"
+       },
+       "text": "END GAME",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "0:00"
+       },
+       "start": {},
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 22,
+       "homeScore": 21
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "playerPositions": {
+  "2577327": {
+   "name": "Tyler Lockett",
+   "pos": "WR",
+   "team": "LV"
+  },
+  "3124084": {
+   "name": "Joey Slye",
+   "pos": "PK",
+   "team": "TEN"
+  },
+  "3916148": {
+   "name": "Tony Pollard",
+   "pos": "RB",
+   "team": "TEN"
+  },
+  "3917315": {
+   "name": "Kyler Murray",
+   "pos": "QB",
+   "team": "MIN"
+  },
+  "4240657": {
+   "name": "Michael Carter",
+   "pos": "RB",
+   "team": "TEN"
+  },
+  "4363538": {
+   "name": "Chad Ryland",
+   "pos": "PK",
+   "team": "ARI"
+  },
+  "4427728": {
+   "name": "Bam Knight",
+   "pos": "RB",
+   "team": "ARI"
+  }
+ },
+ "nflPlayers": {
+  "2577327": {
+   "name": "Tyler Lockett",
+   "position": "WR",
+   "team": "LV"
+  },
+  "3124084": {
+   "name": "Joey Slye",
+   "position": "K",
+   "team": "TEN"
+  },
+  "3916148": {
+   "name": "Tony Pollard",
+   "position": "RB",
+   "team": "TEN"
+  },
+  "3917315": {
+   "name": "Kyler Murray",
+   "position": "QB",
+   "team": "MIN"
+  },
+  "4240657": {
+   "name": "Michael Carter",
+   "position": "RB",
+   "team": "TEN"
+  },
+  "4363538": {
+   "name": "Chad Ryland",
+   "position": "K",
+   "team": "ARI"
+  },
+  "4427728": {
+   "name": "Bam Knight",
+   "position": "RB",
+   "team": "ARI"
+  }
+ },
+ "dbRows": [
+  {
+   "player_id": "2577327",
+   "week": 5,
+   "season": 2025,
+   "game_id": "20251005_TEN@ARI",
+   "passing_tds": 0,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "3124084",
+   "week": 5,
+   "season": 2025,
+   "game_id": "20251005_TEN@ARI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 6.5
+  },
+  {
+   "player_id": "3916148",
+   "week": 5,
+   "season": 2025,
+   "game_id": "20251005_TEN@ARI",
+   "passing_tds": 0,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 11
+  },
+  {
+   "player_id": "3917315",
+   "week": 5,
+   "season": 2025,
+   "game_id": "20251005_TEN@ARI",
+   "passing_tds": 0,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 14
+  },
+  {
+   "player_id": "4240657",
+   "week": 5,
+   "season": 2025,
+   "game_id": "20251005_TEN@ARI",
+   "passing_tds": 0,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 11
+  },
+  {
+   "player_id": "4363538",
+   "week": 5,
+   "season": 2025,
+   "game_id": "20251005_TEN@ARI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 1.5
+  },
+  {
+   "player_id": "4427728",
+   "week": 5,
+   "season": 2025,
+   "game_id": "20251005_TEN@ARI",
+   "passing_tds": 0,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "DEF_ARI",
+   "week": 5,
+   "season": 2025,
+   "game_id": "20251005_TEN@ARI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 0
+  },
+  {
+   "player_id": "DEF_TEN",
+   "week": 5,
+   "season": 2025,
+   "game_id": "20251005_TEN@ARI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 0
+  }
+ ]
+}

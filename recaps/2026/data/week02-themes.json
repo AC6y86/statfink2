@@ -1,0 +1,85 @@
+{
+  "season": 2026,
+  "week": 2,
+  "proposedAt": "2026-09-22T03:30:46.869Z",
+  "proposedBy": "claude",
+  "generatedAt": "2026-09-24T19:32:58.756Z",
+  "themes": [
+    {
+      "slug": "samuel-l-jackson",
+      "name": "Samuel L. Jackson",
+      "description": "Righteous fury and biblical-cadence monologues over every blown lead and cold streak, turning waiver-wire regret into a personal insult he will not let slide.",
+      "origin": "suggested",
+      "addedAt": "2026-09-22T03:30:46.869Z"
+    },
+    {
+      "slug": "snoop-dogg",
+      "name": "Snoop Dogg",
+      "description": "Laid-back drawl, endless nicknames and 'fo shizzle' remixes for every stat line, treating a lopsided blowout with the same chill as a backyard barbecue.",
+      "origin": "suggested",
+      "addedAt": "2026-09-22T03:30:46.869Z"
+    },
+    {
+      "slug": "werner-herzog",
+      "name": "Werner Herzog",
+      "description": "Doom-laden German narration finding cosmic dread and the crushing indifference of the universe in a missed field goal or a bench-warmer's quiet suffering.",
+      "origin": "suggested",
+      "addedAt": "2026-09-22T03:30:46.869Z"
+    },
+    {
+      "slug": "yogi-berra",
+      "name": "Yogi Berra",
+      "description": "Baseball-legend malaprops and tangled logic ('it ain't over till the waiver deadline is over') that somehow nail exactly what happened in the standings.",
+      "origin": "suggested",
+      "addedAt": "2026-09-22T03:30:46.869Z"
+    },
+    {
+      "slug": "ron-burgundy",
+      "name": "Ron Burgundy",
+      "description": "Booming, self-satisfied anchorman bravado, off-brand cologne confidence and a closing 'stay classy' for every owner regardless of how badly they lost.",
+      "origin": "suggested",
+      "addedAt": "2026-09-22T03:30:46.869Z"
+    },
+    {
+      "slug": "fred-rogers",
+      "name": "Mister Rogers",
+      "description": "Warm, unhurried neighborly kindness that finds a gentle life lesson in even the ugliest loss, sweater-vest calm applied to fantasy football carnage.",
+      "origin": "suggested",
+      "addedAt": "2026-09-22T03:30:46.869Z"
+    },
+    {
+      "slug": "hunter-s-thompson",
+      "name": "Hunter S. Thompson",
+      "description": "Frantic, adrenaline-soaked gonzo prose spiraling through the week's chaos like a fear-and-loathing road trip through the box scores.",
+      "origin": "suggested",
+      "addedAt": "2026-09-22T03:30:46.869Z"
+    },
+    {
+      "slug": "mike-tyson",
+      "name": "Mike Tyson",
+      "description": "Blunt, menacing one-liners and unexpected flashes of soft-spoken insight, sizing up every matchup like an opponent he's about to flatten.",
+      "origin": "suggested",
+      "addedAt": "2026-09-22T03:30:46.869Z"
+    },
+    {
+      "slug": "george-carlin",
+      "name": "George Carlin",
+      "description": "Cynical, rapid-fire lists and word-obsessed rants that turn the league's euphemisms and excuses inside out for a laugh.",
+      "origin": "suggested",
+      "addedAt": "2026-09-22T03:30:46.869Z"
+    },
+    {
+      "slug": "larry-david",
+      "name": "Larry David",
+      "description": "",
+      "origin": "commissioner",
+      "addedAt": "2026-09-24T19:14:23.895Z"
+    }
+  ],
+  "lastRun": {
+    "overallStatus": "PASS",
+    "files": 10,
+    "error": null,
+    "note": null
+  }
+}

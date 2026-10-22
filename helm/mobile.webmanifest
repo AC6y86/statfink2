@@ -1,0 +1,14 @@
+{
+  "name": "PFL Admin",
+  "short_name": "PFL Admin",
+  "description": "StatFink commissioner portal: pending roster moves, live scoring status, alerts",
+  "start_url": "/admin/thisweek",
+  "scope": "/admin/",
+  "display": "standalone",
+  "background_color": "#f0f2f5",
+  "theme_color": "#667eea",
+  "icons": [
+    { "src": "/statfinklogo.png", "sizes": "248x70", "type": "image/png" },
+    { "src": "/statfink_logo.png", "sizes": "250x150", "type": "image/png" }
+  ]
+}

@@ -77,6 +77,17 @@ class FantasyPointsCalculationService {
      * This method should be called AFTER scoringService.calculateDefensiveBonuses()
      */
     async calculateEndOfWeekDSTBonuses(season) {
+        return this.calculateDSTFantasyPoints(season);
+    }
+
+    /** Convert current-week defensive plays plus any already-awarded bonuses. */
+    async calculateWeekDSTFantasyPoints(week, season) {
+        return this.calculateDSTFantasyPoints(season, week);
+    }
+
+    // Bonus awards remain the responsibility of calculateDefensiveBonuses.
+    // Live callers scope to one week; historical recalcs retain season-wide scope.
+    async calculateDSTFantasyPoints(season, week = null) {
         try {
             // Get all DST stats including bonus columns
             const dstStats = await this.db.all(`
@@ -86,10 +97,11 @@ class FantasyPointsCalculationService {
                 FROM player_stats ps
                 JOIN nfl_players p ON ps.player_id = p.player_id
                 WHERE ps.season = ? AND p.position = 'DST'
+                ${week === null ? '' : 'AND ps.week = ?'}
                 ORDER BY ps.week, ps.player_id
-            `, [season]);
+            `, week === null ? [season] : [season, week]);
             
-            logInfo(`  Calculating DST bonuses for ${dstStats.length} DST stats...`);
+            logInfo(`  Calculating fantasy points for ${dstStats.length} DST stats...`);
             
             let updated = 0;
             for (const stats of dstStats) {

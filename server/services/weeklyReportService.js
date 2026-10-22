@@ -41,16 +41,18 @@ class WeeklyReportService {
                 const teamData = await this.getTeamData(team, week, season);
                 report.teams.push(teamData);
                 
-                // Validate roster size
-                if (teamData.roster.length !== 19) {
+                // The 19-player invariant applies to the active roster. IR is
+                // an additional slot, so counting the full report roster
+                // falsely warns for every team currently carrying an IR player.
+                if (teamData.active_players !== 19) {
                     report.validation.all_teams_have_19_players = false;
                     report.validation.teams_with_issues.push({
                         team_id: team.team_id,
                         team_name: team.team_name,
-                        player_count: teamData.roster.length,
+                        player_count: teamData.active_players,
                         expected: 19
                     });
-                    logWarn(`Team ${team.team_name} has ${teamData.roster.length} players instead of 19`);
+                    logWarn(`Team ${team.team_name} has ${teamData.active_players} active players instead of 19`);
                 }
             }
 

@@ -1,4 +1,6 @@
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
+const { rulesFor } = require('../config/scoringRulesets');
+const { getTeamAbbreviation } = require('../utils/teamMappings');
 
 class IndividualPlayerScoringService {
     constructor(db) {
@@ -14,9 +16,70 @@ class IndividualPlayerScoringService {
             for (const play of parsedPlays) {
                 await this.processIndividualPlay(play, week, season, gameId, boxScorePlayerStats);
             }
+            await this.applyTwoPointConversions(parsedPlays, week, season, gameId);
         } catch (error) {
             logError('Error processing individual player scoring:', error);
         }
+    }
+
+    /**
+     * 2026+ (twoPointFromPlayText): credit successful two-point conversions named
+     * in the scoring-play text when Tank01's per-player two-point fields did not
+     * record them (Daniels -> McCaffrey, WAS wk2 2025: the Passing object had no
+     * passingTwoPointConversion key and the receiver had no player entry).
+     * Never double-counts: a column is only raised to the number of conversions
+     * the plays show, so a value Tank01 already recorded is left alone.
+     */
+    async applyTwoPointConversions(parsedPlays, week, season, gameId = null) {
+        const rules = rulesFor(season);
+        if (!rules.twoPointFromPlayText) return { applied: 0 };
+
+        const credits = new Map(); // `${name}|${team}|${column}` -> { name, team, column, count }
+        const add = (name, team, column) => {
+            if (!name || !team) return;
+            const key = `${name}|${team}|${column}`;
+            const cur = credits.get(key) || { name, team, column, count: 0 };
+            cur.count++;
+            credits.set(key, cur);
+        };
+        for (const play of parsedPlays || []) {
+            const tp = play && play.twoPoint;
+            if (!tp || !play.scoringTeam) continue;
+            if (tp.passer && tp.receiver) {
+                add(tp.passer, play.scoringTeam, 'two_point_conversions_pass');
+                add(tp.receiver, play.scoringTeam, 'two_point_conversions_rec');
+            } else if (tp.rusher) {
+                add(tp.rusher, play.scoringTeam, 'two_point_conversions_run');
+            }
+        }
+
+        let applied = 0;
+        for (const credit of credits.values()) {
+            try {
+                const player = await this.findPlayer(credit.name, credit.team, { week, season, gameId });
+                if (!player) {
+                    logWarn(`Two-point conversion: player not found: ${credit.name} (${credit.team})`);
+                    continue;
+                }
+                let currentStats = await this.getPlayerStats(player.player_id, week, season);
+                if (!currentStats) {
+                    await this.db.run(`
+                        INSERT INTO player_stats (player_id, week, season, game_id, player_name, team, position)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                    `, [player.player_id, week, season, gameId, player.name, getTeamAbbreviation(credit.team) || credit.team, player.position]);
+                    logInfo(`Created stats row for ${player.name} Week ${week} (two-point conversion with no base stats)`);
+                    currentStats = await this.getPlayerStats(player.player_id, week, season) || {};
+                }
+                const current = parseInt(currentStats[credit.column]) || 0;
+                if (current >= credit.count) continue; // Tank01 already recorded it
+                await this.updatePlayerStats(player.player_id, week, season, { [credit.column]: credit.count });
+                logInfo(`Two-point conversion from play text: ${player.name} ${credit.column} ${current} -> ${credit.count} (Tank01 field missing)`);
+                applied++;
+            } catch (error) {
+                logWarn(`Error applying two-point conversion for ${credit.name}:`, error.message);
+            }
+        }
+        return { applied };
     }
 
     /**
@@ -45,7 +108,7 @@ class IndividualPlayerScoringService {
                 await this.db.run(`
                     INSERT INTO player_stats (player_id, week, season, game_id, player_name, team, position)
                     VALUES (?, ?, ?, ?, ?, ?, ?)
-                `, [player.player_id, week, season, gameId, player.name, play.scoringTeam, player.position]);
+                `, [player.player_id, week, season, gameId, player.name, getTeamAbbreviation(play.scoringTeam) || play.scoringTeam, player.position]);
                 logInfo(`Created stats row for ${player.name} Week ${week} (scoring play with no base stats)`);
                 currentStats = await this.getPlayerStats(player.player_id, week, season);
             }
@@ -233,7 +296,8 @@ class IndividualPlayerScoringService {
                         const parsedPlays = scoringPlayParser.parseScoringPlays(
                             boxScore, 
                             game.home_team, 
-                            game.away_team
+                            game.away_team,
+                            { season }
                         );
 
                         // Process individual player scoring

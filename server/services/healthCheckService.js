@@ -6,7 +6,10 @@ const ScoringPlayParserService = require('./scoringPlayParserService');
 // truth in utils/teamMappings, do not redefine locally
 const { CANONICAL_TEAM_CODES } = require('../utils/teamMappings');
 
+const { projectEmailMoveAlert } = require('./emailMoveAlertLifecycle');
+
 const MAX_ALERTS = 200;
+const ALERT_DEDUPE_MS = 24 * 60 * 60 * 1000;
 
 // Live-scoring watchdog thresholds (checkLiveScoring / checkFreshness).
 // The live loop ticks every 60s; Tank01 live boxscores are cached 30s, so a
@@ -23,7 +26,7 @@ const LIVE = {
     watchdogStaleSec: 15 * 60,      // live-latest.json age (dead-man's switch)
     notifierStaleSec: 30 * 60       // notifier-state.json lastRunAt age
 };
-const SEVERITY_RANK = { ok: 0, info: 0, warning: 1, critical: 2 };
+const { rollUpLive } = require('../utils/liveRollup');
 
 // SQLite CURRENT_TIMESTAMP is 'YYYY-MM-DD HH:MM:SS' in UTC with no zone
 // marker; Date.parse would read that as local time.
@@ -46,17 +49,21 @@ function dbTimestampMs(value) {
  */
 class HealthCheckService {
     constructor(db, { teamScoreService = null, testRunnerService = null, alertsFile = null, backupDir = null,
-        watchdogDir = undefined, dbPath = null } = {}) {
+        watchdogDir = undefined, dbPath = null, espnCacheDir = null, pendingMovesFile = null } = {}) {
         this.db = db;
         this.teamScoreService = teamScoreService;
         this.testRunnerService = testRunnerService;
         this.alertsFile = alertsFile || path.join(__dirname, '../../logs/health-alerts.json');
+        this.pendingMovesFile = pendingMovesFile || path.join(__dirname, '../../roster_moves/pending_moves.json');
         this.backupDir = backupDir || '/home/joepaley/backups';
         // logs/watchdog holds the live-scoring watchdog log + notifier state
         // (scripts/live-watchdog.js, scripts/watchdog-notifier.js). Pass
         // watchdogDir: false to skip their staleness check (tests).
         this.watchdogDir = watchdogDir === undefined ? path.join(__dirname, '../../logs/watchdog') : watchdogDir;
         this.dbPath = path.resolve(dbPath || process.env.DATABASE_PATH || path.join(__dirname, '../../fantasy_football.db'));
+        // The Double Check's ESPN scoreboard cache (logs/doublecheck/espn/<season>/weekNN/),
+        // read by checkScheduleIntegrity; a temp dir in tests.
+        this.espnCacheDir = espnCacheDir || path.join(__dirname, '../../logs/doublecheck/espn');
         this.scoringPlayParser = new ScoringPlayParserService();
         this.alertSeq = 0;
     }
@@ -81,7 +88,7 @@ class HealthCheckService {
     /**
      * Record an alert. severity: 'info' | 'warning' | 'critical'
      */
-    async recordAlert(severity, source, message, details = null) {
+    async recordAlert(severity, source, message, details = null, { emailId = null, pendingItemIds = [] } = {}) {
         const alert = {
             id: `${Date.now()}-${++this.alertSeq}`,
             timestamp: new Date().toISOString(),
@@ -89,11 +96,24 @@ class HealthCheckService {
             source,
             message,
             details,
+            ...(emailId ? { emailId, pendingItemIds } : {}),
             acknowledged: false
         };
 
         try {
             const alerts = await this.loadAlerts();
+            // Dedupe: the same unacknowledged alert (source + message) seen again
+            // within 24h bumps a counter instead of appending a new row, so a
+            // condition that persists across daily runs is one alert, not ten.
+            const dup = alerts.slice().reverse().find(a => !a.acknowledged && a.source === source && a.message === message && (a.emailId || null) === emailId
+                && (Date.now() - Date.parse(a.timestamp)) < ALERT_DEDUPE_MS);
+            if (dup) {
+                dup.count = (dup.count || 1) + 1;
+                dup.lastSeen = alert.timestamp;
+                dup.details = details;
+                await this.saveAlerts(alerts.slice(-MAX_ALERTS));
+                return dup;
+            }
             alerts.push(alert);
             await this.saveAlerts(alerts.slice(-MAX_ALERTS));
         } catch (error) {
@@ -113,7 +133,11 @@ class HealthCheckService {
     }
 
     async getAlerts({ unacknowledgedOnly = false } = {}) {
-        const alerts = await this.loadAlerts();
+        let alerts = await this.loadAlerts();
+        try {
+            const queue = JSON.parse(await fs.readFile(this.pendingMovesFile, 'utf8'));
+            if (Array.isArray(queue.items)) alerts = alerts.map(a => projectEmailMoveAlert(a, queue.items));
+        } catch (_) { /* Unavailable queue: keep all original alerts visible. */ }
         const filtered = unacknowledgedOnly ? alerts.filter(a => !a.acknowledged) : alerts;
         return filtered.slice().reverse(); // newest first
     }
@@ -173,6 +197,8 @@ class HealthCheckService {
                 ['Matchup Consistency', () => this.checkMatchupConsistency(week, season)],
                 ['DST Sanity', () => this.checkDSTSanity(week, season)],
                 ['Team Code Consistency', () => this.checkTeamCodes(week, season)],
+                ['Schedule Integrity', () => this.checkScheduleIntegrity(week, season)],
+                ['Clock Sanity', () => this.checkClockSanity(week, season)],
                 ['End-of-Week Suite', () => this.checkEndOfWeekSuite(week, season)]
             );
         }
@@ -193,18 +219,19 @@ class HealthCheckService {
 
             if (check.status === 'passed') results.summary.passed++;
             else if (check.status === 'warning') results.summary.warnings++;
+            else if (check.status === 'deferred') results.summary.deferred = (results.summary.deferred || 0) + 1;
             else results.summary.failed++;
         }
 
         results.overallStatus = results.summary.failed === 0 ? 'passed' : 'failed';
 
+        // Alerts are for events that need a person: only FAILED checks. Warnings
+        // (deferred bonus checks, "no 2-pt conversions yet", non-canonical code
+        // seen) are state, shown on /admin/status from the validation status file.
         if (recordAlerts) {
             for (const check of results.checks) {
                 if (check.status === 'failed') {
                     await this.recordAlert('critical', `validation:${check.name}`,
-                        `Week ${week}/${season}: ${check.message}`, check.details || null);
-                } else if (check.status === 'warning') {
-                    await this.recordAlert('warning', `validation:${check.name}`,
                         `Week ${week}/${season}: ${check.message}`, check.details || null);
                 }
             }
@@ -248,15 +275,24 @@ class HealthCheckService {
     /**
      * Check 2 (warn-level): every active rostered player whose NFL team played a
      * completed game has a player_stats row.
+     *
+     * A player who dressed but recorded nothing still gets a zero-point stat row
+     * from the sync, so a missing row means ESPN never listed the player in the
+     * box score - almost always an inactive/injured scratch. Players carrying an
+     * injury designation in nfl_players are therefore reported as expected and
+     * the check only warns when a player with no designation is missing (the
+     * signal for a sync gap).
      */
     async checkStatsCompleteness(week, season) {
         const missing = await this.db.all(`
-            SELECT wr.player_id, wr.player_name, wr.player_position, wr.player_team, wr.team_id
+            SELECT wr.player_id, wr.player_name, wr.player_position, wr.player_team, wr.team_id,
+                   np.injury_designation
             FROM weekly_rosters wr
             JOIN nfl_games ng ON wr.week = ng.week AND wr.season = ng.season
                 AND (ng.home_team = wr.player_team OR ng.away_team = wr.player_team)
             LEFT JOIN player_stats ps ON wr.player_id = ps.player_id
                 AND wr.week = ps.week AND wr.season = ps.season
+            LEFT JOIN nfl_players np ON np.player_id = wr.player_id
             WHERE wr.season = ? AND wr.week = ?
                 AND wr.roster_position = 'active'
                 AND ng.status LIKE 'Final%'
@@ -264,14 +300,33 @@ class HealthCheckService {
             ORDER BY wr.team_id, wr.player_name
         `, [season, week]);
 
+        const describe = p =>
+            `${p.player_name} (${p.player_position}, ${p.player_team}) on fantasy team ${p.team_id}`;
+        const isDesignated = p => typeof p.injury_designation === 'string' && p.injury_designation.trim() !== '';
+
+        const expected = missing.filter(isDesignated);
+        const unexplained = missing.filter(p => !isDesignated(p));
+
+        const details = [
+            ...unexplained.slice(0, 15).map(describe),
+            ...expected.slice(0, 15).map(p => `${describe(p)} - ${p.injury_designation}, expected`)
+        ];
+
+        let message;
+        if (missing.length === 0) {
+            message = 'All active players with completed games have stat rows';
+        } else if (unexplained.length === 0) {
+            message = `${expected.length} active player(s) with completed games have no stat row, all carry an injury designation (expected)`;
+        } else {
+            message = `${unexplained.length} active player(s) with completed games have no stat row and no injury designation`
+                + (expected.length ? ` (${expected.length} more are injured/out, expected)` : '');
+        }
+
         return {
             name: 'Stats Completeness',
-            status: missing.length === 0 ? 'passed' : 'warning',
-            message: missing.length === 0
-                ? 'All active players with completed games have stat rows'
-                : `${missing.length} active player(s) with completed games have no stat row`,
-            details: missing.slice(0, 15).map(p =>
-                `${p.player_name} (${p.player_position}, ${p.player_team}) on fantasy team ${p.team_id}`)
+            status: unexplained.length === 0 ? 'passed' : 'warning',
+            message,
+            details
         };
     }
 
@@ -374,6 +429,23 @@ class HealthCheckService {
             }
         }
         return issues;
+    }
+
+    /**
+     * Daily sanity checks (server/services/sanityChecks.js): the NFL schedule
+     * in nfl_games vs the Double Check's cached ESPN scoreboard, and the
+     * server clock / game_time text vs game_time_epoch. Required lazily so a
+     * missing module surfaces as a failed check, never as a server that
+     * cannot start.
+     */
+    async checkScheduleIntegrity(week, season) {
+        const { checkScheduleIntegrity } = require('./sanityChecks');
+        return checkScheduleIntegrity({ db: this.db, week, season, espnCacheDir: this.espnCacheDir, now: Date.now() });
+    }
+
+    async checkClockSanity(week, season) {
+        const { checkClockSanity } = require('./sanityChecks');
+        return checkClockSanity({ db: this.db, week, season, now: Date.now() });
     }
 
     /**
@@ -540,26 +612,10 @@ class HealthCheckService {
             pass('disk_free', `unavailable: ${error.message}`);
         }
 
-        // Roll up
-        const failing = signals.filter(s => !s.ok);
-        const has = name => failing.some(s => s.name === name);
-        let status;
-        if (has('week_match')) status = 'misconfigured';
-        else if (has('loop_heartbeat') || has('game_freshness')) status = 'stalled';
-        else if (failing.length) status = 'degraded';
-        else status = live ? 'ok' : 'idle';
-        const severity = failing.reduce(
-            (worst, s) => (SEVERITY_RANK[s.severity] > SEVERITY_RANK[worst] ? s.severity : worst), 'ok');
-
-        let summary;
-        if (!failing.length) {
-            summary = live
-                ? `${expectedGames} game(s) in window (${inProgress.length} in progress), loop ticked ${loopAgeSec}s ago, stats flowing`
-                : `No games in the live window; loop ticked ${loopAgeSec === null ? 'never' : `${loopAgeSec}s ago`}`;
-        } else {
-            summary = failing.map(s => s.detail).join('; ');
-        }
-        if (summary.length > 400) summary = `${summary.slice(0, 397)}...`;
+        // Roll up (shared with scripts/live-watchdog.js, which appends its own
+        // script-side signals and re-rolls the line with the same function)
+        const { status, severity, summary } = rollUpLive(signals,
+            { live, expectedGames, inProgress: inProgress.length, loopAgeSec });
 
         return { ...base, status, severity, expectedGames, gamesInProgress: inProgress.length, signals, summary };
     }
@@ -761,7 +817,8 @@ class HealthCheckService {
             warnings.push(`${finalGames.length}/${games.length} games final - bonus check deferred`);
         }
 
-        const status = issues.length > 0 ? 'failed' : (warnings.length > 0 ? 'warning' : 'passed');
+        // 'deferred' = nothing to do until the week completes (renders as info, never colours the page)
+        const status = issues.length > 0 ? 'failed' : (warnings.length > 0 ? 'deferred' : 'passed');
         return {
             name: 'DST Sanity',
             status,
@@ -824,13 +881,18 @@ class HealthCheckService {
             };
         }
 
-        const results = await this.testRunnerService.runValidateEndOfWeekTest(week, season);
+        // espn:false - never launch puppeteer inside the server process; the
+        // Double Check compares every player against ESPN's JSON instead.
+        const results = await this.testRunnerService.runValidateEndOfWeekTest(week, season, { espn: false });
         const failed = (results.checks || []).filter(c => c.status === 'failed');
         const warned = (results.checks || []).filter(c => c.status === 'warning');
+        const deferred = (results.checks || []).filter(c => c.status === 'deferred');
 
+        // A status is a call to action: failed = fix, warning = look, deferred = wait for the week.
         let status = 'passed';
         if (results.overallStatus === 'error' || failed.length > 0) status = 'failed';
         else if (warned.length > 0) status = 'warning';
+        else if (deferred.length > 0) status = 'deferred';
 
         return {
             name: 'End-of-Week Suite',

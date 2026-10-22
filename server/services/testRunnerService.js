@@ -54,14 +54,14 @@ class TestRunnerService {
         }
     }
 
-    async runValidateEndOfWeekTest(week, season = null) {
+    async runValidateEndOfWeekTest(week, season = null, opts = {}) {
         season = await this.resolveSeason(season);
         logInfo(`Running validateEndOfWeek test for week ${week}, season ${season}`);
 
         try {
             // Import and run the test directly
             const { validateEndOfWeek } = require('../../tests/validateEndOfWeek.test');
-            const results = await validateEndOfWeek(week, season);
+            const results = await validateEndOfWeek(week, season, opts);
 
             // Add formatting for better display
             results.formattedSummary = this.formatTestSummary(results);

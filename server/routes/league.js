@@ -253,13 +253,17 @@ router.get('/sync-status', asyncHandler(async (req, res) => {
             WHERE season = ?
         `, [seasonYear]);
 
-        // For now, use current time as last sync time since we don't track it
+        // last_sync_time is the response time (kept for the page); last_live_update
+        // is the newest player_stats write this season - what the public "is the
+        // site updating" probe (scripts/lib/siteSanity.js) reads.
         const lastSyncTime = new Date().toISOString();
+        const newest = await db.get('SELECT MAX(last_updated) AS newest FROM player_stats WHERE season = ?', [seasonYear]);
 
         res.json({
             success: true,
             data: {
                 last_sync_time: lastSyncTime,
+                last_live_update: newest && newest.newest ? newest.newest : null,
                 latest_week: syncStatus?.latest_week || 0,
                 weeks_synced: syncStatus?.weeks_synced || 0,
                 players_synced: syncStatus?.players_synced || 0,

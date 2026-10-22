@@ -1,0 +1,85 @@
+{
+  "season": 2026,
+  "week": 5,
+  "proposedAt": "2026-10-13T04:00:18.425Z",
+  "proposedBy": "claude",
+  "generatedAt": "2026-10-16T19:57:15.557Z",
+  "themes": [
+    {
+      "slug": "mr-t",
+      "name": "Mr. T",
+      "description": "Gold-chained, growling motivational bruiser who pities every fool who started a bad waiver pickup, refers to owners as 'sucka' and hands out tough-love lectures about respecting your mother and your roster.",
+      "origin": "suggested",
+      "addedAt": "2026-10-13T04:00:18.425Z"
+    },
+    {
+      "slug": "mark-twain",
+      "name": "Mark Twain",
+      "description": "Dry, wry Mississippi riverboat wit who skewers the week's blowouts and bad decisions with deadpan aphorisms, mock-solemn digressions and gleeful contempt for the pompous.",
+      "origin": "suggested",
+      "addedAt": "2026-10-13T04:00:18.425Z"
+    },
+    {
+      "slug": "steve-irwin",
+      "name": "Steve Irwin",
+      "description": "Wildly enthusiastic Crocodile Hunter who treats each matchup as a thrilling wildlife encounter, shouting 'Crikey!' and 'Beauty!' while approaching dangerous owners and their wounded rosters with reckless affection.",
+      "origin": "suggested",
+      "addedAt": "2026-10-13T04:00:18.425Z"
+    },
+    {
+      "slug": "marv-albert",
+      "name": "Marv Albert",
+      "description": "Staccato play-by-play legend with a gleeful 'Yes!' for every big play, nicknamed finishes like 'Spectacular!' and a dry, punchy delivery that makes a 4-point margin sound like a buzzer-beater.",
+      "origin": "suggested",
+      "addedAt": "2026-10-13T04:00:18.425Z"
+    },
+    {
+      "slug": "don-rickles",
+      "name": "Don Rickles",
+      "description": "The Merchant of Venom insults every owner to their face with affectionate savagery, calling the week's losers 'hockey puck' and 'dummy' before pretending to be sweet about it.",
+      "origin": "suggested",
+      "addedAt": "2026-10-13T04:00:18.425Z"
+    },
+    {
+      "slug": "homer-simpson",
+      "name": "Homer Simpson",
+      "description": "Doughnut-obsessed, easily distracted dad who botches the analysis, stumbles into accidental wisdom, and punctuates everything with 'D'oh!', 'Woohoo!' and 'Mmm... touchdown.'",
+      "origin": "suggested",
+      "addedAt": "2026-10-13T04:00:18.425Z"
+    },
+    {
+      "slug": "forrest-gump",
+      "name": "Forrest Gump",
+      "description": "Gentle, earnest Alabama narrator who recounts the week's games as folksy anecdotes ('Mama always said...'), compares owners to boxes of chocolates and keeps stumbling into deep truths.",
+      "origin": "suggested",
+      "addedAt": "2026-10-13T04:00:18.425Z"
+    },
+    {
+      "slug": "muhammad-ali",
+      "name": "Muhammad Ali",
+      "description": "Rhyming, boastful poet-champion who declares himself the greatest, predicts rounds, taunts losers in couplets and floats like a butterfly through the week's results.",
+      "origin": "suggested",
+      "addedAt": "2026-10-13T04:00:18.425Z"
+    },
+    {
+      "slug": "dr-seuss",
+      "name": "Dr. Seuss",
+      "description": "Bouncy anapestic rhymes and invented words turn the week's matchups into whimsical fables, with winners in Whoville and losers in the Waiting Place.",
+      "origin": "suggested",
+      "addedAt": "2026-10-13T04:00:18.425Z"
+    },
+    {
+      "slug": "gollum",
+      "name": "Gollum",
+      "description": "Wheezing, schizophrenic cave-dweller who obsesses over 'the precious' (the league title), hisses at rivals, argues with himself, and tracks every owner's points like a stolen ring.",
+      "origin": "suggested",
+      "addedAt": "2026-10-13T04:00:18.425Z"
+    }
+  ],
+  "lastRun": {
+    "overallStatus": "PASS",
+    "files": 10,
+    "error": null,
+    "note": "10 of 10 did not pass the fact-check: don-rickles, dr-seuss, forrest-gump, gollum, homer-simpson, mark-twain, marv-albert, mr-t, muhammad-ali, steve-irwin"
+  }
+}

@@ -1,0 +1,2903 @@
+{
+ "gameId": "20250908_MIN@CHI",
+ "season": 2025,
+ "week": 1,
+ "espnEventId": "401772810",
+ "homeTeam": "CHI",
+ "awayTeam": "MIN",
+ "tank01Body": {
+  "gameID": "20250908_MIN@CHI",
+  "gameStatus": "Completed",
+  "home": "CHI",
+  "away": "MIN",
+  "homePts": "24",
+  "awayPts": "27",
+  "teamIDHome": "6",
+  "teamIDAway": "21",
+  "scoringPlays": [
+   {
+    "score": "Caleb Williams 9 Yd Rush (Cairo Santos Kick)",
+    "scorePeriod": "Q1",
+    "homeScore": "7",
+    "awayScore": "0",
+    "teamID": "6",
+    "scoreDetails": "10 plays, 61 yards, 5:41",
+    "scoreType": "TD",
+    "scoreTime": "7:04",
+    "team": "CHI",
+    "playerIDs": [
+     "4431611",
+     "17427"
+    ]
+   },
+   {
+    "score": "Will Reichard 31 Yd Field Goal",
+    "scorePeriod": "Q2",
+    "homeScore": "7",
+    "awayScore": "3",
+    "teamID": "21",
+    "scoreDetails": "7 plays, 67 yards, 3:10",
+    "scoreType": "FG",
+    "scoreTime": "12:48",
+    "team": "MIN",
+    "playerIDs": [
+     "4567104"
+    ]
+   },
+   {
+    "score": "Cairo Santos 42 Yd Field Goal",
+    "scorePeriod": "Q2",
+    "homeScore": "10",
+    "awayScore": "3",
+    "teamID": "6",
+    "scoreDetails": "9 plays, 35 yards, 4:05",
+    "scoreType": "FG",
+    "scoreTime": "0:24",
+    "team": "CHI",
+    "playerIDs": [
+     "17427"
+    ]
+   },
+   {
+    "score": "Will Reichard 59 Yd Field Goal ",
+    "scorePeriod": "Q2",
+    "homeScore": "10",
+    "awayScore": "6",
+    "teamID": "21",
+    "scoreDetails": "2 plays, 28 yards, 0:18",
+    "scoreType": "FG",
+    "scoreTime": "0:06",
+    "team": "MIN",
+    "playerIDs": [
+     "4567104"
+    ]
+   },
+   {
+    "score": "Nahshon Wright 74 Yd Interception Return (Cairo Santos Kick)",
+    "scorePeriod": "Q3",
+    "homeScore": "17",
+    "awayScore": "6",
+    "teamID": "6",
+    "scoreDetails": "3 plays, 17 yards, 1:37",
+    "scoreType": "TD",
+    "scoreTime": "12:51",
+    "team": "CHI",
+    "playerIDs": [
+     "4570470",
+     "17427"
+    ]
+   },
+   {
+    "score": "Justin Jefferson 13 Yd pass from J.J. McCarthy (Two-Point Pass Conversion Failed)",
+    "scorePeriod": "Q4",
+    "homeScore": "17",
+    "awayScore": "12",
+    "teamID": "21",
+    "scoreDetails": "6 plays, 60 yards, 2:42",
+    "scoreType": "TD",
+    "scoreTime": "12:13",
+    "team": "MIN",
+    "playerIDs": [
+     "4433970",
+     "4262921"
+    ]
+   },
+   {
+    "score": "Aaron Jones Sr. 27 Yd pass from J.J. McCarthy (J.J. McCarthy Pass to Adam Thielen for Two-Point Conversion)",
+    "scorePeriod": "Q4",
+    "homeScore": "17",
+    "awayScore": "20",
+    "teamID": "21",
+    "scoreDetails": "3 plays, 50 yards, 0:51",
+    "scoreType": "TD",
+    "scoreTime": "9:46",
+    "team": "MIN",
+    "playerIDs": [
+     "4433970",
+     "3042519",
+     "16460"
+    ]
+   },
+   {
+    "score": "J.J. McCarthy 14 Yd Rush (Will Reichard Kick)",
+    "scorePeriod": "Q4",
+    "homeScore": "17",
+    "awayScore": "27",
+    "teamID": "21",
+    "scoreDetails": "9 plays, 68 yards, 4:31",
+    "scoreType": "TD",
+    "scoreTime": "2:53",
+    "team": "MIN",
+    "playerIDs": [
+     "4433970",
+     "4567104"
+    ]
+   },
+   {
+    "score": "Rome Odunze 1 Yd pass from Caleb Williams (Cairo Santos Kick)",
+    "scorePeriod": "Q4",
+    "homeScore": "24",
+    "awayScore": "27",
+    "teamID": "6",
+    "scoreDetails": "5 plays, 65 yards, 0:51",
+    "scoreType": "TD",
+    "scoreTime": "2:02",
+    "team": "CHI",
+    "playerIDs": [
+     "4431611",
+     "4431299",
+     "17427"
+    ]
+   }
+  ],
+  "DST": {
+   "away": {
+    "teamAbv": "MIN",
+    "teamID": "21",
+    "defTD": "0",
+    "defensiveInterceptions": "0",
+    "sacks": "2",
+    "ydsAllowed": "317",
+    "fumblesRecovered": "1",
+    "ptsAllowed": "18",
+    "safeties": "0"
+   },
+   "home": {
+    "teamAbv": "CHI",
+    "teamID": "6",
+    "defTD": "1",
+    "defensiveInterceptions": "1",
+    "sacks": "3",
+    "ydsAllowed": "254",
+    "fumblesRecovered": "0",
+    "ptsAllowed": "27",
+    "safeties": "0"
+   }
+  },
+  "playerStats": {
+   "16460": {
+    "playerID": "16460",
+    "longName": "Adam Thielen",
+    "team": "MIN",
+    "teamAbv": "MIN"
+   },
+   "17427": {
+    "playerID": "17427",
+    "longName": "Cairo Santos",
+    "team": "CHI",
+    "teamAbv": "CHI"
+   },
+   "3042519": {
+    "playerID": "3042519",
+    "longName": "Aaron Jones Sr.",
+    "team": "MIN",
+    "teamAbv": "MIN",
+    "Rushing": {
+     "rushAvg": "2.9",
+     "rushYds": "23",
+     "carries": "8",
+     "longRush": "9",
+     "rushTD": "0"
+    }
+   },
+   "4262921": {
+    "playerID": "4262921",
+    "longName": "Justin Jefferson",
+    "team": "MIN",
+    "teamAbv": "MIN",
+    "Rushing": {
+     "rushAvg": "4.0",
+     "rushYds": "4",
+     "carries": "1",
+     "longRush": "4",
+     "rushTD": "0"
+    }
+   },
+   "4431299": {
+    "playerID": "4431299",
+    "longName": "Rome Odunze",
+    "team": "CHI",
+    "teamAbv": "CHI"
+   },
+   "4431611": {
+    "playerID": "4431611",
+    "longName": "Caleb Williams",
+    "team": "CHI",
+    "teamAbv": "CHI",
+    "Rushing": {
+     "rushAvg": "9.7",
+     "rushYds": "58",
+     "carries": "6",
+     "longRush": "13",
+     "rushTD": "1"
+    }
+   },
+   "4433970": {
+    "playerID": "4433970",
+    "longName": "J.J. McCarthy",
+    "team": "MIN",
+    "teamAbv": "MIN",
+    "Rushing": {
+     "rushAvg": "12.5",
+     "rushYds": "25",
+     "carries": "2",
+     "longRush": "14",
+     "rushTD": "1"
+    }
+   },
+   "4567104": {
+    "playerID": "4567104",
+    "longName": "Will Reichard",
+    "team": "MIN",
+    "teamAbv": "MIN"
+   },
+   "4570470": {
+    "playerID": "4570470",
+    "longName": "Nahshon Wright",
+    "team": "CHI",
+    "teamAbv": "CHI",
+    "Defense": {
+     "totalTackles": "4",
+     "defTD": "1",
+     "forcedFumbles": "0",
+     "soloTackles": "3",
+     "tfl": "1",
+     "qbHits": "0",
+     "defensiveInterceptions": "1",
+     "defensiveInterceptionsYards": "74",
+     "interceptionTDs": "1",
+     "sacks": "0",
+     "passDeflections": "1"
+    }
+   }
+  }
+ },
+ "espnSummary": {
+  "header": {
+   "competitions": [
+    {
+     "status": {
+      "type": {
+       "name": "STATUS_FINAL",
+       "completed": true
+      }
+     },
+     "competitors": [
+      {
+       "id": "3",
+       "homeAway": "home",
+       "team": {
+        "abbreviation": "CHI"
+       },
+       "score": "24"
+      },
+      {
+       "id": "16",
+       "homeAway": "away",
+       "team": {
+        "abbreviation": "MIN"
+       },
+       "score": "27"
+      }
+     ]
+    }
+   ]
+  },
+  "scoringPlays": [
+   {
+    "id": "401772810420",
+    "type": {
+     "text": "Rushing Touchdown"
+    },
+    "text": "Caleb Williams 9 Yd Rush (Cairo Santos Kick)",
+    "awayScore": 0,
+    "homeScore": 7,
+    "period": {
+     "number": 1
+    },
+    "clock": {
+     "displayValue": "7:04"
+    },
+    "team": {
+     "abbreviation": "CHI"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "401772810961",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Will Reichard 31 Yd Field Goal",
+    "awayScore": 3,
+    "homeScore": 7,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "12:48"
+    },
+    "team": {
+     "abbreviation": "MIN"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "4017728101822",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Cairo Santos 42 Yd Field Goal",
+    "awayScore": 3,
+    "homeScore": 10,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "0:24"
+    },
+    "team": {
+     "abbreviation": "CHI"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "4017728101902",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Will Reichard 59 Yd Field Goal ",
+    "awayScore": 6,
+    "homeScore": 10,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "0:06"
+    },
+    "team": {
+     "abbreviation": "MIN"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "4017728102188",
+    "type": {
+     "text": "Interception Return Touchdown"
+    },
+    "text": "Nahshon Wright 74 Yd Interception Return (Cairo Santos Kick)",
+    "awayScore": 6,
+    "homeScore": 17,
+    "period": {
+     "number": 3
+    },
+    "clock": {
+     "displayValue": "12:51"
+    },
+    "team": {
+     "abbreviation": "CHI"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017728103204",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Justin Jefferson 13 Yd pass from J.J. McCarthy (Two-Point Pass Conversion Failed)",
+    "awayScore": 12,
+    "homeScore": 17,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "12:13"
+    },
+    "team": {
+     "abbreviation": "MIN"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017728103486",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Aaron Jones Sr. 27 Yd pass from J.J. McCarthy (J.J. McCarthy Pass to Adam Thielen for Two-Point Conversion)",
+    "awayScore": 20,
+    "homeScore": 17,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "9:46"
+    },
+    "team": {
+     "abbreviation": "MIN"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017728103882",
+    "type": {
+     "text": "Rushing Touchdown"
+    },
+    "text": "J.J. McCarthy 14 Yd Rush (Will Reichard Kick)",
+    "awayScore": 27,
+    "homeScore": 17,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "2:53"
+    },
+    "team": {
+     "abbreviation": "MIN"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017728104181",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Rome Odunze 1 Yd pass from Caleb Williams (Cairo Santos Kick)",
+    "awayScore": 27,
+    "homeScore": 24,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "2:02"
+    },
+    "team": {
+     "abbreviation": "CHI"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   }
+  ],
+  "drives": {
+   "previous": [
+    {
+     "team": {
+      "abbreviation": "CHI"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "401772810171",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Williams pass short right to D.Swift pushed ob at CHI 42 for 3 yards (I.Pace).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "12:45"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772810201",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "C.Williams pass short left to D.Swift to 50 for 8 yards (B.Murphy).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "12:15"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772810226",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Benedet reported in as eligible.  D.Swift right guard to MIN 46 for 4 yards (I.Pace; A.Van Ginkel).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "11:29"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772810250",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "C.Williams pass short middle to K.Monangai to MIN 35 for 11 yards (T.Jackson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:47"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772810275",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "C.Williams pass short middle to D.Moore to MIN 30 for 5 yards (B.Cashman).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:13"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772810300",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Benedet reported in as eligible.  D.Swift up the middle to MIN 30 for no gain (J.Greenard).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "9:34"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772810312",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #1 by CHI at 08:50.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "8:50"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772810324",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Williams pass deep right to R.Odunze ran ob at MIN 13 for 17 yards.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "8:50"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772810366",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(No Huddle) C.Williams pass short left to O.Zaccheaus to MIN 6 for 7 yards (J.Okudah).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "8:29"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772810379",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #1 by MIN at 07:52.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "7:52"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772810391",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Swift left tackle to MIN 9 for -3 yards (L.Rodriguez).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "7:52"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772810420",
+       "type": {
+        "text": "Rushing Touchdown"
+       },
+       "text": "(Shotgun) C.Williams scrambles left end for 9 yards, TOUCHDOWN. C.Santos extra point is GOOD, Center-S.Daly, Holder-T.Taylor.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "7:04"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772810451",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 07:04.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "7:04"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "MIN"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "401772810767",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "J.Mason left end to MIN 25 for 6 yards (N.Sewell).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:58"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772810796",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "J.Mason left tackle to MIN 31 for 6 yards (Ch.Williams).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:19"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772810818",
+       "type": {
+        "text": "End Period"
+       },
+       "text": "END QUARTER 1",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:00"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772810838",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) J.McCarthy pass incomplete deep left to A.Jones.PENALTY on CHI-N.Wright, Defensive Pass Interference, 42 yards, enforced at MIN 31 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "15:00"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772810872",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) J.McCarthy scrambles left guard to CHI 16 for 11 yards (T.Stevenson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "14:53"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772810894",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "J.Mason left guard to CHI 11 for 5 yards (N.Sewell).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "14:16"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772810916",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "J.Mason left end to CHI 14 for -3 yards (N.Wright, T.Edmunds).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "13:39"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772810938",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) J.McCarthy pass incomplete short right to J.Jefferson.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "12:56"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 7
+      },
+      {
+       "id": "401772810961",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "W.Reichard 31 yard field goal is GOOD, Center-A.DePaola, Holder-R.Wright.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "12:48"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "401772810971",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 12:48.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "12:48"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "CHI"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "4017728101584",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Swift right guard to CHI 45 for 4 yards (J.Allen).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "4:29"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "4017728101618",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "PENALTY on CHI-J.Jackson, False Start, 5 yards, enforced at CHI 45 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "3:43"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "4017728101642",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Williams pass short middle to O.Zaccheaus to MIN 44 for 16 yards (B.Cashman; J.Metellus).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "3:26"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "4017728101667",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Swift left end to MIN 41 for 3 yards (D.Turner; J.Allen).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:48"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "4017728101689",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Swift up the middle to MIN 39 for 2 yards (I.Pace).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:09"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "4017728101700",
+       "type": {
+        "text": "Two-minute warning"
+       },
+       "text": "Two-Minute Warning",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:00"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "4017728101711",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Williams pass short right to O.Zaccheaus pushed ob at MIN 32 for 7 yards (J.Okudah).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:00"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "4017728101748",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Swift left tackle to MIN 29 for 3 yards (J.Greenard).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:55"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "4017728101770",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Swift right guard to MIN 27 for 2 yards (D.Turner).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:18"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "4017728101792",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Williams pass short right to R.Odunze pushed ob at MIN 24 for 3 yards (B.Murphy).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:35"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "4017728101807",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #2 by MIN at 00:28.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:28"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 7
+      },
+      {
+       "id": "4017728101822",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "C.Santos 42 yard field goal is GOOD, Center-S.Daly, Holder-T.Taylor.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:24"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "MIN"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "4017728101849",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "C.Santos kicks 59 yards from CHI 35 to MIN 6. M.Price to MIN 31 for 25 yards (J.Jones; D.Hardy).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:24"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017728101872",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) J.McCarthy pass deep left to J.Nailor pushed ob at CHI 41 for 28 yards (N.Wright) [D.Odeyingbo].",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:19"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017728101887",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #3 by MIN at 00:11.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:11"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017728101902",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": " W.Reichard 59 yard field goal is GOOD, Center-A.DePaola, Holder-R.Wright.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:06"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 10
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "MIN"
+     },
+     "result": "INT TD",
+     "plays": [
+      {
+       "id": "4017728102110",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "J.McCarthy pass incomplete short right to J.Jefferson (M.Sweat).PENALTY on CHI-D.Odeyingbo, Roughing the Passer, 15 yards, enforced at CHI 49 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "14:28"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 10
+      },
+      {
+       "id": "4017728102144",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "A.Jones right guard to CHI 34 for no gain (K.Byard).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "14:21"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 10
+      },
+      {
+       "id": "4017728102166",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(No Huddle, Shotgun) A.Jones right end to CHI 32 for 2 yards (J.Brisker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "13:50"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 10
+      },
+      {
+       "id": "4017728102188",
+       "type": {
+        "text": "Interception Return Touchdown"
+       },
+       "text": "(Shotgun) J.McCarthy pass short left intended for J.Jefferson INTERCEPTED by N.Wright at CHI 26. N.Wright for 74 yards, TOUCHDOWN. C.Santos extra point is GOOD, Center-S.Daly, Holder-T.Taylor.",
+       "scoringPlay": true,
+       "isTurnover": true,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "12:51"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728102224",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 12:51.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "12:51"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 17
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "MIN"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017728103085",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "J.Mason up the middle to MIN 47 for 7 yards (T.Edmunds; T.Kpassagnon).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "14:55"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103107",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "J.Mason right guard to CHI 35 for 18 yards (K.Byard).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "14:19"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103129",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "J.McCarthy pass deep left to J.Jefferson ran ob at CHI 18 for 17 yards [T.Kpassagnon].",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "13:39"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103159",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "J.Mason left end to CHI 13 for 5 yards (N.Wright).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "13:00"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103181",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "J.McCarthy pass incomplete short left to J.Nailor (M.Sweat).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "12:23"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103204",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "Justin Jefferson 13 Yd pass from J.J. McCarthy (Two-Point Pass Conversion Failed)",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "12:13"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103230",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "TWO-POINT CONVERSION ATTEMPT. J.McCarthy pass to A.Thielen is incomplete. ATTEMPT FAILS.PENALTY on CHI-D.Odeyingbo, Illegal Use of Hands, 1 yard, enforced at CHI 2 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "12:13"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {},
+       "awayScore": 12,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103261",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 12:13.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "12:13"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 17
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "MIN"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017728103390",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "A.Jones right tackle to CHI 41 for 9 yards (T.Stevenson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "10:37"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103419",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "J.McCarthy pass incomplete deep right to J.Jefferson. CHI-N.Wright was injured during the play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "10:03"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103431",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 09:57.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "9:57"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103442",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "J.McCarthy pass incomplete deep left to J.Nailor [M.Sweat].PENALTY on CHI-T.Stevenson, Defensive Pass Interference, 14 yards, enforced at CHI 41 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "9:57"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103486",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "(Shotgun) J.McCarthy pass deep right to A.Jones for 27 yards, TOUCHDOWN. ** Injury Update: CHI-N.Wright has returned to the game. TWO-POINT CONVERSION ATTEMPT. J.McCarthy pass to A.Thielen is complete. ATTEMPT SUCCEEDS.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "9:46"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 20,
+       "homeScore": 17
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "MIN"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017728103687",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "J.Mason right guard to CHI 49 for 19 yards (N.Wright; T.Edmunds).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "7:24"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 20,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103709",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "J.Mason left tackle to CHI 49 for no gain (N.Sewell).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "6:39"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 20,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103731",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) J.McCarthy pass short right to T.Hockenson pushed ob at CHI 40 for 9 yards (T.Edmunds).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "6:02"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 20,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103761",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "A.Jones left guard to CHI 38 for 2 yards (J.Brisker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "5:20"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 20,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103783",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "A.Jones left tackle to CHI 34 for 4 yards (G.Jarrett; R.Hyppolite).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "4:38"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 20,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103805",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "J.McCarthy pass short right to A.Jones pushed ob at CHI 23 for 11 yards (N.Sewell).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "3:58"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 20,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103835",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "J.Mason left guard to CHI 24 for -1 yards (M.Sweat, N.Sewell).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "3:52"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 20,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103857",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) J.McCarthy pass short right to J.Jefferson to CHI 14 for 10 yards (G.Jarrett).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "3:09"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 20,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103870",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #2 by CHI at 02:59.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:59"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 20,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103882",
+       "type": {
+        "text": "Rushing Touchdown"
+       },
+       "text": "(Shotgun) J.McCarthy right end for 14 yards, TOUCHDOWN. W.Reichard extra point is GOOD, Center-A.DePaola, Holder-R.Wright.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:53"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "awayScore": 27,
+       "homeScore": 17
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "CHI"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017728103927",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "W.Reichard kicks 65 yards from MIN 35 to end zone, Touchback to the CHI 35.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:53"
+       },
+       "start": {
+        "team": {
+         "id": "16"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 27,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103944",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Williams pass deep middle to C.Kmet to MIN 34 for 31 yards (J.Ward).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:53"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 27,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103969",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(No Huddle) C.Williams pass incomplete deep left to D.Moore.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:32"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 27,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728103992",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) C.Williams pass incomplete short right to D.Swift.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:26"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 27,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728104015",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) C.Williams pass incomplete deep middle to R.Odunze [J.Hargrave].PENALTY on MIN-B.Murphy, Illegal Contact, 5 yards, enforced at MIN 34 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:21"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 27,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728104049",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) C.Williams pass incomplete short middle to D.Moore (J.Ward). CHI-D.Moore was injured during the play. PENALTY on MIN-I.Pace, Roughing the Passer, 15 yards, enforced at MIN 29 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:16"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 27,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728104068",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 02:12.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:12"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 27,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728104086",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) C.Williams scrambles up the middle for 14 yards, TOUCHDOWN.Penalty on MIN-B.Murphy, Illegal Contact, declined.The Replay Official reviewed the runner broke the plane ruling, and the play was REVERSED.(Shotgun) C.Williams scrambles up the middle pushed ob at MIN 1 for 13 yards (T.Jackson).PENALTY on MIN-B.Murphy, Illegal Contact, 0 yards, enforced at MIN 1.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:12"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 27,
+       "homeScore": 17
+      },
+      {
+       "id": "4017728104181",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "C.Williams pass short middle to R.Odunze for 1 yard, TOUCHDOWN. C.Santos extra point is GOOD, Center-S.Daly, Holder-T.Taylor.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:02"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 27,
+       "homeScore": 24
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "playerPositions": {
+  "16460": {
+   "name": "Adam Thielen",
+   "pos": "WR",
+   "team": "PIT"
+  },
+  "17427": {
+   "name": "Cairo Santos",
+   "pos": "PK",
+   "team": "CHI"
+  },
+  "3042519": {
+   "name": "Aaron Jones Sr.",
+   "pos": "RB",
+   "team": "MIN"
+  },
+  "4262921": {
+   "name": "Justin Jefferson",
+   "pos": "WR",
+   "team": "MIN"
+  },
+  "4431299": {
+   "name": "Rome Odunze",
+   "pos": "WR",
+   "team": "CHI"
+  },
+  "4431611": {
+   "name": "Caleb Williams",
+   "pos": "QB",
+   "team": "CHI"
+  },
+  "4433970": {
+   "name": "J.J. McCarthy",
+   "pos": "QB",
+   "team": "MIN"
+  },
+  "4567104": {
+   "name": "Will Reichard",
+   "pos": "PK",
+   "team": "MIN"
+  },
+  "4570470": {
+   "name": "Nahshon Wright",
+   "pos": "CB",
+   "team": "NYJ"
+  }
+ },
+ "nflPlayers": {
+  "16460": {
+   "name": "Adam Thielen",
+   "position": "WR",
+   "team": "PIT"
+  },
+  "17427": {
+   "name": "Cairo Santos",
+   "position": "K",
+   "team": "CHI"
+  },
+  "3042519": {
+   "name": "Aaron Jones Sr.",
+   "position": "RB",
+   "team": "MIN"
+  },
+  "4262921": {
+   "name": "Justin Jefferson",
+   "position": "WR",
+   "team": "MIN"
+  },
+  "4431299": {
+   "name": "Rome Odunze",
+   "position": "WR",
+   "team": "CHI"
+  },
+  "4431611": {
+   "name": "Caleb Williams",
+   "position": "QB",
+   "team": "CHI"
+  },
+  "4433970": {
+   "name": "J.J. McCarthy",
+   "position": "QB",
+   "team": "MIN"
+  },
+  "4567104": {
+   "name": "Will Reichard",
+   "position": "K",
+   "team": "MIN"
+  }
+ },
+ "dbRows": [
+  {
+   "player_id": "16460",
+   "week": 1,
+   "season": 2025,
+   "game_id": "20250908_MIN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 1,
+   "fantasy_points": 2
+  },
+  {
+   "player_id": "17427",
+   "week": 1,
+   "season": 2025,
+   "game_id": "20250908_MIN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 3.5
+  },
+  {
+   "player_id": "3042519",
+   "week": 1,
+   "season": 2025,
+   "game_id": "20250908_MIN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "4262921",
+   "week": 1,
+   "season": 2025,
+   "game_id": "20250908_MIN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "4431299",
+   "week": 1,
+   "season": 2025,
+   "game_id": "20250908_MIN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "4431611",
+   "week": 1,
+   "season": 2025,
+   "game_id": "20250908_MIN@CHI",
+   "passing_tds": 1,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 22
+  },
+  {
+   "player_id": "4433970",
+   "week": 1,
+   "season": 2025,
+   "game_id": "20250908_MIN@CHI",
+   "passing_tds": 2,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 1,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 20
+  },
+  {
+   "player_id": "4567104",
+   "week": 1,
+   "season": 2025,
+   "game_id": "20250908_MIN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 4.5
+  },
+  {
+   "player_id": "DEF_CHI",
+   "week": 1,
+   "season": 2025,
+   "game_id": "20250908_MIN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 1,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "DEF_MIN",
+   "week": 1,
+   "season": 2025,
+   "game_id": "20250908_MIN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 0
+  }
+ ]
+}

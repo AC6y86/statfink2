@@ -19,7 +19,8 @@ const SEASON = 2025;
 
 class BaselineComparator2025 {
     constructor() {
-        this.dbPath = path.join(__dirname, '../../fantasy_football.db');
+        // STATFINK_SLOW_DB: the nightly runner recalculates a COPY of the league DB and compares that
+        this.dbPath = process.env.STATFINK_SLOW_DB ? path.resolve(process.env.STATFINK_SLOW_DB) : path.join(__dirname, '../../fantasy_football.db');
         this.baselinePath = path.join(__dirname, 'baseline_2025_fantasy_points.json');
         this.db = null;
         this.baseline = null;

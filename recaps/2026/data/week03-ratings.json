@@ -1,0 +1,53 @@
+{
+  "season": 2026,
+  "week": 3,
+  "ratedAt": "2026-09-30T23:34:34.819Z",
+  "ratedBy": "claude-opus",
+  "recommended": "bill-belichick",
+  "ratings": {
+    "bill-belichick": {
+      "stars": 4.5,
+      "blurb": "The press-conference format suits the persona perfectly, the kicking-game read of the half-point loss is a real insight, and lines like \"The grade's not playing. The players are playing.\" and \"We don't do moral victories\" lead to a closing \"We're on to Week 4\" / \"We're all day-to-day\" that owners wi"
+    },
+    "jerry-seinfeld": {
+      "stars": 4,
+      "blurb": "The half-point cold open comes back in the closer (\"nothing turns out to be worth half a point\"), and \"a rounding error with a trophy\" and \"the low-talker of losses\" are the best jokes of the batch, though a few sitcom references (the double-dip, dating for the apartment) are forced."
+    },
+    "william-shatner": {
+      "stars": 4,
+      "blurb": "The halting delivery is used as comic timing (\"Sixty. Five.\"), and calling Mitch \"the Kobayashi Maru made flesh\" plus the Priceline callback on the Matt-Chris tight-end deal give the log real shape past the Trek puns."
+    },
+    "abraham-lincoln": {
+      "stars": 3.5,
+      "blurb": "Having Lincoln tell Matt \"if you do not want to use the army, I should like to borrow it\" is inspired, and the benediction's \"find a tight end. Chris has five\" pays off nicely, but the dispatches in between are mostly box score read out in a frock coat."
+    },
+    "dwight-schrute": {
+      "stars": 3.5,
+      "blurb": "\"That is crop rotation\" and Joe's LWL form being \"the sound Michael makes when he sees a spider\" land well, but \"the top kicker score in the digest\" leaks the source material and the sections settle into a stat-dump rhythm."
+    },
+    "theodore-roosevelt": {
+      "stars": 3.5,
+      "blurb": "Using the man in the arena for Chris's half-point loss and \"I have negotiated peace between Russia and Japan... surely these two men can negotiate a tight end\" are sharp, though the stump-speech voice turns into steady listing in the middle."
+    },
+    "john-madden": {
+      "stars": 3.5,
+      "blurb": "The turducken and telestrator motifs hold it together, and lines like \"a backfield made of folding chairs\" and Henry being a guy you \"agree to go to the ground with\" feel like Madden, but each game recap follows the same template."
+    },
+    "kermit-the-frog": {
+      "stars": 3,
+      "blurb": "The Statler and Waldorf asides (\"Our act doesn't have a margin. Nobody's ever finished watching it!\") give it texture, but Act Five squashes two games together and most of the Muppet jokes are costume, not insight into the week."
+    },
+    "arnold-schwarzenegger": {
+      "stars": 3,
+      "blurb": "Framing the games as sets is a fair device and \"Milk is for babies\" is funny, but the recap is mostly a string of catchphrases (\"Get to the choppa!\", \"put that cookie down\") laid over an unchanged play-by-play."
+    },
+    "chris-berman": {
+      "stars": 2.5,
+      "blurb": "Berman-style nicknames on every player (\"Kelce Grammar\", \"Bo Diddley\", \"Gibbs Me Shelter\") become a groan-count list rather than a story, and apart from the Matt-looking-through-the-buffet-window line it's a standard recap in a costume."
+    }
+  },
+  "claude": {
+    "costUsd": 0.5583241999999999,
+    "durationMs": 21611
+  }
+}

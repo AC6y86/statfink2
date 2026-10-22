@@ -164,10 +164,121 @@ describe('EmailMoveParsingService', () => {
         expect(result.status).toBe('ambiguous');
     });
 
+    describe('delegation (owners.json actsFor)', () => {
+        const ELI_ROSTER = [{ player_id: 'P_MONT', player_name: 'David Montgomery', player_position: 'RB', player_team: 'DET' }];
+
+        function delegatedService(response) {
+            const db = mockDb();
+            const baseAll = db.all.bind(db);
+            db.all = async (sql, params) => {
+                if (sql.includes("roster_position = 'active'") && params[0] === 11) return ELI_ROSTER;
+                if (sql.includes('FROM teams')) {
+                    return [{ team_id: 1, team_name: "Chris's Team", owner_name: 'Chris' }, { team_id: 11, team_name: "Eli's Team", owner_name: 'Eli' }];
+                }
+                return baseAll(sql, params);
+            };
+            const owners = { ...OWNERS, 'chris@example.com': { teamId: 1, ownerName: 'Chris', actsFor: [11] } };
+            const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'owners-')), 'owners.json');
+            fs.writeFileSync(file, JSON.stringify(owners));
+            const backend = { calls: [], async run(prompt) { this.calls.push(prompt); return JSON.stringify(response); } };
+            return { backend, svc: new EmailMoveParsingService(db, { parserBackend: backend, ownersFile: file }) };
+        }
+
+        test('a move for a delegated team passes cross-validation', async () => {
+            const forEli = JSON.parse(JSON.stringify(CANNED_RESPONSES.simpleSupplemental));
+            forEli.moves[0].team_id = 11;
+            forEli.moves[0].drop_player_id = 'P_MONT';
+            forEli.moves[0].drop_player_name = 'David Montgomery';
+            const { svc, backend } = delegatedService(forEli);
+
+            const result = await svc.parseEmail(EMAILS.simpleSupplemental);
+            expect(result.moves[0].confidence).toBe('high');
+            expect(result.moves[0].notes || '').not.toContain('CROSS-VALIDATION');
+
+            const prompt = backend.calls[0];
+            expect(prompt).toContain('SENDER MAY ALSO ACT FOR: Eli (Eli\'s Team) - team_id 11');
+            expect(prompt).toContain("ELI'S ACTIVE ROSTER (player_id|name|pos|nfl_team):\nP_MONT|David Montgomery|RB|DET");
+            expect(prompt).toContain("ELI'S INJURED RESERVE:\n(none)");
+        });
+
+        test('a move for a non-delegated team is still demoted', async () => {
+            const wrong = JSON.parse(JSON.stringify(CANNED_RESPONSES.simpleSupplemental));
+            wrong.moves[0].team_id = 9;
+            const { svc } = delegatedService(wrong);
+
+            const result = await svc.parseEmail(EMAILS.simpleSupplemental);
+            expect(result.moves[0].confidence).toBe('low');
+            expect(result.moves[0].notes).toContain('is not the sender\'s team 1 or a team they act for (11)');
+        });
+
+        test('senders without actsFor get no delegation section', async () => {
+            const { svc, backend } = service(CANNED_RESPONSES.simpleSupplemental);
+            await svc.parseEmail(EMAILS.simpleSupplemental);
+            expect(backend.calls[0]).not.toContain('SENDER MAY ALSO ACT FOR:');
+        });
+    });
+
     test('plausiblyMatches handles nicknames sharing a last name', () => {
         const { svc } = service(CANNED_RESPONSES.simpleSupplemental);
         expect(svc.plausiblyMatches('Marquise Brown', 'Hollywood Brown')).toBe(true);
         expect(svc.plausiblyMatches('Joe Flacco', 'Flacco')).toBe(true);
         expect(svc.plausiblyMatches('Joe Flacco', 'David Montgomery')).toBe(false);
+    });
+});
+
+describe('trade followed by IR parsing', () => {
+    test('preserves both actions and includes ordered-trade rules and league ownership', async () => {
+        const move = { ...CANNED_RESPONSES.simpleSupplemental.moves[0], move_type: 'trade',
+            team_id: 1, drop_player_id: 'P_DELL', drop_player_name: 'Tank Dell',
+            add_player_id: 'P_MONT', add_player_name: 'David Montgomery',
+            partner_team_id: 2, partner_player_id: 'P_MONT', partner_player_name: 'David Montgomery' };
+        const result = { ...CANNED_RESPONSES.simpleSupplemental, moves: [move,
+            { ...move, move_type: 'ir', drop_player_id: 'P_MONT', drop_player_name: 'David Montgomery',
+                add_player_id: 'P_FLACCO', add_player_name: 'Joe Flacco',
+                partner_team_id: null, partner_player_id: null, partner_player_name: null }] };
+        const { svc, backend } = service(result);
+        const parsed = await svc.parseEmail({ ...EMAILS.simpleSupplemental, body: 'Trade Dell for Montgomery; put Montgomery on IR and add Flacco.' });
+        expect(parsed.moves.map(m => m.move_type)).toEqual(['trade', 'ir']);
+        expect(parsed.moves.every(m => m.confidence !== 'low')).toBe(true);
+        expect(backend.calls[0]).toContain('trade first, then IR/drop');
+        expect(backend.calls[0]).toContain('CURRENT LEAGUE OWNERSHIP');
+    });
+
+    test('mismatched trade incoming IDs fail closed', async () => {
+        const result = { ...CANNED_RESPONSES.simpleSupplemental, moves: [{
+            ...CANNED_RESPONSES.simpleSupplemental.moves[0], move_type: 'trade',
+            partner_team_id: 2, partner_player_id: 'P_MONT', partner_player_name: 'David Montgomery'
+        }] };
+        const { svc } = service(result);
+        expect((await svc.parseEmail(EMAILS.simpleSupplemental)).moves[0].confidence).toBe('low');
+    });
+});
+
+
+describe('Dan invalidation notes', () => {
+    const body = 'Pete cannot add Brian Robinson; he is already on Joe’s team.';
+    const parsed = { status: 'move_invalidation', sender_team_id: 3, summary: 'Pete’s Robinson add is invalid: already owned.', invalidation_quote: body, questions_for_commissioner: [], moves: [] };
+    test('keeps a verbatim Dan ruling separate from executable moves', async () => {
+        const { svc } = service(parsed);
+        svc.resolveSender = jest.fn().mockResolvedValue({ email: 'wdochse@gmail.com', teamId: 3, ownerName: 'Dan', actsFor: [] });
+        const result = await svc.parseEmail({ ...EMAILS.banter, from: 'Dan <wdochse@gmail.com>', body });
+        expect(result.status).toBe('move_invalidation');
+        expect(result.moves).toEqual([]);
+        expect(result.invalidation_quote).toBe(body);
+    });
+    test('another owner cannot be promoted into a Dan ruling', async () => {
+        const { svc } = service(parsed);
+        const result = await svc.parseEmail({ ...EMAILS.banter, body });
+        expect(result.status).toBe('ambiguous');
+    });
+    test('hallucinated quote does not become a ruling', async () => {
+        const { svc } = service(parsed);
+        svc.resolveSender = jest.fn().mockResolvedValue({ email: 'wdochse@gmail.com', teamId: 3, ownerName: 'Dan', actsFor: [] });
+        const result = await svc.parseEmail({ ...EMAILS.banter, from: 'wdochse@gmail.com', body: 'Dan passes' });
+        expect(result.status).toBe('ambiguous');
+    });
+    test('invalidation cannot contain executable proposals', () => {
+        const { svc } = service(parsed);
+        expect(svc.validateAgainstSchema({ ...parsed, moves: CANNED_RESPONSES.simpleSupplemental.moves })).toContain('An invalidation note cannot execute moves');
     });
 });

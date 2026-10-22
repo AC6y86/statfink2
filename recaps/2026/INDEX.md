@@ -1,0 +1,10 @@
+# 2026 Season Recaps — Index
+
+Weekly recaps in persona styles.
+
+| Week | Styles |
+|------|--------|
+| Draft | [colin-cowherd](2026-draft-colin-cowherd-style.md) |
+| 1 | [bob-ross](2026-week01-bob-ross-style.md) · [christopher-walken](2026-week01-christopher-walken-style.md) · [david-attenborough](2026-week01-david-attenborough-style.md) · [dolly-parton](2026-week01-dolly-parton-style.md) · [gordon-ramsay](2026-week01-gordon-ramsay-style.md) · [jim-gaffigan](2026-week01-jim-gaffigan-style.md) · [larry-david](2026-week01-larry-david-style.md) · [morgan-freeman](2026-week01-morgan-freeman-style.md) · [nicholas-cage](2026-week01-nicholas-cage-style.md) · [shane-gillis](2026-week01-shane-gillis-style.md) · [sherlock-holmes](2026-week01-sherlock-holmes-style.md) · [stephen-a-smith](2026-week01-stephen-a-smith-style.md) · [winston-churchill](2026-week01-winston-churchill-style.md) · [yoda](2026-week01-yoda-style.md) |
+| 2 | [fred-rogers](2026-week02-fred-rogers-style.md) · [george-carlin](2026-week02-george-carlin-style.md) · [hunter-s-thompson](2026-week02-hunter-s-thompson-style.md) · [larry-david](2026-week02-larry-david-style.md) · [mike-tyson](2026-week02-mike-tyson-style.md) · [ron-burgundy](2026-week02-ron-burgundy-style.md) · [samuel-l-jackson](2026-week02-samuel-l-jackson-style.md) · [snoop-dogg](2026-week02-snoop-dogg-style.md) · [werner-herzog](2026-week02-werner-herzog-style.md) · [yogi-berra](2026-week02-yogi-berra-style.md) |
+| 3 | [abraham-lincoln](2026-week03-abraham-lincoln-style.md) · [arnold-schwarzenegger](2026-week03-arnold-schwarzenegger-style.md) · [bill-belichick](2026-week03-bill-belichick-style.md) · [chris-berman](2026-week03-chris-berman-style.md) · [dwight-schrute](2026-week03-dwight-schrute-style.md) · [jerry-seinfeld](2026-week03-jerry-seinfeld-style.md) · [john-madden](2026-week03-john-madden-style.md) · [kermit-the-frog](2026-week03-kermit-the-frog-style.md) · [theodore-roosevelt](2026-week03-theodore-roosevelt-style.md) · [william-shatner](2026-week03-william-shatner-style.md) |

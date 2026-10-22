@@ -1,0 +1,49 @@
+{
+  "season": 2026,
+  "week": 2,
+  "ratedAt": "2026-09-24T19:32:58.755Z",
+  "ratedBy": "claude-opus",
+  "recommended": "werner-herzog",
+  "ratings": {
+    "werner-herzog": {
+      "stars": 5,
+      "blurb": "Total command of a single idea — indifference — from the opening \"the screens did not love them back\" to its return in the last line, with the zero-scoring defenses as \"oxen in a fog\" who \"did not even have the dignity to be defeated\" and the best single sentence of the ten: \"I have seen men freeze "
+    },
+    "george-carlin": {
+      "stars": 4.5,
+      "blurb": "The recurring word-autopsy is a real structural device rather than decoration — \"Defense,\" \"Parity,\" \"Due,\" and the closing \"a significant amount of time\" riff — and \"the Vikings defense is now load-bearing\" plus \"a participation ribbon soaked in gasoline\" are the kind of lines that get pasted into "
+    },
+    "larry-david": {
+      "stars": 4.5,
+      "blurb": "The numbered grievance list genuinely bends the recap form instead of narrating six games in order, and it lands the petty-outrage register perfectly — Bruce losing by 28 and getting promoted is \"like getting fired and then being handed a parking space,\" and the 4-4-4 split \"somehow annoys me more t"
+    },
+    "yogi-berra": {
+      "stars": 4,
+      "blurb": "The aphorism engine actually generates new Yogi rather than quoting old Yogi — \"Depth don't matter when the other fella's got altitude,\" \"He's climbing in the rankings and drowning in the standings\" — though a few stretches lean on the real quotes to do the work."
+    },
+    "hunter-s-thompson": {
+      "stars": 4,
+      "blurb": "The MILE-marker structure gives it forward motion and \"2028 is currently in a hospital gown asking for a lawyer\" is excellent, but it leans on borrowed Thompson (the bat-country opener, \"too weird to live\") more than it invents its own."
+    },
+    "fred-rogers": {
+      "stars": 4,
+      "blurb": "The gentlest possible register applied to a brutal week is a genuine bend — \"anything mentionable is manageable\" aimed at a 2.83-point loss, McFeely delivering the injury report — and the Bruce/Sean 209 observation (\"two different stories\") is the sharpest read of the week, though the sincerity thic"
+    },
+    "mike-tyson": {
+      "stars": 3.5,
+      "blurb": "Some real punch in the one-liners — \"That's not a lead, that's a restraining order\" and \"You can't win a fight with pillows\" — but the boxing frame flattens into the same beat every section (he fought, he lost, keep your hands up) instead of building."
+    },
+    "samuel-l-jackson": {
+      "stars": 3.5,
+      "blurb": "\"Say '2.67' Again\" as a section head is the one genuinely clever structural move, but the all-caps intensity is one note for 2,000 words and the Ezekiel frame is bolted to the top and bottom rather than running through."
+    },
+    "ron-burgundy": {
+      "stars": 3,
+      "blurb": "This is the standard six-games-in-order recap with catchphrases dropped in on a timer (\"Great Odin's raven,\" \"glass case of emotion,\" \"I love lamp,\" \"that escalated quickly\"); the closing stay-classy roll call that names all twelve owners is the only part doing real work."
+    }
+  },
+  "claude": {
+    "costUsd": 0.6925435,
+    "durationMs": 41545
+  }
+}

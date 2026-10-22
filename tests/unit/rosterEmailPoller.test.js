@@ -67,6 +67,8 @@ function gmailMessage(id, { from = 'chris@example.com', subject = 'move', body =
 beforeEach(() => {
     jest.clearAllMocks();
     useTmpPaths();
+    poller.state.polling = false;
+    axios.get.mockResolvedValue({ data: { emails: [] } });
     poller.state.consecutiveFailures = 0;
     poller.state.authAlertSent = false;
     poller.state.failureAlertSent = false;
@@ -256,5 +258,56 @@ describe('poll behavior', () => {
 
         const submissions = axios.post.mock.calls.filter(([url]) => url.includes('/roster-email'));
         expect(submissions.length).toBe(0);
+    });
+});
+
+describe('complete fetch and skipped-email recovery', () => {
+    test('paginates beyond 50 and deduplicates explicit recovery IDs', async () => {
+        gmail.users.messages.list
+            .mockResolvedValueOnce({ data: { messages: [{ id: 'a' }], nextPageToken: 'page2' } })
+            .mockResolvedValueOnce({ data: { messages: [{ id: 'b' }] } });
+        gmail.users.messages.get.mockImplementation(async ({ id }) => gmailMessage(id));
+        const emails = await poller.fetchRecentEmails(gmail, { retryIds: ['old', 'a'] });
+        expect(emails.map(e => e.gmailMessageId)).toEqual(['old', 'a', 'b']);
+        expect(gmail.users.messages.list.mock.calls[1][0].pageToken).toBe('page2');
+        expect(gmail.users.messages.get).toHaveBeenCalledTimes(3);
+    });
+
+    test('poll fetches recovered email outside the date window with original ID', async () => {
+        axios.get.mockResolvedValue({ data: { emails: [{ emailId: 'old' }] } });
+        gmail.users.messages.get.mockResolvedValue(gmailMessage('old'));
+        await poller.poll();
+        expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/roster-email'),
+            expect.objectContaining({ gmailMessageId: 'old' }), expect.any(Object));
+    });
+
+    test('no overlapping poll while a parse is in flight', async () => {
+        poller.state.polling = true;
+        await poller.poll();
+        expect(axios.get).not.toHaveBeenCalled();
+        expect(gmail.users.messages.list).not.toHaveBeenCalled();
+    });
+
+    test('recovery lookup failure does not advance cursor and releases guard', async () => {
+        axios.get.mockRejectedValue(new Error('recovery service unavailable'));
+        await poller.poll();
+        expect(fs.existsSync(poller.paths.lastCheck)).toBe(false);
+        expect(poller.state.polling).toBe(false);
+    });
+});
+
+
+describe('reply-header boundaries (production regression)', () => {
+    test('does not truncate Keyon inside a flattened Apple Mail reply', () => {
+        const body = 'Drop Demarcus Robinson, pick up Keyon Sadiq Jets TE On Sep 29, 2026, at 8:50 PM, Dan Ochse wrote: Pete passes';
+        expect(poller.extractLatestMessage(body)).toBe('Drop Demarcus Robinson, pick up Keyon Sadiq Jets TE');
+    });
+    test('handles folded Gmail reply headers without retaining quoted moves', () => {
+        const body = 'Dan invalidates that move.\r\n\r\nOn Tue, Sep 29, 2026 at 5:00 PM Joe Paley\r\nwrote:\r\nDrop somebody else';
+        expect(poller.extractLatestMessage(body)).toBe('Dan invalidates that move.');
+    });
+    test('on IR is not a reply header', () => {
+        const body = 'Put Robinson on IR and add Sadiq. On Tue, Sep 29, 2026 Joe wrote: old request';
+        expect(poller.extractLatestMessage(body)).toBe('Put Robinson on IR and add Sadiq.');
     });
 });

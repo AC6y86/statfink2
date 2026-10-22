@@ -31,6 +31,12 @@ Rules:
 - Reproduce the digest's injury caveat line in your injury section.
 - WebSearch is for persona research only (catchphrases, speech patterns) —
   never for football statistics.
+- Standing commissioner rule (Joe, 2026-10-15): never mention, compare
+  against or otherwise use preseason/draft grades (letter grades, draft-recap
+  rankings, "the A-grade team", "the C+ unbeatens") — they are no longer
+  relevant. If the storylines file still contains draft grades, ignore that
+  material entirely and do not carry it forward. The fact-checker treats any
+  draft-grade mention as a Critical discrepancy that FAILs the recap.
 
 ## Style adoption
 

@@ -1,0 +1,85 @@
+{
+  "season": 2026,
+  "week": 3,
+  "proposedAt": "2026-09-30T23:10:20.132Z",
+  "proposedBy": "claude",
+  "generatedAt": "2026-09-30T23:34:34.820Z",
+  "themes": [
+    {
+      "slug": "william-shatner",
+      "name": "William Shatner",
+      "description": "Captain Kirk's halting, over-enunciated... dramatic pauses turn every third-and-long into a cosmic crisis worthy of the Enterprise.",
+      "origin": "suggested",
+      "addedAt": "2026-09-29T03:30:47.076Z"
+    },
+    {
+      "slug": "john-madden",
+      "name": "John Madden",
+      "description": "Telestrator-happy, turducken-obsessed exclamations of 'boom!' and 'that's a big fella right there' turn waiver-wire scrubs into thunderous line-of-scrimmage legends.",
+      "origin": "suggested",
+      "addedAt": "2026-09-29T03:30:47.077Z"
+    },
+    {
+      "slug": "kermit-the-frog",
+      "name": "Kermit the Frog",
+      "description": "Frazzled, good-natured showbiz-frog energy, exasperated that keeping this whole fantasy production together is never easy being green.",
+      "origin": "suggested",
+      "addedAt": "2026-09-29T03:30:47.077Z"
+    },
+    {
+      "slug": "abraham-lincoln",
+      "name": "Abraham Lincoln",
+      "description": "Solemn, folksy 19th-century oratory that elevates a bench-points controversy to the weight of a house-divided address.",
+      "origin": "suggested",
+      "addedAt": "2026-09-29T03:30:47.077Z"
+    },
+    {
+      "slug": "bill-belichick",
+      "name": "Bill Belichick",
+      "description": "Terse, hoodie-clad monotone that deflects every question about the standings with 'we're on to week four.'",
+      "origin": "suggested",
+      "addedAt": "2026-09-29T03:30:47.077Z"
+    },
+    {
+      "slug": "chris-berman",
+      "name": "Chris Berman",
+      "description": "ESPN's nickname-obsessed broadcaster hangs a rhyming or pun nickname on every owner and player, adds \"back-back-back-back\" for big plays, and shouts \"he could go all the way!\" at any modest gain.",
+      "origin": "suggested",
+      "addedAt": "2026-09-30T23:10:20.131Z"
+    },
+    {
+      "slug": "arnold-schwarzenegger",
+      "name": "Arnold Schwarzenegger",
+      "description": "Thick Austrian accent, bodybuilding metaphors, and \"I'll be back\" one-liners, with every owner's weak lineup treated as a muscle group that skipped leg day.",
+      "origin": "suggested",
+      "addedAt": "2026-09-30T23:10:20.132Z"
+    },
+    {
+      "slug": "dwight-schrute",
+      "name": "Dwight Schrute",
+      "description": "The Dunder Mifflin assistant (to the) regional manager delivers deadpan, absurdly self-assured analysis full of beet farm wisdom, bear and ninja references, and contempt for weak owners, all as FACT.",
+      "origin": "suggested",
+      "addedAt": "2026-09-30T23:10:20.132Z"
+    },
+    {
+      "slug": "theodore-roosevelt",
+      "name": "Theodore Roosevelt",
+      "description": "Booming, bully-spirited Rough Rider who praises the strenuous life, \"speak softly and carry a big stick,\" and the man in the arena, and scolds timid owners with hearty exclamations of \"Bully!\" and \"Dee-lighted!\"",
+      "origin": "suggested",
+      "addedAt": "2026-09-30T23:10:20.132Z"
+    },
+    {
+      "slug": "jerry-seinfeld",
+      "name": "Jerry Seinfeld",
+      "description": "Observational-comedy cadence of \"What is the deal with...?\" and \"Who are these people?\", turning each matchup into a petty, absurd gripe about the tiny details of fantasy football life.",
+      "origin": "suggested",
+      "addedAt": "2026-09-30T23:10:20.132Z"
+    }
+  ],
+  "lastRun": {
+    "overallStatus": "PASS",
+    "files": 10,
+    "error": null,
+    "note": null
+  }
+}

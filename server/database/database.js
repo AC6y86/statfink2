@@ -5,8 +5,23 @@ const { Validator, ValidationError } = require('./validation');
 const { DatabaseError, logError, logInfo } = require('../utils/errorHandler');
 const { getTeamAbbreviation } = require('../utils/teamMappings');
 
+// Generous upper bound on an NFL game's length; a week is over once its last game is
+const GAME_LENGTH_SECONDS = 5 * 60 * 60;
+
 class DatabaseManager {
-    constructor() {
+    /**
+     * @param {object} [options]
+     * @param {object} [options.nflEligibilityService] NFL.com IR eligibility
+     *   gate (server/services/nflRosterEligibilityService.js). Injected by
+     *   app.js; tests inject a fake. See getNflEligibilityService().
+     */
+    constructor(options = {}) {
+        // Distinguish an explicitly injected null (tests/fail-closed callers)
+        // from an omitted option (production may lazily construct the gate).
+        this.nflEligibilityServiceConfigured = Object.prototype.hasOwnProperty.call(options, 'nflEligibilityService');
+        if (this.nflEligibilityServiceConfigured) {
+            this.nflEligibilityService = options.nflEligibilityService || null;
+        }
         const dbPath = process.env.DATABASE_PATH || './fantasy_football.db';
         const absolutePath = path.resolve(dbPath);
         
@@ -361,17 +376,199 @@ class DatabaseManager {
         };
     }
 
+    /**
+     * Inject the NFL.com eligibility gate used for ordinary IR moves.
+     */
+    setNflEligibilityService(service) {
+        this.nflEligibilityServiceConfigured = true;
+        this.nflEligibilityService = service || null;
+    }
+
+    /**
+     * The NFL.com gate for IR moves. Lazily builds the real service outside
+     * tests; under NODE_ENV=test it must be injected, so no test can reach
+     * the network by accident (an IR validation without a service fails
+     * closed).
+     */
+    getNflEligibilityService() {
+        const explicitlyConfigured = this.nflEligibilityServiceConfigured === true
+            || (this.nflEligibilityServiceConfigured === undefined
+                && Object.prototype.hasOwnProperty.call(this, 'nflEligibilityService'));
+        if (!this.nflEligibilityService && !explicitlyConfigured && process.env.NODE_ENV !== 'test') {
+            const NflRosterEligibilityService = require('../services/nflRosterEligibilityService');
+            this.nflEligibilityService = new NflRosterEligibilityService();
+        }
+        return this.nflEligibilityService || null;
+    }
+
+    /**
+     * Fail-closed NFL.com check for placing dropPlayer on IR (moveType 'ir').
+     * Always a fresh fetch - never cached, never Tank01, never
+     * nfl_players.injury_designation. Returns structured evidence; on failure
+     * the evidence has eligible:false plus the error to report.
+     */
+    async checkIrEligibility(dropPlayer, season, week) {
+        const service = this.getNflEligibilityService();
+        const checkedAt = new Date().toISOString();
+        if (!service || typeof service.checkIrEligibility !== 'function') {
+            const reason = 'Validation failed: fresh NFL.com data unavailable (NFL eligibility service not configured)';
+            return { eligible: false, code: 'NFL_UNAVAILABLE', reason, error: reason, checkedAt, source: 'nfl.com', sources: [] };
+        }
+        try {
+            const evidence = await service.checkIrEligibility({
+                playerName: dropPlayer.name,
+                team: dropPlayer.team,
+                season,
+                week
+            });
+            if (!evidence || evidence.eligible !== true) {
+                const reason = 'Validation failed: fresh NFL.com data unavailable (eligibility service returned no positive evidence)';
+                return { eligible: false, code: 'NFL_UNAVAILABLE', reason, error: reason, checkedAt, source: 'nfl.com', sources: [] };
+            }
+            return evidence;
+        } catch (error) {
+            const code = error && (error.code === 'NFL_INELIGIBLE' || error.code === 'NFL_UNAVAILABLE') ? error.code : 'NFL_UNAVAILABLE';
+            const message = code === 'NFL_UNAVAILABLE' && !/^Validation failed: fresh NFL\.com data unavailable/.test(error && error.message || '')
+                ? `Validation failed: fresh NFL.com data unavailable (${(error && error.message) || 'unknown error'})`
+                : error.message;
+            const evidence = (error && error.evidence) || {};
+            return { ...evidence, eligible: false, code, reason: message, error: message, checkedAt: evidence.checkedAt || checkedAt, source: 'nfl.com', sources: evidence.sources || [] };
+        }
+    }
+
     // Read-only dry-run of all pre-transaction roster move checks.
     // Returns { valid, errors, context } - context carries the lookups so
     // executeRosterMove can reuse them without re-querying. Used both by
     // executeRosterMove and by the pending email-move queue to show
     // "would pass / would fail" before the commissioner approves.
-    async validateRosterMove(teamId, dropPlayerId, addPlayerId, moveType) {
+    /**
+     * Drop lock: a player cannot be dropped (or traded away) once his NFL
+     * team's game for the current week has kicked off, judged at the moment
+     * the OWNER asked - options.asOf (the email's Date header for email
+     * moves); manual moves are judged now. Returns null when the drop is
+     * allowed, otherwise the error string. Bye week / no schedule row: allowed.
+     */
+    async checkDropLock(player, season, week, asOf = null) {
+        const parsed = asOf ? Date.parse(asOf) : NaN;
+        const atMs = Number.isNaN(parsed) ? Date.now() : parsed;
+        const team = getTeamAbbreviation(player.team);
+        if (!team) return null;
+        const game = await this.get(`
+            SELECT game_id, game_date, game_time, game_time_epoch, status FROM nfl_games
+            WHERE season = ? AND week = ? AND (home_team = ? OR away_team = ?)
+        `, [season, week, team, team]);
+        if (!game) return null;
+        const kickoffMs = game.game_time_epoch ? Number(game.game_time_epoch) * 1000 : null;
+        // No kickoff time on file: only a manual (now) request can be judged by status
+        const started = kickoffMs != null
+            ? atMs >= kickoffMs
+            : (!asOf && Boolean(game.status) && !/^scheduled$/i.test(game.status));
+        if (!started) return null;
+        const kickoff = kickoffMs != null ? new Date(kickoffMs).toISOString() : `status ${game.status}`;
+        return `Cannot drop ${player.name}: ${team} already played this week (${game.game_id} kicked off ${kickoff}; request made ${new Date(atMs).toISOString()})`;
+    }
+
+    /**
+     * Fail-closed fallback for DELAYED EMAIL APPROVAL ONLY. The queue passes
+     * the immutable evidence its enqueue dry-run gathered seconds after the
+     * owner asked (options.enqueueEvidence); the admin form never does, so a
+     * manual move can never reach this. Returns { accepted: true, evidence }
+     * only when every one of these holds, otherwise { accepted: false, reason }:
+     *   - the fresh check failed as NFL_UNAVAILABLE (could not be completed:
+     *     page identity mismatch, fetch failure...). A definitive
+     *     NFL_INELIGIBLE is NFL.com's answer and is never overridden.
+     *   - the enqueue evidence is a positive NFL.com verdict (eligible:true
+     *     with an OUT_ON_INJURY_REPORT / RESERVE_INJURED code)
+     *   - same season, same judged week, same player (name + NFL team, and
+     *     player_id when the queue recorded it), and the request's asOf is
+     *     exactly the asOf the enqueue evidence was judged at.
+     * The accepted evidence keeps the original verdict and records
+     * basis:'enqueue' plus the fresh failure it stood in for, so the audit
+     * trail shows which NFL.com fetch actually decided the move.
+     */
+    static acceptEnqueueEvidence(enqueueEvidence, fresh, { season, judgedWeek, asOf, dropPlayer, dropPlayerId }) {
+        const reject = reason => ({ accepted: false, reason });
+        if (!fresh || fresh.code !== 'NFL_UNAVAILABLE') {
+            return reject(`fresh NFL.com check answered ${fresh && fresh.code ? fresh.code : 'without a code'}, which is not NFL_UNAVAILABLE`);
+        }
+        if (!enqueueEvidence || typeof enqueueEvidence !== 'object') return reject('no enqueue evidence');
+        const nfl = enqueueEvidence.nflEligibility;
+        const positive = ['OUT_ON_INJURY_REPORT', 'RESERVE_INJURED'];
+        if (!nfl || nfl.eligible !== true || !positive.includes(nfl.code)) {
+            return reject('enqueue evidence is not a positive NFL.com verdict');
+        }
+        const requestMs = asOf ? Date.parse(asOf) : NaN;
+        const evidenceMs = enqueueEvidence.asOf ? Date.parse(enqueueEvidence.asOf) : NaN;
+        if (Number.isNaN(requestMs) || Number.isNaN(evidenceMs) || requestMs !== evidenceMs) {
+            return reject(`request asOf ${asOf || 'missing'} does not match enqueue evidence asOf ${enqueueEvidence.asOf || 'missing'}`);
+        }
+        if (Number(nfl.season) !== Number(season)) {
+            return reject(`enqueue evidence is for season ${nfl.season}, judging ${season}`);
+        }
+        if (!Number.isInteger(Number(nfl.week)) || Number(nfl.week) !== Number(judgedWeek)) {
+            return reject(`enqueue evidence is for Week ${nfl.week}, judging Week ${judgedWeek}`);
+        }
+        if (enqueueEvidence.dropPlayerId != null && String(enqueueEvidence.dropPlayerId) !== String(dropPlayerId)) {
+            return reject(`enqueue evidence is for player ${enqueueEvidence.dropPlayerId}, judging ${dropPlayerId}`);
+        }
+        const norm = v => String(v || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        const player = nfl.player || {};
+        if (!norm(player.name) || norm(player.name) !== norm(dropPlayer && dropPlayer.name)) {
+            return reject(`enqueue evidence names ${player.name || 'nobody'}, judging ${dropPlayer && dropPlayer.name}`);
+        }
+        const evidenceTeam = getTeamAbbreviation(player.team) || null;
+        const playerTeam = getTeamAbbreviation(dropPlayer && dropPlayer.team) || null;
+        if (!evidenceTeam || !playerTeam || evidenceTeam !== playerTeam) {
+            return reject(`enqueue evidence team ${player.team || 'unknown'} does not match ${dropPlayer && dropPlayer.team ? dropPlayer.team : 'unknown'}`);
+        }
+        const checkedAt = nfl.checkedAt || enqueueEvidence.checkedAt || null;
+        return {
+            accepted: true,
+            evidence: {
+                ...nfl,
+                eligible: true,
+                basis: 'enqueue',
+                legacy: enqueueEvidence.legacy === true,
+                reason: `Accepted enqueue-time NFL.com evidence${checkedAt ? ` checked ${checkedAt}` : ''}: ${nfl.reason}. Fresh check at approval: ${fresh.reason || fresh.error}`,
+                enqueueCheckedAt: checkedAt,
+                freshCheck: { ...fresh }
+            }
+        };
+    }
+
+    /**
+     * The NFL week the owner was in when he asked (asOf): the earliest week
+     * of the season whose last game had not yet ended at that moment, never
+     * later than the roster week the move executes on. A request made in
+     * Week 5 and approved in Week 6 is still judged on Week 5 (its injury
+     * report, its kickoffs). No asOf (manual move) or no schedule on file:
+     * the roster week, i.e. execution-time behaviour.
+     */
+    async weekInEffectAt(season, asOf, rosterWeek) {
+        const atMs = asOf ? Date.parse(asOf) : NaN;
+        if (Number.isNaN(atMs)) return rosterWeek;
+        const row = await this.get(`
+            SELECT week FROM nfl_games
+            WHERE season = ? AND game_time_epoch IS NOT NULL
+            GROUP BY week
+            HAVING MAX(game_time_epoch) + ? > ?
+            ORDER BY week LIMIT 1
+        `, [season, GAME_LENGTH_SECONDS, Math.floor(atMs / 1000)]);
+        const week = row ? Number(row.week) : NaN;
+        if (!Number.isFinite(week) || week <= 0) return rosterWeek;
+        return Number.isFinite(rosterWeek) ? Math.min(week, rosterWeek) : week;
+    }
+
+    async validateRosterMove(teamId, dropPlayerId, addPlayerId, moveType, options = {}) {
         const errors = [];
         const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
         `, [currentSeason]);
+        // Time-dependent rules (drop lock, NFL.com IR gate) are judged in the
+        // week the owner asked, not whatever week approval drifted into
+        const asOf = options.asOf || null;
+        const judgedWeek = await this.weekInEffectAt(currentSeason, asOf, latestWeek && latestWeek.week);
 
         // Get player info for both players
         const [dropPlayer, addPlayer] = await Promise.all([
@@ -384,7 +581,10 @@ class DatabaseManager {
             latestWeek,
             dropPlayer,
             addPlayer,
-            playerOnIR: null
+            playerOnIR: null,
+            nflEligibility: null,
+            asOf,
+            judgedWeek
         };
 
         if (!dropPlayer || !addPlayer) {
@@ -400,6 +600,38 @@ class DatabaseManager {
 
         if (!onRoster) {
             errors.push('Player to drop is not on this team');
+        }
+
+        // Drop lock for every drop type, judged at request time (email Date header / now) in the week in effect then
+        const dropLock = await this.checkDropLock(dropPlayer, currentSeason, judgedWeek, asOf);
+        context.dropLock = dropLock;
+        if (dropLock) errors.push(dropLock);
+
+        // Ordinary IR move: the dropped player must be injury-eligible per
+        // fresh NFL.com data (Game Status exactly "Out" on the injury report
+        // of the week the owner asked, or current RES/RSR + Reserve/Injured
+        // transaction). This is the single gate for both email approval and
+        // manual execution; the email parser never decides eligibility.
+        if (moveType === 'ir') {
+            let evidence = await this.checkIrEligibility(dropPlayer, currentSeason, judgedWeek);
+            // Delayed email approval only: when the fresh check could not be
+            // completed (never when it said "not hurt"), the immutable
+            // enqueue-time NFL.com evidence may stand in, provided it is for
+            // this season, this judged week, this player and this asOf.
+            if (!evidence.eligible && options.enqueueEvidence) {
+                const fallback = DatabaseManager.acceptEnqueueEvidence(options.enqueueEvidence, evidence, {
+                    season: currentSeason, judgedWeek, asOf, dropPlayer, dropPlayerId
+                });
+                if (fallback.accepted) {
+                    evidence = fallback.evidence;
+                } else {
+                    evidence = { ...evidence, enqueueEvidenceRejected: fallback.reason };
+                }
+            }
+            context.nflEligibility = evidence;
+            if (!evidence.eligible) {
+                errors.push(evidence.error || evidence.reason || 'Validation failed: fresh NFL.com data unavailable (no evidence)');
+            }
         }
 
         // Verify add player is available
@@ -442,15 +674,42 @@ class DatabaseManager {
         return { valid: errors.length === 0, errors, context };
     }
 
+    /** roster_moves.notes text for a commissioner override: the reason and every check it overrode. */
+    static overrideNote(reason, overriddenErrors) {
+        const why = String(reason || '').trim() || 'no reason given';
+        return `Commissioner override: ${why}. Overrode validation: ${(overriddenErrors || []).join('; ')}`;
+    }
+
     // Execute a paired roster move (drop + add)
-    async executeRosterMove(teamId, dropPlayerId, addPlayerId, moveType) {
-        const validation = await this.validateRosterMove(teamId, dropPlayerId, addPlayerId, moveType);
-        if (!validation.valid) {
-            const errorType = validation.errors[0] === 'One or both players not found' ? 'not_found' : 'roster_constraint';
-            throw new DatabaseError(validation.errors[0], errorType);
+    //
+    // options.overrideValidation (commissioner override, email queue only):
+    // when true, a move the validator refuses is still executed, the refused
+    // checks are returned as result.overriddenErrors and written to
+    // roster_moves.notes with options.overrideReason. "One or both players
+    // not found" can never be overridden (there is nothing to execute), and
+    // the 19-active-roster invariant inside the transaction still holds.
+    async executeRosterMove(teamId, dropPlayerId, addPlayerId, moveType, options = {}) {
+        const validation = await this.validateRosterMove(teamId, dropPlayerId, addPlayerId, moveType, options);
+        const canOverride = options.overrideValidation === true &&
+            validation.context.dropPlayer && validation.context.addPlayer;
+        const overriddenErrors = !validation.valid && canOverride ? validation.errors.slice() : null;
+        if (!validation.valid && !overriddenErrors) {
+            // The reported error is errors[0]; classify by that same error so
+            // the type always describes the message the caller sees (an IR
+            // move can fail the roster check *and* the NFL.com gate).
+            const nflEligibility = validation.context.nflEligibility || null;
+            const nflError = nflEligibility && !nflEligibility.eligible
+                ? (nflEligibility.error || nflEligibility.reason)
+                : null;
+            const errorType = validation.errors[0] === 'One or both players not found' ? 'not_found'
+                : (nflError && validation.errors[0] === nflError) ? 'ir_eligibility'
+                : 'roster_constraint';
+            const error = new DatabaseError(validation.errors[0], errorType);
+            error.nflEligibility = nflEligibility;
+            throw error;
         }
 
-        const { currentSeason, latestWeek, dropPlayer, addPlayer, playerOnIR } = validation.context;
+        const { currentSeason, latestWeek, dropPlayer, addPlayer, playerOnIR, nflEligibility } = validation.context;
 
         // Start transaction
         await this.run('BEGIN TRANSACTION');
@@ -496,17 +755,18 @@ class DatabaseManager {
                     addPlayer.name, addPlayer.position, getTeamAbbreviation(addPlayer.team)]);
             }
 
-            // Log the move
+            // Log the move (an override records what it overrode, for audit)
             await this.run(`
                 INSERT INTO roster_moves (team_id, move_type,
                                          dropped_player_id, dropped_player_name, dropped_player_position,
                                          added_player_id, added_player_name, added_player_position,
-                                         week, season)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                         week, season, notes)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `, [teamId, moveType,
                 dropPlayerId, dropPlayer.name, dropPlayer.position,
                 addPlayerId, addPlayer.name, addPlayer.position,
-                latestWeek.week, currentSeason]);
+                latestWeek.week, currentSeason,
+                overriddenErrors ? DatabaseManager.overrideNote(options.overrideReason, overriddenErrors) : null]);
 
             // Validate roster count is still 19 (excluding IR players)
             const rosterCount = await this.get(`
@@ -529,7 +789,9 @@ class DatabaseManager {
                 success: true,
                 dropped: dropPlayer,
                 added: addPlayer,
-                moveType: moveType
+                moveType: moveType,
+                nflEligibility: nflEligibility || null,
+                overriddenErrors
             };
         } catch (error) {
             // Rollback on error
@@ -589,7 +851,7 @@ class DatabaseManager {
     }
 
     // Execute a trade between two teams
-    async executeTrade(team1Id, team1PlayerId, team2Id, team2PlayerId) {
+    async executeTrade(team1Id, team1PlayerId, team2Id, team2PlayerId, options = {}) {
         const { season: currentSeason } = await this.getCurrentSeasonAndWeek();
         const latestWeek = await this.get(`
             SELECT MAX(week) as week FROM weekly_rosters WHERE season = ?
@@ -624,6 +886,16 @@ class DatabaseManager {
         }
         if (!player2OnTeam) {
             throw new DatabaseError(`${player2.name} is not on team ${team2Id}'s active roster`, 'roster_constraint');
+        }
+
+        // Neither side may trade away a player whose game has already kicked off (judged at request time).
+        // A commissioner override (options.overrideValidation) records the lock instead of refusing.
+        const overriddenErrors = [];
+        for (const p of [player1, player2]) {
+            const lock = await this.checkDropLock(p, currentSeason, latestWeek.week, options.asOf || null);
+            if (!lock) continue;
+            if (options.overrideValidation === true) overriddenErrors.push(lock);
+            else throw new DatabaseError(lock, 'roster_constraint');
         }
 
         // Generate a unique trade ID
@@ -719,7 +991,8 @@ class DatabaseManager {
                 team1PlayerId, player1.name, player1.position,
                 team2PlayerId, player2.name, player2.position,
                 latestWeek.week, currentSeason, team2Id, tradeId,
-                `Traded ${player1.name} to team ${team2Id} for ${player2.name}`]);
+                `Traded ${player1.name} to team ${team2Id} for ${player2.name}` +
+                    (overriddenErrors.length ? `. ${DatabaseManager.overrideNote(options.overrideReason, overriddenErrors)}` : '')]);
 
             // Commit transaction
             await this.run('COMMIT');
@@ -736,7 +1009,8 @@ class DatabaseManager {
                     teamId: team2Id,
                     gave: player2,
                     received: player1
-                }
+                },
+                overriddenErrors: overriddenErrors.length ? overriddenErrors : null
             };
         } catch (error) {
             // Rollback on error

@@ -94,9 +94,10 @@ describe('End-of-week validation checks (2025 blessed data)', () => {
     });
 
     describe('zero-occurrence weeks warn instead of failing', () => {
-        test('week 17: zero two-point conversions is a warning', skipWithout2025(async () => {
+        test('week 17: zero two-point conversions is informational, not a warning (the Double Check verifies plays vs ESPN)', skipWithout2025(async () => {
             const result = await checkTwoPointConversions(db, 17, SEASON);
-            expect(result.status).toBe('warning');
+            expect(result.status).toBe('passed');
+            expect(result.message).toMatch(/No two-point conversions recorded/);
         }));
     });
 });

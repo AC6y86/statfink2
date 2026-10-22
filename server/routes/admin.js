@@ -3,38 +3,24 @@ const fs = require('fs').promises;
 const path = require('path');
 const { asyncHandler, APIError, logInfo, logError } = require('../utils/errorHandler');
 const DataCleanupService = require('../services/dataCleanupService');
+const { trustedVia } = require('../auth/trust');
+const { parseQuestionId, AWARD_CLASSES } = require('../services/jobStatusService');
 const router = express.Router();
 
-// Admin authentication - localhost bypass for local scripts
+// Admin authentication. Password-free only for the loopback Tailscale
+// listener and bare local calls (cron scripts) - decided by the socket the
+// request arrived on, see server/auth/trust.js. (setupAuth's requireAuth
+// already guards /api/admin; this is the per-route second gate.)
 const requireAdmin = (req, res, next) => {
-    // Get client IP address
-    const clientIp = req.ip ||
-                    req.connection?.remoteAddress ||
-                    req.socket?.remoteAddress ||
-                    req.headers['x-forwarded-for']?.split(',')[0];
-
-    // Check if request is from localhost
-    // Include IPv4, IPv6, and loopback variations
-    const localhostPatterns = [
-        '127.0.0.1',
-        '::1',
-        '::ffff:127.0.0.1',
-        'localhost'
-    ];
-
-    const isLocalhost = localhostPatterns.some(pattern =>
-        clientIp && (clientIp === pattern || clientIp.includes(pattern))
-    );
-
-    if (isLocalhost) {
-        // Allow localhost requests without authentication
-        console.log(`Admin API access from localhost: ${req.method} ${req.path}`);
+    const trust = trustedVia(req);
+    if (trust.via) {
+        req.adminVia = trust.via;
         return next();
     }
 
     // For external requests, require authentication
     if (!req.session || !req.session.userId) {
-        console.log(`Unauthorized admin API attempt from ${clientIp}: ${req.method} ${req.path}`);
+        console.log(`Unauthorized admin API attempt from ${req.ip}: ${req.method} ${req.path}`);
         return res.status(401).json({
             error: 'Authentication required for external access',
             message: 'Please login to access admin functions'
@@ -155,7 +141,8 @@ router.post('/roster/move', requireAdmin, asyncHandler(async (req, res) => {
                 parseInt(teamId),
                 dropPlayerId,
                 parseInt(partnerTeamId),
-                partnerPlayerId
+                partnerPlayerId,
+                { asOf: req.body.requestedAt || null } // when the owner asked (drop lock); omitted = now
             );
 
             res.json({
@@ -211,7 +198,8 @@ router.post('/roster/move', requireAdmin, asyncHandler(async (req, res) => {
                 parseInt(teamId),
                 dropPlayerId,
                 addPlayerId,
-                moveType
+                moveType,
+                { asOf: req.body.requestedAt || null } // when the owner asked (drop lock); omitted = now
             );
 
             let message;
@@ -861,19 +849,21 @@ router.post('/sync/games/specific-week', requireAdmin, asyncHandler(async (req, 
                                `Bonuses: ${dst.def_points_bonus}/${dst.def_yards_bonus})`);
                     });
                 }
+            }
+        }
 
-                // Step 3: Recalculate scoring players now that DSTs have points
-                const scoringPlayersService = req.app.locals.scoringPlayersService;
-                if (scoringPlayersService) {
-                    logInfo(`Starting scoring players calculation for Week ${weekNum}...`);
-                    const scoringResult = await scoringPlayersService.calculateScoringPlayers(
-                        weekNum,
-                        seasonNum
-                    );
-                    logInfo(`✓ Scoring players recalculated: ${scoringResult.playersMarked} players marked`);
-                } else {
-                    logInfo('WARNING: scoringPlayersService not available');
-                }
+        // ALWAYS re-select the scoring lineups and rewrite the matchup totals:
+        // cleanWeekData() above zeroed matchups.team*_scoring_points, and until
+        // 2026-09-13 this only ran when the defensive bonuses succeeded (i.e. the
+        // week was complete), leaving every matchup at 0 for an in-progress week.
+        {
+            const scoringPlayersService = req.app.locals.scoringPlayersService;
+            if (scoringPlayersService) {
+                logInfo(`Starting scoring players calculation for Week ${weekNum}...`);
+                const scoringResult = await scoringPlayersService.calculateScoringPlayers(weekNum, seasonNum);
+                logInfo(`✓ Scoring players recalculated: ${scoringResult.playersMarked} players marked`);
+            } else {
+                logInfo('WARNING: scoringPlayersService not available - matchup totals left at 0 by cleanWeekData!');
             }
         }
 
@@ -1115,6 +1105,36 @@ router.post('/scheduler/weekly', requireAdmin, asyncHandler(async (req, res) => 
             data: result
         });
     }
+}));
+
+// Weekly advance hold: logs/HOLD-ADVANCE blocks the automatic Wednesday advance
+// (scripts/weekly-advance.js) until released. The manual advance above ignores it.
+const HOLD_ADVANCE_FILE = path.join(__dirname, '../../logs/HOLD-ADVANCE');
+async function readAdvanceHold() {
+    try {
+        const raw = await fs.readFile(HOLD_ADVANCE_FILE, 'utf8');
+        let parsed = {};
+        try { parsed = JSON.parse(raw); } catch (_) { /* plain file */ }
+        return { held: true, reason: parsed.reason || 'held', at: parsed.at || null };
+    } catch (_) {
+        return { held: false, reason: null, at: null };
+    }
+}
+router.get('/advance/hold', requireAdmin, asyncHandler(async (req, res) => {
+    res.json({ success: true, data: await readAdvanceHold() });
+}));
+router.post('/advance/hold', requireAdmin, asyncHandler(async (req, res) => {
+    const hold = req.body && req.body.hold !== false;
+    if (hold) {
+        const reason = String((req.body && req.body.reason) || 'held from /admin').slice(0, 200);
+        await fs.mkdir(path.dirname(HOLD_ADVANCE_FILE), { recursive: true });
+        await fs.writeFile(HOLD_ADVANCE_FILE, JSON.stringify({ reason, at: new Date().toISOString() }, null, 2) + '\n');
+        logInfo(`Weekly advance held: ${reason}`);
+    } else {
+        await fs.rm(HOLD_ADVANCE_FILE, { force: true });
+        logInfo('Weekly advance hold released');
+    }
+    res.json({ success: true, data: await readAdvanceHold() });
 }));
 
 router.post('/scheduler/live', requireAdmin, asyncHandler(async (req, res) => {
@@ -1398,7 +1418,8 @@ router.post('/test/stats-completeness', requireAdmin, asyncHandler(async (req, r
     });
 }));
 
-// List pending email moves. ?status=pending|needs_review|approved|rejected|failed
+// List pending email moves. ?status=pending|needs_review|failed|approved|rejected
+// (pendingCount = items still waiting on the commissioner: pending, needs_review, failed)
 router.get('/pending-moves', requireAdmin, asyncHandler(async (req, res) => {
     const pendingMovesService = req.app.locals.pendingMovesService;
     if (!pendingMovesService) {
@@ -1411,7 +1432,18 @@ router.get('/pending-moves', requireAdmin, asyncHandler(async (req, res) => {
     res.json({ success: true, data: { items, pendingCount } });
 }));
 
-// Approve a pending email move - re-validates, then executes the move
+// Attach an informational commissioner ruling to a specific proposal, without execution.
+router.post('/pending-moves/:id/link-ruling', requireAdmin, asyncHandler(async (req, res) => {
+    const service = req.app.locals.pendingMovesService;
+    if (!service) throw new APIError('Pending moves service not available', 500);
+    if (typeof req.body?.moveId !== 'string') throw new APIError('moveId is required', 400);
+    const note = await service.linkRuling(req.params.id, req.body.moveId);
+    res.json({ success: true, data: note });
+}));
+
+// Approve a pending email move - re-validates, then executes the move.
+// A failed item may be approved again (retry); it stays failed, with the
+// execution error on the item, until it succeeds or is rejected.
 router.post('/pending-moves/:id/approve', requireAdmin, asyncHandler(async (req, res) => {
     const pendingMovesService = req.app.locals.pendingMovesService;
     if (!pendingMovesService) {
@@ -1431,7 +1463,61 @@ router.post('/pending-moves/:id/approve', requireAdmin, asyncHandler(async (req,
     });
 }));
 
-// Reject a pending email move
+// Commissioner override: execute ONE move the validator refuses (failed
+// dry-run or failed execution) despite the refusal. Separate from approve on
+// purpose: it requires a written reason, is recorded on the item and in
+// roster_moves.notes, and applies only to the selected item.
+router.post('/pending-moves/:id/override', requireAdmin, asyncHandler(async (req, res) => {
+    const pendingMovesService = req.app.locals.pendingMovesService;
+    if (!pendingMovesService) {
+        throw new APIError('Pending moves service not available', 500);
+    }
+
+    const reason = typeof req.body?.reason === 'string' ? req.body.reason.trim() : '';
+    if (!reason) throw new APIError('Override requires a reason', 400);
+    const moveTypeOverride = req.body?.moveType || null;
+    logInfo(`Commissioner override of pending email move ${req.params.id}${moveTypeOverride ? ` as ${moveTypeOverride}` : ''}`, { reason });
+    let item;
+    try {
+        item = await pendingMovesService.overrideItem(req.params.id, 'commissioner', { reason, moveTypeOverride });
+    } catch (error) {
+        // Precondition failures (not found, already resolved, not deemed invalid, no reason)
+        throw new APIError(error.message, 400);
+    }
+
+    res.json({
+        success: item.status === 'approved',
+        data: item,
+        message: item.status === 'approved'
+            ? `Override executed: ${item.executionResult.message}${(item.override?.overriddenErrors || []).length ? ` (overrode: ${item.override.overriddenErrors.join('; ')})` : ''}`
+            : `Override failed: ${item.executionResult?.message || 'unknown error'}`
+    });
+}));
+
+// Re-run the read-only validation (fresh NFL.com fetch for IR moves) for an
+// unresolved pending/needs_review item. Never executes; may promote
+// needs_review -> pending when everything passes.
+router.post('/pending-moves/:id/recheck', requireAdmin, asyncHandler(async (req, res) => {
+    const pendingMovesService = req.app.locals.pendingMovesService;
+    if (!pendingMovesService) {
+        throw new APIError('Pending moves service not available', 500);
+    }
+
+    logInfo(`Rechecking pending email move ${req.params.id} against NFL.com`);
+    const item = await pendingMovesService.revalidateItem(req.params.id, 'commissioner');
+    const v = item.validation || {};
+    const nfl = v.nflEligibility;
+
+    res.json({
+        success: v.valid === true,
+        data: item,
+        message: v.valid
+            ? `Validation passed${nfl ? `: ${nfl.reason}` : ''} - item is ${item.status}`
+            : `Validation failed: ${(v.errors || []).join('; ') || 'unknown'}`
+    });
+}));
+
+// Reject a pending email move (for a failed item: dismiss it)
 router.post('/pending-moves/:id/reject', requireAdmin, asyncHandler(async (req, res) => {
     const pendingMovesService = req.app.locals.pendingMovesService;
     if (!pendingMovesService) {
@@ -1453,15 +1539,17 @@ router.get('/health/alerts', requireAdmin, asyncHandler(async (req, res) => {
 
     const unacknowledgedOnly = req.query.unacknowledged === 'true';
     const alerts = await healthCheckService.getAlerts({ unacknowledgedOnly });
-    const unacknowledgedCount = unacknowledgedOnly
-        ? alerts.length
-        : alerts.filter(a => !a.acknowledged).length;
+    const unacked = unacknowledgedOnly ? alerts : alerts.filter(a => !a.acknowledged);
+    const unacknowledgedCount = unacked.length;
+    // Badges count only warning/critical: an 'info' alert (recovery, move queued) is never a call to action
+    const actionableCount = unacked.filter(a => a.severity !== 'info').length;
 
     res.json({
         success: true,
         data: {
             alerts,
-            unacknowledgedCount
+            unacknowledgedCount,
+            actionableCount
         }
     });
 }));
@@ -1519,6 +1607,19 @@ router.get('/health/weekly-validation', requireAdmin, asyncHandler(async (req, r
     res.json({ success: true, data });
 }));
 
+// How this request got in (session | tailscale | localhost) and the tailnet
+// URL, so the admin app can offer the password-free hand-off when the
+// browser turns out to be on the tailnet (helm/admin/js/main.js).
+router.get('/context', requireAdmin, (req, res) => {
+    res.json({
+        success: true,
+        data: {
+            via: req.adminVia || 'session',
+            tailnetUrl: process.env.TAILSCALE_HOSTNAME ? `https://${process.env.TAILSCALE_HOSTNAME}` : null
+        }
+    });
+});
+
 // Latest live-scoring watchdog check (scripts/live-watchdog.js writes
 // logs/watchdog/live-latest.json every 2 min) plus the notifier's incident
 // state (scripts/watchdog-notifier.js). Either is null before a first run.
@@ -1540,14 +1641,231 @@ router.get('/health/live-watchdog', requireAdmin, asyncHandler(async (req, res) 
     });
 }));
 
+// ==================== Verification status ====================
+// One snapshot of every scheduled job, the live watchdog, the daily
+// validation, the Double Check (questions + Opus resolutions + rulings),
+// recaps and unacked alerts (server/services/jobStatusService.js). Drawn by
+// /admin/status; the same data is on /api/internal/status for cron scripts.
+router.get('/status', requireAdmin, asyncHandler(async (req, res) => {
+    const jobStatusService = req.app.locals.jobStatusService;
+    if (!jobStatusService) {
+        throw new APIError('Job status service not available', 500);
+    }
+    res.json({ success: true, data: await jobStatusService.snapshot() });
+}));
+
+// Commissioner ruling on a Double Check question. Body: { questionId,
+// awardClass, note, season?, week? }. Upserts logs/doublecheck/rulings.json,
+// then re-runs the script-only finalize so report.md / latest.json reflect it.
+router.post('/doublecheck/ruling', requireAdmin, asyncHandler(async (req, res) => {
+    const jobStatusService = req.app.locals.jobStatusService;
+    if (!jobStatusService) {
+        throw new APIError('Job status service not available', 500);
+    }
+    const { questionId, awardClass, note } = req.body || {};
+    const parsed = parseQuestionId(questionId);
+    const season = parseInt(req.body?.season) || (parsed && parsed.season);
+    const week = parseInt(req.body?.week) || (parsed && parsed.week);
+    if (!questionId || typeof questionId !== 'string') {
+        throw new APIError('questionId is required', 400);
+    }
+    if (!AWARD_CLASSES.includes(awardClass)) {
+        throw new APIError(`awardClass must be one of: ${AWARD_CLASSES.join(', ')}`, 400);
+    }
+    if (!season || !week) {
+        throw new APIError('season and week are required (or a questionId like 2026-wk01-...)', 400);
+    }
+
+    const ruling = jobStatusService.saveRuling({ questionId, awardClass, note, by: req.adminVia || 'session' });
+    logInfo(`Ruling saved for ${questionId}: ${awardClass} (${ruling.by})`);
+    const finalize = await jobStatusService.runFinalize(season, week, { timeoutMs: 60000 });
+    if (finalize.exitCode !== 0) {
+        logError(`doublecheck-finalize after ruling ${questionId} exited ${finalize.exitCode}${finalize.error ? `: ${finalize.error}` : ''}`);
+    }
+    res.json({ success: true, data: { ruling, finalize: { exitCode: finalize.exitCode, timedOut: Boolean(finalize.timedOut), error: finalize.error || null } } });
+}));
+
+// ==================== Log sentinel: known-noise acks ====================
+// POST /api/admin/log-noise/ack { id, text } marks a log-error fingerprint
+// (scripts/log-sentinel.js) as known noise: counted and listed on
+// /admin/status, never coloured. DELETE /api/admin/log-noise/ack/:id undoes
+// it. A ruling-style write to logs/log-sentinel/known.json, outside the DB.
+const LOG_NOISE_DIR = path.join(__dirname, '../../logs/log-sentinel');
+const LOG_NOISE_ID_RE = /^[0-9a-f]{10}$/;
+
+/** logs/log-sentinel/known.json (app.locals.logSentinelDir overrides the directory for tests). */
+function logNoiseAckFile(req) {
+    return path.join((req.app && req.app.locals && req.app.locals.logSentinelDir) || LOG_NOISE_DIR, 'known.json');
+}
+
+async function updateLogNoiseAcks(file, mutate) {
+    let all = {};
+    try {
+        const raw = JSON.parse(await fs.readFile(file, 'utf8'));
+        if (raw && typeof raw === 'object' && !Array.isArray(raw)) all = raw;
+    } catch (_) { /* first ack, or corrupt: start over */ }
+    mutate(all);
+    await fs.mkdir(path.dirname(file), { recursive: true });
+    const tmp = `${file}.${process.pid}.tmp`;
+    await fs.writeFile(tmp, JSON.stringify(all, null, 2));
+    await fs.rename(tmp, file);
+    return all;
+}
+
+router.post('/log-noise/ack', requireAdmin, asyncHandler(async (req, res) => {
+    const { id, text } = req.body || {};
+    if (typeof id !== 'string' || !LOG_NOISE_ID_RE.test(id)) {
+        throw new APIError('id must be a 10-character hex fingerprint id', 400);
+    }
+    const record = { text: String(text || '').slice(0, 200), ackedAt: new Date().toISOString(), by: req.adminVia || 'session' };
+    await updateLogNoiseAcks(logNoiseAckFile(req), all => { all[id] = record; });
+    logInfo(`Log noise acknowledged: ${id} (${record.by})${record.text ? ` ${record.text}` : ''}`);
+    res.json({ success: true, data: { id, ...record } });
+}));
+
+// POST /api/admin/warnings/clear - the "Clear all warnings" button. Acknowledges
+// every open health alert AND marks every log-error shape the sentinel currently
+// flags as new as seen (logs/log-sentinel/known.json, via 'clear-all'), then
+// re-runs the sentinel once so /admin/status turns green now instead of at its
+// next 10-minute pass. Known shapes are still spike-checked. Never touches the DB.
+router.post('/warnings/clear', requireAdmin, asyncHandler(async (req, res) => {
+    const by = req.adminVia || 'session';
+    const healthCheckService = req.app.locals.healthCheckService;
+    const alerts = healthCheckService ? await healthCheckService.acknowledgeAlerts(null) : { acknowledged: 0 };
+
+    const sentinelDir = (req.app.locals.logSentinelDir) || LOG_NOISE_DIR;
+    let latest = null;
+    try { latest = JSON.parse(await fs.readFile(path.join(sentinelDir, 'latest.json'), 'utf8')); } catch (_) { /* sentinel has not run yet */ }
+    const fresh = ((latest && latest.fingerprints) || []).filter(f => f.new && LOG_NOISE_ID_RE.test(String(f.id || '')));
+    if (fresh.length) {
+        const ackedAt = new Date().toISOString();
+        await updateLogNoiseAcks(path.join(sentinelDir, 'known.json'), all => {
+            for (const f of fresh) all[f.id] = { text: String(f.fingerprint || '').slice(0, 200), ackedAt, by, via: 'clear-all' };
+        });
+    }
+
+    let sentinel = null;
+    try {
+        const { main } = require('../../scripts/log-sentinel');
+        const args = ['node', 'log-sentinel', '--once', '--quiet', '--out', sentinelDir];
+        if (req.app.locals.logSentinelLogDir) args.push('--dir', req.app.locals.logSentinelLogDir);
+        await main(args);
+        const after = JSON.parse(await fs.readFile(path.join(sentinelDir, 'latest.json'), 'utf8'));
+        sentinel = after.summary ? { status: after.summary.status, summary: after.summary.summary } : null;
+    } catch (error) {
+        sentinel = { status: 'unknown', summary: `sentinel re-run failed: ${error.message}` };
+    }
+
+    logInfo(`All warnings cleared by ${by}: ${alerts.acknowledged} alert(s), ${fresh.length} log shape(s)`);
+    res.json({ success: true, data: { alertsAcknowledged: alerts.acknowledged, logShapesAcknowledged: fresh.length, logShapes: fresh.map(f => f.id), sentinel } });
+}));
+
+router.delete('/log-noise/ack/:id', requireAdmin, asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    if (!LOG_NOISE_ID_RE.test(String(id || ''))) {
+        throw new APIError('id must be a 10-character hex fingerprint id', 400);
+    }
+    let existed = false;
+    await updateLogNoiseAcks(logNoiseAckFile(req), all => { existed = Boolean(all[id]); delete all[id]; });
+    logInfo(`Log noise un-acknowledged: ${id} (${req.adminVia || 'session'})${existed ? '' : ' - was not acked'}`);
+    res.json({ success: true, data: { id, removed: existed } });
+}));
+
 // ==================== Weekly Recaps ====================
 // Persona-style owner recaps generated under recaps/{season}/ by the /recap
-// pipeline (cron: scripts/weekly-recap-run.js). Read-only over the filesystem
-// except for the Gmail-draft action.
+// pipeline (scripts/weekly-recap-run.js, started from the Generate button here).
+// Writes: the per-week themes list, the Gmail-draft action, and the two spawns.
 
 const recapFiles = require('../utils/recapFiles');
+const recapThemes = require('../utils/recapThemes');
+const recapRatings = require('../utils/recapRatings');
 const { createGmailDraft } = require('../../scripts/lib/gmailDraft');
+const { spawn } = require('child_process');
+const { envWithClaude } = require('../../scripts/lib/claudeHeadless');
+const { STATUS_DIR: JOB_STATUS_DIR } = require('../../scripts/lib/jobStatus');
 const RECAPS_ROOT = path.join(__dirname, '../../recaps');
+const SCRIPTS_ROOT = path.join(__dirname, '../../scripts');
+
+/** Fire-and-forget a repo script (its own job status file reports progress). */
+function spawnScript(script, args, label) {
+    const logFile = path.join(__dirname, '../../logs', `${script.replace(/\.js$/, '')}-admin.log`);
+    const fsSync = require('fs');
+    const out = fsSync.openSync(logFile, 'a');
+    const child = spawn(process.execPath, [path.join(SCRIPTS_ROOT, script), ...args], {
+        cwd: path.join(__dirname, '../..'), detached: true, stdio: ['ignore', out, out],
+        env: { ...envWithClaude(), STATFINK_TRIGGER: 'admin' }
+    });
+    child.unref();
+    logInfo(`${label}: spawned ${script} ${args.join(' ')} (pid ${child.pid}, log ${path.relative(path.join(__dirname, '../..'), logFile)})`);
+    return { pid: child.pid, log: path.relative(path.join(__dirname, '../..'), logFile) };
+}
+
+/** Test seams: app.locals.recapsEnv = { root, statusDir, spawnScript } (unit tests never touch recaps/ or logs/). */
+function recapsEnv(req) {
+    const env = (req && req.app && req.app.locals && req.app.locals.recapsEnv) || {};
+    return {
+        root: env.root || RECAPS_ROOT,
+        statusDir: env.statusDir || JOB_STATUS_DIR,
+        spawnScript: env.spawnScript || spawnScript
+    };
+}
+
+async function readJobStatusFile(job, statusDir = JOB_STATUS_DIR) {
+    try { return JSON.parse(await fs.readFile(path.join(statusDir, `${job}.json`), 'utf8')); } catch (_) { return null; }
+}
+
+const RECAP_RUN_ACTIVE_MS = 45 * 60 * 1000;
+const RECAP_REGEN_ACTIVE_MS = 30 * 60 * 1000;
+
+function pidAlive(pid) {
+    if (!pid) return true; // not recorded yet (the route wrote the status, the script has not) - assume alive
+    try { process.kill(pid, 0); return true; } catch (err) { return err.code === 'EPERM'; }
+}
+
+/** A single-recap regeneration that is genuinely still running (fresh and its process alive), or null. */
+function activeRegeneration(regen) {
+    if (!regen || regen.status !== 'running') return null;
+    if (Date.now() - Date.parse(regen.ts) > RECAP_REGEN_ACTIVE_MS) return null;
+    if (!pidAlive(regen.details && regen.details.pid)) return null;
+    return regen;
+}
+
+/** Why a new recap generation cannot start now (a weekly run or a single-recap rewrite is in flight), or null. */
+async function activeRecapGeneration(env) {
+    let latest = null;
+    try { latest = JSON.parse(await fs.readFile(path.join(__dirname, '../../logs/weekly-recaps-latest.json'), 'utf8')); } catch (_) { /* none */ }
+    if (latest && latest.overallStatus === 'RUNNING' && Date.now() - Date.parse(latest.runAt) < RECAP_RUN_ACTIVE_MS) return 'A recap run is already in progress';
+    const regen = activeRegeneration(await readJobStatusFile('recap-regenerate', env.statusDir));
+    if (regen) return `Already rewriting ${regen.details && regen.details.styleName ? regen.details.styleName : 'a recap'} for ${regen.season} week ${regen.week} - wait for it to finish`;
+    return null;
+}
+
+/** Themes doc + what the Generate button needs to know. */
+async function themesView(season, week) {
+    const doc = recapThemes.readThemes(season, week);
+    let validation = null;
+    try {
+        const v = JSON.parse(await fs.readFile(path.join(__dirname, '../../logs/weekly-validation-latest.json'), 'utf8'));
+        if (Number(v.season) === season && Number(v.week) === week) validation = { overallStatus: v.overallStatus, runAt: v.runAt };
+    } catch (_) { /* none */ }
+    let files = [];
+    try { files = await fs.readdir(path.join(RECAPS_ROOT, String(season))); } catch (_) { /* none */ }
+    const existingSlugs = new Set(files.map(f => recapFiles.parseRecapFilename(f)).filter(p => p && p.week === week).map(p => p.slug));
+    const factcheck = await readFactcheck(season, week);
+    const ratings = recapRatings.readRatings(season, week);
+    return {
+        season, week,
+        themes: doc ? doc.themes.map(t => ({ ...t, generated: existingSlugs.has(t.slug), factcheck: factcheck && factcheck[t.slug] ? factcheck[t.slug].verdict : null, rating: recapRatings.ratingFor(ratings, t.slug) })) : [],
+        ratings: ratings ? { ratedAt: ratings.ratedAt, ratedBy: ratings.ratedBy, recommended: ratings.recommended } : null,
+        proposedAt: doc ? doc.proposedAt : null,
+        generatedAt: doc ? doc.generatedAt : null,
+        lastRun: doc ? doc.lastRun || null : null,
+        exists: !!doc,
+        recapCount: existingSlugs.size,
+        validation,
+        canGenerate: !!validation && ['PASS', 'WARN'].includes(validation.overallStatus)
+    };
+}
 
 function recapWeekParams(req) {
     const { season, week } = req.params;
@@ -1611,7 +1929,66 @@ router.get('/recaps', requireAdmin, asyncHandler(async (req, res) => {
         });
     }
 
-    res.json({ success: true, data: { latestRun, seasons } });
+    // The newest themes file (the week waiting for review), plus the setup job's last word
+    let themes = null;
+    for (const seasonDir of seasonDirs) {
+        const docs = recapThemes.listThemeWeeks(parseInt(seasonDir));
+        if (docs.length) { themes = await themesView(docs[0].season, docs[0].week); break; }
+    }
+    const setup = await readJobStatusFile('recap-setup');
+    const generating = latestRun && latestRun.overallStatus === 'RUNNING';
+
+    res.json({ success: true, data: { latestRun, seasons, themes, setup, generating } });
+}));
+
+// ---- Themes: the reviewed list the recaps are generated from ----
+router.get('/recaps/:season/:week/themes', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    res.json({ success: true, data: await themesView(season, week) });
+}));
+
+router.post('/recaps/:season/:week/themes', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    const doc = recapThemes.readThemes(season, week) || { season, week, proposedAt: null, proposedBy: 'manual', generatedAt: null, themes: [] };
+    let theme;
+    try { theme = recapThemes.addTheme(doc, req.body || {}, 'commissioner'); } catch (error) { throw new APIError(error.message, 400); }
+    recapThemes.writeThemes(doc);
+    logInfo(`Recap theme added for ${season} week ${week}: ${theme.slug}`);
+    res.json({ success: true, data: { added: theme, ...(await themesView(season, week)) } });
+}));
+
+router.delete('/recaps/:season/:week/themes/:slug', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    if (!recapFiles.isValidSlug(req.params.slug)) throw new APIError('Invalid theme slug', 400);
+    const doc = recapThemes.readThemes(season, week);
+    if (!doc) throw new APIError('No themes for that week', 404);
+    try { recapThemes.removeTheme(doc, req.params.slug); } catch (error) { throw new APIError(error.message, 404); }
+    recapThemes.writeThemes(doc);
+    logInfo(`Recap theme removed for ${season} week ${week}: ${req.params.slug}`);
+    res.json({ success: true, data: await themesView(season, week) });
+}));
+
+// Ask claude for (more) suggestions now - the setup job does this on its own once the week is final.
+router.post('/recaps/:season/:week/themes/propose', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    const setup = await readJobStatusFile('recap-setup');
+    if (setup && setup.status === 'running' && Date.now() - Date.parse(setup.ts) < 10 * 60 * 1000) throw new APIError('Theme proposal already running', 409);
+    const spawned = spawnScript('recap-setup.js', ['--season', String(season), '--week', String(week), '--force'], 'Recap themes');
+    res.json({ success: true, data: { ...spawned, message: 'Proposing themes - refresh in a minute' } });
+}));
+
+// Generate the recaps from the reviewed theme list (headless /recap, ~10-30 min).
+router.post('/recaps/:season/:week/generate', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    const view = await themesView(season, week);
+    if (!view.themes.length) throw new APIError('No themes on the list - add at least one first', 400);
+    if (!view.canGenerate) throw new APIError(`Week ${week} has no PASS/WARN validation yet - run the daily validation first`, 409);
+    const busyReason = await activeRecapGeneration(recapsEnv(req));
+    if (busyReason) throw new APIError(busyReason, 409);
+    const args = ['--season', String(season), '--week', String(week)];
+    if (req.body && req.body.regenerate) args.push('--force-regenerate');
+    const spawned = spawnScript('weekly-recap-run.js', args, 'Recap generation');
+    res.json({ success: true, data: { ...spawned, themes: view.themes.length, message: `Generating ${view.themes.length} recap(s) - this takes 10-30 minutes` } });
 }));
 
 // One week's recaps: style list with fact-check verdicts.
@@ -1624,24 +2001,38 @@ router.get('/recaps/:season/:week', requireAdmin, asyncHandler(async (req, res) 
         throw new APIError('Season not found', 404);
     }
     const factcheck = await readFactcheck(season, week);
+    const ratings = recapRatings.readRatings(season, week);
     const styles = files
         .map(f => recapFiles.parseRecapFilename(f))
         .filter(p => p && p.week === week)
-        .sort((a, b) => a.slug.localeCompare(b.slug))
         .map(p => ({
             slug: p.slug,
             styleName: recapFiles.slugToDisplayName(p.slug),
             file: recapFiles.recapFilename(season, week, p.slug),
-            factcheck: factcheck ? (factcheck[p.slug]?.verdict || null) : null
-        }));
+            factcheck: factcheck ? (factcheck[p.slug]?.verdict || null) : null,
+            rating: recapRatings.ratingFor(ratings, p.slug)
+        }))
+        // Recommended first, then by stars, then by name
+        .sort((a, b) => (b.rating?.recommended ? 1 : 0) - (a.rating?.recommended ? 1 : 0) || (b.rating?.stars || 0) - (a.rating?.stars || 0) || a.slug.localeCompare(b.slug));
     if (!styles.length) throw new APIError('No recaps for that week', 404);
-    res.json({ success: true, data: { season, week, hasFactcheck: !!factcheck, styles } });
+    res.json({ success: true, data: { season, week, hasFactcheck: !!factcheck, ratings: ratings ? { ratedAt: ratings.ratedAt, ratedBy: ratings.ratedBy, recommended: ratings.recommended } : null, styles } });
 }));
 
-function resolveRecapPath(season, week, slug) {
+// Rate (or re-rate) the week's recaps on storytelling + interest and pick the recommended one.
+router.post('/recaps/:season/:week/rate', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    let files = [];
+    try { files = await fs.readdir(path.join(RECAPS_ROOT, String(season))); } catch (_) { /* none */ }
+    const count = files.map(f => recapFiles.parseRecapFilename(f)).filter(p => p && p.week === week).length;
+    if (count < 2) throw new APIError(`Only ${count} recap(s) for ${season} week ${week} - nothing to compare`, 400);
+    const spawned = spawnScript('recap-rate.js', ['--season', String(season), '--week', String(week)], 'Recap ratings');
+    res.json({ success: true, data: { ...spawned, message: `Rating ${count} recaps - about two minutes` } });
+}));
+
+function resolveRecapPath(season, week, slug, root = RECAPS_ROOT) {
     if (!recapFiles.isValidSlug(slug)) throw new APIError('Invalid style slug', 400);
-    const file = path.resolve(RECAPS_ROOT, String(season), recapFiles.recapFilename(season, week, slug));
-    if (!file.startsWith(path.resolve(RECAPS_ROOT) + path.sep)) {
+    const file = path.resolve(root, String(season), recapFiles.recapFilename(season, week, slug));
+    if (!file.startsWith(path.resolve(root) + path.sep)) {
         throw new APIError('Invalid path', 400);
     }
     return file;
@@ -1657,7 +2048,70 @@ router.get('/recaps/:season/:week/:slug', requireAdmin, asyncHandler(async (req,
     } catch (error) {
         throw new APIError('Recap not found', 404);
     }
-    res.json({ success: true, data: { season, week, slug: req.params.slug, markdown } });
+    let factcheck = null;
+    try {
+        const report = await fs.readFile(path.join(RECAPS_ROOT, String(season), 'data', `week${recapFiles.weekPad(week)}-factcheck.md`), 'utf8');
+        factcheck = recapFiles.factcheckSection(report, req.params.slug);
+    } catch (_) { /* no fact-check report for this week */ }
+    const rating = recapRatings.ratingFor(recapRatings.readRatings(season, week), req.params.slug);
+    res.json({ success: true, data: { season, week, slug: req.params.slug, markdown, factcheck, rating } });
+}));
+
+// Rewrite ONE recap from the commissioner's feedback ("Give feedback and run
+// again" in the reader): scripts/recap-regenerate.js runs the narrator for
+// that style alone with the feedback in its prompt, fact-checks the draft,
+// and only then swaps it in - the current version stays until the new one is
+// ready. One generation at a time (weekly run or rewrite); the running
+// status is written here, before the spawn, so a double submit gets a 409.
+router.post('/recaps/:season/:week/:slug/regenerate', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    const env = recapsEnv(req);
+    const slug = req.params.slug;
+    const file = resolveRecapPath(season, week, slug, env.root);
+    let feedback;
+    try { feedback = recapFiles.normaliseFeedback(req.body ? req.body.feedback : undefined); } catch (error) { throw new APIError(error.message, 400); }
+    try { await fs.access(file); } catch (_) { throw new APIError('Recap not found', 404); }
+    const busyReason = await activeRecapGeneration(env);
+    if (busyReason) throw new APIError(busyReason, 409);
+
+    const themesDoc = recapThemes.readThemes(season, week, env.root);
+    const theme = themesDoc && themesDoc.themes.find(t => t.slug === slug);
+    const styleName = theme ? theme.name : recapFiles.slugToDisplayName(slug);
+    await writeJobStatusTo(env.statusDir, 'recap-regenerate', { status: 'running', summary: `rewriting ${styleName} for ${season} week ${week} from your feedback`, season, week, link: '/admin/recaps',
+        details: { slug, styleName, feedback, pid: null, startedAt: new Date().toISOString(), by: req.adminVia || 'session' } });
+    const spawned = env.spawnScript('recap-regenerate.js', ['--season', String(season), '--week', String(week), '--slug', slug, '--feedback', feedback], 'Recap regeneration');
+    logInfo(`Recap regeneration requested for ${season} week ${week} ${slug} (${req.adminVia || 'session'}): ${feedback.slice(0, 160).replace(/\n/g, ' ')}`);
+    res.json({ success: true, data: { ...spawned, season, week, slug, styleName, message: `Rewriting ${styleName} from your feedback - about five minutes. The current version stays until the new one is ready.` } });
+}));
+
+/** Same record shape (and atomic write) as scripts/lib/jobStatus.writeJobStatus, into `dir` (the test seam); no history line - the script writes the final one. */
+async function writeJobStatusTo(dir, job, { status, summary = '', season = null, week = null, details = null, link = null }) {
+    await fs.mkdir(dir, { recursive: true });
+    const record = { job, ts: new Date().toISOString(), status, summary: String(summary).slice(0, 500), season, week, durationMs: null, link, details: details || {} };
+    const file = path.join(dir, `${job}.json`);
+    await fs.writeFile(`${file}.${process.pid}.tmp`, JSON.stringify(record, null, 2));
+    await fs.rename(`${file}.${process.pid}.tmp`, file);
+    return record;
+}
+
+// Progress of the single-recap rewrite for this recap: { regeneration: {status, ts, summary, details} | null, active }.
+// `regeneration` is null when the last rewrite was some other recap's; `active` says whether ANY rewrite is running.
+router.get('/recaps/:season/:week/:slug/regenerate', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    const env = recapsEnv(req);
+    const slug = req.params.slug;
+    if (!recapFiles.isValidSlug(slug)) throw new APIError('Invalid style slug', 400);
+    const regen = await readJobStatusFile('recap-regenerate', env.statusDir);
+    const live = activeRegeneration(regen);
+    const mine = regen && Number(regen.season) === season && Number(regen.week) === week && regen.details && regen.details.slug === slug;
+    let regeneration = null;
+    if (mine) {
+        // A 'running' record whose process is gone never got its final write: report it as failed, not stuck.
+        const status = regen.status === 'running' && !live ? 'critical' : regen.status;
+        const summary = status !== regen.status ? `${regen.summary} - the rewrite stopped without reporting (see logs/recap-regenerate-admin.log)` : regen.summary;
+        regeneration = { status, ts: regen.ts, summary, details: regen.details || {} };
+    }
+    res.json({ success: true, data: { season, week, slug, regeneration, active: !!live } });
 }));
 
 // Turn the chosen recap into a Gmail draft in the league mailer account.

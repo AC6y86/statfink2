@@ -166,10 +166,20 @@ class SchedulerService {
                     }
                     const settings = await this.getCurrentSettings();
                     if (settings.current_week && settings.season_year) {
+                        // Full validation every day (sub-second without the ESPN
+                        // scrape); only FAILED checks become alerts, everything else
+                        // is state on /admin/status. Completion lets the daily script
+                        // decide whether this counts as the week's final validation.
+                        try {
+                            results.completion = await this.nflGamesService.areAllWeekGamesComplete(
+                                settings.current_week, settings.season_year);
+                        } catch (error) {
+                            results.completion = null;
+                        }
                         results.validation = await this.healthCheckService.runValidation(
                             settings.current_week,
                             settings.season_year,
-                            { mode: 'light' }
+                            { mode: 'full' }
                         );
                     }
                 } catch (error) {
@@ -396,8 +406,20 @@ class SchedulerService {
                 results.errors.push(`Game scores: ${error.message}`);
             }
 
-            // 1b. Calculate scoring players (determines which 13 players count for each team)
+            // 1b. Convert defensive plays before selecting the scoring lineup.
+            // DST ingestion replaces points with zero; TDs/safeties must count
+            // during the week, independently of the week-complete bonus gate.
             try {
+                if (this.fantasyPointsCalculationService) {
+                    const dstResult = await this.fantasyPointsCalculationService.calculateWeekDSTFantasyPoints(
+                        currentSettings.current_week,
+                        currentSettings.season_year
+                    );
+                    results.dstFantasyPoints = dstResult.success;
+                    if (!dstResult.success) {
+                        throw new Error('Failed to calculate current-week DST fantasy points');
+                    }
+                }
                 if (this.scoringPlayersService) {
                     const scoringPlayersResult = await this.scoringPlayersService.calculateScoringPlayers(
                         currentSettings.current_week,
@@ -439,7 +461,8 @@ class SchedulerService {
                         // Recalculate DST fantasy points to include the bonuses
                         if (this.fantasyPointsCalculationService) {
                             try {
-                                const dstResult = await this.fantasyPointsCalculationService.calculateEndOfWeekDSTBonuses(
+                                const dstResult = await this.fantasyPointsCalculationService.calculateWeekDSTFantasyPoints(
+                                    currentSettings.current_week,
                                     currentSettings.season_year
                                 );
                                 results.dstFantasyPoints = dstResult.success;
@@ -545,10 +568,9 @@ class SchedulerService {
             // Prune old backups so the directory doesn't grow unbounded
             try {
                 const pruneResult = await this.pruneBackups(backupDir);
-                if (pruneResult.pruned.length > 0 && this.healthCheckService) {
-                    await this.healthCheckService.recordAlert('info', 'backup',
-                        `Pruned ${pruneResult.pruned.length} old backup(s), keeping ${pruneResult.kept.length}`,
-                        pruneResult.pruned);
+                if (pruneResult.pruned.length > 0) {
+                    // routine housekeeping: log only, never an alert
+                    logInfo(`Pruned ${pruneResult.pruned.length} old backup(s), keeping ${pruneResult.kept.length}`);
                 }
             } catch (error) {
                 logError('Backup pruning failed (backup itself succeeded)', error);

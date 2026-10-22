@@ -13,7 +13,7 @@
     "test:all": "npm run test:fast && npm run test:slow",
     "test:unit": "jest tests/unit/ --maxWorkers=4 --testTimeout=5000",
     "test:integration": "jest tests/integration/ --testPathIgnorePatterns=recalculate --testPathIgnorePatterns=compareStats --maxWorkers=2",
-    "test:integration:slow": "jest --config jest.config.slow.js recalculateAndVerify2024 compareStats2024 recalculateAndVerify2025 compareStats2025baseline --testTimeout=900000",
+    "test:integration:slow": "node scripts/run-slow-tests.js",
     "baseline:2025": "node scripts/snapshot2025Baseline.js",
     "test:browser": "jest tests/browser/ --maxWorkers=1 --testTimeout=60000",
     "test:verify": "jest --config jest.config.slow.js --selectProjects verification --runInBand",
@@ -26,7 +26,8 @@
     "pm2:start": "pm2 start ecosystem.config.js",
     "pm2:stop": "pm2 stop statfink2",
     "pm2:restart": "pm2 restart statfink2",
-    "pm2:status": "pm2 list"
+    "pm2:status": "pm2 list",
+    "doublecheck:calibrate": "DOUBLECHECK_CALIBRATION=1 jest --config jest.config.slow.js doublecheckCalibration --testTimeout=900000"
   },
   "repository": {
     "type": "git",

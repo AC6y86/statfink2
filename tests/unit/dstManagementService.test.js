@@ -202,3 +202,75 @@ describe('DSTManagementService', () => {
         });
     });
 });
+describe('DSTManagementService.resolveSafeties (season-gated)', () => {
+    let service;
+    beforeEach(() => {
+        jest.clearAllMocks();
+        service = new DSTManagementService({ get: jest.fn(), all: jest.fn(), run: jest.fn().mockReturnValue({ changes: 0 }) });
+    });
+
+    const noSafetyBreakdown = { def_int_return_tds: 0, def_fumble_return_tds: 1, def_blocked_return_tds: 0, safeties: 0 };
+
+    test('2026: parsed scoring plays are authoritative — a phantom Tank01 safety is ignored (SEA wk7 2025 pattern)', () => {
+        expect(service.resolveSafeties('DEF_SEA', 7, 2026, { safeties: '1' }, noSafetyBreakdown)).toBe(0);
+        expect(logWarn).toHaveBeenCalledWith(expect.stringContaining('DEF_SEA week 7: scoring plays show 0 safeties but Tank01 DST.safeties says 1'));
+    });
+
+    test('2026: a parsed safety is kept even when Tank01 says 0', () => {
+        expect(service.resolveSafeties('DEF_X', 1, 2026, { safeties: '0' }, { ...noSafetyBreakdown, safeties: 1 })).toBe(1);
+    });
+
+    test('2025 (legacy): the || fallback still reaches for Tank01 — blessed record unchanged', () => {
+        expect(service.resolveSafeties('DEF_SEA', 7, 2025, { safeties: '1' }, noSafetyBreakdown)).toBe(1);
+        expect(logWarn).not.toHaveBeenCalled();
+    });
+
+    test('no parsed breakdown: Tank01 is the only source in every season', () => {
+        expect(service.resolveSafeties('DEF_X', 1, 2026, { safeties: '2' }, null)).toBe(2);
+        expect(service.resolveSafeties('DEF_X', 1, 2025, { safeties: '2' }, null)).toBe(2);
+        expect(service.resolveSafeties('DEF_X', 1, 2026, {}, null)).toBe(0);
+    });
+
+    test('insertDSTStats writes the resolved value (2026: 0, 2025: 1) into the safeties column', async () => {
+        const dstData = { sacks: 1, defensiveInterceptions: 0, fumblesRecovered: 0, defTD: 0, safeties: '1' };
+        await service.insertDSTStats('DEF_SEA', 7, 'g', dstData, 19, 300, 2026, noSafetyBreakdown);
+        expect(service.db.run.mock.calls[0][1][17]).toBe(0);
+        await service.insertDSTStats('DEF_SEA', 7, 'g', dstData, 19, 300, 2025, noSafetyBreakdown);
+        expect(service.db.run.mock.calls[1][1][17]).toBe(1);
+    });
+});
+
+
+describe('Washington defensive TD through live and cached-game paths', () => {
+    test.each([
+        ['home', 'WAS', 'WSH'], ['away', 'WAS', 'WSH'],
+        ['home', 'WSH', 'WSH'], ['away', 'WSH', 'WSH'],
+        ['home', 'WSH', 'WAS'], ['away', 'WAS', 'WAS']
+    ])('%s Washington: game %s / scoring play %s retains its interception TD', async (side, gameCode, playCode) => {
+        const box = { scoringPlays: [{
+            score: 'Kain Medrano 50 Yd Interception Return (Drew Stevens PAT Failed)',
+            scorePeriod: 'Q4', scoreTime: '3:57', scoreType: 'TD',
+            team: playCode, playerIDs: ['4427984', '5081335']
+        }] };
+        const db = { run: jest.fn(async () => ({ changes: 1 })) };
+        const service = new DSTManagementService(db, {
+            getNFLBoxScore: jest.fn(async () => box),
+            getPlayerList: jest.fn(async () => [])
+        });
+        const game = { home: side === 'home' ? gameCode : 'SEA',
+            away: side === 'away' ? gameCode : 'SEA',
+            homePts: 33, awayPts: 31, teamIDHome: '32', teamIDAway: '29' };
+        await service.processDSTStats({ home: {}, away: {} }, game, 3, 'washington-regression', 2026);
+        expect(db.run).toHaveBeenCalledTimes(2);
+        const rows = db.run.mock.calls.map(([sql, values]) => {
+            const columns = sql.match(/player_stats\s*\(([\s\S]*?)\) VALUES/)[1].split(',').map(s => s.trim());
+            return Object.fromEntries(columns.map((c, i) => [c, values[i]]));
+        });
+        expect(rows.find(r => r.player_id === 'DEF_WAS')).toMatchObject({
+            def_int_return_tds: 1, def_touchdowns: 1, def_fumble_return_tds: 0
+        });
+        expect(rows.find(r => r.player_id === 'DEF_SEA')).toMatchObject({
+            def_int_return_tds: 0, def_touchdowns: 0
+        });
+    });
+});

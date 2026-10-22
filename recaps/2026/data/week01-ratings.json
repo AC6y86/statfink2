@@ -1,0 +1,69 @@
+{
+  "season": 2026,
+  "week": 1,
+  "ratedAt": "2026-09-16T05:00:51.882Z",
+  "ratedBy": "claude-opus",
+  "recommended": "larry-david",
+  "ratings": {
+    "larry-david": {
+      "stars": 4.5,
+      "blurb": "The grievance-list form genuinely reshapes the week rather than decorating it, and the kicker-hoarding motif pays off perfectly in the closer — \"Aaron's spare, sitting quietly in a chair, waiting to be needed\" — with \"one point is worse than zero. Zero is an honest failure\" as the most quotable line"
+    },
+    "shane-gillis": {
+      "stars": 4.5,
+      "blurb": "Has the single best thesis of the fourteen — C+ kids 4-0, A students 0-3 — and cashes it with \"the valedictorian's selling insurance and the kid who got a D+ in shop class owns four excavators now\"; loses a hair to Larry David only because the back half settles into matchup-by-matchup order."
+    },
+    "jim-gaffigan": {
+      "stars": 4,
+      "blurb": "The italicized inner-heckler voice is a real form bend and the food logic lands (\"that's a bowling score. That's a *decent* bowling score, which makes it sadder\"), though the meal metaphors thin out by the fifth game."
+    },
+    "sherlock-holmes": {
+      "stars": 4,
+      "blurb": "\"The Curious Incident of the Tight End\" is the smartest single joke anyone found in this data, and the Watson dialogue keeps it moving, but the bolded stat strings pile up until several exhibits read as a box score in a deerstalker."
+    },
+    "dolly-parton": {
+      "stars": 4,
+      "blurb": "The album-tracklist conceit is a genuine structural idea, and it's the only recap sharp enough to catch that Sean — not Aaron — actually started two kickers, capped by \"it costs a lot of money to look this cheap.\""
+    },
+    "david-attenborough": {
+      "stars": 4,
+      "blurb": "Sustains the nature frame without straining (\"to run faster than almost everyone, and still be eaten\") and ends on the week's best closing image — a man with five tight ends hunting a man with none — though the predator/prey vocabulary starts repeating by the fourth segment."
+    },
+    "christopher-walken": {
+      "stars": 3.5,
+      "blurb": "The clipped rhythm earns some real laughs (\"You could lose that in a *couch*\"; \"eighth in points, first in humiliation delivered\"), but the italics-and-ellipses tic does most of the work and the arc is just the games in score order."
+    },
+    "morgan-freeman": {
+      "stars": 3.5,
+      "blurb": "Beautifully written sentence to sentence — \"I have never seen a grade cash a check\" and the five-kitchens-no-front-door roster — yet every section is the same elegiac shape, so it soothes more than it stings."
+    },
+    "gordon-ramsay": {
+      "stars": 3.5,
+      "blurb": "\"You can't eat a grade\" and \"that's not a lineup, that's a garnish\" are forwardable, but the kitchen frame is the most predictable choice available and the IT'S RAW beat arrives exactly where everyone expects it."
+    },
+    "winston-churchill": {
+      "stars": 3.5,
+      "blurb": "The pastiche is well-tuned (\"nothing to offer you but blood, toil, tears, and a waiver wire\") and the Caleb Williams 38 vs Cal's entire 58 comparison is a genuinely sharp observation, but the oration register flattens six different games into one tone."
+    },
+    "stephen-a-smith": {
+      "stars": 3,
+      "blurb": "Nails one real insight — Tyler Bass scored 7.5, the exact margin Mitch lost by — and \"you cannot have your kicker show up in flip-flops\" is fun, but SEGMENT ONE through SIX is a template with ALL CAPS sprinkled on it."
+    },
+    "yoda": {
+      "stars": 3,
+      "blurb": "\"Prayer, the Force hears. Tape, it does not\" is a clean landing, but the inverted syntax is a costume worn over a standard recap and the strain shows by the fifth \"hrrrm.\""
+    },
+    "bob-ross": {
+      "stars": 3,
+      "blurb": "Warm and internally consistent, with a kind read on Cal's 58, but a league of adult friends wants a knife and this hands them a fan brush — \"if a kicker can be a happy little accident, that's him\" is as pointed as it gets."
+    },
+    "nicholas-cage": {
+      "stars": 2.5,
+      "blurb": "Leans on movie-quote inserts (\"NOT THE BEES!\", \"Put the bunny back in the box\") that do the persona's work for it, the all-caps shouting never modulates, and \"Zeus's butthole\" is the one line here I'd hesitate to forward."
+    }
+  },
+  "claude": {
+    "costUsd": 0.8699129999999999,
+    "durationMs": 49707
+  }
+}

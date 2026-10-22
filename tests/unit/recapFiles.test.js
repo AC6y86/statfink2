@@ -7,7 +7,9 @@ const {
     weekPad,
     recapFilename,
     slugToDisplayName,
-    parseFactcheckReport
+    parseFactcheckReport,
+    markdownToHtml,
+    factcheckSection
 } = require('../../server/utils/recapFiles');
 
 describe('recapFiles', () => {
@@ -118,6 +120,45 @@ describe('recapFiles', () => {
 
         it('returns empty object for reports with no verdict lines', () => {
             expect(parseFactcheckReport('nothing to see here')).toEqual({});
+        });
+    });
+
+    describe('markdownToHtml', () => {
+        test('renders pipe tables with a header row and skips the separator', () => {
+            const html = markdownToHtml('## Injuries\n\n| Player | Team | Status |\n|---|:---:|---|\n| **Bam** | MIA | out |\n| Kyler | ARI | IR |\n\nAfter.');
+            expect(html).toContain('<table>\n<tr><th>Player</th><th>Team</th><th>Status</th></tr>');
+            expect(html).toContain('<tr><td><strong>Bam</strong></td><td>MIA</td><td>out</td></tr>');
+            expect(html).toContain('<tr><td>Kyler</td><td>ARI</td><td>IR</td></tr>\n</table>\n<p>After.</p>');
+            expect(html).not.toMatch(/---/);
+        });
+        test('a table closes an open list and a list closes an open table', () => {
+            const html = markdownToHtml('- a\n| h |\n|---|\n| b |\n- c');
+            expect(html).toBe('<ul>\n<li>a</li>\n</ul>\n<table>\n<tr><th>h</th></tr>\n<tr><td>b</td></tr>\n</table>\n<ul>\n<li>c</li>\n</ul>');
+        });
+        test('escapes html inside table cells', () => {
+            expect(markdownToHtml('| <b>x</b> |\n|---|')).toContain('<th>&lt;b&gt;x&lt;/b&gt;</th>');
+        });
+    });
+
+    describe('factcheckSection', () => {
+        const report = [
+            '# Fact-check', '', 'intro', '',
+            '## 2026-week01-yoda-style.md: FAIL', '', 'Re-checked in full.', '', '| Claim | Says |', '|---|---|', '| x | y |', '',
+            '## 2026-week01-bob-ross-style.md: PASS', '', 'No discrepancies found.', '',
+            '## Summary', '- 2026-week01-yoda-style.md: FAIL (1 critical, 0 minor)'
+        ].join('\n');
+        test('returns the verdict and the section body for a slug', () => {
+            const y = factcheckSection(report, 'yoda');
+            expect(y.verdict).toBe('FAIL');
+            expect(y.detail).toMatch(/^Re-checked in full\./);
+            expect(y.detail).toContain('| x | y |');
+            expect(y.detail).not.toContain('bob-ross');
+            expect(factcheckSection(report, 'bob-ross')).toEqual({ verdict: 'PASS', detail: 'No discrepancies found.' });
+        });
+        test('null for unknown slugs, bad slugs and empty reports', () => {
+            expect(factcheckSection(report, 'nobody')).toBeNull();
+            expect(factcheckSection(report, '../etc')).toBeNull();
+            expect(factcheckSection('', 'yoda')).toBeNull();
         });
     });
 });

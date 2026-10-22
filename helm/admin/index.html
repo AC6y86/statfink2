@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="PFL Admin">
+    <link rel="manifest" href="/mobile.webmanifest">
+    <link rel="apple-touch-icon" href="/statfinklogo.png">
+    <title>PFL Admin</title>
+    <link rel="stylesheet" href="/admin/assets/admin.css">
+</head>
+<body>
+    <div class="shell">
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" href="/admin">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20 20 4"></path><path d="M8 8l8 8"></path><path d="M10 6l8 8"></path><path d="M6 10l8 8"></path></svg>
+                </span>
+                <span class="brand-text"><strong>PFL Admin</strong><small id="brand-season">…</small></span>
+            </a>
+            <nav class="nav" id="nav">
+                <a class="nav-item" href="/admin/thisweek" data-area="thisweek">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M3 9h18"></path><path d="M8 2v4"></path><path d="M16 2v4"></path></svg>
+                    <span>This week</span><b class="badge hidden" data-badge="thisweek">0</b>
+                </a>
+                <a class="nav-item" href="/admin/status" data-area="status">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
+                    <span>Verification</span><b class="badge hidden" data-badge="status">0</b>
+                </a>
+                <a class="nav-item" href="/admin/moves" data-area="moves">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4"></path><path d="M3 8l4-4 4 4"></path><path d="M17 8v12"></path><path d="M21 16l-4 4-4-4"></path></svg>
+                    <span>Roster moves</span><b class="badge muted hidden" data-badge="moves">0</b>
+                </a>
+                <a class="nav-item" href="/admin/data" data-area="data">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"></path><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path></svg>
+                    <span>Scoring &amp; data</span>
+                </a>
+                <a class="nav-item" href="/admin/recaps" data-area="recaps">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><path d="M14 3v6h6"></path><path d="M8 13h8"></path><path d="M8 17h5"></path></svg>
+                    <span>Recaps</span>
+                </a>
+                <a class="nav-item" href="/admin/settings" data-area="settings">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3"></path><path d="M12 19v3"></path><path d="M2 12h3"></path><path d="M19 12h3"></path><path d="M4.9 4.9l2.1 2.1"></path><path d="M17 17l2.1 2.1"></path><path d="M4.9 19.1 7 17"></path><path d="M17 7l2.1-2.1"></path></svg>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-foot">
+                <div class="foot-line"><span class="dot" id="foot-verify-dot"></span><span id="foot-verify">Verification …</span></div>
+                <div class="foot-line"><span class="dot" id="foot-live-dot"></span><span id="foot-live">Live scoring …</span></div>
+                <button class="btn sm hidden" id="foot-clear-alerts" title="Acknowledge every open alert (the Verification badge count)">Clear all warnings</button>
+                <div class="foot-links"><a href="/statfink" target="_blank" rel="noopener">Public site</a> · <a href="/admin/legacy?desktop=1">Legacy dashboard</a> · <a href="/logout">Log out</a></div>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="tailnet-banner hidden" id="tailnet-banner">
+                You are on Tailscale. <a id="tailnet-link" href="#">Open this page without a password</a>
+            </div>
+            <header class="topbar">
+                <div class="topbar-title">
+                    <h1 id="page-title">…</h1>
+                    <span class="topbar-context" id="page-context"></span>
+                </div>
+                <div class="topbar-actions" id="page-actions"></div>
+            </header>
+            <div class="view" id="view"><p class="quiet">Loading…</p></div>
+        </main>
+    </div>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/admin/assets/js/main.js"></script>
+</body>
+</html>

@@ -20,13 +20,16 @@ module.exports = {
   projects: [
     {
       displayName: 'slow-integration',
+      setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
       testMatch: [
         '<rootDir>/tests/integration/recalculateAndVerify2024.test.js',
         '<rootDir>/tests/integration/compareStats2024.test.js',
         '<rootDir>/tests/2024/compareStats2024.test.js',
         '<rootDir>/tests/2025/compareStats2025.test.js',
         '<rootDir>/tests/integration/recalculateAndVerify2025.test.js',
-        '<rootDir>/tests/integration/compareStats2025baseline.test.js'
+        '<rootDir>/tests/integration/compareStats2025baseline.test.js',
+        '<rootDir>/tests/integration/doublecheckRubricAgreement.test.js',
+        '<rootDir>/tests/integration/doublecheckCalibration.test.js'
       ],
       testTimeout: 900000 // 15 minutes for recalculation tests
     },
@@ -38,6 +41,7 @@ module.exports = {
     },
     {
       displayName: 'verification',
+      setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
       testMatch: ['<rootDir>/tests/verification/**/*.test.js'],
       testTimeout: 60000 // 1 minute for verification tests
     }

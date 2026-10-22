@@ -1,0 +1,49 @@
+{
+  "season": 2026,
+  "week": 4,
+  "ratedAt": "2026-10-08T17:46:55.783Z",
+  "ratedBy": "claude-opus",
+  "recommended": "mitch-hedberg",
+  "ratings": {
+    "mitch-hedberg": {
+      "stars": 4.5,
+      "blurb": "The only one built from real jokes instead of a costume: the 'other Mitch' running gag opens and closes the set, the cab and escalator lines call back, and 'An undefeated team can never lose. It can only become 4-1' is the most quotable line of the nine."
+    },
+    "rodney-dangerfield": {
+      "stars": 4,
+      "blurb": "Casting Sean as the king of no respect gives the week a real spine and the one-liners land ('That's not a game, that's an autopsy', the A 'on a parking ticket'), though the wife/marriage well gets visited a few times too many."
+    },
+    "vin-scully": {
+      "stars": 3.5,
+      "blurb": "Warm and well shaped, with apt baseball translations (Sean 'hitting .330 for a last-place club', Chris 'carrying five catchers') and a tidy pull-up-a-chair bookend, but it is gentle rather than funny and the middle innings fall back on stat recitation."
+    },
+    "matthew-mcconaughey": {
+      "stars": 3.5,
+      "blurb": "The greenlight motif is sustained and the Drake Maye teaser chapter paid off later as 'The Hollywood Ending They Cut' is real structure, with 'a red light that turned on while you were already in the intersection' the standout; the long bolded stat runs in between drag."
+    },
+    "barack-obama": {
+      "stars": 3.5,
+      "blurb": "The cadence is right and Joe's win as 'a coalition' plus the 'Yes, you can' closer to the six 1-3 teams are nice touches, but the earnest speech register yields few laughs and each section still reads as a list of numbers."
+    },
+    "julia-child": {
+      "stars": 3,
+      "blurb": "Has a few sharp food images ('you cannot make a bouillabaisse with five onions and two fish', Burrow making the béarnaise while 'nobody cooked the steak') but repeatedly breaks the spell with 'our storylines say' and settles into the same dish-then-stats template every course."
+    },
+    "bluey": {
+      "stars": 3,
+      "blurb": "Keepy Uppy is a good unifying motif for the two unbeatens and Dad's asides get smiles ('best dancer at the party but nobody asks you to dance'), but the bullet-list rosters, the literal 'The digest says' and the kid voice wear thin for an adult league."
+    },
+    "steely-dan": {
+      "stars": 2.5,
+      "blurb": "Clever album-side framing and a couple of sharp matches ('Deacon Blues' for the 1-3 points leader, Najee as 'a chord with the root missing'), but it is dry, niche, short on laughs, and the 'cleared with the official digest' gag is an inside reference to the pipeline."
+    },
+    "elvis-presley": {
+      "stars": 2,
+      "blurb": "A box score in a jumpsuit: each game gets a song title and a lyric quote, then every single player's points are listed down to the 3s, leaving 'Return to sender' for Cal's A grade as about the only bit that earns its place."
+    }
+  },
+  "claude": {
+    "costUsd": 0.5120876,
+    "durationMs": 18833
+  }
+}

@@ -215,6 +215,43 @@ class SeasonRecalculationOrchestrator {
 
 
     /**
+     * Recalculate ONE week from the cached boxscores (the per-week slice of
+     * run()): wipe the week's stats/matchup totals, resync games + stats +
+     * scoring plays, recompute fantasy points, defensive bonuses (only when
+     * every game is Final), DST points, scoring lineups / matchup totals and,
+     * if asked, standings. Used by scripts/recalc-week.js after a scoring fix.
+     */
+    async recalculateWeek(week, { standings = false, log = logInfo } = {}) {
+        const t0 = Date.now();
+        const steps = [];
+        await this.dstManagementService.ensureDSTPlayersExist();
+        await this.dataCleanupService.cleanWeekData(week, this.season);
+        steps.push('cleaned week data');
+        await this.syncWeekGames(week);
+        steps.push('games synced');
+        await this.syncWeekStatsDirectly(week);
+        steps.push('stats + scoring plays synced');
+        await this.fantasyPointsCalculationService.calculateWeekFantasyPoints(week, this.season);
+        steps.push('fantasy points recomputed');
+        const completion = await this.nflGamesService.areAllWeekGamesComplete(week, this.season);
+        if (completion && completion.isComplete) {
+            await this.scoringService.calculateDefensiveBonuses(week, this.season);
+            await this.fantasyPointsCalculationService.calculateEndOfWeekDSTBonuses(this.season);
+            steps.push('defensive bonuses + DST points');
+        } else {
+            steps.push(`bonuses skipped (${completion ? completion.completedGames : '?'}/${completion ? completion.totalGames : '?'} games final)`);
+        }
+        await this.scoringPlayersService.calculateScoringPlayers(week, this.season);
+        steps.push('scoring lineups + matchup totals');
+        if (standings) {
+            await this.standingsService.calculateWeeklyStandings(week, this.season);
+            steps.push('standings');
+        }
+        log(`Week ${week} ${this.season} recalculated in ${((Date.now() - t0) / 1000).toFixed(1)} s: ${steps.join(' -> ')}`);
+        return { week, season: this.season, steps, complete: !!(completion && completion.isComplete), durationMs: Date.now() - t0 };
+    }
+
+    /**
      * Sync games for a specific week
      */
     async syncWeekGames(week) {

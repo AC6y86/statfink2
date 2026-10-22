@@ -1,0 +1,3055 @@
+{
+ "gameId": "20240908_TEN@CHI",
+ "season": 2024,
+ "week": 1,
+ "espnEventId": "401671719",
+ "homeTeam": "CHI",
+ "awayTeam": "TEN",
+ "tank01Body": {
+  "gameID": "20240908_TEN@CHI",
+  "gameStatus": "Completed",
+  "home": "CHI",
+  "away": "TEN",
+  "homePts": "24",
+  "awayPts": "17",
+  "teamIDHome": "6",
+  "teamIDAway": "31",
+  "scoringPlays": [
+   {
+    "score": "Tony Pollard 26 Yd Run (Nick Folk Kick)",
+    "scorePeriod": "Q1",
+    "homeScore": "0",
+    "awayScore": "7",
+    "teamID": "31",
+    "scoreDetails": "8 plays, 79 yards, 4:45",
+    "scoreType": "TD",
+    "scoreTime": "0:41",
+    "team": "TEN",
+    "playerIDs": [
+     "3916148",
+     "10621"
+    ]
+   },
+   {
+    "score": "Nick Folk 40 Yd Field Goal  ",
+    "scorePeriod": "Q2",
+    "homeScore": "0",
+    "awayScore": "10",
+    "teamID": "31",
+    "scoreDetails": "4 plays, 1 yard, 1:35",
+    "scoreType": "FG",
+    "scoreTime": "14:06",
+    "team": "TEN",
+    "playerIDs": [
+     "10621"
+    ]
+   },
+   {
+    "score": "Chig Okonkwo 17 Yd pass from Will Levis (Nick Folk Kick)",
+    "scorePeriod": "Q2",
+    "homeScore": "0",
+    "awayScore": "17",
+    "teamID": "31",
+    "scoreDetails": "14 plays, 73 yards, 8:23",
+    "scoreType": "TD",
+    "scoreTime": "3:44",
+    "team": "TEN",
+    "playerIDs": [
+     "4361418",
+     "4360635",
+     "10621"
+    ]
+   },
+   {
+    "score": "Cairo Santos 24 Yd Field Goal  ",
+    "scorePeriod": "Q2",
+    "homeScore": "3",
+    "awayScore": "17",
+    "teamID": "6",
+    "scoreDetails": "9 plays, 28 yards, 3:17",
+    "scoreType": "FG",
+    "scoreTime": "0:27",
+    "team": "CHI",
+    "playerIDs": [
+     "17427"
+    ]
+   },
+   {
+    "score": "Jonathan Owens 21 Yd Return of Blocked Punt (Cairo Santos Kick)",
+    "scorePeriod": "Q3",
+    "homeScore": "10",
+    "awayScore": "17",
+    "teamID": "6",
+    "scoreDetails": "6 plays, 8 yards, 3:19",
+    "scoreType": "TD",
+    "scoreTime": "9:07",
+    "team": "CHI",
+    "playerIDs": [
+     "4331768",
+     "17427"
+    ]
+   },
+   {
+    "score": "Cairo Santos 50 Yd Field Goal  ",
+    "scorePeriod": "Q4",
+    "homeScore": "13",
+    "awayScore": "17",
+    "teamID": "6",
+    "scoreDetails": "11 plays, 44 yards, 3:59",
+    "scoreType": "FG",
+    "scoreTime": "14:47",
+    "team": "CHI",
+    "playerIDs": [
+     "17427"
+    ]
+   },
+   {
+    "score": "Cairo Santos 48 Yd Field Goal  ",
+    "scorePeriod": "Q4",
+    "homeScore": "16",
+    "awayScore": "17",
+    "teamID": "6",
+    "scoreDetails": "4 plays, 1 yard, 1:52",
+    "scoreType": "FG",
+    "scoreTime": "9:52",
+    "team": "CHI",
+    "playerIDs": [
+     "17427"
+    ]
+   },
+   {
+    "score": "Tyrique Stevenson 43 Yd Interception Return (Caleb Williams Pass to D'Andre Swift for Two-Point Conversion)",
+    "scorePeriod": "Q4",
+    "homeScore": "24",
+    "awayScore": "17",
+    "teamID": "6",
+    "scoreDetails": "4 plays, 15 yards, 2:17",
+    "scoreType": "TD",
+    "scoreTime": "7:35",
+    "team": "CHI",
+    "playerIDs": [
+     "4431611",
+     "4259545",
+     "4426374"
+    ]
+   }
+  ],
+  "DST": {
+   "away": {
+    "teamAbv": "TEN",
+    "teamID": "31",
+    "defTD": "0",
+    "defensiveInterceptions": "0",
+    "sacks": "2",
+    "ydsAllowed": "148",
+    "fumblesRecovered": "1",
+    "ptsAllowed": "12",
+    "safeties": "0"
+   },
+   "home": {
+    "teamAbv": "CHI",
+    "teamID": "6",
+    "defTD": "2",
+    "defensiveInterceptions": "2",
+    "sacks": "3",
+    "ydsAllowed": "244",
+    "fumblesRecovered": "1",
+    "ptsAllowed": "17",
+    "safeties": "0"
+   }
+  },
+  "playerStats": {
+   "10621": {
+    "playerID": "10621",
+    "longName": "Nick Folk",
+    "team": "TEN",
+    "teamAbv": "TEN"
+   },
+   "17427": {
+    "playerID": "17427",
+    "longName": "Cairo Santos",
+    "team": "CHI",
+    "teamAbv": "CHI"
+   },
+   "3916148": {
+    "playerID": "3916148",
+    "longName": "Tony Pollard",
+    "team": "TEN",
+    "teamAbv": "TEN",
+    "Rushing": {
+     "rushAvg": "5.1",
+     "rushYds": "82",
+     "carries": "16",
+     "longRush": "26",
+     "rushTD": "1"
+    }
+   },
+   "4259545": {
+    "playerID": "4259545",
+    "longName": "D'Andre Swift",
+    "team": "CHI",
+    "teamAbv": "CHI",
+    "Rushing": {
+     "rushAvg": "3.0",
+     "rushYds": "30",
+     "carries": "10",
+     "longRush": "20",
+     "rushTD": "0"
+    }
+   },
+   "4331768": {
+    "playerID": "4331768",
+    "longName": "Jonathan Owens",
+    "team": "CHI",
+    "teamAbv": "CHI",
+    "Defense": {
+     "totalTackles": "0",
+     "defTD": "1",
+     "forcedFumbles": "0",
+     "soloTackles": "0",
+     "tfl": "0",
+     "qbHits": "0",
+     "defensiveInterceptions": "0",
+     "sacks": "0",
+     "passDeflections": "0"
+    }
+   },
+   "4360635": {
+    "playerID": "4360635",
+    "longName": "Chig Okonkwo",
+    "team": "TEN",
+    "teamAbv": "TEN",
+    "Defense": {
+     "totalTackles": "2",
+     "defTD": "0",
+     "forcedFumbles": "0",
+     "soloTackles": "2",
+     "tfl": "0",
+     "qbHits": "0",
+     "defensiveInterceptions": "0",
+     "sacks": "0",
+     "passDeflections": "0"
+    }
+   },
+   "4361418": {
+    "playerID": "4361418",
+    "longName": "Will Levis",
+    "team": "TEN",
+    "teamAbv": "TEN",
+    "Defense": {
+     "fumblesLost": "1",
+     "defensiveInterceptions": "0",
+     "forcedFumbles": "0",
+     "fumbles": "1",
+     "fumblesRecovered": "0"
+    },
+    "Rushing": {
+     "rushAvg": "9.0",
+     "rushYds": "36",
+     "carries": "4",
+     "longRush": "15",
+     "rushTD": "0"
+    }
+   },
+   "4426374": {
+    "playerID": "4426374",
+    "longName": "Tyrique Stevenson",
+    "team": "CHI",
+    "teamAbv": "CHI",
+    "Defense": {
+     "totalTackles": "4",
+     "defTD": "1",
+     "forcedFumbles": "0",
+     "soloTackles": "2",
+     "tfl": "0",
+     "qbHits": "0",
+     "defensiveInterceptions": "1",
+     "defensiveInterceptionsYards": "43",
+     "interceptionTDs": "1",
+     "sacks": "0",
+     "passDeflections": "2"
+    }
+   },
+   "4431611": {
+    "playerID": "4431611",
+    "longName": "Caleb Williams",
+    "team": "CHI",
+    "teamAbv": "CHI",
+    "Defense": {
+     "fumblesLost": "0",
+     "defensiveInterceptions": "0",
+     "forcedFumbles": "0",
+     "fumbles": "1",
+     "fumblesRecovered": "1"
+    },
+    "Rushing": {
+     "rushAvg": "3.0",
+     "rushYds": "15",
+     "carries": "5",
+     "longRush": "11",
+     "rushTD": "0"
+    }
+   }
+  }
+ },
+ "espnSummary": {
+  "header": {
+   "competitions": [
+    {
+     "status": {
+      "type": {
+       "name": "STATUS_FINAL",
+       "completed": true
+      }
+     },
+     "competitors": [
+      {
+       "id": "3",
+       "homeAway": "home",
+       "team": {
+        "abbreviation": "CHI"
+       },
+       "score": "24"
+      },
+      {
+       "id": "10",
+       "homeAway": "away",
+       "team": {
+        "abbreviation": "TEN"
+       },
+       "score": "17"
+      }
+     ]
+    }
+   ]
+  },
+  "scoringPlays": [
+   {
+    "id": "401671719854",
+    "type": {
+     "text": "Rushing Touchdown"
+    },
+    "text": "Tony Pollard 26 Yd Run (Nick Folk Kick)",
+    "awayScore": 7,
+    "homeScore": 0,
+    "period": {
+     "number": 1
+    },
+    "clock": {
+     "displayValue": "0:41"
+    },
+    "team": {
+     "abbreviation": "TEN"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4016717191020",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Nick Folk 40 Yd Field Goal  ",
+    "awayScore": 10,
+    "homeScore": 0,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "14:06"
+    },
+    "team": {
+     "abbreviation": "TEN"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "4016717191669",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Chig Okonkwo 17 Yd pass from Will Levis (Nick Folk Kick)",
+    "awayScore": 17,
+    "homeScore": 0,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "3:44"
+    },
+    "team": {
+     "abbreviation": "TEN"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4016717191981",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Cairo Santos 24 Yd Field Goal  ",
+    "awayScore": 17,
+    "homeScore": 3,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "0:27"
+    },
+    "team": {
+     "abbreviation": "CHI"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "4016717192487",
+    "type": {
+     "text": "Blocked Punt Touchdown"
+    },
+    "text": "Jonathan Owens 21 Yd Return of Blocked Punt (Cairo Santos Kick)",
+    "awayScore": 17,
+    "homeScore": 10,
+    "period": {
+     "number": 3
+    },
+    "clock": {
+     "displayValue": "9:07"
+    },
+    "team": {
+     "abbreviation": "CHI"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4016717193220",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Cairo Santos 50 Yd Field Goal  ",
+    "awayScore": 17,
+    "homeScore": 13,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "14:47"
+    },
+    "team": {
+     "abbreviation": "CHI"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "4016717193495",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Cairo Santos 48 Yd Field Goal  ",
+    "awayScore": 17,
+    "homeScore": 16,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "9:52"
+    },
+    "team": {
+     "abbreviation": "CHI"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "4016717193625",
+    "type": {
+     "text": "Interception Return Touchdown"
+    },
+    "text": "Tyrique Stevenson 43 Yd Interception Return (Caleb Williams Pass to D'Andre Swift for Two-Point Conversion)",
+    "awayScore": 17,
+    "homeScore": 24,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "7:35"
+    },
+    "team": {
+     "abbreviation": "CHI"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   }
+  ],
+  "drives": {
+   "previous": [
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "401671719664",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "W.Levis pass short right to N.Vannett pushed ob at TEN 29 for 8 yards (T.Edwards).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:26"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401671719701",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) T.Pollard right tackle to TEN 36 for 7 yards (T.Edmunds; T.Stevenson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "4:49"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401671719723",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Pollard left end ran ob at 50 for 14 yards (J.Brisker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "4:10"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401671719750",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) W.Levis pass short left to C.Ridley to CHI 44 for 6 yards (T.Edwards).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "3:32"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401671719775",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) W.Levis pass short right to T.Spears to CHI 39 for 5 yards (K.Byard).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "2:52"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401671719800",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Burks left end pushed ob at CHI 33 for 6 yards (J.Brisker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "2:11"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401671719827",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) T.Pollard left tackle to CHI 26 for 7 yards (Ch.Williams).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "1:28"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401671719854",
+       "type": {
+        "text": "Rushing Touchdown"
+       },
+       "text": "Tony Pollard 26 Yd Rush N.Folk extra point is GOOD, Center-M.Cox, Holder-R.Stonehouse.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:41"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 7,
+       "homeScore": 0
+      },
+      {
+       "id": "401671719885",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Timeout at 00:41.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:41"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 7,
+       "homeScore": 0
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "401671719892",
+       "type": {
+        "text": "Fumble Recovery (Opponent)"
+       },
+       "text": "N.Folk kicks 63 yards from TEN 35 to CHI 2. V.Jones MUFFS catch, touched at CHI 3, RECOVERED by TEN-J.Chestnut at CHI 23.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:41"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 7,
+       "homeScore": 0
+      },
+      {
+       "id": "401671719935",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Pollard right guard to CHI 19 for 4 yards (M.Sweat).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:36"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 7,
+       "homeScore": 0
+      },
+      {
+       "id": "401671719957",
+       "type": {
+        "text": "End Period"
+       },
+       "text": "END QUARTER 1",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:00"
+       },
+       "start": {},
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 7,
+       "homeScore": 0
+      },
+      {
+       "id": "401671719977",
+       "type": {
+        "text": "Sack"
+       },
+       "text": "(Shotgun) W.Levis sacked at CHI 22 for -3 yards (D.Taylor).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "14:59"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 7,
+       "homeScore": 0
+      },
+      {
+       "id": "401671719997",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) W.Levis pass incomplete short middle.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "14:14"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 7,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191020",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "N.Folk 40 yard field goal is GOOD, Center-M.Cox, Holder-R.Stonehouse.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "14:06"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191032",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Timeout at 14:06.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "14:06"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4016717191220",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) W.Levis pass incomplete short right.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "12:07"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191235",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #1 by TEN at 12:03.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "12:03"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191250",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) PENALTY on TEN-J.Latham, False Start, 5 yards, enforced at TEN 27 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "12:03"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191281",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) W.Levis pass incomplete short right to T.Burks (T.Stevenson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "12:03"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191316",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) W.Levis pass deep left to C.Ridley to TEN 44 for 22 yards (K.Gordon, J.Brisker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "12:00"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191341",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) T.Spears right guard to TEN 47 for 3 yards (D.Taylor).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "11:19"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191363",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) W.Levis pass short left to T.Pollard to CHI 47 for 6 yards (T.Edwards) [A.Billings].",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "10:36"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191388",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Spears left tackle to CHI 42 for 5 yards (D.Taylor, T.Edwards).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "9:56"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191410",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) W.Levis pass incomplete deep right to C.Ridley (J.Johnson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "9:15"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191433",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "W.Levis pass short left to T.Pollard to CHI 44 for -2 yards (T.Edwards).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "9:08"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191458",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) W.Levis scrambles right guard to CHI 35 for 9 yards (M.Sweat, J.Brisker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "8:21"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191469",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #2 by TEN at 07:36.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "7:36"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191480",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) W.Levis pass short left to T.Boyd to CHI 32 for 3 yards (J.Brisker; T.Stevenson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "7:36"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191512",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) W.Levis left tackle to CHI 17 for 15 yards (D.Taylor).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "6:51"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191534",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) T.Spears right guard to CHI 15 for 2 yards (J.Johnson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "6:07"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191556",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) T.Pollard left guard to CHI 12 for 3 yards (D.Taylor, T.Edwards).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "5:25"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191578",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) W.Levis pass incomplete short right to C.Ridley. PENALTY on CHI-M.Sweat, Defensive Offside, 5 yards, enforced at CHI 12 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "4:40"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191612",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) T.Spears left guard to CHI 5 for 2 yards (T.Edwards). PENALTY on TEN, Illegal Formation, 5 yards, enforced at CHI 7 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "4:33"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191645",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) PENALTY on TEN-C.Okonkwo, False Start, 5 yards, enforced at CHI 12 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "4:10"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191669",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "(Shotgun) W.Levis pass deep right to C.Okonkwo for 17 yards, TOUCHDOWN [D.Walker].N.Folk extra point is GOOD, Center-M.Cox, Holder-R.Stonehouse.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "3:44"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191703",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Timeout at 03:44.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "3:44"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 0
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "CHI"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "4016717191710",
+       "type": {
+        "text": "Kickoff Return (Offense)"
+       },
+       "text": "N.Folk kicks 66 yards from TEN 35 to CHI -1. D.Carter pushed ob at TEN 34 for 67 yards (D.Baker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "3:44"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191745",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Swift left guard to TEN 38 for -4 yards (R.McCreary).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "3:35"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191767",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(No Huddle, Shotgun) C.Williams pass short left to D.Moore to TEN 25 for 13 yards (L.Sneed).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "3:09"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191792",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "K.Herbert right guard to TEN 25 for no gain (J.Simmons; A.Hooker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:27"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191803",
+       "type": {
+        "text": "Two-minute warning"
+       },
+       "text": "Two-Minute Warning",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:00"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191814",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "K.Herbert left tackle to TEN 21 for 4 yards (H.Landry; E.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:00"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191853",
+       "type": {
+        "text": "Fumble Recovery (Own)"
+       },
+       "text": "(No Huddle, Shotgun) C.Williams pass short left to R.Odunze to TEN 10 for 11 yards (A.Hooker). FUMBLES (A.Hooker), recovered by CHI-T.Jenkins at TEN 10.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:00"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191895",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Williams pass short left to C.Kmet to TEN 6 for 4 yards (K.Murray; L.Sneed). The Replay Official reviewed the pass completion ruling, and the play was Upheld. The ruling on the field stands.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:00"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191920",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) C.Williams pass incomplete short left to K.Allen.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:38"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191951",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "C.Williams pass incomplete short middle to K.Allen (E.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:21"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 3
+      },
+      {
+       "id": "4016717191957",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) C.Williams pass incomplete short middle to K.Allen (A.Key).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:35"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 0
+      },
+      {
+       "id": "4016717191981",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "C.Santos 24 yard field goal is GOOD, Center-S.Daly, Holder-T.Taylor.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:27"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 3
+      },
+      {
+       "id": "4016717191993",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Timeout at 00:27.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:27"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 3
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "BLOCKED PUNT TD",
+     "plays": [
+      {
+       "id": "4016717192333",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) T.Pollard left tackle to TEN 28 for 3 yards (J.Brisker, T.Edwards).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "12:26"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 3
+      },
+      {
+       "id": "4016717192362",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) W.Levis pass short left to T.Burks to TEN 30 for 2 yards (T.Edwards).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "11:44"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 3
+      },
+      {
+       "id": "4016717192387",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) W.Levis scrambles right guard to TEN 38 for 8 yards (J.Brisker; T.Edmunds).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "10:58"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 3
+      },
+      {
+       "id": "4016717192409",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) T.Burks left end to TEN 33 for -5 yards (J.Johnson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "10:12"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 3
+      },
+      {
+       "id": "4016717192431",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) W.Levis pass incomplete short right [A.Billings]. TEN-D.Radunz was injured during the play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "9:26"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 3
+      },
+      {
+       "id": "4016717192444",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Timeout at 09:21.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "9:21"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 3
+      },
+      {
+       "id": "4016717192457",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) W.Levis pass incomplete deep left to C.Ridley.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "9:21"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 3
+      },
+      {
+       "id": "4016717192487",
+       "type": {
+        "text": "Blocked Punt Touchdown"
+       },
+       "text": "R.Stonehouse punt is BLOCKED by D.Hardy, Center-M.Cox, RECOVERED by CHI-J.Owens at TEN 21. J.Owens for 21 yards, TOUCHDOWN.C.Santos extra point is GOOD, Center-S.Daly, Holder-T.Taylor.",
+       "scoringPlay": true,
+       "isTurnover": true,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "9:07"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "CHI"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "4016717192926",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "C.Williams pass incomplete short right to D.Moore.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "3:46"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      },
+      {
+       "id": "4016717192949",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(No Huddle, Shotgun) C.Williams pass incomplete short right to D.Moore.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "3:42"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      },
+      {
+       "id": "4016717192972",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) C.Williams scrambles right end to CHI 35 for 11 yards (C.Murphy).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "3:33"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      },
+      {
+       "id": "4016717192994",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(No Huddle, Shotgun) T.Homer right guard to CHI 41 for 6 yards (A.Hooker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "2:59"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      },
+      {
+       "id": "4016717193016",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(No Huddle, Shotgun) C.Williams pass short left to K.Allen to CHI 48 for 7 yards (C.Awuzie, R.McCreary).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "2:34"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      },
+      {
+       "id": "4016717193041",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(No Huddle, Shotgun) C.Williams pass short left to K.Allen pushed ob at TEN 44 for 8 yards (K.Murray).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "2:01"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      },
+      {
+       "id": "4016717193071",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(No Huddle, Shotgun) T.Homer left guard to TEN 40 for 4 yards (K.Murray; S.Joseph).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "1:38"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      },
+      {
+       "id": "4016717193093",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "Direct snap to D.Swift.  D.Swift right end to TEN 35 for 5 yards (E.Jones, K.Coburn).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "1:38"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      },
+      {
+       "id": "4016717193117",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Swift left guard to TEN 37 for -2 yards (S.Joseph, E.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "0:15"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      },
+      {
+       "id": "4016717193139",
+       "type": {
+        "text": "End Period"
+       },
+       "text": "END QUARTER 3",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "0:00"
+       },
+       "start": {},
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      },
+      {
+       "id": "4016717193159",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) PENALTY on TEN-H.Landry, Neutral Zone Infraction, 5 yards, enforced at TEN 37 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "15:00"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      },
+      {
+       "id": "4016717193183",
+       "type": {
+        "text": "Fumble Recovery (Own)"
+       },
+       "text": "(No Huddle, Shotgun) C.Williams to TEN 32 for no gain. FUMBLES, and recovers at TEN 38. C.Williams pass incomplete deep right to K.Allen [H.Landry].",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "14:59"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 10
+      },
+      {
+       "id": "4016717193220",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "C.Santos 50 yard field goal is GOOD, Center-S.Daly, Holder-T.Taylor.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "14:47"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "CHI"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "4016717193391",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "C.Williams pass incomplete short left to R.Odunze (A.Key).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "11:40"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4016717193414",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Swift left guard to TEN 29 for 2 yards (T.Sweat, A.Key). PENALTY on CHI-C.Shelton, Offensive Holding, 10 yards, enforced at TEN 31 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "11:40"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4016717193448",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Williams pass short left to D.Carter to TEN 35 for 6 yards (Q.Diggs, K.Murray).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "11:18"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4016717193473",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(No Huddle, Shotgun) C.Williams scrambles left tackle to TEN 30 for 5 yards (H.Landry).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "10:39"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4016717193495",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "C.Santos 48 yard field goal is GOOD, Center-S.Daly, Holder-T.Taylor.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "9:52"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 16
+      },
+      {
+       "id": "4016717193505",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Timeout at 09:52.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "9:52"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 16
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "INT TD",
+     "plays": [
+      {
+       "id": "4016717193515",
+       "type": {
+        "text": "Kickoff Return (Offense)"
+       },
+       "text": "C.Santos kicks 65 yards from CHI 35 to TEN 0. J.Jackson to TEN 30 for 30 yards (T.Homer).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "9:52"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 16
+      },
+      {
+       "id": "4016717193553",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) W.Levis pass short middle to T.Boyd to TEN 41 for 11 yards (J.Brisker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "9:44"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 16
+      },
+      {
+       "id": "4016717193578",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Pollard right guard to TEN 41 for no gain (K.Gordon; T.Edwards).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "9:08"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 16
+      },
+      {
+       "id": "4016717193600",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) W.Levis pass short left to T.Boyd to TEN 45 for 4 yards (K.Gordon).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "8:29"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 16
+      },
+      {
+       "id": "4016717193625",
+       "type": {
+        "text": "Interception Return Touchdown"
+       },
+       "text": "(Shotgun) W.Levis pass short left INTERCEPTED by T.Stevenson [D.Walker] at TEN 43. T.Stevenson for 43 yards, TOUCHDOWN.TWO-POINT CONVERSION ATTEMPT. C.Williams pass to D.Swift is complete. ATTEMPT SUCCEEDS.",
+       "scoringPlay": true,
+       "isTurnover": true,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "7:35"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 24
+      },
+      {
+       "id": "4016717193660",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Timeout at 07:35.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "7:35"
+       },
+       "start": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "3"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 24
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "playerPositions": {
+  "10621": {
+   "name": "Nick Folk",
+   "pos": "PK",
+   "team": "ATL"
+  },
+  "17427": {
+   "name": "Cairo Santos",
+   "pos": "PK",
+   "team": "CHI"
+  },
+  "3916148": {
+   "name": "Tony Pollard",
+   "pos": "RB",
+   "team": "TEN"
+  },
+  "4259545": {
+   "name": "D'Andre Swift",
+   "pos": "RB",
+   "team": "CHI"
+  },
+  "4331768": {
+   "name": "Jonathan Owens",
+   "pos": "S",
+   "team": "IND"
+  },
+  "4360635": {
+   "name": "Chig Okonkwo",
+   "pos": "TE",
+   "team": "WSH"
+  },
+  "4361418": {
+   "name": "Will Levis",
+   "pos": "QB",
+   "team": "TEN"
+  },
+  "4426374": {
+   "name": "Tyrique Stevenson Sr.",
+   "pos": "CB",
+   "team": "CHI"
+  },
+  "4431611": {
+   "name": "Caleb Williams",
+   "pos": "QB",
+   "team": "CHI"
+  }
+ },
+ "nflPlayers": {
+  "10621": {
+   "name": "Nick Folk",
+   "position": "K",
+   "team": "ATL"
+  },
+  "17427": {
+   "name": "Cairo Santos",
+   "position": "K",
+   "team": "CHI"
+  },
+  "3916148": {
+   "name": "Tony Pollard",
+   "position": "RB",
+   "team": "TEN"
+  },
+  "4259545": {
+   "name": "D'Andre Swift",
+   "position": "RB",
+   "team": "CHI"
+  },
+  "4360635": {
+   "name": "Chig Okonkwo",
+   "position": "TE",
+   "team": "WAS"
+  },
+  "4361418": {
+   "name": "Will Levis",
+   "position": "QB",
+   "team": "TEN"
+  },
+  "4431611": {
+   "name": "Caleb Williams",
+   "position": "QB",
+   "team": "CHI"
+  }
+ },
+ "dbRows": [
+  {
+   "player_id": "10621",
+   "week": 1,
+   "season": 2024,
+   "game_id": "20240908_TEN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 3
+  },
+  {
+   "player_id": "17427",
+   "week": 1,
+   "season": 2024,
+   "game_id": "20240908_TEN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 6.5
+  },
+  {
+   "player_id": "3916148",
+   "week": 1,
+   "season": 2024,
+   "game_id": "20240908_TEN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 14
+  },
+  {
+   "player_id": "4259545",
+   "week": 1,
+   "season": 2024,
+   "game_id": "20240908_TEN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 1,
+   "fantasy_points": 2
+  },
+  {
+   "player_id": "4360635",
+   "week": 1,
+   "season": 2024,
+   "game_id": "20240908_TEN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "4361418",
+   "week": 1,
+   "season": 2024,
+   "game_id": "20240908_TEN@CHI",
+   "passing_tds": 1,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 5
+  },
+  {
+   "player_id": "4431611",
+   "week": 1,
+   "season": 2024,
+   "game_id": "20240908_TEN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 1,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 2
+  },
+  {
+   "player_id": "DEF_CHI",
+   "week": 1,
+   "season": 2024,
+   "game_id": "20240908_TEN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 1,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 1,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 16
+  },
+  {
+   "player_id": "DEF_TEN",
+   "week": 1,
+   "season": 2024,
+   "game_id": "20240908_TEN@CHI",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 0
+  }
+ ]
+}

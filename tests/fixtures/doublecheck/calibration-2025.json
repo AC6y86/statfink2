@@ -1,0 +1,193 @@
+{
+  "description": "Calibration set for the Double Check job. The pre-correction 2025 backup (backup_data/fantasy_football_pre-2025-recalc-2026-07-11.db) must reproduce every documented 2025 correction in docs/DEFENSIVE_SCORING.md; the live (corrected) DB must be clean of them. Each entry matches a finding by bugClassRef and a regex over explanation + entity id/name.",
+  "backupDb": "backup_data/fantasy_football_pre-2025-recalc-2026-07-11.db",
+  "weeks": [
+    2,
+    3,
+    4,
+    5,
+    7,
+    9,
+    10,
+    12,
+    15,
+    18
+  ],
+  "mustFindOnBackup": [
+    {
+      "week": 2,
+      "ref": "B3",
+      "match": "kick_return_tds.*4360294|Gibson",
+      "note": "Gibson 90-yd KR TD uncredited"
+    },
+    {
+      "week": 2,
+      "ref": "B3",
+      "match": "punt_return_tds.*4569603|Washington",
+      "note": "Malik Washington 74-yd PR TD uncredited"
+    },
+    {
+      "week": 3,
+      "ref": "B3",
+      "match": "punt_return_tds",
+      "count": 2,
+      "note": "Lane 90 PR + Horton 95 PR uncredited"
+    },
+    {
+      "week": 4,
+      "ref": "B3",
+      "match": "punt_return_tds",
+      "count": 2,
+      "note": "Raymond 65 PR + P. Washington 87 PR uncredited"
+    },
+    {
+      "week": 5,
+      "ref": "B1",
+      "match": "Lockett",
+      "note": "Lockett offensive end-zone recovery credited to the defense"
+    },
+    {
+      "week": 5,
+      "ref": "B1",
+      "match": "DEF_TEN.*def_fumble_return_tds=1",
+      "note": "Titans DEF over-credited for the Lockett play"
+    },
+    {
+      "week": 7,
+      "ref": "B1",
+      "match": "DEF_NE.def_fumble_return_tds",
+      "severity": "FAIL",
+      "note": "Chaisson sack-fumble TD dropped by the old short-yardage filter (Joe +8)"
+    },
+    {
+      "week": 9,
+      "ref": "B3",
+      "match": "kick_return_tds",
+      "note": "C. Jones 98 KR uncredited"
+    },
+    {
+      "week": 9,
+      "ref": "B3",
+      "match": "punt_return_tds",
+      "note": "Dike 67 PR uncredited"
+    },
+    {
+      "week": 10,
+      "ref": "B3",
+      "match": "return_tds",
+      "count": 3,
+      "note": "P. Washington 73 PR, I. Williams 74 PR, Nwangwu 99 KR uncredited"
+    },
+    {
+      "week": 12,
+      "ref": "B3",
+      "match": "punt_return_tds",
+      "note": "Dike 90 PR uncredited"
+    },
+    {
+      "week": 12,
+      "ref": "S2",
+      "match": "Pete.*54.*74",
+      "flips": true,
+      "note": "Pete 54 -> 74 (Ray Davis KR TD), beats Dan"
+    },
+    {
+      "week": 12,
+      "ref": "A1",
+      "match": "Pete|team4|is_scoring",
+      "note": "wk12 Pete matchup value out of sync with lineup"
+    },
+    {
+      "week": 15,
+      "ref": "B1",
+      "match": "Woody Marks|4429059",
+      "severity": "FAIL",
+      "note": "Marks aborted-snap recovery is an offensive TD (Pete +8)"
+    },
+    {
+      "week": 18,
+      "ref": "A1",
+      "match": "102.67|59.5|is_scoring lineup sums",
+      "note": "wk18 matchup values corrupted by the full-roster overwrite"
+    },
+    {
+      "week": 2,
+      "ref": "D1",
+      "match": "Non-canonical team code",
+      "note": "pre-normalization team codes (WSH / nicknames)"
+    }
+  ],
+  "mustNotFindOnLive": [
+    {
+      "week": 2,
+      "ref": "B3",
+      "match": "Gibson|4360294"
+    },
+    {
+      "week": 2,
+      "ref": "B3",
+      "match": "4569603"
+    },
+    {
+      "week": 3,
+      "ref": "B3",
+      "match": "punt_return_tds"
+    },
+    {
+      "week": 4,
+      "ref": "B3",
+      "match": "punt_return_tds"
+    },
+    {
+      "week": 5,
+      "ref": "B1",
+      "match": "Lockett|DEF_TEN"
+    },
+    {
+      "week": 7,
+      "ref": "B1",
+      "match": "DEF_NE"
+    },
+    {
+      "week": 9,
+      "ref": "B3",
+      "match": "return_tds"
+    },
+    {
+      "week": 10,
+      "ref": "B3",
+      "match": "return_tds"
+    },
+    {
+      "week": 12,
+      "ref": "S2",
+      "match": "Pete"
+    },
+    {
+      "week": 12,
+      "ref": "A1",
+      "match": "."
+    },
+    {
+      "week": 15,
+      "ref": "B1",
+      "match": "."
+    },
+    {
+      "week": 18,
+      "ref": "A1",
+      "match": "."
+    },
+    {
+      "week": 2,
+      "ref": "D1",
+      "match": "."
+    },
+    {
+      "week": 15,
+      "ref": "D1",
+      "match": "."
+    }
+  ],
+  "liveKnownResidual": "Residual live findings are downgraded to INFO by server/config/knownScoringErrors.json (the structured registry of accepted errors in blessed seasons); the live record must therefore show zero FAIL, and every registry entry for the audited weeks must be matched."
+}

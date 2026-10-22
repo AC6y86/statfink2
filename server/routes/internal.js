@@ -121,6 +121,19 @@ router.post('/scheduler/live', asyncHandler(async (req, res) => {
     }
 }));
 
+// Revisit ONLY messages previously skipped for identity, not rejected or
+// completed moves. Legacy rows lack From; fetch them once to learn identity.
+router.get('/roster-email/retryable', asyncHandler(async (req, res) => {
+    const parsing = req.app.locals.emailMoveParsingService;
+    const pending = req.app.locals.pendingMovesService;
+    if (!parsing || !pending) throw new APIError('Email move services not available', 500);
+    const emails = [];
+    for (const row of await pending.getRetryableUnknownEmails()) {
+        if (!row.from || await parsing.resolveSender(row.from)) emails.push({ emailId: row.emailId });
+    }
+    res.json({ success: true, emails });
+}));
+
 // Ingest a roster-move email from the Gmail poller: dedup -> parse with
 // Claude -> enqueue pending moves for commissioner approval
 router.post('/roster-email', asyncHandler(async (req, res) => {
@@ -137,8 +150,12 @@ router.post('/roster-email', asyncHandler(async (req, res) => {
         throw new APIError('gmailMessageId, from and body are required', 400);
     }
 
-    // Server-side dedup - the poller may re-send already-handled messages
-    if (await pendingMovesService.hasProcessedEmail(email.gmailMessageId)) {
+    // Identity rejection is retryable once the owner mapping is repaired.
+    // Approved/rejected/queued proposals (including legacy retry IDs) remain
+    // terminal for dedup; never manufacture a new message ID to replay.
+    const sender = await parsingService.resolveSender(email.from);
+    if (await pendingMovesService.hasProcessedEmail(email.gmailMessageId, { retryUnknownSender: !!sender })) {
+        if (!sender) await pendingMovesService.markEmailProcessed(email.gmailMessageId, 'unknown_sender', { from: email.from });
         return res.json({ success: true, queued: false, reason: 'duplicate' });
     }
 
@@ -146,12 +163,12 @@ router.post('/roster-email', asyncHandler(async (req, res) => {
 
     if (parse.status === 'unknown_sender') {
         logInfo(`Roster email from unknown sender ignored: ${email.from}`);
-        await pendingMovesService.markEmailProcessed(email.gmailMessageId, 'unknown_sender');
+        await pendingMovesService.markEmailProcessed(email.gmailMessageId, 'unknown_sender', { from: email.from });
         return res.json({ success: true, queued: false, reason: 'unknown_sender' });
     }
 
     if (parse.status === 'not_a_roster_move') {
-        await pendingMovesService.markEmailProcessed(email.gmailMessageId, 'not_a_roster_move');
+        await pendingMovesService.markEmailProcessed(email.gmailMessageId, 'not_a_roster_move', { from: email.from });
         return res.json({ success: true, queued: false, reason: 'not_a_roster_move', summary: parse.summary });
     }
 
@@ -162,10 +179,13 @@ router.post('/roster-email', asyncHandler(async (req, res) => {
         await healthCheckService.recordAlert(
             needsReview ? 'warning' : 'info',
             'email-moves',
-            needsReview
-                ? `Email move from ${email.from} needs review: ${parse.summary}`
-                : `New pending roster move from ${email.from}: ${parse.summary}`,
-            (parse.questions_for_commissioner || []).length ? parse.questions_for_commissioner : null
+            parse.status === 'move_invalidation'
+                ? `Commissioner ruling from Dan: ${parse.summary}`
+                : needsReview
+                    ? `Email move from ${email.from} needs review: ${parse.summary}`
+                    : `New pending roster move from ${email.from}: ${parse.summary}`,
+            (parse.questions_for_commissioner || []).length ? parse.questions_for_commissioner : null,
+            { emailId: email.gmailMessageId, pendingItemIds: items.map(i => i.id) }
         );
     }
 
@@ -249,6 +269,18 @@ router.get('/health/live', asyncHandler(async (req, res) => {
         liveErrors: schedulerService ? schedulerService.lastLiveErrors : null
     });
     res.json({ success: true, data: result });
+}));
+
+// Verification snapshot (same data as GET /api/admin/status) for cron
+// scripts and a Claude Code loop on the box.
+router.get('/status', asyncHandler(async (req, res) => {
+    const jobStatusService = req.app.locals.jobStatusService;
+
+    if (!jobStatusService) {
+        throw new APIError('Job status service not available', 500);
+    }
+
+    res.json({ success: true, data: await jobStatusService.snapshot() });
 }));
 
 // Status endpoint (for monitoring)

@@ -1,0 +1,79 @@
+{
+  "season": 2026,
+  "week": 6,
+  "proposedAt": "2026-10-20T03:30:19.348Z",
+  "proposedBy": "claude",
+  "generatedAt": null,
+  "themes": [
+    {
+      "slug": "norm-macdonald",
+      "name": "Norm Macdonald",
+      "description": "Deadpan, rambling shaggy-dog storytelling with a sly 'now, I'm no expert' aside and a moth-joke tangent, delivering savage roasts of managers with total sincerity.",
+      "origin": "suggested",
+      "addedAt": "2026-10-20T03:30:19.348Z"
+    },
+    {
+      "slug": "steven-wright",
+      "name": "Steven Wright",
+      "description": "Monotone, absurdist one-liners and surreal logic ('I woke up one morning and all my stuff had been stolen and replaced by exact duplicates') applied to blowouts and bad lineup calls.",
+      "origin": "suggested",
+      "addedAt": "2026-10-20T03:30:19.348Z"
+    },
+    {
+      "slug": "bob-uecker",
+      "name": "Bob Uecker",
+      "description": "Self-deprecating baseball broadcaster humor, 'juuust a bit outside' and tales of being terrible, making every loser feel like the lovable bum.",
+      "origin": "suggested",
+      "addedAt": "2026-10-20T03:30:19.348Z"
+    },
+    {
+      "slug": "jeff-goldblum",
+      "name": "Jeff Goldblum",
+      "description": "Stuttering, musing, pause-filled delivery ('Well, uh, you see... life, uh, finds a way') that turns box scores into dazzled, meandering philosophy.",
+      "origin": "suggested",
+      "addedAt": "2026-10-20T03:30:19.348Z"
+    },
+    {
+      "slug": "ron-swanson",
+      "name": "Ron Swanson",
+      "description": "Gruff libertarian contempt for weakness, an obsession with meat, woodworking and privacy, and terse pronouncements on which owners deserve respect.",
+      "origin": "suggested",
+      "addedAt": "2026-10-20T03:30:19.348Z"
+    },
+    {
+      "slug": "captain-jack-sparrow",
+      "name": "Captain Jack Sparrow",
+      "description": "Slurring, swaggering, rum-addled logic with 'savvy?' and 'but you have heard of me,' treating each matchup as a chaotic scheme that somehow works out.",
+      "origin": "suggested",
+      "addedAt": "2026-10-20T03:30:19.348Z"
+    },
+    {
+      "slug": "gandalf",
+      "name": "Gandalf",
+      "description": "Grave, wizardly gravitas with 'you shall not pass' stands, ominous prophecies and warm wisdom, treating the week's slate as an epic quest for the ring.",
+      "origin": "suggested",
+      "addedAt": "2026-10-20T03:30:19.348Z"
+    },
+    {
+      "slug": "william-shakespeare",
+      "name": "William Shakespeare",
+      "description": "Iambic flourishes, soliloquies of tragedy and comedy, and florid insults ('thou artless, beef-witted lineup-setter') for gridiron betrayals and triumphs.",
+      "origin": "suggested",
+      "addedAt": "2026-10-20T03:30:19.348Z"
+    },
+    {
+      "slug": "rod-serling",
+      "name": "Rod Serling",
+      "description": "Clipped, ominous Twilight Zone narration with a twist ending for every matchup, describing a team's fate as a dimension of sight, sound and a last-second kicker.",
+      "origin": "suggested",
+      "addedAt": "2026-10-20T03:30:19.348Z"
+    },
+    {
+      "slug": "bob-dylan",
+      "name": "Bob Dylan",
+      "description": "Cryptic, rambling, nasal-voiced poet who answers the week's results with enigmatic imagery, hobo-prophet verses and weary refusals to explain himself.",
+      "origin": "suggested",
+      "addedAt": "2026-10-20T03:30:19.348Z"
+    }
+  ]
+}

@@ -33,6 +33,8 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const wl = require('./lib/watchdogLog');
+const { writeJobStatus } = require('./lib/jobStatus');
+const { STATUS_PUBLIC_PATH, LEGACY_STATUS_PUBLIC_PATH } = require('../server/utils/liveRollup');
 
 const NOTIFY_EMAIL = 'joe.paley@gmail.com';
 const SERVER = 'http://localhost:8000';
@@ -42,11 +44,36 @@ const ALERT_SOURCE = 'live-watchdog';
 const OPEN_AFTER_CONSECUTIVE_BAD = 2;
 const REMIND_EVERY_MS = 60 * 60 * 1000;
 const WATCHDOG_SILENT_MS = 15 * 60 * 1000;
+// scripts/live-review.js writes a Qwen diagnosis of an escalation here; it goes into
+// critical emails while fresh. An opinion, not a signal: it never changes the policy.
+const DIAGNOSIS_FILE = path.join(__dirname, '../logs/live-review/diagnosis.json');
+const DIAGNOSIS_FRESH_MS = 15 * 60 * 1000;
 
 const RUNBOOK = {
     server_down: [
         'pm2 logs statfink2 --lines 100',
         'pm2 restart statfink2'
+    ],
+    // The watchdog's own probe of the public hostname failed. It runs ON the
+    // VM, so it is a self-probe, not an external check: confirm from outside
+    // before treating it as an outage. publicPathLayer / the dns_*, tcp_public
+    // and tls_public signals on the line say which layer broke.
+    public_path_unreachable: [
+        'SELF-PROBE from the VM, not an external check: confirm from OUTSIDE the LAN first (phone off wifi: https://peninsulafootball.com)',
+        'publicPathLayer dns: resolvectl status; resolvectl query peninsulafootball.com; dig @192.168.1.1 peninsulafootball.com; dig @1.1.1.1 peninsulafootball.com   (the VM resolver / gateway, not the site)',
+        'publicPathLayer tcp / tls / http: curl -I https://peninsulafootball.com; sudo -n systemctl status nginx; sudo -n certbot certificates; pm2 logs statfink2 --lines 100',
+        'If nginx is up and pm2 shows statfink2 online, it is DNS / certificate / network - tell Joe'
+    ],
+    // Legacy name for the same situation (lines and incidents written before
+    // public_path_unreachable existed); kept so an old open incident still
+    // gets a runbook in its reminder / recovery emails.
+    site_down: [
+        'This line predates the network diagnostics: it was the watchdog\'s own probe from the VM, confirm from OUTSIDE before treating it as an outage',
+        'curl -I https://peninsulafootball.com',
+        'sudo -n systemctl status nginx',
+        'sudo -n certbot certificates',
+        'pm2 logs statfink2 --lines 100',
+        'If nginx is up and pm2 shows statfink2 online, it is DNS / certificate / network - tell Joe'
     ],
     stalled: [
         'pm2 logs statfink2-live-continuous --lines 50',
@@ -59,7 +86,10 @@ const RUNBOOK = {
     ],
     degraded: [
         'pm2 logs statfink2 --lines 200 | grep -i "error\\|tank01"',
-        'curl -s localhost:8000/health   (Tank01 daily request count / key status)'
+        'curl -s localhost:8000/health   (Tank01 daily request count / key status)',
+        'tls_cert failing: sudo -n certbot certificates (renewal is late)',
+        'public_api_fresh failing: curl -s https://peninsulafootball.com/api/league/sync-status vs localhost:8000 (nginx cache / wrong upstream)',
+        'scores_vs_espn failing: our scores lag ESPN - check the live loop and Tank01 before trusting the standings'
     ],
     watchdog_dead: [
         'pm2 logs statfink2-watchdog --lines 50',
@@ -92,7 +122,53 @@ function failingSignals(line) {
     return (line.signals || []).filter(s => !s.ok);
 }
 
-function buildEmail(kind, incident, now) {
+/** `site_down` (pre-diagnostics lines) and `public_path_unreachable` are the same situation. */
+function isPublicPathStatus(status) {
+    return status === STATUS_PUBLIC_PATH || status === LEGACY_STATUS_PUBLIC_PATH;
+}
+
+/**
+ * One explicit sentence for emails about a failed public self-probe: it is
+ * the watchdog's own view from the VM, so it needs outside confirmation
+ * before anyone calls it an outage. Empty for every other status.
+ */
+function selfProbeNote(incident) {
+    if (!isPublicPathStatus(incident.status)) return [];
+    const layer = incident.line && incident.line.publicPathLayer;
+    return [
+        `NOTE: this is the watchdog's SELF-PROBE of the public hostname from the VM, not an external check` +
+        `${layer ? ` (failing layer: ${layer})` : ''}. Confirm from outside before treating it as an outage.`,
+        ''
+    ];
+}
+
+/**
+ * The live reviewer's diagnosis (logs/live-review/diagnosis.json) when it is
+ * < 15 min old and says something (severity !== 'ok'); otherwise null. Never
+ * throws: a missing or corrupt file is simply no diagnosis. The file path can
+ * be overridden with WATCHDOG_DIAGNOSIS_FILE (tests) or the second argument.
+ */
+function readDiagnosis(now = Date.now(), file = process.env.WATCHDOG_DIAGNOSIS_FILE || DIAGNOSIS_FILE) {
+    let d;
+    try { d = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (_) { return null; }
+    if (!d || typeof d !== 'object' || !d.diagnosis) return null;
+    const ts = Date.parse(d.ts);
+    if (Number.isNaN(ts) || Math.abs(now - ts) >= DIAGNOSIS_FRESH_MS) return null;
+    if (!d.severity || d.severity === 'ok') return null;
+    return { ts: d.ts, severity: d.severity, status: d.status || null, diagnosis: String(d.diagnosis), suggestedAction: d.suggestedAction ? String(d.suggestedAction) : '', model: d.model || null };
+}
+
+function diagnosisSection(diagnosis) {
+    if (!diagnosis) return [];
+    return [
+        `Diagnosis (Qwen, ${diagnosis.ts}): ${diagnosis.diagnosis}`,
+        ...(diagnosis.suggestedAction ? [`Suggested: ${diagnosis.suggestedAction}`] : []),
+        ''
+    ];
+}
+
+/** `diagnosis` may be passed explicitly (tests); by default the file is read for critical (non-recovery) emails. */
+function buildEmail(kind, incident, now, { diagnosis = undefined } = {}) {
     const line = incident.line || {};
     const since = incident.since;
     const duration = formatDuration(now - Date.parse(since));
@@ -124,11 +200,13 @@ function buildEmail(kind, incident, now) {
     const body = [
         headline,
         '',
+        ...(kind !== 'recovered' ? selfProbeNote(incident) : []),
         incident.summary || '',
         context.length ? `(${context.join(', ')})` : '',
         '',
         ...(kind !== 'recovered' && failing.length ? ['Failing signals:', ...failing, ''] : []),
         ...(kind !== 'recovered' ? ['What to look at:', ...runbook.map(r => `  ${r}`), ''] : []),
+        ...(kind !== 'recovered' ? diagnosisSection(diagnosis === undefined ? readDiagnosis(now) : diagnosis) : []),
         `Watchdog log: logs/watchdog/${wl.dayFileName(new Date(now))}`,
         'Dashboard: /admin/dashboard -> Status tab -> Live Scoring Watchdog'
     ].join('\n');
@@ -317,6 +395,8 @@ async function main() {
                 const { sendGmail } = require('./lib/gmailSend');
                 await sendGmail({ to: NOTIFY_EMAIL, subject: action.subject, body: action.body });
                 log(`Emailed ${NOTIFY_EMAIL}: ${action.subject}`);
+                next.lastEmailError = null;
+                next.lastEmailAt = new Date().toISOString();
                 if (next.incident) {
                     next.incident.lastEmailAt = new Date().toISOString();
                     next.incident.emails = (next.incident.emails || 0) + 1;
@@ -329,6 +409,7 @@ async function main() {
                 } catch (_) { /* logging only */ }
                 log(`FAILED to send email (${error.message}). Saved to ${fallback}; will retry next run.`);
                 log('If this is a scope/token error, re-authorize with: node roster_moves/authSetup.js');
+                next.lastEmailError = { ts: new Date().toISOString(), message: error.message };
                 process.exitCode = 1;
             }
         }
@@ -336,10 +417,18 @@ async function main() {
 
     if (!dryRun) {
         wl.writeJsonAtomic(wl.NOTIFIER_STATE_FILE, next);
+        // Job status for /admin/status: the notifier is the ONLY emailer, so its
+        // email health (last error / last sent) is surfaced here.
+        const inc = next.incident;
+        writeJobStatus('notifier', {
+            status: inc ? (inc.severity === 'critical' ? 'critical' : 'warning') : (next.lastEmailError ? 'warning' : 'ok'),
+            summary: inc ? `incident ${inc.status} (${inc.severity}) since ${inc.since}` : `no incident${next.lastEmailError ? `; last email FAILED: ${next.lastEmailError.message}` : ''}`,
+            details: { incident: inc || null, lastEmailAt: next.lastEmailAt || null, lastEmailError: next.lastEmailError || null, badStreak: (next.badStreak || []).length }
+        });
     }
 }
 
-module.exports = { applyPolicy, buildEmail, RUNBOOK, OPEN_AFTER_CONSECUTIVE_BAD, REMIND_EVERY_MS, WATCHDOG_SILENT_MS };
+module.exports = { applyPolicy, buildEmail, readDiagnosis, isPublicPathStatus, RUNBOOK, OPEN_AFTER_CONSECUTIVE_BAD, REMIND_EVERY_MS, WATCHDOG_SILENT_MS, DIAGNOSIS_FILE, DIAGNOSIS_FRESH_MS };
 
 if (require.main === module) {
     main().catch(err => {

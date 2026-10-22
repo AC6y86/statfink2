@@ -1,0 +1,4276 @@
+{
+ "gameId": "20250914_NE@MIA",
+ "season": 2025,
+ "week": 2,
+ "espnEventId": "401772728",
+ "homeTeam": "MIA",
+ "awayTeam": "NE",
+ "tank01Body": {
+  "gameID": "20250914_NE@MIA",
+  "gameStatus": "Completed",
+  "home": "MIA",
+  "away": "NE",
+  "homePts": "27",
+  "awayPts": "33",
+  "teamIDHome": "20",
+  "teamIDAway": "22",
+  "scoringPlays": [
+   {
+    "score": "Mack Hollins 8 Yd pass from Drake Maye (Andy Borregales PAT Failed)",
+    "scorePeriod": "Q1",
+    "homeScore": "0",
+    "awayScore": "6",
+    "teamID": "22",
+    "scoreDetails": "10 plays, 68 yards, 5:31",
+    "scoreType": "TD",
+    "scoreTime": "9:29",
+    "team": "NE",
+    "playerIDs": [
+     "4431452",
+     "2991662",
+     "4569923"
+    ]
+   },
+   {
+    "score": "Kayshon Boutte 16 Yd pass from Drake Maye (Andy Borregales PAT Failed)",
+    "scorePeriod": "Q1",
+    "homeScore": "0",
+    "awayScore": "12",
+    "teamID": "22",
+    "scoreDetails": "11 plays, 70 yards, 7:05",
+    "scoreType": "TD",
+    "scoreTime": "0:49",
+    "team": "NE",
+    "playerIDs": [
+     "4431452",
+     "4429022",
+     "4569923"
+    ]
+   },
+   {
+    "score": "Jaylen Waddle 18 Yd pass from Tua Tagovailoa (Riley Patterson Kick)",
+    "scorePeriod": "Q2",
+    "homeScore": "7",
+    "awayScore": "12",
+    "teamID": "20",
+    "scoreDetails": "8 plays, 83 yards, 4:30",
+    "scoreType": "TD",
+    "scoreTime": "11:19",
+    "team": "MIA",
+    "playerIDs": [
+     "4241479",
+     "4372016",
+     "4243371"
+    ]
+   },
+   {
+    "score": "Andy Borregales 22 Yd Field Goal",
+    "scorePeriod": "Q2",
+    "homeScore": "7",
+    "awayScore": "15",
+    "teamID": "22",
+    "scoreDetails": "15 plays, 71 yards, 9:23",
+    "scoreType": "FG",
+    "scoreTime": "1:56",
+    "team": "NE",
+    "playerIDs": [
+     "4569923"
+    ]
+   },
+   {
+    "score": "De'Von Achane 29 Yd pass from Tua Tagovailoa (Riley Patterson Kick)",
+    "scorePeriod": "Q2",
+    "homeScore": "14",
+    "awayScore": "15",
+    "teamID": "20",
+    "scoreDetails": "6 plays, 77 yards, 1:23",
+    "scoreType": "TD",
+    "scoreTime": "0:33",
+    "team": "MIA",
+    "playerIDs": [
+     "4241479",
+     "4429160",
+     "4243371"
+    ]
+   },
+   {
+    "score": "Riley Patterson 40 Yd Field Goal",
+    "scorePeriod": "Q3",
+    "homeScore": "17",
+    "awayScore": "15",
+    "teamID": "20",
+    "scoreDetails": "7 plays, 49 yards, 4:19",
+    "scoreType": "FG",
+    "scoreTime": "10:41",
+    "team": "MIA",
+    "playerIDs": [
+     "4243371"
+    ]
+   },
+   {
+    "score": "Riley Patterson 44 Yd Field Goal",
+    "scorePeriod": "Q3",
+    "homeScore": "20",
+    "awayScore": "15",
+    "teamID": "20",
+    "scoreDetails": "9 plays, 30 yards, 5:36",
+    "scoreType": "FG",
+    "scoreTime": "3:37",
+    "team": "MIA",
+    "playerIDs": [
+     "4243371"
+    ]
+   },
+   {
+    "score": "Drake Maye 6 Yd Rush (Rhamondre Stevenson Run for Two-Point Conversion)",
+    "scorePeriod": "Q3",
+    "homeScore": "20",
+    "awayScore": "23",
+    "teamID": "22",
+    "scoreDetails": "5 plays, 83 yards, 3:31",
+    "scoreType": "TD",
+    "scoreTime": "0:06",
+    "team": "NE",
+    "playerIDs": [
+     "4431452",
+     "4569173"
+    ]
+   },
+   {
+    "score": "Malik Washington 74 Yd Punt Return (Riley Patterson Kick)",
+    "scorePeriod": "Q4",
+    "homeScore": "27",
+    "awayScore": "23",
+    "teamID": "20",
+    "scoreDetails": "6 plays, -4 yards, 4:49",
+    "scoreType": "TD",
+    "scoreTime": "7:18",
+    "team": "MIA",
+    "playerIDs": [
+     "4569603",
+     "4243371"
+    ]
+   },
+   {
+    "score": "Antonio Gibson 90 Yd Kickoff Return (Andy Borregales Kick)",
+    "scorePeriod": "Q4",
+    "homeScore": "27",
+    "awayScore": "30",
+    "teamID": "22",
+    "scoreDetails": "0 plays, 0 yards, 0:12",
+    "scoreType": "TD",
+    "scoreTime": "7:06",
+    "team": "NE",
+    "playerIDs": [
+     "4360294",
+     "4569923"
+    ]
+   },
+   {
+    "score": "Andy Borregales 53 Yd Field Goal",
+    "scorePeriod": "Q4",
+    "homeScore": "27",
+    "awayScore": "33",
+    "teamID": "22",
+    "scoreDetails": "4 plays, 3 yards, 0:25",
+    "scoreType": "FG",
+    "scoreTime": "1:47",
+    "team": "NE",
+    "playerIDs": [
+     "4569923"
+    ]
+   }
+  ],
+  "DST": {
+   "away": {
+    "teamAbv": "NE",
+    "teamID": "22",
+    "defTD": "0",
+    "defensiveInterceptions": "1",
+    "sacks": "5",
+    "ydsAllowed": "358",
+    "fumblesRecovered": "0",
+    "ptsAllowed": "27",
+    "safeties": "0"
+   },
+   "home": {
+    "teamAbv": "MIA",
+    "teamID": "20",
+    "defTD": "0",
+    "defensiveInterceptions": "0",
+    "sacks": "3",
+    "ydsAllowed": "333",
+    "fumblesRecovered": "0",
+    "ptsAllowed": "33",
+    "safeties": "0"
+   }
+  },
+  "playerStats": {
+   "2991662": {
+    "playerID": "2991662",
+    "longName": "Mack Hollins",
+    "team": "NE",
+    "teamAbv": "NE"
+   },
+   "4241479": {
+    "playerID": "4241479",
+    "longName": "Tua Tagovailoa",
+    "team": "MIA",
+    "teamAbv": "MIA"
+   },
+   "4243371": {
+    "playerID": "4243371",
+    "longName": "Riley Patterson",
+    "team": "MIA",
+    "teamAbv": "MIA"
+   },
+   "4360294": {
+    "playerID": "4360294",
+    "longName": "Antonio Gibson",
+    "team": "NE",
+    "teamAbv": "NE",
+    "Rushing": {
+     "rushAvg": "5.4",
+     "rushYds": "27",
+     "carries": "5",
+     "longRush": "15",
+     "rushTD": "0"
+    }
+   },
+   "4372016": {
+    "playerID": "4372016",
+    "longName": "Jaylen Waddle",
+    "team": "MIA",
+    "teamAbv": "MIA"
+   },
+   "4429022": {
+    "playerID": "4429022",
+    "longName": "Kayshon Boutte",
+    "team": "NE",
+    "teamAbv": "NE"
+   },
+   "4429160": {
+    "playerID": "4429160",
+    "longName": "De'Von Achane",
+    "team": "MIA",
+    "teamAbv": "MIA",
+    "Rushing": {
+     "rushAvg": "2.7",
+     "rushYds": "30",
+     "carries": "11",
+     "longRush": "9",
+     "rushTD": "0"
+    }
+   },
+   "4431452": {
+    "playerID": "4431452",
+    "longName": "Drake Maye",
+    "team": "NE",
+    "teamAbv": "NE",
+    "Defense": {
+     "fumblesLost": "0",
+     "defensiveInterceptions": "0",
+     "forcedFumbles": "0",
+     "fumbles": "0",
+     "fumblesRecovered": "1"
+    },
+    "Rushing": {
+     "rushAvg": "3.1",
+     "rushYds": "31",
+     "carries": "10",
+     "longRush": "13",
+     "rushTD": "1"
+    }
+   },
+   "4569173": {
+    "playerID": "4569173",
+    "longName": "Rhamondre Stevenson",
+    "team": "NE",
+    "teamAbv": "NE",
+    "Rushing": {
+     "rushAvg": "4.9",
+     "rushYds": "54",
+     "rushingTwoPointConversion": "1",
+     "carries": "11",
+     "longRush": "21",
+     "rushTD": "0"
+    }
+   },
+   "4569603": {
+    "playerID": "4569603",
+    "longName": "Malik Washington",
+    "team": "MIA",
+    "teamAbv": "MIA",
+    "Rushing": {
+     "rushAvg": "7.7",
+     "rushYds": "23",
+     "carries": "3",
+     "longRush": "18",
+     "rushTD": "0"
+    }
+   },
+   "4569923": {
+    "playerID": "4569923",
+    "longName": "Andy Borregales",
+    "team": "NE",
+    "teamAbv": "NE"
+   }
+  }
+ },
+ "espnSummary": {
+  "header": {
+   "competitions": [
+    {
+     "status": {
+      "type": {
+       "name": "STATUS_FINAL",
+       "completed": true
+      }
+     },
+     "competitors": [
+      {
+       "id": "15",
+       "homeAway": "home",
+       "team": {
+        "abbreviation": "MIA"
+       },
+       "score": "27"
+      },
+      {
+       "id": "17",
+       "homeAway": "away",
+       "team": {
+        "abbreviation": "NE"
+       },
+       "score": "33"
+      }
+     ]
+    }
+   ]
+  },
+  "scoringPlays": [
+   {
+    "id": "401772728269",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Mack Hollins 8 Yd pass from Drake Maye (Andy Borregales PAT Failed)",
+    "awayScore": 6,
+    "homeScore": 0,
+    "period": {
+     "number": 1
+    },
+    "clock": {
+     "displayValue": "9:29"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "401772728738",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Kayshon Boutte 16 Yd pass from Drake Maye (Andy Borregales PAT Failed)",
+    "awayScore": 12,
+    "homeScore": 0,
+    "period": {
+     "number": 1
+    },
+    "clock": {
+     "displayValue": "0:49"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727281019",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Jaylen Waddle 18 Yd pass from Tua Tagovailoa (Riley Patterson Kick)",
+    "awayScore": 12,
+    "homeScore": 7,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "11:19"
+    },
+    "team": {
+     "abbreviation": "MIA"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727281544",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Andy Borregales 22 Yd Field Goal",
+    "awayScore": 15,
+    "homeScore": 7,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "1:56"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "4017727281750",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "De'Von Achane 29 Yd pass from Tua Tagovailoa (Riley Patterson Kick)",
+    "awayScore": 15,
+    "homeScore": 14,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "0:33"
+    },
+    "team": {
+     "abbreviation": "MIA"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727282147",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Riley Patterson 40 Yd Field Goal",
+    "awayScore": 15,
+    "homeScore": 17,
+    "period": {
+     "number": 3
+    },
+    "clock": {
+     "displayValue": "10:41"
+    },
+    "team": {
+     "abbreviation": "MIA"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "4017727282711",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Riley Patterson 44 Yd Field Goal",
+    "awayScore": 15,
+    "homeScore": 20,
+    "period": {
+     "number": 3
+    },
+    "clock": {
+     "displayValue": "3:37"
+    },
+    "team": {
+     "abbreviation": "MIA"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "4017727282912",
+    "type": {
+     "text": "Rushing Touchdown"
+    },
+    "text": "Drake Maye 6 Yd Rush (Rhamondre Stevenson Run for Two-Point Conversion)",
+    "awayScore": 23,
+    "homeScore": 20,
+    "period": {
+     "number": 3
+    },
+    "clock": {
+     "displayValue": "0:06"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727283366",
+    "type": {
+     "text": "Punt Return Touchdown"
+    },
+    "text": "Malik Washington 74 Yd Punt Return (Riley Patterson Kick)",
+    "awayScore": 23,
+    "homeScore": 27,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "7:18"
+    },
+    "team": {
+     "abbreviation": "MIA"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727283418",
+    "type": {
+     "text": "Kickoff Return Touchdown"
+    },
+    "text": "Antonio Gibson 90 Yd Kickoff Return (Andy Borregales Kick)",
+    "awayScore": 30,
+    "homeScore": 27,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "7:06"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727283872",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Andy Borregales 53 Yd Field Goal",
+    "awayScore": 33,
+    "homeScore": 27,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "1:47"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   }
+  ],
+  "drives": {
+   "previous": [
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "40177272840",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "R.Patterson kicks 59 yards from MIA 35 to NE 6. A.Gibson to NE 32 for 26 yards (D.Trader).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "15:00"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "40177272863",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson left tackle to NE 35 for 3 yards (Z.Sieler; Ja.Phillips).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "14:56"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "40177272885",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson up the middle to NE 41 for 6 yards (B.Chubb; Z.Sieler).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "14:17"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728107",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) R.Stevenson left tackle to 50 for 9 yards (I.Melifonwu, M.Fitzpatrick).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "13:41"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728129",
+       "type": {
+        "text": "Sack"
+       },
+       "text": "D.Maye sacked at NE 47 for -3 yards (B.Chubb).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "13:03"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728149",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) D.Maye pass incomplete short left to H.Henry (R.Douglas).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "12:19"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728172",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short middle to R.Stevenson to MIA 43 for 10 yards (I.Melifonwu).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "12:16"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728197",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short middle to S.Diggs to MIA 33 for 10 yards (Ja.Phillips; I.Melifonwu).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "11:30"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728222",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "D.Maye pass deep left to A.Hooper to MIA 11 for 22 yards.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:46"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728247",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "A.Gibson right guard to MIA 8 for 3 yards (M.Butler).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:10"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728269",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "D.Maye pass short right to M.Hollins for 8 yards, TOUCHDOWN. A.Borregales extra point is No Good, Hit Right Upright, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "9:29"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728303",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 09:29.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "9:29"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "401772728471",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson left guard to NE 33 for 3 yards (J.Brooks; B.Chubb).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "7:54"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728500",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "PENALTY on NE-W.Campbell, False Start, 5 yards, enforced at NE 33 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "7:16"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728524",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short middle to S.Diggs to NE 36 for 8 yards (T.Dodson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "7:07"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728549",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short right to T.Henderson to MIA 49 for 15 yards (M.Fitzpatrick).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "6:22"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728574",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "A.Gibson left tackle to MIA 47 for 2 yards (Jo.Phillips; M.Judon).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:43"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728596",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "A.Gibson up the middle to MIA 45 for 2 yards (Jo.Phillips; M.Butler).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:03"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728618",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Maye scrambles left guard pushed ob at MIA 32 for 13 yards (J.Brooks).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "4:20"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728645",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Maye scrambles right end ran ob at MIA 26 for 6 yards (J.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "3:43"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728672",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Henderson up the middle to MIA 20 for 6 yards (M.Fitzpatrick).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "3:06"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728694",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Henderson right tackle to MIA 18 for 2 yards (C.Robinson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "2:22"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728716",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson right tackle to MIA 16 for 2 yards (J.Brooks; M.Butler).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "1:38"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728738",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "(Shotgun) D.Maye pass deep left to K.Boutte for 16 yards, TOUCHDOWN. A.Borregales extra point is No Good, Wide Right, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:49"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728772",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 00:49.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:49"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 0
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "MIA"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "401772728779",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "A.Borregales kicks 65 yards from NE 35 to MIA 0. D.Eskridge to MIA 27 for 27 yards (B.Schooler; D.Pettus).PENALTY on MIA-K.Britt, Offensive Holding, 10 yards, enforced at MIA 27.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:49"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728820",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass short left to D.Achane to MIA 26 for 9 yards (K.Chaisson; K.Dugger).Penalty on NE-K.Chaisson, Defensive Offside, declined.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:44"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728856",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass short right to A.Ingold to MIA 30 for 4 yards (K.Dugger).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:17"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728886",
+       "type": {
+        "text": "End Period"
+       },
+       "text": "END QUARTER 1",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:00"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728906",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Achane right end to MIA 39 for 9 yards (J.Hawkins).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "15:00"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728928",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "T.Tagovailoa pass short right to T.Hill to NE 48 for 13 yards (C.Davis).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "14:18"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728953",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Achane left end to NE 44 for 4 yards (R.Spillane).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "13:36"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728975",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) M.Washington right end to NE 26 for 18 yards (J.Hawkins; C.Davis).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "12:54"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 0
+      },
+      {
+       "id": "401772728997",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "O.Gordon up the middle to NE 18 for 8 yards (C.Elliss; E.Ponder).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "12:10"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 0
+      },
+      {
+       "id": "4017727281019",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass deep left to J.Waddle for 18 yards, TOUCHDOWN. R.Patterson extra point is GOOD, Center-J.Cardona, Holder-J.Bailey.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "11:19"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281053",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 11:19.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "11:19"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "4017727281060",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "R.Patterson kicks 59 yards from MIA 35 to NE 6. A.Gibson to NE 25 for 19 yards (C.Goode; M.Fitzpatrick).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "11:19"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281090",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "D.Maye pass short right to A.Hooper to NE 34 for 9 yards (T.Dodson; Ja.Phillips).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "11:14"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281115",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "D.Maye pass short right to A.Hooper to NE 41 for 7 yards (T.Dodson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "10:36"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281140",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson up the middle to MIA 38 for 21 yards (R.Douglas; W.Gay).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "9:54"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281167",
+       "type": {
+        "text": "Sack"
+       },
+       "text": "D.Maye sacked at MIA 43 for -5 yards (C.Robinson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "9:08"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281187",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) D.Maye pass short middle to H.Henry to MIA 30 for 13 yards (D.Trader).PENALTY on NE-T.Henderson, Offensive Holding, 10 yards, enforced at MIA 43 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "8:25"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281223",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) D.Maye pass incomplete short right.PENALTY on MIA-J.Marshall, Illegal Contact, 5 yards, enforced at NE 47 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "8:04"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281257",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "A.Gibson up the middle to MIA 43 for 5 yards (M.Fitzpatrick).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "7:57"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281279",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) PENALTY on NE-M.Moses, False Start, 5 yards, enforced at MIA 43 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "7:17"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281312",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short left to T.Henderson to MIA 33 for 15 yards (B.Chubb).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "6:53"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281337",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "D.Maye pass short right to H.Henry pushed ob at MIA 24 for 9 yards (D.Trader; R.Douglas).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "6:10"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281362",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Maye up the middle to MIA 21 for 3 yards (T.Dodson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "5:33"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281389",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short left to R.Stevenson to MIA 21 for no gain (T.Dodson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "4:50"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281414",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson up the middle to MIA 12 for 9 yards (M.Fitzpatrick).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "4:14"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281436",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Maye up the middle to MIA 10 for 2 yards (K.Grant).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "3:34"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281458",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson right tackle to MIA 8 for 2 yards (T.Dodson; J.Brooks).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:49"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281469",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #1 by MIA at 02:44.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:44"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281480",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Maye scrambles left end pushed ob at MIA 4 for 4 yards (T.Dodson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:44"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281497",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #1 by NE at 02:03.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:03"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281514",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) D.Maye pass incomplete short left to H.Henry (K.Grant).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:03"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281529",
+       "type": {
+        "text": "Two-minute warning"
+       },
+       "text": "Two-Minute Warning",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:59"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 12,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281544",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "A.Borregales 22 yard field goal is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:56"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 7
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "MIA"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017727281580",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "A.Borregales kicks 63 yards from NE 35 to MIA 2. D.Eskridge to MIA 23 for 21 yards (C.Elliss).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:56"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281592",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 01:51.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:51"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281603",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass deep right to T.Hill ran ob at MIA 45 for 22 yards.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:51"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281635",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Achane up the middle to MIA 49 for 4 yards (M.Williams, H.Landry).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:44"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281668",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(No Huddle, Shotgun) T.Tagovailoa pass short left to J.Waddle to NE 46 for 5 yards (A.Austin).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:22"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281693",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(No Huddle, Shotgun) T.Tagovailoa pass short middle to D.Achane to NE 34 for 12 yards (C.Elliss, J.Hawkins).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:06"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281706",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #2 by MIA at 01:00.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:00"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281718",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass short left to T.Hill to NE 29 for 5 yards (M.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:00"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 7
+      },
+      {
+       "id": "4017727281750",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "(No Huddle, Shotgun) T.Tagovailoa pass short middle to D.Achane for 29 yards, TOUCHDOWN. R.Patterson extra point is GOOD, Center-J.Cardona, Holder-J.Bailey.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:33"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727281763",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #2 by NE at 00:33.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:33"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {},
+       "awayScore": 15,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727281776",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "PENALTY on MIA-P.Paul, False Start, 5 yards, enforced at NE 2 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:33"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 13
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "MIA"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "4017727281889",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "A.Borregales kicks 57 yards from NE 35 to MIA 8. M.Washington to MIA 29 for 21 yards (A.Jennings; C.Elliss).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "15:00"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727281912",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Achane right end to MIA 36 for 7 yards (J.Hawkins).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "14:54"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727281934",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "T.Tagovailoa pass incomplete short right.PENALTY on MIA-J.Savaiinaea, Offensive Holding, 10 yards, enforced at MIA 36 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "14:15"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727281968",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass incomplete short right to D.Achane.Penalty on MIA-A.Brewer, Offensive Holding, declined.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "14:10"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727281985",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #1 by MIA at 14:07.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "14:07"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727282002",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass deep left to T.Hill to NE 27 for 47 yards (C.Woodson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "14:07"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727282034",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Achane right tackle to NE 26 for 1 yard (A.Jennings).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "13:18"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727282056",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass short middle to M.Washington pushed ob at NE 24 for 2 yards (C.Davis; C.Elliss).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "12:36"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727282081",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass short left to M.Washington to NE 13 for 11 yards (J.Hawkins; A.Austin).PENALTY on MIA-M.Washington, Illegal Motion, 5 yards, enforced at NE 24 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "11:53"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727282122",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass short left to D.Achane to NE 22 for 7 yards (M.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "11:27"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 14
+      },
+      {
+       "id": "4017727282147",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "R.Patterson 40 yard field goal is GOOD, Center-J.Cardona, Holder-J.Bailey.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "10:41"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282157",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 10:41.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "10:41"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "MIA"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "4017727282364",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Achane left end to MIA 44 for no gain (D.Pettus).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "9:13"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282393",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "T.Tagovailoa pass deep left to J.Waddle to NE 33 for 23 yards (C.Woodson).New England challenged the pass completion ruling, and the play was Upheld. The ruling on the field stands. (Timeout #1.)",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "8:32"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282474",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) M.Washington left end to NE 33 for no gain (C.Elliss).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "7:50"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282496",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(No Huddle, Shotgun) M.Washington left tackle to NE 28 for 5 yards (A.Jennings, C.Woodson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "7:23"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282518",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass short right to T.Hill pushed ob at NE 19 for 9 yards (M.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "6:42"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282548",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(No Huddle, Shotgun) T.Tagovailoa pass short right to M.Washington pushed ob at NE 3 for 16 yards (C.Woodson). NE-C.Woodson was injured during the play. PENALTY on MIA-A.Brewer, Offensive Holding, 10 yards, enforced at NE 19 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "6:13"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282569",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 06:06.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "6:06"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282590",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass short left to J.Waddle to NE 25 for 4 yards (M.Jones).PENALTY on NE-H.Landry, Defensive Offside, 5 yards, enforced at NE 29 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "6:02"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282633",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass short right to D.Achane to NE 24 for no gain (J.Gibbens).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "5:33"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282658",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) T.Tagovailoa pass short right to D.Achane to NE 20 for 4 yards (C.Davis).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "4:49"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282683",
+       "type": {
+        "text": "Sack"
+       },
+       "text": "(Shotgun) T.Tagovailoa sacked at NE 26 for -6 yards (K.Chaisson). NE-C.Barmore was injured during the play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "4:07"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282697",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 03:56.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "3:56"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 17
+      },
+      {
+       "id": "4017727282711",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "R.Patterson 44 yard field goal is GOOD, Center-J.Cardona, Holder-J.Bailey.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "3:37"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 20
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017727282743",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "R.Patterson kicks 56 yards from MIA 35 to NE 9. A.Gibson pushed ob at NE 34 for 25 yards (C.Goode).PENALTY on NE-T.Henderson, Offensive Holding, 10 yards, enforced at NE 27.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "3:37"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727282782",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short left to S.Diggs to NE 25 for 8 yards (J.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "3:31"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727282807",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "R.Stevenson right guard to NE 26 for 1 yard (M.Fitzpatrick).PENALTY on NE-J.Wilson, Offensive Holding, 10 yards, enforced at NE 25 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "3:01"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727282840",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short right to R.Stevenson to NE 24 for 9 yards (M.Fitzpatrick; J.Brooks).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "2:37"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727282865",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass deep right to R.Stevenson to MIA 21 for 55 yards (J.Brooks).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "1:49"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727282890",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "A.Gibson up the middle to MIA 6 for 15 yards (I.Melifonwu).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "0:57"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 15,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727282912",
+       "type": {
+        "text": "Rushing Touchdown"
+       },
+       "text": "(Shotgun) D.Maye scrambles right end for 6 yards, TOUCHDOWN.Penalty on MIA-T.Dodson, Defensive Holding, declined. TWO-POINT CONVERSION ATTEMPT. R.Stevenson rushes up the middle. ATTEMPT SUCCEEDS.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "0:06"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 23,
+       "homeScore": 20
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "PUNT TD",
+     "plays": [
+      {
+       "id": "4017727283156",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) PENALTY on NE-M.Moses, False Start, 5 yards, enforced at NE 13 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "12:07"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 23,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727283187",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short left to D.Douglas to NE 16 for 8 yards (W.Gay; M.Fitzpatrick).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "12:07"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 23,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727283212",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) R.Stevenson right end to NE 10 for -6 yards (W.Gay).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "11:26"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 23,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727283234",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short left to R.Stevenson to NE 24 for 14 yards (B.Chubb).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "10:41"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 23,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727283259",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "T.Henderson right tackle to NE 26 for 2 yards (J.Jones).PENALTY on NE-H.Henry, Illegal Shift, 5 yards, enforced at NE 24 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "10:03"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 23,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727283292",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Henderson up the middle to NE 21 for 2 yards (K.Grant; T.Dodson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "9:38"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 23,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727283314",
+       "type": {
+        "text": "Fumble Recovery (Own)"
+       },
+       "text": "(Shotgun) D.Maye Aborted. G.Bradbury FUMBLES at NE 17, recovered by NE-D.Maye at NE 8.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "8:57"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 23,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727283341",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short left to A.Gibson to NE 9 for 1 yard (J.Brooks). MIA-C.Robinson was injured during the play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "8:14"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 23,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727283354",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 07:55.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "7:55"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 23,
+       "homeScore": 20
+      },
+      {
+       "id": "4017727283366",
+       "type": {
+        "text": "Punt Return Touchdown"
+       },
+       "text": "B.Baringer punts 65 yards to MIA 26, Center-J.Ashby. M.Washington for 74 yards, TOUCHDOWN. R.Patterson extra point is GOOD, Center-J.Cardona, Holder-J.Bailey.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "7:18"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 23,
+       "homeScore": 27
+      },
+      {
+       "id": "4017727283411",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 07:18.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "7:18"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "awayScore": 23,
+       "homeScore": 27
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017727283418",
+       "type": {
+        "text": "Kickoff Return Touchdown"
+       },
+       "text": "R.Patterson kicks 55 yards from MIA 35 to NE 10. A.Gibson for 90 yards, TOUCHDOWN. A.Borregales extra point is GOOD, Center-J.Ashby, Holder-B.Baringer. ** Injury Update: MIA-C.Robinson has returned to the game.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "7:06"
+       },
+       "start": {
+        "team": {
+         "id": "15"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 30,
+       "homeScore": 27
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "4017727283764",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson up the middle to MIA 36 for 2 yards (T.Dodson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:12"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 30,
+       "homeScore": 27
+      },
+      {
+       "id": "4017727283775",
+       "type": {
+        "text": "Two-minute warning"
+       },
+       "text": "Two-Minute Warning",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:00"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 30,
+       "homeScore": 27
+      },
+      {
+       "id": "4017727283786",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "D.Maye pass incomplete short right to M.Hollins.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:00"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 30,
+       "homeScore": 27
+      },
+      {
+       "id": "4017727283816",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short right to S.Diggs to MIA 30 for 6 yards (R.Douglas).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "1:56"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 30,
+       "homeScore": 27
+      },
+      {
+       "id": "4017727283829",
+       "type": {
+        "text": "Timeout"
+       },
+       "text": "Timeout #2 by MIA at 01:52.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "1:52"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 30,
+       "homeScore": 27
+      },
+      {
+       "id": "4017727283841",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) PENALTY on NE-M.Moses, False Start, 5 yards, enforced at MIA 30 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "1:52"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 30,
+       "homeScore": 27
+      },
+      {
+       "id": "4017727283872",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "A.Borregales 53 yard field goal is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "1:47"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 33,
+       "homeScore": 27
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "playerPositions": {
+  "2991662": {
+   "name": "Mack Hollins",
+   "pos": "WR",
+   "team": "NE"
+  },
+  "4241479": {
+   "name": "Tua Tagovailoa",
+   "pos": "QB",
+   "team": "ATL"
+  },
+  "4243371": {
+   "name": "Riley Patterson",
+   "pos": "PK",
+   "team": "MIA"
+  },
+  "4360294": {
+   "name": "Antonio Gibson",
+   "pos": "RB",
+   "team": "NE"
+  },
+  "4372016": {
+   "name": "Jaylen Waddle",
+   "pos": "WR",
+   "team": "DEN"
+  },
+  "4429022": {
+   "name": "Kayshon Boutte",
+   "pos": "WR",
+   "team": "HOU"
+  },
+  "4429160": {
+   "name": "De'Von Achane",
+   "pos": "RB",
+   "team": "MIA"
+  },
+  "4431452": {
+   "name": "Drake Maye",
+   "pos": "QB",
+   "team": "NE"
+  },
+  "4569173": {
+   "name": "Rhamondre Stevenson",
+   "pos": "RB",
+   "team": "NE"
+  },
+  "4569603": {
+   "name": "Malik Washington",
+   "pos": "WR",
+   "team": "MIA"
+  },
+  "4569923": {
+   "name": "Andy Borregales",
+   "pos": "PK",
+   "team": "NE"
+  }
+ },
+ "nflPlayers": {
+  "2991662": {
+   "name": "Mack Hollins",
+   "position": "WR",
+   "team": "NE"
+  },
+  "4241479": {
+   "name": "Tua Tagovailoa",
+   "position": "QB",
+   "team": "ATL"
+  },
+  "4243371": {
+   "name": "Riley Patterson",
+   "position": "K",
+   "team": "MIA"
+  },
+  "4360294": {
+   "name": "Antonio Gibson",
+   "position": "RB",
+   "team": "NE"
+  },
+  "4372016": {
+   "name": "Jaylen Waddle",
+   "position": "WR",
+   "team": "DEN"
+  },
+  "4429022": {
+   "name": "Kayshon Boutte",
+   "position": "WR",
+   "team": "HOU"
+  },
+  "4429160": {
+   "name": "De'Von Achane",
+   "position": "RB",
+   "team": "MIA"
+  },
+  "4431452": {
+   "name": "Drake Maye",
+   "position": "QB",
+   "team": "NE"
+  },
+  "4569173": {
+   "name": "Rhamondre Stevenson",
+   "position": "RB",
+   "team": "NE"
+  },
+  "4569603": {
+   "name": "Malik Washington",
+   "position": "WR",
+   "team": "MIA"
+  },
+  "4569923": {
+   "name": "Andy Borregales",
+   "position": "K",
+   "team": "NE"
+  }
+ },
+ "dbRows": [
+  {
+   "player_id": "2991662",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "4241479",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 2,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 19
+  },
+  {
+   "player_id": "4243371",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 5.5
+  },
+  {
+   "player_id": "4360294",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 1,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 20
+  },
+  {
+   "player_id": "4372016",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 11
+  },
+  {
+   "player_id": "4429022",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "4429160",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 14
+  },
+  {
+   "player_id": "4431452",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 2,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 24
+  },
+  {
+   "player_id": "4569173",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 1,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 11
+  },
+  {
+   "player_id": "4569603",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 1,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 20
+  },
+  {
+   "player_id": "4569923",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 4.5
+  },
+  {
+   "player_id": "DEF_MIA",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 0
+  },
+  {
+   "player_id": "DEF_NE",
+   "week": 2,
+   "season": 2025,
+   "game_id": "20250914_NE@MIA",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 0
+  }
+ ]
+}

@@ -1,60 +1,60 @@
 #!/usr/bin/env node
+/**
+ * Daily update (PM2 cron: statfink2-daily, 13:00 UTC).
+ *
+ * POSTs /api/internal/scheduler/daily (backup first, then sync games, players,
+ * injuries, weekly report, FULL health validation) and records the outcome:
+ *   - logs/status/daily.json        job status for /admin/status
+ *   - logs/status/validation.json   the validation checks (state, not alerts)
+ *   - logs/weekly-validation-latest.json ONLY when the current week is complete
+ *     (this is what the recap pipeline gates on: "last validated completed week")
+ * Never emails. A failed Week Advance Deadline shows as critical on /admin/status.
+ */
 const axios = require('axios');
-const { sendGmail } = require('./lib/gmailSend');
+const { writeJobStatus } = require('./lib/jobStatus');
+const { buildValidationStatus, writeValidationFiles } = require('./lib/validationStatus');
 
-const NOTIFY_EMAIL = 'joe.paley@gmail.com';
-
-// The daily update's validation includes the Week Advance Deadline check: the
-// weekly update is manual, and an unadvanced week silently loses the next
-// week's stats once it kicks off. When that check fails, email loudly.
-async function emailAdvanceReminder(check) {
-    const subject = 'statfink2: ADVANCE THE WEEK before kickoff';
-    const body = [
-        'The daily update flagged the week-advance deadline:',
-        '',
-        check.message,
-        '',
-        'Run the weekly update from the admin dashboard',
-        '(or: node scripts/weekly-update-check.js) to advance the week.',
-        'Live updates only poll the current week - until you advance,',
-        "the new week's stats are not collected."
-    ].join('\n');
-
-    await sendGmail({ to: NOTIFY_EMAIL, subject, body });
-    console.log(`[${new Date().toISOString()}] Week-advance reminder emailed to ${NOTIFY_EMAIL}`);
-}
+const log = msg => console.log(`[${new Date().toISOString()}] ${msg}`);
 
 async function runDailyUpdate() {
+    const t0 = Date.now();
+    writeJobStatus('daily', { status: 'running', summary: 'daily update in progress' });
     try {
-        console.log(`[${new Date().toISOString()}] Starting daily update...`);
-
+        log('Starting daily update...');
         const response = await axios.post('http://localhost:8000/api/internal/scheduler/daily', {}, {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Internal-Token': 'statfink-internal-cron'
-            },
-            timeout: 300000 // 5 minute timeout
+            headers: { 'Content-Type': 'application/json', 'X-Internal-Token': 'statfink-internal-cron' },
+            timeout: 300000
         });
+        const data = response.data && response.data.data ? response.data.data : {};
+        const results = data.results || data || {};
+        log(`Daily update completed: ${JSON.stringify({ backup: results.backup, errors: results.errors, gamesProcessed: results.gamesProcessed })}`);
 
-        console.log(`[${new Date().toISOString()}] Daily update completed:`, response.data);
+        const health = results.validation || null;
+        const completion = results.completion || (health && health.completion) || null;
+        const errors = Array.isArray(results.errors) ? results.errors : [];
+        const failedChecks = health ? (health.checks || []).filter(c => c.status === 'failed').map(c => c.name) : [];
+        const deadline = health ? (health.checks || []).find(c => c.name === 'Week Advance Deadline') : null;
 
-        const checks = response.data?.data?.results?.validation?.checks || [];
-        const deadline = checks.find(c => c.name === 'Week Advance Deadline' && c.status === 'failed');
-        if (deadline) {
-            try {
-                await emailAdvanceReminder(deadline);
-            } catch (emailError) {
-                console.error(`[${new Date().toISOString()}] Failed to email week-advance reminder:`, emailError.message);
-            }
+        if (health) {
+            const status = buildValidationStatus({ health, completion, trigger: 'daily', mode: 'full' });
+            const w = writeValidationFiles(status, { weekComplete: !!(completion && completion.isComplete) });
+            log(`Validation ${status.overallStatus} for ${status.season} week ${status.week}${w.latestWritten ? ' (week complete: weekly-validation-latest.json updated)' : ''}`);
         }
 
+        const status = errors.length || failedChecks.length ? 'critical' : 'ok';
+        const summary = [
+            `backup ${results.backup ? 'ok' : 'FAILED'}`,
+            errors.length ? `${errors.length} error(s): ${errors.join('; ').slice(0, 200)}` : 'sync ok',
+            health ? `validation ${health.summary.passed} passed / ${health.summary.failed} failed / ${health.summary.warnings} warnings` : 'no validation',
+            deadline && deadline.status === 'failed' ? 'ADVANCE THE WEEK' : null
+        ].filter(Boolean).join(' · ');
+        writeJobStatus('daily', { status, summary, season: health ? health.season : null, week: health ? health.week : null, durationMs: Date.now() - t0,
+            details: { errors, failedChecks, backup: results.backup, advanceDeadline: deadline ? { status: deadline.status, message: deadline.message } : null } });
         process.exit(0);
     } catch (error) {
-        console.error(`[${new Date().toISOString()}] Daily update failed:`, error.message);
-        if (error.response) {
-            console.error(`Response status: ${error.response.status}`);
-            console.error(`Response data:`, error.response.data);
-        }
+        log(`Daily update failed: ${error.message}`);
+        if (error.response) log(`Response ${error.response.status}: ${JSON.stringify(error.response.data).slice(0, 300)}`);
+        writeJobStatus('daily', { status: 'critical', summary: `daily update failed: ${error.message}`, durationMs: Date.now() - t0 });
         process.exit(1);
     }
 }

@@ -42,7 +42,8 @@ You should see these processes:
 - `statfink2-live-continuous` - Live game updates
 - `statfink2-email-poller` - Email roster-move poller (should be "online")
 - `statfink2-nightly-tests` - Nightly regression tests
-- `statfink2-weekly` - Weekly advancement (cron currently disabled; run manually)
+- `statfink2-weekly-advance` - Weekly advancement, Wed 15:00 UTC (gated on validation PASS; see `CRON.md`)
+- `statfink2-recap-setup` - Proposes recap themes once the week's games are final (recaps generated from /admin Recaps)
 
 ### Start/Restart Server
 ```bash
@@ -232,7 +233,8 @@ The following tasks run automatically via PM2:
 | `statfink2-live-continuous` | Every minute | Updates live game scores during games |
 | `statfink2-email-poller` | Every 2 minutes | Polls Gmail for roster-move emails (see `EMAIL_ROSTER_MOVES.md`) |
 | `statfink2-nightly-tests` | 12pm UTC daily (5am PDT / 4am PST) | Runs scoring regression suites, emails on failure |
-| `statfink2-weekly` | **Disabled** (was Tuesdays) | Creates standings, advances week — run manually for now |
+| `statfink2-weekly-advance` | Wed 15:00 UTC (8am PDT), retry Thu | Creates standings, advances week, copies rosters — only on a PASS validation |
+| `statfink2-recap-setup` | Every 30 min | Proposes the week's recap themes once every game is Final |
 
 ### Check Next Run Time
 ```bash
@@ -247,8 +249,8 @@ node /home/joepaley/statfink2/scripts/daily-update.js
 # Live update
 node /home/joepaley/statfink2/scripts/live-update-continuous.js
 
-# Weekly check
-node /home/joepaley/statfink2/scripts/weekly-update-check.js
+# Weekly advance (dry run first)
+node /home/joepaley/statfink2/scripts/weekly-advance.js --dry-run
 ```
 
 ---

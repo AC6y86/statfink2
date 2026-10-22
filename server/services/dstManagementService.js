@@ -1,5 +1,6 @@
 const { logInfo, logError, logWarn } = require('../utils/errorHandler');
 const ScoringPlayParserService = require('./scoringPlayParserService');
+const { rulesFor } = require('../config/scoringRulesets');
 const { normalizeTeamCode, getDefensePlayerId } = require('../utils/teamNormalization');
 
 class DSTManagementService {
@@ -150,7 +151,7 @@ class DSTManagementService {
             await this.ensureParserPlayerPositions();
 
             if (scoringPlaysData && game.away && game.home) {
-                const parsedPlays = this.scoringPlayParser.parseScoringPlays(scoringPlaysData, game.home, game.away);
+                const parsedPlays = this.scoringPlayParser.parseScoringPlays(scoringPlaysData, game.home, game.away, { season });
                 awayDefensiveBreakdown = this.scoringPlayParser.getDefensiveTouchdownBreakdown(parsedPlays, game.away);
                 homeDefensiveBreakdown = this.scoringPlayParser.getDefensiveTouchdownBreakdown(parsedPlays, game.home);
             }
@@ -219,9 +220,30 @@ class DSTManagementService {
     }
 
     /**
+     * Safeties for a DST row. 2026+ (parsedSafetiesAuthoritative): when the
+     * scoring plays were parsed, their count is the answer even if it is 0 —
+     * Tank01's DST.safeties field is unreliable (SEA wk7 2025 reported a safety
+     * that never happened). Legacy seasons keep the old `||` fallback so the
+     * blessed record does not change.
+     */
+    resolveSafeties(defensePlayerId, week, season, dstData, defensiveBreakdown) {
+        const tank01Safeties = parseInt(dstData?.safeties) || 0;
+        const rules = rulesFor(season);
+        if (rules.parsedSafetiesAuthoritative && defensiveBreakdown && defensiveBreakdown.safeties !== undefined && defensiveBreakdown.safeties !== null) {
+            const parsed = parseInt(defensiveBreakdown.safeties) || 0;
+            if (parsed !== tank01Safeties) {
+                logWarn(`${defensePlayerId} week ${week}: scoring plays show ${parsed} safet${parsed === 1 ? 'y' : 'ies'} but Tank01 DST.safeties says ${tank01Safeties}; using the scoring plays`);
+            }
+            return parsed;
+        }
+        return defensiveBreakdown?.safeties || tank01Safeties || 0;
+    }
+
+    /**
      * Insert DST stats into the database
      */
     async insertDSTStats(defensePlayerId, week, gameId, dstData, pointsAllowed, yardsAllowed, season, defensiveBreakdown = null) {
+        const safeties = this.resolveSafeties(defensePlayerId, week, season, dstData, defensiveBreakdown);
         const stats = {
             player_id: defensePlayerId,
             week: week,
@@ -242,7 +264,7 @@ class DSTManagementService {
             def_touchdowns: (defensiveBreakdown?.def_int_return_tds || 0) +
                            (defensiveBreakdown?.def_fumble_return_tds || 0) +
                            (defensiveBreakdown?.def_blocked_return_tds || 0), // Sum of all defensive TD types
-            safeties: defensiveBreakdown?.safeties || parseInt(dstData.safeties) || 0,
+            safeties: safeties,
             points_allowed: pointsAllowed,
             yards_allowed: yardsAllowed,
             field_goals_made: 0,

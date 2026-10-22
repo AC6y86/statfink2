@@ -2,15 +2,17 @@
 const fs = require('fs');
 const path = require('path');
 
-// Use test database
-process.env.DATABASE_PATH = './test_fantasy_football.db';
+// Use test database. STATFINK_SLOW_DB (set by scripts/nightly-test-run.js) points
+// the golden-record recalcs at a COPY of the league database instead of the
+// official one; without it, tests get a throwaway DB.
+const DEFAULT_TEST_DB = './test_fantasy_football.db';
+process.env.DATABASE_PATH = process.env.STATFINK_SLOW_DB || DEFAULT_TEST_DB;
 process.env.NODE_ENV = 'test';
 
-// Clean up test database after all tests
+// Clean up the throwaway test database after all tests (never the copy)
 afterAll(async () => {
-  const testDbPath = './test_fantasy_football.db';
-  if (fs.existsSync(testDbPath)) {
-    fs.unlinkSync(testDbPath);
+  if (process.env.DATABASE_PATH === DEFAULT_TEST_DB && fs.existsSync(DEFAULT_TEST_DB)) {
+    fs.unlinkSync(DEFAULT_TEST_DB);
   }
 });
 

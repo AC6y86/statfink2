@@ -1,0 +1,2730 @@
+{
+ "gameId": "20251019_NE@TEN",
+ "season": 2025,
+ "week": 7,
+ "espnEventId": "401772755",
+ "homeTeam": "TEN",
+ "awayTeam": "NE",
+ "tank01Body": {
+  "gameID": "20251019_NE@TEN",
+  "gameStatus": "Completed",
+  "home": "TEN",
+  "away": "NE",
+  "homePts": "13",
+  "awayPts": "31",
+  "teamIDHome": "31",
+  "teamIDAway": "22",
+  "scoringPlays": [
+   {
+    "score": "Joey Slye 49 Yd Field Goal",
+    "scorePeriod": "Q1",
+    "homeScore": "3",
+    "awayScore": "0",
+    "teamID": "31",
+    "scoreDetails": "6 plays, 34 yards, 2:40",
+    "scoreType": "FG",
+    "scoreTime": "12:20",
+    "team": "TEN",
+    "playerIDs": [
+     "3124084"
+    ]
+   },
+   {
+    "score": "Andy Borregales 36 Yd Field Goal",
+    "scorePeriod": "Q1",
+    "homeScore": "3",
+    "awayScore": "3",
+    "teamID": "22",
+    "scoreDetails": "10 plays, 47 yards, 5:34",
+    "scoreType": "FG",
+    "scoreTime": "6:46",
+    "team": "NE",
+    "playerIDs": [
+     "4569923"
+    ]
+   },
+   {
+    "score": "Chimere Dike 38 Yd pass from Cam Ward (Joey Slye Kick)",
+    "scorePeriod": "Q1",
+    "homeScore": "10",
+    "awayScore": "3",
+    "teamID": "31",
+    "scoreDetails": "3 plays, 59 yards, 1:42",
+    "scoreType": "TD",
+    "scoreTime": "5:04",
+    "team": "TEN",
+    "playerIDs": [
+     "4688380",
+     "4431268",
+     "3124084"
+    ]
+   },
+   {
+    "score": "Austin Hooper 3 Yd pass from Drake Maye (Andy Borregales Kick)",
+    "scorePeriod": "Q2",
+    "homeScore": "10",
+    "awayScore": "10",
+    "teamID": "22",
+    "scoreDetails": "11 plays, 93 yards, 6:42",
+    "scoreType": "TD",
+    "scoreTime": "5:34",
+    "team": "NE",
+    "playerIDs": [
+     "4431452",
+     "3043275",
+     "4569923"
+    ]
+   },
+   {
+    "score": "Joey Slye 50 Yd Field Goal",
+    "scorePeriod": "Q2",
+    "homeScore": "13",
+    "awayScore": "10",
+    "teamID": "31",
+    "scoreDetails": "8 plays, 32 yards, 3:46",
+    "scoreType": "FG",
+    "scoreTime": "1:48",
+    "team": "TEN",
+    "playerIDs": [
+     "3124084"
+    ]
+   },
+   {
+    "score": "Kayshon Boutte 39 Yd pass from Drake Maye (Andy Borregales Kick)",
+    "scorePeriod": "Q2",
+    "homeScore": "13",
+    "awayScore": "17",
+    "teamID": "22",
+    "scoreDetails": "3 plays, 60 yards, 0:59",
+    "scoreType": "TD",
+    "scoreTime": "0:49",
+    "team": "NE",
+    "playerIDs": [
+     "4431452",
+     "4429022",
+     "4569923"
+    ]
+   },
+   {
+    "score": "Rhamondre Stevenson 4 Yd Rush (Andy Borregales Kick)",
+    "scorePeriod": "Q3",
+    "homeScore": "13",
+    "awayScore": "24",
+    "teamID": "22",
+    "scoreDetails": "12 plays, 88 yards, 7:29",
+    "scoreType": "TD",
+    "scoreTime": "7:31",
+    "team": "NE",
+    "playerIDs": [
+     "4569173",
+     "4569923"
+    ]
+   },
+   {
+    "score": "K'Lavon Chaisson 4 Yd Fumble Recovery (Andy Borregales Kick)",
+    "scorePeriod": "Q3",
+    "homeScore": "13",
+    "awayScore": "31",
+    "teamID": "22",
+    "scoreDetails": "1 play, -19 yards, 0:11",
+    "scoreType": "TD",
+    "scoreTime": "7:20",
+    "team": "NE",
+    "playerIDs": [
+     "4242205",
+     "4569923"
+    ]
+   }
+  ],
+  "DST": {
+   "away": {
+    "teamAbv": "NE",
+    "teamID": "22",
+    "defTD": "2",
+    "defensiveInterceptions": "1",
+    "sacks": "4",
+    "ydsAllowed": "255",
+    "fumblesRecovered": "1",
+    "ptsAllowed": "13",
+    "safeties": "0"
+   },
+   "home": {
+    "teamAbv": "TEN",
+    "teamID": "31",
+    "defTD": "0",
+    "defensiveInterceptions": "0",
+    "sacks": "4",
+    "ydsAllowed": "387",
+    "fumblesRecovered": "0",
+    "ptsAllowed": "19",
+    "safeties": "0"
+   }
+  },
+  "playerStats": {
+   "3043275": {
+    "playerID": "3043275",
+    "longName": "Austin Hooper",
+    "team": "NE",
+    "teamAbv": "NE"
+   },
+   "3124084": {
+    "playerID": "3124084",
+    "longName": "Joey Slye",
+    "team": "TEN",
+    "teamAbv": "TEN"
+   },
+   "4242205": {
+    "playerID": "4242205",
+    "longName": "K'Lavon Chaisson",
+    "team": "NE",
+    "teamAbv": "NE",
+    "Defense": {
+     "totalTackles": "3",
+     "fumblesLost": "0",
+     "defTD": "2",
+     "forcedFumbles": "0",
+     "fumbles": "0",
+     "fumblesRecovered": "1",
+     "soloTackles": "2",
+     "tfl": "2",
+     "qbHits": "2",
+     "defensiveInterceptions": "0",
+     "sacks": "2",
+     "passDeflections": "0"
+    }
+   },
+   "4429022": {
+    "playerID": "4429022",
+    "longName": "Kayshon Boutte",
+    "team": "NE",
+    "teamAbv": "NE"
+   },
+   "4431268": {
+    "playerID": "4431268",
+    "longName": "Chimere Dike",
+    "team": "TEN",
+    "teamAbv": "TEN",
+    "Rushing": {
+     "rushAvg": "-1.0",
+     "rushYds": "-1",
+     "carries": "1",
+     "longRush": "-1",
+     "rushTD": "0"
+    }
+   },
+   "4431452": {
+    "playerID": "4431452",
+    "longName": "Drake Maye",
+    "team": "NE",
+    "teamAbv": "NE",
+    "Rushing": {
+     "rushAvg": "7.8",
+     "rushYds": "62",
+     "carries": "8",
+     "longRush": "19",
+     "rushTD": "0"
+    }
+   },
+   "4569173": {
+    "playerID": "4569173",
+    "longName": "Rhamondre Stevenson",
+    "team": "NE",
+    "teamAbv": "NE",
+    "Rushing": {
+     "rushAvg": "4.9",
+     "rushYds": "88",
+     "carries": "18",
+     "longRush": "16",
+     "rushTD": "1"
+    }
+   },
+   "4569923": {
+    "playerID": "4569923",
+    "longName": "Andy Borregales",
+    "team": "NE",
+    "teamAbv": "NE"
+   },
+   "4688380": {
+    "playerID": "4688380",
+    "longName": "Cam Ward",
+    "team": "TEN",
+    "teamAbv": "TEN",
+    "Defense": {
+     "fumblesLost": "1",
+     "defensiveInterceptions": "0",
+     "forcedFumbles": "0",
+     "fumbles": "1",
+     "fumblesRecovered": "0"
+    }
+   }
+  }
+ },
+ "espnSummary": {
+  "header": {
+   "competitions": [
+    {
+     "status": {
+      "type": {
+       "name": "STATUS_FINAL",
+       "completed": true
+      }
+     },
+     "competitors": [
+      {
+       "id": "10",
+       "homeAway": "home",
+       "team": {
+        "abbreviation": "TEN"
+       },
+       "score": "13"
+      },
+      {
+       "id": "17",
+       "homeAway": "away",
+       "team": {
+        "abbreviation": "NE"
+       },
+       "score": "31"
+      }
+     ]
+    }
+   ]
+  },
+  "scoringPlays": [
+   {
+    "id": "401772755184",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Joey Slye 49 Yd Field Goal",
+    "awayScore": 0,
+    "homeScore": 3,
+    "period": {
+     "number": 1
+    },
+    "clock": {
+     "displayValue": "12:20"
+    },
+    "team": {
+     "abbreviation": "TEN"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "401772755441",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Andy Borregales 36 Yd Field Goal",
+    "awayScore": 3,
+    "homeScore": 3,
+    "period": {
+     "number": 1
+    },
+    "clock": {
+     "displayValue": "6:46"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "401772755552",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Chimere Dike 38 Yd pass from Cam Ward (Joey Slye Kick)",
+    "awayScore": 3,
+    "homeScore": 10,
+    "period": {
+     "number": 1
+    },
+    "clock": {
+     "displayValue": "5:04"
+    },
+    "team": {
+     "abbreviation": "TEN"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727551322",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Austin Hooper 3 Yd pass from Drake Maye (Andy Borregales Kick)",
+    "awayScore": 10,
+    "homeScore": 10,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "5:34"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727551617",
+    "type": {
+     "text": "Field Goal Good"
+    },
+    "text": "Joey Slye 50 Yd Field Goal",
+    "awayScore": 10,
+    "homeScore": 13,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "1:48"
+    },
+    "team": {
+     "abbreviation": "TEN"
+    },
+    "scoringType": {
+     "name": "field-goal"
+    }
+   },
+   {
+    "id": "4017727551723",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Kayshon Boutte 39 Yd pass from Drake Maye (Andy Borregales Kick)",
+    "awayScore": 17,
+    "homeScore": 13,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "0:49"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727552235",
+    "type": {
+     "text": "Rushing Touchdown"
+    },
+    "text": "Rhamondre Stevenson 4 Yd Rush (Andy Borregales Kick)",
+    "awayScore": 24,
+    "homeScore": 13,
+    "period": {
+     "number": 3
+    },
+    "clock": {
+     "displayValue": "7:31"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017727552303",
+    "type": {
+     "text": "Sack Opp Fumble Recovery"
+    },
+    "text": "K'Lavon Chaisson 4 Yd Fumble Recovery (Andy Borregales Kick)",
+    "awayScore": 31,
+    "homeScore": 13,
+    "period": {
+     "number": 3
+    },
+    "clock": {
+     "displayValue": "7:20"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   }
+  ],
+  "drives": {
+   "previous": [
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "40177275540",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "A.Borregales kicks 65 yards from NE 35 to end zone, Touchback to the TEN 35.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "15:00"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "40177275557",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "C.Ward pass short left to G.Helm pushed ob at TEN 46 for 11 yards (J.Tavai).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "15:00"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "40177275587",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass short left to E.Ayomanor to NE 34 for 20 yards (M.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "14:24"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772755112",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "C.Dike left end pushed ob at NE 35 for -1 yards (M.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "13:43"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772755139",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Pollard left tackle to NE 31 for 4 yards (K.Tonga).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "13:07"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772755161",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) C.Ward pass incomplete short right to E.Ayomanor.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "12:27"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772755184",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "J.Slye 49 yard field goal is GOOD, Center-M.Cox, Holder-J.Hekker.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "12:20"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755194",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 12:20.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "12:20"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 3
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "401772755204",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "J.Slye kicks 65 yards from TEN 35 to end zone, Touchback to the NE 35.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "12:20"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755228",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson right tackle to NE 43 for 8 yards (A.Hooker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "12:20"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755250",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson right end pushed ob at TEN 43 for 14 yards (L.Sneed).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "11:45"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755277",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson right tackle to TEN 35 for 8 yards (X.Woods; J.Simmons).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "11:09"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755310",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson left guard to TEN 27 for 8 yards (J.Armour-Davis, A.Hooker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:41"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755332",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short middle to D.Douglas to TEN 27 for no gain (J.Ward).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:03"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755357",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Maye scrambles up the middle to TEN 16 for 11 yards (L.Sneed).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "9:28"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755379",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson up the middle to TEN 12 for 4 yards (Q.Diggs).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "8:51"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755401",
+       "type": {
+        "text": "Sack"
+       },
+       "text": "D.Maye sacked ob at TEN 12 for 0 yards (X.Woods).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "8:13"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755421",
+       "type": {
+        "text": "Sack"
+       },
+       "text": "(Shotgun) D.Maye sacked at TEN 18 for -6 yards (J.Ward).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "7:31"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755441",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "A.Borregales 36 yard field goal is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "6:46"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755451",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 06:46.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "6:46"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 3
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "401772755461",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "A.Borregales kicks 53 yards from NE 35 to TEN 12. C.Dike pushed ob at TEN 41 for 29 yards (B.Schooler).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "6:46"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755496",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Pollard right guard to TEN 44 for 3 yards (C.Elliss; K.White).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "6:41"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755527",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "C.Ward pass deep left to C.Dike to NE 38 for 18 yards (C.Gonzalez).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:59"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 3
+      },
+      {
+       "id": "401772755552",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "(Shotgun) C.Ward pass deep left to C.Dike for 38 yards, TOUCHDOWN. J.Slye extra point is GOOD, Center-M.Cox, Holder-J.Hekker.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:04"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "401772755586",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 05:04.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:04"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017727551063",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short right to H.Henry pushed ob at NE 19 for 12 yards (C.Gray).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "12:16"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551100",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Maye scrambles up the middle to NE 38 for 19 yards (J.Armour-Davis; C.Gray).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "11:43"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551122",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson left guard to NE 42 for 4 yards (J.Armour-Davis; Q.Diggs).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "10:56"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551144",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson up the middle to TEN 47 for 11 yards (J.Armour-Davis).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "10:20"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551166",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "D.Maye pass short right to R.Stevenson to TEN 49 for -2 yards (C.Gray).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "9:37"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551191",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short left to K.Boutte pushed ob at TEN 33 for 16 yards (R.McCreary).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "8:52"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551221",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Henderson up the middle to TEN 31 for 2 yards (S.Joseph).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "8:15"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551243",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass deep right to M.Hollins ran ob at TEN 9 for 22 yards.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "7:34"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551273",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson up the middle to TEN 7 for 2 yards (T.Sweat; C.Gray).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "6:59"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551295",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Maye scrambles left end pushed ob at TEN 3 for 4 yards (C.Barton; Q.Diggs).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "6:22"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 3,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551322",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "(Shotgun) D.Maye pass short left to A.Hooper for 3 yards, TOUCHDOWN. A.Borregales extra point is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "5:34"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551356",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 05:34.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "5:34"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "FG",
+     "plays": [
+      {
+       "id": "4017727551363",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "A.Borregales kicks 60 yards from NE 35 to TEN 5. C.Dike pushed ob at TEN 36 for 31 yards (B.Schooler).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "5:34"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551403",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass short left to G.Helm pushed ob at TEN 44 for 8 yards (J.Gibbens).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "5:28"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551433",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Pollard left guard to TEN 43 for -1 yards (C.Durden, J.Farmer).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "4:50"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551455",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) C.Ward pass short middle to V.Jefferson to NE 42 for 15 yards (C.Gonzalez).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "4:07"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551480",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "C.Ward pass short right to V.Jefferson to NE 30 for 12 yards (M.Williams; M.Jones). TEN-V.Jefferson was injured during the play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "3:25"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551494",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 03:10.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "3:10"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551508",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Pollard left tackle to NE 27 for 3 yards (K.Chaisson; K.Tonga).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:39"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551523",
+       "type": {
+        "text": "Two-minute warning"
+       },
+       "text": "Two-Minute Warning",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:00"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551537",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) C.Ward pass incomplete deep right to G.Helm. ** Injury Update: TEN-V.Jefferson has returned to the game.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:00"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551567",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) PENALTY on TEN-L.Cushenberry, False Start, 5 yards, enforced at NE 27 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:55"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551594",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) C.Ward pass incomplete short right.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:55"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 10
+      },
+      {
+       "id": "4017727551617",
+       "type": {
+        "text": "Field Goal Good"
+       },
+       "text": "J.Slye 50 yard field goal is GOOD, Center-M.Cox, Holder-J.Hekker.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:48"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727551627",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 01:48.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:48"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 13
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017727551637",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "J.Slye kicks 60 yards from TEN 35 to NE 5, out of bounds.PENALTY on TEN-J.Slye, Kickoff Out of Bounds, placed at NE 40.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:48"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727551676",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) D.Maye scrambles up the middle to NE 49 for 9 yards (C.Gray).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:48"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727551698",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short left to H.Henry to TEN 39 for 12 yards (C.Barton; R.McCreary).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:16"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 10,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727551723",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "(No Huddle, Shotgun) D.Maye pass deep middle to K.Boutte for 39 yards, TOUCHDOWN. A.Borregales extra point is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "0:49"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017727551903",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "J.Slye kicks 59 yards from TEN 35 to NE 6. E.Chism to NE 25 for 19 yards (M.Kinsey; J.Chestnut).PENALTY on NE-E.Ponder, Illegal Block Above the Waist, 10 yards, enforced at NE 22.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "15:00"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727551942",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson left tackle to NE 13 for 1 yard (C.Gray; D.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "14:52"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727551969",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short left to S.Diggs to NE 14 for 1 yard (Q.Diggs).Penalty on NE, Illegal Shift, declined.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "14:13"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552005",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass deep middle to S.Diggs to NE 38 for 24 yards (X.Woods; R.McCreary).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "13:51"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552030",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "D.Maye pass short middle to M.Hollins to TEN 35 for 27 yards (J.Armour-Davis; Q.Diggs).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "13:08"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552055",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Maye scrambles right end to TEN 29 for 6 yards (R.McCreary). TEN-L.Sneed was injured during the play. NE-D.Maye was injured during the play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "12:27"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552077",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson left tackle to TEN 30 for -1 yards (J.Lynch).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "11:44"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552105",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) J.Dobbs pass short right to D.Douglas to TEN 18 for 12 yards (R.McCreary).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "11:00"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552130",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson up the middle to TEN 18 for no gain (J.Lynch).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "10:16"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552152",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short right to R.Stevenson pushed ob at TEN 16 for 2 yards (C.Gray). ** Injury Update: NE-D.Maye has returned to the game.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "9:34"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552182",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short right to S.Diggs to TEN 9 for 7 yards (D.Baker).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "8:54"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552210",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short middle to D.Douglas to TEN 4 for 5 yards (C.Barton).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "8:14"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 17,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552235",
+       "type": {
+        "text": "Rushing Touchdown"
+       },
+       "text": "(Shotgun) R.Stevenson right end for 4 yards, TOUCHDOWN. A.Borregales extra point is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "7:31"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 24,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552266",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 07:31.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "7:31"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 24,
+       "homeScore": 13
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "TEN"
+     },
+     "result": "FUMBLE TD",
+     "plays": [
+      {
+       "id": "4017727552273",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "A.Borregales kicks 66 yards from NE 35 to TEN -1. C.Dike to TEN 23 for 24 yards (C.Elliss).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "7:31"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "awayScore": 24,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552303",
+       "type": {
+        "text": "Sack Opp Fumble Recovery"
+       },
+       "text": "C.Ward sacked at TEN 10 for -13 yards. FUMBLES, RECOVERED by NE-K.Chaisson at TEN 4. K.Chaisson for 4 yards, TOUCHDOWN.Penalty on TEN-C.Dike, Offensive Holding, declined. A.Borregales extra point is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": true,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "7:20"
+       },
+       "start": {
+        "team": {
+         "id": "10"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 31,
+       "homeScore": 13
+      },
+      {
+       "id": "4017727552358",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 07:20.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "7:20"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 31,
+       "homeScore": 13
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "playerPositions": {
+  "3043275": {
+   "name": "Austin Hooper",
+   "pos": "TE",
+   "team": "ATL"
+  },
+  "3124084": {
+   "name": "Joey Slye",
+   "pos": "PK",
+   "team": "TEN"
+  },
+  "4242205": {
+   "name": "K'Lavon Chaisson",
+   "pos": "LB",
+   "team": "WSH"
+  },
+  "4429022": {
+   "name": "Kayshon Boutte",
+   "pos": "WR",
+   "team": "HOU"
+  },
+  "4431268": {
+   "name": "Chimere Dike",
+   "pos": "WR",
+   "team": "TEN"
+  },
+  "4431452": {
+   "name": "Drake Maye",
+   "pos": "QB",
+   "team": "NE"
+  },
+  "4569173": {
+   "name": "Rhamondre Stevenson",
+   "pos": "RB",
+   "team": "NE"
+  },
+  "4569923": {
+   "name": "Andy Borregales",
+   "pos": "PK",
+   "team": "NE"
+  },
+  "4688380": {
+   "name": "Cam Ward",
+   "pos": "QB",
+   "team": "TEN"
+  }
+ },
+ "nflPlayers": {
+  "3043275": {
+   "name": "Austin Hooper",
+   "position": "TE",
+   "team": "ATL"
+  },
+  "3124084": {
+   "name": "Joey Slye",
+   "position": "K",
+   "team": "TEN"
+  },
+  "4429022": {
+   "name": "Kayshon Boutte",
+   "position": "WR",
+   "team": "HOU"
+  },
+  "4431268": {
+   "name": "Chimere Dike",
+   "position": "WR",
+   "team": "TEN"
+  },
+  "4431452": {
+   "name": "Drake Maye",
+   "position": "QB",
+   "team": "NE"
+  },
+  "4569173": {
+   "name": "Rhamondre Stevenson",
+   "position": "RB",
+   "team": "NE"
+  },
+  "4569923": {
+   "name": "Andy Borregales",
+   "position": "K",
+   "team": "NE"
+  },
+  "4688380": {
+   "name": "Cam Ward",
+   "position": "QB",
+   "team": "TEN"
+  }
+ },
+ "dbRows": [
+  {
+   "player_id": "3043275",
+   "week": 7,
+   "season": 2025,
+   "game_id": "20251019_NE@TEN",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "3124084",
+   "week": 7,
+   "season": 2025,
+   "game_id": "20251019_NE@TEN",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 4.5
+  },
+  {
+   "player_id": "4429022",
+   "week": 7,
+   "season": 2025,
+   "game_id": "20251019_NE@TEN",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 11
+  },
+  {
+   "player_id": "4431268",
+   "week": 7,
+   "season": 2025,
+   "game_id": "20251019_NE@TEN",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 11
+  },
+  {
+   "player_id": "4431452",
+   "week": 7,
+   "season": 2025,
+   "game_id": "20251019_NE@TEN",
+   "passing_tds": 2,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 19
+  },
+  {
+   "player_id": "4569173",
+   "week": 7,
+   "season": 2025,
+   "game_id": "20251019_NE@TEN",
+   "passing_tds": 0,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 14
+  },
+  {
+   "player_id": "4569923",
+   "week": 7,
+   "season": 2025,
+   "game_id": "20251019_NE@TEN",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 4
+  },
+  {
+   "player_id": "4688380",
+   "week": 7,
+   "season": 2025,
+   "game_id": "20251019_NE@TEN",
+   "passing_tds": 1,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 14
+  },
+  {
+   "player_id": "DEF_NE",
+   "week": 7,
+   "season": 2025,
+   "game_id": "20251019_NE@TEN",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 1,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "DEF_TEN",
+   "week": 7,
+   "season": 2025,
+   "game_id": "20251019_NE@TEN",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 0
+  }
+ ]
+}

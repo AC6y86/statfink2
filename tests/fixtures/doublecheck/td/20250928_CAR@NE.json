@@ -1,0 +1,3005 @@
+{
+ "gameId": "20250928_CAR@NE",
+ "season": 2025,
+ "week": 4,
+ "espnEventId": "401772847",
+ "homeTeam": "NE",
+ "awayTeam": "CAR",
+ "tank01Body": {
+  "gameID": "20250928_CAR@NE",
+  "gameStatus": "Completed",
+  "home": "NE",
+  "away": "CAR",
+  "homePts": "42",
+  "awayPts": "13",
+  "teamIDHome": "22",
+  "teamIDAway": "5",
+  "scoringPlays": [
+   {
+    "score": "Tommy Tremble 7 Yd pass from Bryce Young (Ryan Fitzgerald PAT Failed)",
+    "scorePeriod": "Q1",
+    "homeScore": "0",
+    "awayScore": "6",
+    "teamID": "5",
+    "scoreDetails": "7 plays, 76 yards, 4:09",
+    "scoreType": "TD",
+    "scoreTime": "10:51",
+    "team": "CAR",
+    "playerIDs": [
+     "4685720",
+     "4372780",
+     "4568263"
+    ]
+   },
+   {
+    "score": "Marcus Jones 87 Yd Punt Return (Andy Borregales Kick)",
+    "scorePeriod": "Q1",
+    "homeScore": "7",
+    "awayScore": "6",
+    "teamID": "22",
+    "scoreDetails": "6 plays, 34 yards, 3:42",
+    "scoreType": "TD",
+    "scoreTime": "5:34",
+    "team": "NE",
+    "playerIDs": [
+     "4241720",
+     "4569923"
+    ]
+   },
+   {
+    "score": "Drake Maye 5 Yd Rush (Andy Borregales Kick)",
+    "scorePeriod": "Q2",
+    "homeScore": "14",
+    "awayScore": "6",
+    "teamID": "22",
+    "scoreDetails": "6 plays, 80 yards, 3:02",
+    "scoreType": "TD",
+    "scoreTime": "14:54",
+    "team": "NE",
+    "playerIDs": [
+     "4431452",
+     "4569923"
+    ]
+   },
+   {
+    "score": "TreVeyon Henderson 5 Yd Rush (Andy Borregales Kick)",
+    "scorePeriod": "Q2",
+    "homeScore": "21",
+    "awayScore": "6",
+    "teamID": "22",
+    "scoreDetails": "8 plays, 55 yards, 4:07",
+    "scoreType": "TD",
+    "scoreTime": "5:48",
+    "team": "NE",
+    "playerIDs": [
+     "4432710",
+     "4569923"
+    ]
+   },
+   {
+    "score": "Antonio Gibson 1 Yd Rush (Andy Borregales Kick)",
+    "scorePeriod": "Q2",
+    "homeScore": "28",
+    "awayScore": "6",
+    "teamID": "22",
+    "scoreDetails": "4 plays, 14 yards, 2:05",
+    "scoreType": "TD",
+    "scoreTime": "1:57",
+    "team": "NE",
+    "playerIDs": [
+     "4360294",
+     "4569923"
+    ]
+   },
+   {
+    "score": "Hunter Henry 31 Yd pass from Drake Maye (Andy Borregales Kick)",
+    "scorePeriod": "Q3",
+    "homeScore": "35",
+    "awayScore": "6",
+    "teamID": "22",
+    "scoreDetails": "8 plays, 78 yards, 4:43",
+    "scoreType": "TD",
+    "scoreTime": "10:17",
+    "team": "NE",
+    "playerIDs": [
+     "4431452",
+     "3046439",
+     "4569923"
+    ]
+   },
+   {
+    "score": "Mack Hollins 4 Yd pass from Drake Maye (Andy Borregales Kick)",
+    "scorePeriod": "Q4",
+    "homeScore": "42",
+    "awayScore": "6",
+    "teamID": "22",
+    "scoreDetails": "7 plays, 41 yards, 3:10",
+    "scoreType": "TD",
+    "scoreTime": "14:13",
+    "team": "NE",
+    "playerIDs": [
+     "4431452",
+     "2991662",
+     "4569923"
+    ]
+   },
+   {
+    "score": "Mitchell Evans 2 Yd pass from Andy Dalton (Ryan Fitzgerald Kick)",
+    "scorePeriod": "Q4",
+    "homeScore": "42",
+    "awayScore": "13",
+    "teamID": "5",
+    "scoreDetails": "13 plays, 91 yards, 6:45",
+    "scoreType": "TD",
+    "scoreTime": "1:56",
+    "team": "CAR",
+    "playerIDs": [
+     "14012",
+     "4683243",
+     "4568263"
+    ]
+   }
+  ],
+  "DST": {
+   "away": {
+    "teamAbv": "CAR",
+    "teamID": "5",
+    "defTD": "0",
+    "defensiveInterceptions": "0",
+    "sacks": "1",
+    "ydsAllowed": "307",
+    "fumblesRecovered": "0",
+    "ptsAllowed": "36",
+    "safeties": "0"
+   },
+   "home": {
+    "teamAbv": "NE",
+    "teamID": "22",
+    "defTD": "1",
+    "defensiveInterceptions": "0",
+    "sacks": "1",
+    "ydsAllowed": "326",
+    "fumblesRecovered": "0",
+    "ptsAllowed": "13",
+    "safeties": "0"
+   }
+  },
+  "playerStats": {
+   "14012": {
+    "playerID": "14012",
+    "longName": "Andy Dalton",
+    "team": "CAR",
+    "teamAbv": "CAR"
+   },
+   "2991662": {
+    "playerID": "2991662",
+    "longName": "Mack Hollins",
+    "team": "NE",
+    "teamAbv": "NE"
+   },
+   "3046439": {
+    "playerID": "3046439",
+    "longName": "Hunter Henry",
+    "team": "NE",
+    "teamAbv": "NE"
+   },
+   "4241720": {
+    "playerID": "4241720",
+    "longName": "Marcus Jones",
+    "team": "NE",
+    "teamAbv": "NE",
+    "Defense": {
+     "totalTackles": "5",
+     "defTD": "1",
+     "forcedFumbles": "0",
+     "soloTackles": "3",
+     "tfl": "0",
+     "qbHits": "0",
+     "defensiveInterceptions": "0",
+     "sacks": "0",
+     "passDeflections": "0"
+    }
+   },
+   "4360294": {
+    "playerID": "4360294",
+    "longName": "Antonio Gibson",
+    "team": "NE",
+    "teamAbv": "NE",
+    "Rushing": {
+     "rushAvg": "4.5",
+     "rushYds": "27",
+     "carries": "6",
+     "longRush": "21",
+     "rushTD": "1"
+    }
+   },
+   "4372780": {
+    "playerID": "4372780",
+    "longName": "Tommy Tremble",
+    "team": "CAR",
+    "teamAbv": "CAR"
+   },
+   "4431452": {
+    "playerID": "4431452",
+    "longName": "Drake Maye",
+    "team": "NE",
+    "teamAbv": "NE",
+    "Rushing": {
+     "rushAvg": "3.7",
+     "rushYds": "11",
+     "carries": "3",
+     "longRush": "5",
+     "rushTD": "1"
+    }
+   },
+   "4432710": {
+    "playerID": "4432710",
+    "longName": "TreVeyon Henderson",
+    "team": "NE",
+    "teamAbv": "NE",
+    "Rushing": {
+     "rushAvg": "4.6",
+     "rushYds": "32",
+     "carries": "7",
+     "longRush": "11",
+     "rushTD": "1"
+    }
+   },
+   "4568263": {
+    "playerID": "4568263",
+    "longName": "Ryan Fitzgerald",
+    "team": "CAR",
+    "teamAbv": "CAR"
+   },
+   "4569923": {
+    "playerID": "4569923",
+    "longName": "Andy Borregales",
+    "team": "NE",
+    "teamAbv": "NE",
+    "Defense": {
+     "totalTackles": "1",
+     "defTD": "0",
+     "forcedFumbles": "0",
+     "soloTackles": "1",
+     "tfl": "0",
+     "qbHits": "0",
+     "defensiveInterceptions": "0",
+     "sacks": "0",
+     "passDeflections": "0"
+    }
+   },
+   "4683243": {
+    "playerID": "4683243",
+    "longName": "Mitchell Evans",
+    "team": "CAR",
+    "teamAbv": "CAR"
+   },
+   "4685720": {
+    "playerID": "4685720",
+    "longName": "Bryce Young",
+    "team": "CAR",
+    "teamAbv": "CAR",
+    "Rushing": {
+     "rushAvg": "3.0",
+     "rushYds": "3",
+     "carries": "1",
+     "longRush": "3",
+     "rushTD": "0"
+    }
+   }
+  }
+ },
+ "espnSummary": {
+  "header": {
+   "competitions": [
+    {
+     "status": {
+      "type": {
+       "name": "STATUS_FINAL",
+       "completed": true
+      }
+     },
+     "competitors": [
+      {
+       "id": "17",
+       "homeAway": "home",
+       "team": {
+        "abbreviation": "NE"
+       },
+       "score": "42"
+      },
+      {
+       "id": "29",
+       "homeAway": "away",
+       "team": {
+        "abbreviation": "CAR"
+       },
+       "score": "13"
+      }
+     ]
+    }
+   ]
+  },
+  "scoringPlays": [
+   {
+    "id": "401772847253",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Tommy Tremble 7 Yd pass from Bryce Young (Ryan Fitzgerald PAT Failed)",
+    "awayScore": 6,
+    "homeScore": 0,
+    "period": {
+     "number": 1
+    },
+    "clock": {
+     "displayValue": "10:51"
+    },
+    "team": {
+     "abbreviation": "CAR"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "401772847615",
+    "type": {
+     "text": "Punt Return Touchdown"
+    },
+    "text": "Marcus Jones 87 Yd Punt Return (Andy Borregales Kick)",
+    "awayScore": 6,
+    "homeScore": 7,
+    "period": {
+     "number": 1
+    },
+    "clock": {
+     "displayValue": "5:34"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017728471015",
+    "type": {
+     "text": "Rushing Touchdown"
+    },
+    "text": "Drake Maye 5 Yd Rush (Andy Borregales Kick)",
+    "awayScore": 6,
+    "homeScore": 14,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "14:54"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017728471576",
+    "type": {
+     "text": "Rushing Touchdown"
+    },
+    "text": "TreVeyon Henderson 5 Yd Rush (Andy Borregales Kick)",
+    "awayScore": 6,
+    "homeScore": 21,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "5:48"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017728471839",
+    "type": {
+     "text": "Rushing Touchdown"
+    },
+    "text": "Antonio Gibson 1 Yd Rush (Andy Borregales Kick)",
+    "awayScore": 6,
+    "homeScore": 28,
+    "period": {
+     "number": 2
+    },
+    "clock": {
+     "displayValue": "1:57"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017728472507",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Hunter Henry 31 Yd pass from Drake Maye (Andy Borregales Kick)",
+    "awayScore": 6,
+    "homeScore": 35,
+    "period": {
+     "number": 3
+    },
+    "clock": {
+     "displayValue": "10:17"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017728473214",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Mack Hollins 4 Yd pass from Drake Maye (Andy Borregales Kick)",
+    "awayScore": 6,
+    "homeScore": 42,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "14:13"
+    },
+    "team": {
+     "abbreviation": "NE"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   },
+   {
+    "id": "4017728473919",
+    "type": {
+     "text": "Passing Touchdown"
+    },
+    "text": "Mitchell Evans 2 Yd pass from Andy Dalton (Ryan Fitzgerald Kick)",
+    "awayScore": 13,
+    "homeScore": 42,
+    "period": {
+     "number": 4
+    },
+    "clock": {
+     "displayValue": "1:56"
+    },
+    "team": {
+     "abbreviation": "CAR"
+    },
+    "scoringType": {
+     "name": "touchdown"
+    }
+   }
+  ],
+  "drives": {
+   "previous": [
+    {
+     "team": {
+      "abbreviation": "CAR"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "40177284740",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "A.Borregales kicks 59 yards from NE 35 to CAR 6. R.Dowdle to CAR 24 for 18 yards (J.Gibbens).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "15:00"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "40177284763",
+       "type": {
+        "text": "Rush"
+       },
+       "text": " D.Moore right end to CAR 36 for 12 yards (M.Jones). CAR-D.Moore was injured during the play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "14:56"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "40177284776",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 14:43.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "14:43"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "40177284788",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) C.Hubbard left guard to CAR 45 for 9 yards (C.Elliss; M.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "14:25"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847122",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) B.Young pass incomplete short right to T.McMillan.PENALTY on NE-C.Davis, Defensive Pass Interference, 4 yards, enforced at CAR 45 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "13:45"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847156",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "B.Young pass short middle to B.Tremayne to NE 42 for 9 yards (J.Hawkins).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "13:41"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847181",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "C.Hubbard left guard to NE 39 for 3 yards (R.Spillane; C.Elliss).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "13:00"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847203",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": " (Shotgun) B.Young pass short left to M.Evans to NE 23 for 16 yards (C.Elliss).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "12:19"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847228",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": " (Shotgun) B.Young pass short left to T.McMillan to NE 7 for 16 yards (C.Gonzalez).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "11:36"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 0,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847253",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "(Shotgun) B.Young pass short left to T.Tremble for 7 yards, TOUCHDOWN. R.Fitzgerald extra point is No Good, Hit Left Upright, Center-J.Jansen, Holder-S.Martin.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:51"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847287",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 10:51.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "10:51"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "CAR"
+     },
+     "result": "PUNT TD",
+     "plays": [
+      {
+       "id": "401772847444",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "B.Young pass short left to J.Mitchell to CAR 31 for 8 yards (C.Elliss).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "9:16"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847476",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "(Shotgun) C.Hubbard left end to CAR 35 for 4 yards (C.Elliss; R.Spillane).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "8:35"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847498",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) PENALTY on NE-H.Landry, Neutral Zone Infraction, 5 yards, enforced at CAR 35 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "7:51"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847522",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) B.Young pass short right to T.Tremble to NE 45 for 15 yards (M.Jones).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "7:33"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847547",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) B.Young pass incomplete short left.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "6:48"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847570",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "(Shotgun) B.Young pass incomplete short middle to T.Tremble (K.Tonga) [C.Barmore].",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "6:41"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847593",
+       "type": {
+        "text": "Rush"
+       },
+       "text": " (Shotgun) R.Dowdle left tackle to NE 43 for 2 yards (K.Chaisson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "6:36"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 0
+      },
+      {
+       "id": "401772847615",
+       "type": {
+        "text": "Punt Return Touchdown"
+       },
+       "text": "S.Martin punts 30 yards to NE 13, Center-J.Jansen. M.Jones for 87 yards, TOUCHDOWN. NE-C.Woods was injured during the play. A.Borregales extra point is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:34"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 7
+      },
+      {
+       "id": "401772847629",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 05:34.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "5:34"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {},
+       "awayScore": 6,
+       "homeScore": 6
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "401772847871",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short right to A.Hooper pushed ob at NE 44 for 24 yards (N.Scott).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "2:56"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 7
+      },
+      {
+       "id": "401772847896",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short left to S.Diggs to 50 for 6 yards (M.Jackson; C.Rozeboom).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "2:13"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 7
+      },
+      {
+       "id": "401772847924",
+       "type": {
+        "text": "Rush"
+       },
+       "text": " A.Gibson right end to CAR 29 for 21 yards (T.Wallace).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "1:38"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 7
+      },
+      {
+       "id": "401772847946",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson left tackle to CAR 7 for 22 yards (T.Wallace; N.Scott).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:54"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 7
+      },
+      {
+       "id": "401772847973",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson left guard to CAR 5 for 2 yards (C.Rozeboom; A.Robinson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:06"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 7
+      },
+      {
+       "id": "401772847995",
+       "type": {
+        "text": "End Period"
+       },
+       "text": "END QUARTER 1",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 1
+       },
+       "clock": {
+        "displayValue": "0:00"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 7
+      },
+      {
+       "id": "4017728471015",
+       "type": {
+        "text": "Rushing Touchdown"
+       },
+       "text": "D.Maye scrambles left end for 5 yards, TOUCHDOWN. A.Borregales extra point is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "14:54"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 14
+      },
+      {
+       "id": "4017728471046",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 14:54.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "14:54"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 14
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017728471368",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "D.Maye pass short right to T.Henderson pushed ob at CAR 46 for 9 yards (T.Wallace).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "9:55"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 14
+      },
+      {
+       "id": "4017728471398",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Henderson up the middle to CAR 43 for 3 yards (B.Brown; C.Jackson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "9:15"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 14
+      },
+      {
+       "id": "4017728471420",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": " (Shotgun) D.Maye pass deep left to S.Diggs to CAR 10 for 33 yards (M.Jackson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "8:34"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 14
+      },
+      {
+       "id": "4017728471445",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Henderson left guard to CAR 4 for 6 yards (T.Wharton; N.Scott). CAR-C.Jackson was injured during the play. PENALTY on NE-A.Hooper, Face Mask, 15 yards, enforced at CAR 9.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "7:51"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 14
+      },
+      {
+       "id": "4017728471462",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 07:47.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "7:47"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 14
+      },
+      {
+       "id": "4017728471478",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "K.Williams right end to CAR 26 for -2 yards (N.Scourton).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "7:40"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 14
+      },
+      {
+       "id": "4017728471510",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short left to T.Henderson to CAR 21 for 5 yards (N.Scott).PENALTY on CAR-N.Scott, Tripping, 10 yards, enforced at CAR 21.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "6:56"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 14
+      },
+      {
+       "id": "4017728471546",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short middle to S.Diggs to CAR 5 for 6 yards (T.Moehrig; D.Brown).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "6:32"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 14
+      },
+      {
+       "id": "4017728471576",
+       "type": {
+        "text": "Rushing Touchdown"
+       },
+       "text": "(Shotgun) T.Henderson right guard for 5 yards, TOUCHDOWN. A.Borregales extra point is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "5:48"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      },
+      {
+       "id": "4017728471607",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 05:48.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "5:48"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017728471767",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson up the middle to CAR 13 for 1 yard (T.Wharton; T.Moehrig).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "4:02"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      },
+      {
+       "id": "4017728471789",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": " (Shotgun) D.Maye pass short right to S.Diggs to CAR 9 for 4 yards (C.Rozeboom).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "3:27"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      },
+      {
+       "id": "4017728471814",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short middle to H.Henry to CAR 1 for 8 yards (N.Scott, C.Basham).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:47"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      },
+      {
+       "id": "4017728471827",
+       "type": {
+        "text": "Two-minute warning"
+       },
+       "text": "Two-Minute Warning",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "2:00"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 21
+      },
+      {
+       "id": "4017728471839",
+       "type": {
+        "text": "Rushing Touchdown"
+       },
+       "text": "V.Lowe reported in as eligible.  A.Gibson up the middle for 1 yard, TOUCHDOWN. ** Injury Update: CAR-C.Jackson has returned to the game. A.Borregales extra point is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 2
+       },
+       "clock": {
+        "displayValue": "1:57"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 28
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017728472262",
+       "type": {
+        "text": "Kickoff"
+       },
+       "text": "R.Fitzgerald kicks 53 yards from CAR 35 to NE 12. T.Henderson to NE 40 for 28 yards (A.Evans).PENALTY on NE-D.Pettus, Offensive Holding, 10 yards, enforced at NE 32.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "15:00"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 28
+      },
+      {
+       "id": "4017728472296",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": " (Shotgun) D.Maye pass deep left to K.Boutte to NE 40 for 18 yards (N.Scott).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "14:54"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 28
+      },
+      {
+       "id": "4017728472321",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "D.Maye pass incomplete deep middle to S.Diggs.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "14:19"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 28
+      },
+      {
+       "id": "4017728472344",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson up the middle to NE 45 for 5 yards (D.Brown; P.Umanmielen).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "14:14"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 28
+      },
+      {
+       "id": "4017728472367",
+       "type": {
+        "text": "Penalty"
+       },
+       "text": "(Shotgun) D.Maye scrambles up the middle to CAR 47 for 8 yards (N.Scourton).PENALTY on NE-T.Henderson, Offensive Holding, 10 yards, enforced at NE 45 - No Play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "13:30"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 28
+      },
+      {
+       "id": "4017728472400",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass deep left to S.Diggs to CAR 43 for 22 yards (L.Ransom; Ja.Horn).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "13:09"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 28
+      },
+      {
+       "id": "4017728472438",
+       "type": {
+        "text": "Sack"
+       },
+       "text": "D.Maye sacked at CAR 43 for 0 yards (T.Wharton).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "12:27"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 28
+      },
+      {
+       "id": "4017728472463",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Henderson left end to CAR 32 for 11 yards (C.Smith-Wade).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "11:48"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 28
+      },
+      {
+       "id": "4017728472485",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson right guard to CAR 31 for 1 yard (C.Basham; C.Rozeboom).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "11:05"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 28
+      },
+      {
+       "id": "4017728472507",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "(Shotgun) D.Maye pass short left to H.Henry for 31 yards, TOUCHDOWN. A.Borregales extra point is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "10:17"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 35
+      },
+      {
+       "id": "4017728472541",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 10:17.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "10:17"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 35
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "NE"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017728473043",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "D.Maye scrambles right end to CAR 38 for 3 yards (T.Wallace).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "2:23"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 35
+      },
+      {
+       "id": "4017728473065",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "R.Stevenson up the middle to CAR 37 for 1 yard (N.Scourton; A.Robinson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "1:44"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 35
+      },
+      {
+       "id": "4017728473087",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass short left to R.Stevenson ran ob at CAR 34 for 3 yards (M.Jackson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "1:02"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 35
+      },
+      {
+       "id": "4017728473117",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) D.Maye pass deep right to S.Diggs pushed ob at CAR 4 for 30 yards (M.Jackson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "0:19"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 35
+      },
+      {
+       "id": "4017728473142",
+       "type": {
+        "text": "End Period"
+       },
+       "text": "END QUARTER 3",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 3
+       },
+       "clock": {
+        "displayValue": "0:00"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 35
+      },
+      {
+       "id": "4017728473162",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "A.Gibson left guard to CAR 4 for no gain (A.Robinson; D.Brown).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "15:00"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 35
+      },
+      {
+       "id": "4017728473189",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": " V.Lowe reported in as eligible.  D.Maye pass incomplete short right.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "14:22"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 35
+      },
+      {
+       "id": "4017728473214",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "(Shotgun) D.Maye pass short middle to M.Hollins for 4 yards, TOUCHDOWN. A.Borregales extra point is GOOD, Center-J.Ashby, Holder-B.Baringer.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "14:13"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473253",
+       "type": {
+        "text": "Official Timeout"
+       },
+       "text": "Official Timeout at 14:13.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "14:13"
+       },
+       "start": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "17"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      }
+     ]
+    },
+    {
+     "team": {
+      "abbreviation": "CAR"
+     },
+     "result": "TD",
+     "plays": [
+      {
+       "id": "4017728473573",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "14-A.Dalton in at QB. T.Etienne left guard to CAR 15 for 6 yards (A.Jennings; C.Woodson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "8:41"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473599",
+       "type": {
+        "text": "Pass Incompletion"
+       },
+       "text": "A.Dalton pass incomplete deep left to T.Tremble.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "8:08"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473622",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) A.Dalton pass short right to H.Renfrow to CAR 20 for 5 yards (A.Austin).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "8:03"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473647",
+       "type": {
+        "text": "Rush"
+       },
+       "text": " T.Etienne right end to CAR 22 for 2 yards (J.Gibbens).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "7:27"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473669",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Etienne left end to CAR 24 for 2 yards (D.Pettus).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "6:46"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473691",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) A.Dalton pass short right to B.Tremayne to CAR 48 for 24 yards (D.Pettus). FUMBLES (D.Pettus), ball out of bounds at NE 44.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "6:01"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473725",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "T.Etienne right end pushed ob at NE 30 for 22 yards (C.Woodson).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "5:07"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473752",
+       "type": {
+        "text": "Rush"
+       },
+       "text": " T.Etienne right tackle to NE 31 for -1 yards (C.Durden).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "4:27"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473774",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "(Shotgun) A.Dalton pass short left to T.McMillan to NE 9 for 22 yards (C.Woods; D.Pettus).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "3:46"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473799",
+       "type": {
+        "text": "Rush"
+       },
+       "text": " T.Etienne up the middle to NE 6 for 3 yards (C.Elliss; A.Jennings).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:57"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473821",
+       "type": {
+        "text": "Pass Reception"
+       },
+       "text": "A.Dalton pass short right to T.Tremble for 6 yards, TOUCHDOWN. CAR-T.Tremble was injured during the play. The Replay Official reviewed the runner broke the plane ruling, and the play was REVERSED.A.Dalton pass short right to T.Tremble to NE 1 for 5 yards (C.Elliss; K.Dugger). CAR-T.Tremble was injured during the play.",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:20"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473855",
+       "type": {
+        "text": "Rush"
+       },
+       "text": "B.Walton reported in as eligible.  T.Etienne up the middle to NE 2 for -1 yards (C.Woodson, K.Dugger).",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:15"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473887",
+       "type": {
+        "text": "Two-minute warning"
+       },
+       "text": "Two-Minute Warning",
+       "scoringPlay": false,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "2:00"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 6,
+       "homeScore": 42
+      },
+      {
+       "id": "4017728473919",
+       "type": {
+        "text": "Passing Touchdown"
+       },
+       "text": "(Shotgun) A.Dalton pass short right to M.Evans for 2 yards, TOUCHDOWN. R.Fitzgerald extra point is GOOD, Center-J.Jansen, Holder-S.Martin.",
+       "scoringPlay": true,
+       "isTurnover": false,
+       "period": {
+        "number": 4
+       },
+       "clock": {
+        "displayValue": "1:56"
+       },
+       "start": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "end": {
+        "team": {
+         "id": "29"
+        }
+       },
+       "awayScore": 13,
+       "homeScore": 42
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "playerPositions": {
+  "14012": {
+   "name": "Andy Dalton",
+   "pos": "QB",
+   "team": "PHI"
+  },
+  "2991662": {
+   "name": "Mack Hollins",
+   "pos": "WR",
+   "team": "NE"
+  },
+  "3046439": {
+   "name": "Hunter Henry",
+   "pos": "TE",
+   "team": "NE"
+  },
+  "4241720": {
+   "name": "Marcus Jones",
+   "pos": "CB",
+   "team": "NE"
+  },
+  "4360294": {
+   "name": "Antonio Gibson",
+   "pos": "RB",
+   "team": "NE"
+  },
+  "4372780": {
+   "name": "Tommy Tremble",
+   "pos": "TE",
+   "team": "CAR"
+  },
+  "4431452": {
+   "name": "Drake Maye",
+   "pos": "QB",
+   "team": "NE"
+  },
+  "4432710": {
+   "name": "TreVeyon Henderson",
+   "pos": "RB",
+   "team": "NE"
+  },
+  "4568263": {
+   "name": "Ryan Fitzgerald",
+   "pos": "PK",
+   "team": "CAR"
+  },
+  "4569923": {
+   "name": "Andy Borregales",
+   "pos": "PK",
+   "team": "NE"
+  },
+  "4683243": {
+   "name": "Mitchell Evans",
+   "pos": "TE",
+   "team": "CAR"
+  },
+  "4685720": {
+   "name": "Bryce Young",
+   "pos": "QB",
+   "team": "CAR"
+  }
+ },
+ "nflPlayers": {
+  "14012": {
+   "name": "Andy Dalton",
+   "position": "QB",
+   "team": "PHI"
+  },
+  "2991662": {
+   "name": "Mack Hollins",
+   "position": "WR",
+   "team": "NE"
+  },
+  "3046439": {
+   "name": "Hunter Henry",
+   "position": "TE",
+   "team": "NE"
+  },
+  "4360294": {
+   "name": "Antonio Gibson",
+   "position": "RB",
+   "team": "NE"
+  },
+  "4372780": {
+   "name": "Tommy Tremble",
+   "position": "TE",
+   "team": "CAR"
+  },
+  "4431452": {
+   "name": "Drake Maye",
+   "position": "QB",
+   "team": "NE"
+  },
+  "4432710": {
+   "name": "TreVeyon Henderson",
+   "position": "RB",
+   "team": "NE"
+  },
+  "4568263": {
+   "name": "Ryan Fitzgerald",
+   "position": "K",
+   "team": "CAR"
+  },
+  "4569923": {
+   "name": "Andy Borregales",
+   "position": "K",
+   "team": "NE"
+  },
+  "4683243": {
+   "name": "Mitchell Evans",
+   "position": "TE",
+   "team": "CAR"
+  },
+  "4685720": {
+   "name": "Bryce Young",
+   "position": "QB",
+   "team": "CAR"
+  }
+ },
+ "dbRows": [
+  {
+   "player_id": "14012",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 1,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 5
+  },
+  {
+   "player_id": "2991662",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "3046439",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "4360294",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 0,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "4372780",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "4431452",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 2,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 24
+  },
+  {
+   "player_id": "4432710",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 0,
+   "rushing_tds": 1,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "4568263",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 0.5
+  },
+  {
+   "player_id": "4569923",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 3
+  },
+  {
+   "player_id": "4683243",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 1,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 8
+  },
+  {
+   "player_id": "4685720",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 1,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 5
+  },
+  {
+   "player_id": "DEF_CAR",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 0
+  },
+  {
+   "player_id": "DEF_NE",
+   "week": 4,
+   "season": 2025,
+   "game_id": "20250928_CAR@NE",
+   "passing_tds": 0,
+   "rushing_tds": 0,
+   "receiving_tds": 0,
+   "kick_return_tds": 0,
+   "punt_return_tds": 0,
+   "def_int_return_tds": 0,
+   "def_fumble_return_tds": 0,
+   "def_blocked_return_tds": 0,
+   "safeties": 0,
+   "two_point_conversions_pass": 0,
+   "two_point_conversions_run": 0,
+   "two_point_conversions_rec": 0,
+   "fantasy_points": 0
+  }
+ ]
+}

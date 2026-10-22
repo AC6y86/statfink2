@@ -1,0 +1,7344 @@
+{
+ "header": {
+  "id": "401772510",
+  "uid": "s:20~l:28~e:401772510",
+  "season": {
+   "year": 2025,
+   "current": false,
+   "type": 2
+  },
+  "week": 1,
+  "timeValid": true,
+  "competitions": [
+   {
+    "id": "401772510",
+    "uid": "s:20~l:28~e:401772510~c:401772510",
+    "date": "2025-09-05T00:20Z",
+    "neutralSite": false,
+    "status": {
+     "type": {
+      "id": "3",
+      "name": "STATUS_FINAL",
+      "state": "post",
+      "completed": true,
+      "description": "Final",
+      "detail": "Final",
+      "shortDetail": "Final"
+     },
+     "isTBDFlex": false
+    },
+    "competitors": [
+     {
+      "id": "21",
+      "uid": "s:20~l:28~t:21",
+      "order": 0,
+      "homeAway": "home",
+      "winner": true,
+      "score": "24",
+      "record": [
+       {
+        "type": "total",
+        "summary": "1-0",
+        "displayValue": "1-0"
+       },
+       {
+        "type": "home",
+        "summary": "1-0",
+        "displayValue": "1-0"
+       }
+      ],
+      "linescores": [
+       {
+        "displayValue": "7"
+       },
+       {
+        "displayValue": "14"
+       },
+       {
+        "displayValue": "3"
+       },
+       {
+        "displayValue": "0"
+       }
+      ],
+      "team": {
+       "id": "21",
+       "uid": "s:20~l:28~t:21",
+       "abbreviation": "PHI",
+       "displayName": "Philadelphia Eagles",
+       "name": "Eagles",
+       "location": "Philadelphia"
+      }
+     },
+     {
+      "id": "6",
+      "uid": "s:20~l:28~t:6",
+      "order": 1,
+      "homeAway": "away",
+      "winner": false,
+      "score": "20",
+      "record": [
+       {
+        "type": "total",
+        "summary": "0-1",
+        "displayValue": "0-1"
+       },
+       {
+        "type": "road",
+        "summary": "0-1",
+        "displayValue": "0-1"
+       }
+      ],
+      "linescores": [
+       {
+        "displayValue": "7"
+       },
+       {
+        "displayValue": "13"
+       },
+       {
+        "displayValue": "0"
+       },
+       {
+        "displayValue": "0"
+       }
+      ],
+      "team": {
+       "id": "6",
+       "uid": "s:20~l:28~t:6",
+       "abbreviation": "DAL",
+       "displayName": "Dallas Cowboys",
+       "name": "Cowboys",
+       "location": "Dallas"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "boxscore": {
+  "teams": [
+   {
+    "team": {
+     "id": "6",
+     "uid": "s:20~l:28~t:6",
+     "abbreviation": "DAL",
+     "displayName": "Dallas Cowboys",
+     "name": "Cowboys",
+     "location": "Dallas"
+    },
+    "homeAway": "away",
+    "statistics": [
+     {
+      "name": "firstDowns",
+      "displayValue": "22",
+      "label": "1st Downs"
+     },
+     {
+      "name": "firstDownsPassing",
+      "displayValue": "9",
+      "label": "Passing 1st downs"
+     },
+     {
+      "name": "firstDownsRushing",
+      "displayValue": "7",
+      "label": "Rushing 1st downs"
+     },
+     {
+      "name": "firstDownsPenalty",
+      "displayValue": "6",
+      "label": "1st downs from penalties"
+     },
+     {
+      "name": "thirdDownEff",
+      "displayValue": "7-11",
+      "label": "3rd down efficiency"
+     },
+     {
+      "name": "fourthDownEff",
+      "displayValue": "0-1",
+      "label": "4th down efficiency"
+     },
+     {
+      "name": "totalOffensivePlays",
+      "displayValue": "56",
+      "label": "Total Plays"
+     },
+     {
+      "name": "totalYards",
+      "displayValue": "307",
+      "label": "Total Yards"
+     },
+     {
+      "name": "yardsPerPlay",
+      "displayValue": "5.5",
+      "label": "Yards per Play"
+     },
+     {
+      "name": "totalDrives",
+      "displayValue": "8",
+      "label": "Total Drives"
+     },
+     {
+      "name": "netPassingYards",
+      "displayValue": "188",
+      "label": "Passing"
+     },
+     {
+      "name": "completionAttempts",
+      "displayValue": "21/34",
+      "label": "Comp/Att"
+     },
+     {
+      "name": "yardsPerPass",
+      "displayValue": "5.5",
+      "label": "Yards per pass"
+     },
+     {
+      "name": "interceptions",
+      "displayValue": "0",
+      "label": "Interceptions thrown"
+     },
+     {
+      "name": "sacksYardsLost",
+      "displayValue": "0-0",
+      "label": "Sacks-Yards Lost"
+     },
+     {
+      "name": "rushingYards",
+      "displayValue": "119",
+      "label": "Rushing"
+     },
+     {
+      "name": "rushingAttempts",
+      "displayValue": "22",
+      "label": "Rushing Attempts"
+     },
+     {
+      "name": "yardsPerRushAttempt",
+      "displayValue": "5.4",
+      "label": "Yards per rush"
+     },
+     {
+      "name": "redZoneAttempts",
+      "displayValue": "2-3",
+      "label": "Red Zone (Made-Att)"
+     },
+     {
+      "name": "totalPenaltiesYards",
+      "displayValue": "4-42",
+      "label": "Penalties"
+     },
+     {
+      "name": "turnovers",
+      "displayValue": "1",
+      "label": "Turnovers"
+     },
+     {
+      "name": "fumblesLost",
+      "displayValue": "1",
+      "label": "Fumbles lost"
+     },
+     {
+      "name": "interceptions",
+      "displayValue": "0",
+      "label": "Interceptions thrown"
+     },
+     {
+      "name": "defensiveTouchdowns",
+      "displayValue": "0",
+      "label": "Defensive / Special Teams TDs"
+     },
+     {
+      "name": "possessionTime",
+      "displayValue": "25:08",
+      "label": "Possession"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "21",
+     "uid": "s:20~l:28~t:21",
+     "abbreviation": "PHI",
+     "displayName": "Philadelphia Eagles",
+     "name": "Eagles",
+     "location": "Philadelphia"
+    },
+    "homeAway": "home",
+    "statistics": [
+     {
+      "name": "firstDowns",
+      "displayValue": "20",
+      "label": "1st Downs"
+     },
+     {
+      "name": "firstDownsPassing",
+      "displayValue": "6",
+      "label": "Passing 1st downs"
+     },
+     {
+      "name": "firstDownsRushing",
+      "displayValue": "14",
+      "label": "Rushing 1st downs"
+     },
+     {
+      "name": "firstDownsPenalty",
+      "displayValue": "0",
+      "label": "1st downs from penalties"
+     },
+     {
+      "name": "thirdDownEff",
+      "displayValue": "8-13",
+      "label": "3rd down efficiency"
+     },
+     {
+      "name": "fourthDownEff",
+      "displayValue": "0-0",
+      "label": "4th down efficiency"
+     },
+     {
+      "name": "totalOffensivePlays",
+      "displayValue": "62",
+      "label": "Total Plays"
+     },
+     {
+      "name": "totalYards",
+      "displayValue": "302",
+      "label": "Total Yards"
+     },
+     {
+      "name": "yardsPerPlay",
+      "displayValue": "4.9",
+      "label": "Yards per Play"
+     },
+     {
+      "name": "totalDrives",
+      "displayValue": "8",
+      "label": "Total Drives"
+     },
+     {
+      "name": "netPassingYards",
+      "displayValue": "144",
+      "label": "Passing"
+     },
+     {
+      "name": "completionAttempts",
+      "displayValue": "19/23",
+      "label": "Comp/Att"
+     },
+     {
+      "name": "yardsPerPass",
+      "displayValue": "6.0",
+      "label": "Yards per pass"
+     },
+     {
+      "name": "interceptions",
+      "displayValue": "0",
+      "label": "Interceptions thrown"
+     },
+     {
+      "name": "sacksYardsLost",
+      "displayValue": "1-8",
+      "label": "Sacks-Yards Lost"
+     },
+     {
+      "name": "rushingYards",
+      "displayValue": "158",
+      "label": "Rushing"
+     },
+     {
+      "name": "rushingAttempts",
+      "displayValue": "38",
+      "label": "Rushing Attempts"
+     },
+     {
+      "name": "yardsPerRushAttempt",
+      "displayValue": "4.2",
+      "label": "Yards per rush"
+     },
+     {
+      "name": "redZoneAttempts",
+      "displayValue": "3-3",
+      "label": "Red Zone (Made-Att)"
+     },
+     {
+      "name": "totalPenaltiesYards",
+      "displayValue": "9-110",
+      "label": "Penalties"
+     },
+     {
+      "name": "turnovers",
+      "displayValue": "0",
+      "label": "Turnovers"
+     },
+     {
+      "name": "fumblesLost",
+      "displayValue": "0",
+      "label": "Fumbles lost"
+     },
+     {
+      "name": "interceptions",
+      "displayValue": "0",
+      "label": "Interceptions thrown"
+     },
+     {
+      "name": "defensiveTouchdowns",
+      "displayValue": "0",
+      "label": "Defensive / Special Teams TDs"
+     },
+     {
+      "name": "possessionTime",
+      "displayValue": "34:52",
+      "label": "Possession"
+     }
+    ]
+   }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "6",
+     "uid": "s:20~l:28~t:6",
+     "abbreviation": "DAL",
+     "displayName": "Dallas Cowboys",
+     "name": "Cowboys",
+     "location": "Dallas"
+    },
+    "statistics": [
+     {
+      "name": "passing",
+      "keys": [
+       "completions/passingAttempts",
+       "passingYards",
+       "yardsPerPassAttempt",
+       "passingTouchdowns",
+       "interceptions",
+       "sacks-sackYardsLost",
+       "adjQBR",
+       "QBRating"
+      ],
+      "labels": [
+       "C/ATT",
+       "YDS",
+       "AVG",
+       "TD",
+       "INT",
+       "SACKS",
+       "QBR",
+       "RTG"
+      ],
+      "totals": [
+       "21/34",
+       "188",
+       "5.5",
+       "0",
+       "0",
+       "0-0",
+       "--",
+       "76.6"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "2577417",
+         "displayName": "Dak Prescott",
+         "jersey": "4"
+        },
+        "stats": [
+         "21/34",
+         "188",
+         "5.5",
+         "0",
+         "0",
+         "0-0",
+         "61.4",
+         "76.6"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "rushing",
+      "keys": [
+       "rushingAttempts",
+       "rushingYards",
+       "yardsPerRushAttempt",
+       "rushingTouchdowns",
+       "longRushing"
+      ],
+      "labels": [
+       "CAR",
+       "YDS",
+       "AVG",
+       "TD",
+       "LONG"
+      ],
+      "totals": [
+       "22",
+       "119",
+       "5.4",
+       "2",
+       "49"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "4361579",
+         "displayName": "Javonte Williams",
+         "jersey": "33"
+        },
+        "stats": [
+         "15",
+         "54",
+         "3.6",
+         "2",
+         "11"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4045163",
+         "displayName": "Miles Sanders",
+         "jersey": "24"
+        },
+        "stats": [
+         "4",
+         "53",
+         "13.3",
+         "0",
+         "49"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "3676833",
+         "displayName": "KaVontae Turpin",
+         "jersey": "9"
+        },
+        "stats": [
+         "2",
+         "9",
+         "4.5",
+         "0",
+         "5"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "2577417",
+         "displayName": "Dak Prescott",
+         "jersey": "4"
+        },
+        "stats": [
+         "1",
+         "3",
+         "3.0",
+         "0",
+         "3"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "receiving",
+      "keys": [
+       "receptions",
+       "receivingYards",
+       "yardsPerReception",
+       "receivingTouchdowns",
+       "longReception",
+       "receivingTargets"
+      ],
+      "labels": [
+       "REC",
+       "YDS",
+       "AVG",
+       "TD",
+       "LONG",
+       "TGTS"
+      ],
+      "totals": [
+       "21",
+       "188",
+       "9.0",
+       "0",
+       "32",
+       "33"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "4241389",
+         "displayName": "CeeDee Lamb",
+         "jersey": "88"
+        },
+        "stats": [
+         "7",
+         "110",
+         "15.7",
+         "0",
+         "32",
+         "13"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4426354",
+         "displayName": "George Pickens",
+         "jersey": "3"
+        },
+        "stats": [
+         "3",
+         "30",
+         "10.0",
+         "0",
+         "15",
+         "4"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4242355",
+         "displayName": "Jake Ferguson",
+         "jersey": "87"
+        },
+        "stats": [
+         "5",
+         "23",
+         "4.6",
+         "0",
+         "5",
+         "6"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "3676833",
+         "displayName": "KaVontae Turpin",
+         "jersey": "9"
+        },
+        "stats": [
+         "2",
+         "18",
+         "9.0",
+         "0",
+         "16",
+         "2"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4361579",
+         "displayName": "Javonte Williams",
+         "jersey": "33"
+        },
+        "stats": [
+         "2",
+         "10",
+         "5.0",
+         "0",
+         "7",
+         "3"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4249417",
+         "displayName": "Jalen Tolbert",
+         "jersey": "1"
+        },
+        "stats": [
+         "1",
+         "0",
+         "0.0",
+         "0",
+         "0",
+         "2"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4360967",
+         "displayName": "Brevyn Spann-Ford",
+         "jersey": "89"
+        },
+        "stats": [
+         "0",
+         "0",
+         "0.0",
+         "0",
+         "0",
+         "1"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4372096",
+         "displayName": "Luke Schoonmaker",
+         "jersey": "86"
+        },
+        "stats": [
+         "0",
+         "0",
+         "0.0",
+         "0",
+         "0",
+         "1"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4045163",
+         "displayName": "Miles Sanders",
+         "jersey": "24"
+        },
+        "stats": [
+         "1",
+         "-3",
+         "-3.0",
+         "0",
+         "-3",
+         "1"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "fumbles",
+      "keys": [
+       "fumbles",
+       "fumblesLost",
+       "fumblesRecovered"
+      ],
+      "labels": [
+       "FUM",
+       "LOST",
+       "REC"
+      ],
+      "totals": [
+       "1",
+       "1",
+       "0"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "4045163",
+         "displayName": "Miles Sanders",
+         "jersey": "24"
+        },
+        "stats": [
+         "1",
+         "1",
+         "0"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "defensive",
+      "keys": [
+       "totalTackles",
+       "soloTackles",
+       "sacks",
+       "tacklesForLoss",
+       "passesDefended",
+       "QBHits",
+       "defensiveTouchdowns"
+      ],
+      "labels": [
+       "TOT",
+       "SOLO",
+       "SACKS",
+       "TFL",
+       "PD",
+       "QB HTS",
+       "TD"
+      ],
+      "totals": [
+       "70",
+       "38",
+       "1",
+       "5",
+       "0",
+       "5",
+       "0"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "3121415",
+         "displayName": "Malik Hooker",
+         "jersey": "28"
+        },
+        "stats": [
+         "9",
+         "4",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4241394",
+         "displayName": "Kenneth Murray Jr.",
+         "jersey": "59"
+        },
+        "stats": [
+         "9",
+         "4",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4567399",
+         "displayName": "Kaiir Elam",
+         "jersey": "20"
+        },
+        "stats": [
+         "6",
+         "4",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4362636",
+         "displayName": "Damone Clark",
+         "jersey": "18"
+        },
+        "stats": [
+         "6",
+         "3",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4372576",
+         "displayName": "Jack Sanborn",
+         "jersey": "57"
+        },
+        "stats": [
+         "6",
+         "2",
+         "0",
+         "1",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "3117258",
+         "displayName": "Solomon Thomas",
+         "jersey": "90"
+        },
+        "stats": [
+         "5",
+         "3",
+         "0",
+         "1",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4567242",
+         "displayName": "Sam Williams",
+         "jersey": "54"
+        },
+        "stats": [
+         "5",
+         "3",
+         "0",
+         "1",
+         "0",
+         "1",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "3122752",
+         "displayName": "Kenny Clark",
+         "jersey": "95"
+        },
+        "stats": [
+         "5",
+         "2",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4427816",
+         "displayName": "Marist Liufau",
+         "jersey": "35"
+        },
+        "stats": [
+         "3",
+         "3",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4429996",
+         "displayName": "Marshawn Kneeland",
+         "jersey": "94"
+        },
+        "stats": [
+         "3",
+         "2",
+         "1",
+         "1",
+         "0",
+         "1",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4248911",
+         "displayName": "DaRon Bland",
+         "jersey": "26"
+        },
+        "stats": [
+         "3",
+         "2",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4035840",
+         "displayName": "Osa Odighizuwa",
+         "jersey": "97"
+        },
+        "stats": [
+         "3",
+         "1",
+         "0",
+         "0",
+         "0",
+         "1",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4240608",
+         "displayName": "James Houston",
+         "jersey": "53"
+        },
+        "stats": [
+         "2",
+         "2",
+         "0",
+         "1",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "2577417",
+         "displayName": "Dak Prescott",
+         "jersey": "4"
+        },
+        "stats": [
+         "1",
+         "1",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4040966",
+         "displayName": "Trevon Diggs",
+         "jersey": "7"
+        },
+        "stats": [
+         "1",
+         "1",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4683848",
+         "displayName": "Donovan Ezeiruaku",
+         "jersey": "41"
+        },
+        "stats": [
+         "1",
+         "1",
+         "0",
+         "0",
+         "0",
+         "1",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "3122135",
+         "displayName": "Donovan Wilson",
+         "jersey": "6"
+        },
+        "stats": [
+         "1",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4431603",
+         "displayName": "Jay Toia",
+         "jersey": "93"
+        },
+        "stats": [
+         "1",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "2980100",
+         "displayName": "Dante Fowler Jr.",
+         "jersey": "13"
+        },
+        "stats": [
+         "0",
+         "0",
+         "0",
+         "0",
+         "0",
+         "1",
+         "0"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "interceptions",
+      "keys": [
+       "interceptions",
+       "interceptionYards",
+       "interceptionTouchdowns"
+      ],
+      "labels": [
+       "INT",
+       "YDS",
+       "TD"
+      ],
+      "totals": [],
+      "athletes": []
+     },
+     {
+      "name": "kickReturns",
+      "keys": [
+       "kickReturns",
+       "kickReturnYards",
+       "yardsPerKickReturn",
+       "longKickReturn",
+       "kickReturnTouchdowns"
+      ],
+      "labels": [
+       "NO",
+       "YDS",
+       "AVG",
+       "LONG",
+       "TD"
+      ],
+      "totals": [
+       "5",
+       "101",
+       "20.2",
+       "27",
+       "0"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "3676833",
+         "displayName": "KaVontae Turpin",
+         "jersey": "9"
+        },
+        "stats": [
+         "4",
+         "81",
+         "20.3",
+         "27",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4249417",
+         "displayName": "Jalen Tolbert",
+         "jersey": "1"
+        },
+        "stats": [
+         "1",
+         "20",
+         "20.0",
+         "20",
+         "0"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "puntReturns",
+      "keys": [
+       "puntReturns",
+       "puntReturnYards",
+       "yardsPerPuntReturn",
+       "longPuntReturn",
+       "puntReturnTouchdowns"
+      ],
+      "labels": [
+       "NO",
+       "YDS",
+       "AVG",
+       "LONG",
+       "TD"
+      ],
+      "totals": [],
+      "athletes": []
+     },
+     {
+      "name": "kicking",
+      "keys": [
+       "fieldGoalsMade/fieldGoalAttempts",
+       "fieldGoalPct",
+       "longFieldGoalMade",
+       "extraPointsMade/extraPointAttempts",
+       "totalKickingPoints"
+      ],
+      "labels": [
+       "FG",
+       "PCT",
+       "LONG",
+       "XP",
+       "PTS"
+      ],
+      "totals": [
+       "2/2",
+       "100.0",
+       "53",
+       "2/2",
+       "8"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "3953687",
+         "displayName": "Brandon Aubrey",
+         "jersey": "17"
+        },
+        "stats": [
+         "2/2",
+         "100.0",
+         "53",
+         "2/2",
+         "8"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "punting",
+      "keys": [
+       "punts",
+       "puntYards",
+       "grossAvgPuntYards",
+       "touchbacks",
+       "puntsInside20",
+       "longPunt"
+      ],
+      "labels": [
+       "NO",
+       "YDS",
+       "AVG",
+       "TB",
+       "In 20",
+       "LONG"
+      ],
+      "totals": [
+       "2",
+       "87",
+       "43.5",
+       "0",
+       "1",
+       "49"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "14950",
+         "displayName": "Bryan Anger",
+         "jersey": "5"
+        },
+        "stats": [
+         "2",
+         "87",
+         "43.5",
+         "0",
+         "1",
+         "49"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "21",
+     "uid": "s:20~l:28~t:21",
+     "abbreviation": "PHI",
+     "displayName": "Philadelphia Eagles",
+     "name": "Eagles",
+     "location": "Philadelphia"
+    },
+    "statistics": [
+     {
+      "name": "passing",
+      "keys": [
+       "completions/passingAttempts",
+       "passingYards",
+       "yardsPerPassAttempt",
+       "passingTouchdowns",
+       "interceptions",
+       "sacks-sackYardsLost",
+       "adjQBR",
+       "QBRating"
+      ],
+      "labels": [
+       "C/ATT",
+       "YDS",
+       "AVG",
+       "TD",
+       "INT",
+       "SACKS",
+       "QBR",
+       "RTG"
+      ],
+      "totals": [
+       "19/23",
+       "144",
+       "6.6",
+       "0",
+       "0",
+       "1-8",
+       "--",
+       "94.2"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "4040715",
+         "displayName": "Jalen Hurts",
+         "jersey": "1"
+        },
+        "stats": [
+         "19/23",
+         "152",
+         "6.6",
+         "0",
+         "0",
+         "1-8",
+         "89.0",
+         "94.2"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "rushing",
+      "keys": [
+       "rushingAttempts",
+       "rushingYards",
+       "yardsPerRushAttempt",
+       "rushingTouchdowns",
+       "longRushing"
+      ],
+      "labels": [
+       "CAR",
+       "YDS",
+       "AVG",
+       "TD",
+       "LONG"
+      ],
+      "totals": [
+       "38",
+       "158",
+       "4.2",
+       "3",
+       "20"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "4040715",
+         "displayName": "Jalen Hurts",
+         "jersey": "1"
+        },
+        "stats": [
+         "14",
+         "62",
+         "4.4",
+         "2",
+         "15"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "3929630",
+         "displayName": "Saquon Barkley",
+         "jersey": "26"
+        },
+        "stats": [
+         "18",
+         "60",
+         "3.3",
+         "1",
+         "16"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4431545",
+         "displayName": "Will Shipley",
+         "jersey": "28"
+        },
+        "stats": [
+         "3",
+         "26",
+         "8.7",
+         "0",
+         "20"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4239934",
+         "displayName": "AJ Dillon",
+         "jersey": "29"
+        },
+        "stats": [
+         "3",
+         "10",
+         "3.3",
+         "0",
+         "9"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "receiving",
+      "keys": [
+       "receptions",
+       "receivingYards",
+       "yardsPerReception",
+       "receivingTouchdowns",
+       "longReception",
+       "receivingTargets"
+      ],
+      "labels": [
+       "REC",
+       "YDS",
+       "AVG",
+       "TD",
+       "LONG",
+       "TGTS"
+      ],
+      "totals": [
+       "19",
+       "152",
+       "8.0",
+       "0",
+       "51",
+       "20"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "4361409",
+         "displayName": "Jahan Dotson",
+         "jersey": "2"
+        },
+        "stats": [
+         "3",
+         "59",
+         "19.7",
+         "0",
+         "51",
+         "3"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "3121023",
+         "displayName": "Dallas Goedert",
+         "jersey": "88"
+        },
+        "stats": [
+         "7",
+         "44",
+         "6.3",
+         "0",
+         "9",
+         "7"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "3929630",
+         "displayName": "Saquon Barkley",
+         "jersey": "26"
+        },
+        "stats": [
+         "4",
+         "24",
+         "6.0",
+         "0",
+         "8",
+         "5"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4241478",
+         "displayName": "DeVonta Smith",
+         "jersey": "6"
+        },
+        "stats": [
+         "3",
+         "16",
+         "5.3",
+         "0",
+         "7",
+         "3"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4047646",
+         "displayName": "A.J. Brown",
+         "jersey": "11"
+        },
+        "stats": [
+         "1",
+         "8",
+         "8.0",
+         "0",
+         "8",
+         "1"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4039160",
+         "displayName": "Kylen Granson",
+         "jersey": "83"
+        },
+        "stats": [
+         "1",
+         "1",
+         "1.0",
+         "0",
+         "1",
+         "1"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "fumbles",
+      "keys": [
+       "fumbles",
+       "fumblesLost",
+       "fumblesRecovered"
+      ],
+      "labels": [
+       "FUM",
+       "LOST",
+       "REC"
+      ],
+      "totals": [
+       "0",
+       "0",
+       "1"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "4686273",
+         "displayName": "Quinyon Mitchell",
+         "jersey": "27"
+        },
+        "stats": [
+         "0",
+         "0",
+         "1"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "defensive",
+      "keys": [
+       "totalTackles",
+       "soloTackles",
+       "sacks",
+       "tacklesForLoss",
+       "passesDefended",
+       "QBHits",
+       "defensiveTouchdowns"
+      ],
+      "labels": [
+       "TOT",
+       "SOLO",
+       "SACKS",
+       "TFL",
+       "PD",
+       "QB HTS",
+       "TD"
+      ],
+      "totals": [
+       "60",
+       "34",
+       "0",
+       "3",
+       "6",
+       "1",
+       "0"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "3917657",
+         "displayName": "Zack Baun",
+         "jersey": "53"
+        },
+        "stats": [
+         "9",
+         "6",
+         "0",
+         "1",
+         "1",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "3120347",
+         "displayName": "Adoree' Jackson",
+         "jersey": "8"
+        },
+        "stats": [
+         "7",
+         "5",
+         "0",
+         "0",
+         "1",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4381558",
+         "displayName": "Jordan Davis",
+         "jersey": "90"
+        },
+        "stats": [
+         "6",
+         "3",
+         "0",
+         "1",
+         "1",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4682618",
+         "displayName": "Cooper DeJean",
+         "jersey": "33"
+        },
+        "stats": [
+         "5",
+         "3",
+         "0",
+         "0",
+         "1",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4602197",
+         "displayName": "Andrew Mukuba",
+         "jersey": "24"
+        },
+        "stats": [
+         "4",
+         "3",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4686273",
+         "displayName": "Quinyon Mitchell",
+         "jersey": "27"
+        },
+        "stats": [
+         "4",
+         "3",
+         "0",
+         "0",
+         "1",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4426331",
+         "displayName": "Nolan Smith Jr.",
+         "jersey": "3"
+        },
+        "stats": [
+         "4",
+         "1",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4243956",
+         "displayName": "Reed Blankenship",
+         "jersey": "32"
+        },
+        "stats": [
+         "3",
+         "3",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4686911",
+         "displayName": "Jakorian Bennett",
+         "jersey": "23"
+        },
+        "stats": [
+         "3",
+         "3",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4571162",
+         "displayName": "Jalyx Hunt",
+         "jersey": "58"
+        },
+        "stats": [
+         "3",
+         "1",
+         "0",
+         "1",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4685287",
+         "displayName": "Jihaad Campbell",
+         "jersey": "30"
+        },
+        "stats": [
+         "3",
+         "0",
+         "0",
+         "0",
+         "1",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4360386",
+         "displayName": "Sydney Brown",
+         "jersey": "21"
+        },
+        "stats": [
+         "2",
+         "1",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4432777",
+         "displayName": "Jeremiah Trotter Jr.",
+         "jersey": "54"
+        },
+        "stats": [
+         "2",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4039160",
+         "displayName": "Kylen Granson",
+         "jersey": "83"
+        },
+        "stats": [
+         "1",
+         "1",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4567096",
+         "displayName": "John Metchie III",
+         "jersey": "18"
+        },
+        "stats": [
+         "1",
+         "1",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4046528",
+         "displayName": "Josh Uche",
+         "jersey": "0"
+        },
+        "stats": [
+         "1",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4362116",
+         "displayName": "Moro Ojomo",
+         "jersey": "97"
+        },
+        "stats": [
+         "1",
+         "0",
+         "0",
+         "0",
+         "0",
+         "1",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4567123",
+         "displayName": "Byron Young",
+         "jersey": "94"
+        },
+        "stats": [
+         "1",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0",
+         "0"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "interceptions",
+      "keys": [
+       "interceptions",
+       "interceptionYards",
+       "interceptionTouchdowns"
+      ],
+      "labels": [
+       "INT",
+       "YDS",
+       "TD"
+      ],
+      "totals": [],
+      "athletes": []
+     },
+     {
+      "name": "kickReturns",
+      "keys": [
+       "kickReturns",
+       "kickReturnYards",
+       "yardsPerKickReturn",
+       "longKickReturn",
+       "kickReturnTouchdowns"
+      ],
+      "labels": [
+       "NO",
+       "YDS",
+       "AVG",
+       "LONG",
+       "TD"
+      ],
+      "totals": [
+       "2",
+       "32",
+       "16.0",
+       "20",
+       "0"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "4567096",
+         "displayName": "John Metchie III",
+         "jersey": "18"
+        },
+        "stats": [
+         "1",
+         "20",
+         "20.0",
+         "20",
+         "0"
+        ]
+       },
+       {
+        "athlete": {
+         "id": "4431545",
+         "displayName": "Will Shipley",
+         "jersey": "28"
+        },
+        "stats": [
+         "1",
+         "12",
+         "12.0",
+         "12",
+         "0"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "puntReturns",
+      "keys": [
+       "puntReturns",
+       "puntReturnYards",
+       "yardsPerPuntReturn",
+       "longPuntReturn",
+       "puntReturnTouchdowns"
+      ],
+      "labels": [
+       "NO",
+       "YDS",
+       "AVG",
+       "LONG",
+       "TD"
+      ],
+      "totals": [],
+      "athletes": []
+     },
+     {
+      "name": "kicking",
+      "keys": [
+       "fieldGoalsMade/fieldGoalAttempts",
+       "fieldGoalPct",
+       "longFieldGoalMade",
+       "extraPointsMade/extraPointAttempts",
+       "totalKickingPoints"
+      ],
+      "labels": [
+       "FG",
+       "PCT",
+       "LONG",
+       "XP",
+       "PTS"
+      ],
+      "totals": [
+       "1/1",
+       "100.0",
+       "58",
+       "3/3",
+       "6"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "3050478",
+         "displayName": "Jake Elliott",
+         "jersey": "4"
+        },
+        "stats": [
+         "1/1",
+         "100.0",
+         "58",
+         "3/3",
+         "6"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "punting",
+      "keys": [
+       "punts",
+       "puntYards",
+       "grossAvgPuntYards",
+       "touchbacks",
+       "puntsInside20",
+       "longPunt"
+      ],
+      "labels": [
+       "NO",
+       "YDS",
+       "AVG",
+       "TB",
+       "In 20",
+       "LONG"
+      ],
+      "totals": [
+       "3",
+       "146",
+       "48.7",
+       "0",
+       "2",
+       "51"
+      ],
+      "athletes": [
+       {
+        "athlete": {
+         "id": "4035239",
+         "displayName": "Braden Mann",
+         "jersey": "10"
+        },
+        "stats": [
+         "3",
+         "146",
+         "48.7",
+         "0",
+         "2",
+         "51"
+        ]
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "scoringPlays": [
+  {
+   "id": "401772510247",
+   "type": {
+    "id": "68",
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "text": "Javonte Williams 1 Yd Rush (Brandon Aubrey Kick)",
+   "awayScore": 7,
+   "homeScore": 0,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "value": 709,
+    "displayValue": "11:49"
+   },
+   "scoringType": {
+    "name": "touchdown",
+    "displayName": "Touchdown",
+    "abbreviation": "TD"
+   },
+   "team": {
+    "id": "6",
+    "uid": "s:20~l:28~t:6",
+    "abbreviation": "DAL",
+    "displayName": "Dallas Cowboys"
+   }
+  },
+  {
+   "id": "401772510547",
+   "type": {
+    "id": "68",
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "text": "Jalen Hurts 4 Yd Rush (Jake Elliott Kick)",
+   "awayScore": 7,
+   "homeScore": 7,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "value": 355,
+    "displayValue": "5:55"
+   },
+   "scoringType": {
+    "name": "touchdown",
+    "displayName": "Touchdown",
+    "abbreviation": "TD"
+   },
+   "team": {
+    "id": "21",
+    "uid": "s:20~l:28~t:21",
+    "abbreviation": "PHI",
+    "displayName": "Philadelphia Eagles"
+   }
+  },
+  {
+   "id": "401772510907",
+   "type": {
+    "id": "68",
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "text": "Javonte Williams 1 Yd Rush (Brandon Aubrey Kick)",
+   "awayScore": 14,
+   "homeScore": 7,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "value": 896,
+    "displayValue": "14:56"
+   },
+   "scoringType": {
+    "name": "touchdown",
+    "displayName": "Touchdown",
+    "abbreviation": "TD"
+   },
+   "team": {
+    "id": "6",
+    "uid": "s:20~l:28~t:6",
+    "abbreviation": "DAL",
+    "displayName": "Dallas Cowboys"
+   }
+  },
+  {
+   "id": "4017725101233",
+   "type": {
+    "id": "68",
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "text": "Jalen Hurts 8 Yd Rush (Jake Elliott Kick)",
+   "awayScore": 14,
+   "homeScore": 14,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "value": 406,
+    "displayValue": "6:46"
+   },
+   "scoringType": {
+    "name": "touchdown",
+    "displayName": "Touchdown",
+    "abbreviation": "TD"
+   },
+   "team": {
+    "id": "21",
+    "uid": "s:20~l:28~t:21",
+    "abbreviation": "PHI",
+    "displayName": "Philadelphia Eagles"
+   }
+  },
+  {
+   "id": "4017725101531",
+   "type": {
+    "id": "59",
+    "text": "Field Goal Good",
+    "abbreviation": "FG"
+   },
+   "text": "Brandon Aubrey 41 Yd Field Goal",
+   "awayScore": 17,
+   "homeScore": 14,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "value": 154,
+    "displayValue": "2:34"
+   },
+   "scoringType": {
+    "name": "field-goal",
+    "displayName": "Field Goal",
+    "abbreviation": "FG"
+   },
+   "team": {
+    "id": "6",
+    "uid": "s:20~l:28~t:6",
+    "abbreviation": "DAL",
+    "displayName": "Dallas Cowboys"
+   }
+  },
+  {
+   "id": "4017725101782",
+   "type": {
+    "id": "68",
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "text": "Saquon Barkley 10 Yd Rush (Jake Elliott Kick)",
+   "awayScore": 17,
+   "homeScore": 21,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "value": 51,
+    "displayValue": "0:51"
+   },
+   "scoringType": {
+    "name": "touchdown",
+    "displayName": "Touchdown",
+    "abbreviation": "TD"
+   },
+   "team": {
+    "id": "21",
+    "uid": "s:20~l:28~t:21",
+    "abbreviation": "PHI",
+    "displayName": "Philadelphia Eagles"
+   }
+  },
+  {
+   "id": "4017725102091",
+   "type": {
+    "id": "59",
+    "text": "Field Goal Good",
+    "abbreviation": "FG"
+   },
+   "text": "Brandon Aubrey 53 Yd Field Goal",
+   "awayScore": 20,
+   "homeScore": 21,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "value": 0,
+    "displayValue": "0:00"
+   },
+   "scoringType": {
+    "name": "field-goal",
+    "displayName": "Field Goal",
+    "abbreviation": "FG"
+   },
+   "team": {
+    "id": "6",
+    "uid": "s:20~l:28~t:6",
+    "abbreviation": "DAL",
+    "displayName": "Dallas Cowboys"
+   }
+  },
+  {
+   "id": "4017725102377",
+   "type": {
+    "id": "59",
+    "text": "Field Goal Good",
+    "abbreviation": "FG"
+   },
+   "text": "Jake Elliott 58 Yd Field Goal",
+   "awayScore": 20,
+   "homeScore": 24,
+   "period": {
+    "number": 3
+   },
+   "clock": {
+    "value": 510,
+    "displayValue": "8:30"
+   },
+   "scoringType": {
+    "name": "field-goal",
+    "displayName": "Field Goal",
+    "abbreviation": "FG"
+   },
+   "team": {
+    "id": "21",
+    "uid": "s:20~l:28~t:21",
+    "abbreviation": "PHI",
+    "displayName": "Philadelphia Eagles"
+   }
+  }
+ ],
+ "drives": {
+  "previous": [
+   {
+    "team": {
+     "id": "6",
+     "abbreviation": "DAL",
+     "displayName": "Dallas Cowboys",
+     "name": "Cowboys"
+    },
+    "result": "TD",
+    "isScore": true,
+    "plays": [
+     {
+      "id": "40177251040",
+      "type": {
+       "id": "53",
+       "text": "Kickoff",
+       "abbreviation": "K"
+      },
+      "text": "J.Elliott kicks 60 yards from PHI 35 to DAL 5. K.Turpin pushed ob at DAL 32 for 27 yards (K.Granson). PHI-B.VanSumeren was injured during the play. PENALTY on PHI-J.Carter, Disqualification, 15 yards, enforced at DAL 32.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "15:00"
+      },
+      "awayScore": 0,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "40177251071",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Williams left tackle to PHI 46 for 7 yards (C.DeJean).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "14:54"
+      },
+      "awayScore": 0,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510112",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) K.Turpin right end to PHI 42 for 4 yards (C.DeJean; Z.Baun).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "14:22"
+      },
+      "awayScore": 0,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510141",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short right to G.Pickens to PHI 36 for 6 yards (Q.Mitchell).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "13:47"
+      },
+      "awayScore": 0,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510166",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Williams up the middle to PHI 33 for 3 yards (A.Mukuba).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "13:04"
+      },
+      "awayScore": 0,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510188",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "D.Prescott pass deep right to C.Lamb to PHI 1 for 32 yards (A.Jackson).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "12:22"
+      },
+      "awayScore": 0,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510213",
+      "type": {
+       "id": "8",
+       "text": "Penalty",
+       "abbreviation": "PEN"
+      },
+      "text": "(No Huddle, Shotgun) D.Prescott pass incomplete short right to C.Lamb.PENALTY on PHI-A.Jackson, Defensive Pass Interference, 0 yards, enforced at PHI 1 - No Play.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "11:56"
+      },
+      "awayScore": 0,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510247",
+      "type": {
+       "id": "68",
+       "text": "Rushing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "J.Williams left guard for 1 yard, TOUCHDOWN. B.Aubrey extra point is GOOD, Center-T.Sieg, Holder-B.Anger.",
+      "scoringPlay": true,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "11:49"
+      },
+      "awayScore": 7,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510278",
+      "type": {
+       "id": "74",
+       "text": "Official Timeout",
+       "abbreviation": "Off TO"
+      },
+      "text": "Official Timeout at 11:49.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "11:49"
+      },
+      "awayScore": 7,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "21",
+     "abbreviation": "PHI",
+     "displayName": "Philadelphia Eagles",
+     "name": "Eagles"
+    },
+    "result": "TD",
+    "isScore": true,
+    "plays": [
+     {
+      "id": "401772510285",
+      "type": {
+       "id": "53",
+       "text": "Kickoff",
+       "abbreviation": "K"
+      },
+      "text": "B.Aubrey kicks 65 yards from DAL 35 to end zone, Touchback to the PHI 35.PENALTY on PHI-M.Epps, Illegal Motion, 5 yards, enforced at PHI 35.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "11:49"
+      },
+      "awayScore": 7,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510330",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short left to D.Goedert pushed ob at PHI 38 for 8 yards (K.Murray).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "11:49"
+      },
+      "awayScore": 7,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510360",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) S.Barkley right guard to PHI 41 for 3 yards (K.Clark).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "11:18"
+      },
+      "awayScore": 7,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510382",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Hurts scrambles right tackle to PHI 48 for 7 yards (J.Sanborn).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "10:40"
+      },
+      "awayScore": 7,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510404",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "S.Barkley left end to DAL 36 for 16 yards (D.Clark; D.Bland).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "9:56"
+      },
+      "awayScore": 7,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510426",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short middle to D.Goedert to DAL 30 for 6 yards (M.Hooker).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "9:09"
+      },
+      "awayScore": 7,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510456",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(No Huddle, Shotgun) W.Shipley right guard to DAL 25 for 5 yards (D.Clark; K.Murray).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "8:37"
+      },
+      "awayScore": 7,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510478",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(No Huddle, Shotgun) W.Shipley left end to DAL 5 for 20 yards (M.Hooker; J.Sanborn).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "8:08"
+      },
+      "awayScore": 7,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510503",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "S.Barkley left tackle to DAL 3 for 2 yards (D.Ezeiruaku).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "7:23"
+      },
+      "awayScore": 7,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510525",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "S.Barkley up the middle to DAL 4 for -1 yards (S.Thomas, K.Murray).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "6:41"
+      },
+      "awayScore": 7,
+      "homeScore": 0,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510547",
+      "type": {
+       "id": "68",
+       "text": "Rushing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "(Shotgun) J.Hurts scrambles right end for 4 yards, TOUCHDOWN. J.Elliott extra point is GOOD, Center-C.Hughlett, Holder-B.Mann.",
+      "scoringPlay": true,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "5:55"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510578",
+      "type": {
+       "id": "74",
+       "text": "Official Timeout",
+       "abbreviation": "Off TO"
+      },
+      "text": "Official Timeout at 05:55.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "5:55"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "6",
+     "abbreviation": "DAL",
+     "displayName": "Dallas Cowboys",
+     "name": "Cowboys"
+    },
+    "result": "TD",
+    "isScore": true,
+    "plays": [
+     {
+      "id": "401772510585",
+      "type": {
+       "id": "53",
+       "text": "Kickoff",
+       "abbreviation": "K"
+      },
+      "text": "J.Elliott kicks 63 yards from PHI 35 to DAL 2. K.Turpin to DAL 24 for 22 yards (J.Uche; J.Trotter).PENALTY on DAL-M.Liufau, Unnecessary Roughness, 12 yards, enforced at DAL 24.Penalty on DAL-M.Bell, Unnecessary Roughness, declined.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "5:55"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510626",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) J.Williams left guard to DAL 15 for 3 yards (M.Ojomo; Z.Baun).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "5:48"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510648",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short left to C.Lamb to DAL 33 for 18 yards (R.Blankenship) [M.Ojomo].",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "5:07"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510673",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Williams right guard to DAL 38 for 5 yards (J.Hunt; C.DeJean).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "4:25"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510695",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Williams left end to DAL 41 for 3 yards (A.Mukuba; J.Campbell).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "3:45"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510717",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short left to C.Lamb to PHI 33 for 26 yards (A.Jackson).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "3:01"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510742",
+      "type": {
+       "id": "8",
+       "text": "Penalty",
+       "abbreviation": "PEN"
+      },
+      "text": "(No Huddle, Shotgun) D.Prescott pass short left to M.Sanders to PHI 29 for 4 yards (R.Blankenship).PENALTY on DAL-T.Smith, Offensive Holding, 10 yards, enforced at PHI 33 - No Play.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "2:14"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510778",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short right to M.Sanders to PHI 46 for -3 yards (Z.Baun).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "1:45"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510803",
+      "type": {
+       "id": "8",
+       "text": "Penalty",
+       "abbreviation": "PEN"
+      },
+      "text": "(Shotgun) D.Prescott pass incomplete deep right to G.Pickens (Q.Mitchell).PENALTY on PHI-Q.Mitchell, Defensive Pass Interference, 34 yards, enforced at PHI 46 - No Play.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "0:58"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510842",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "D.Prescott pass incomplete short left to J.Tolbert.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "0:51"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510865",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) J.Williams up the middle to PHI 1 for 11 yards (R.Blankenship).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "0:46"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510887",
+      "type": {
+       "id": "2",
+       "text": "End Period",
+       "abbreviation": "EP"
+      },
+      "text": "END QUARTER 1",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "0:00"
+      },
+      "awayScore": 7,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510907",
+      "type": {
+       "id": "68",
+       "text": "Rushing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "(Shotgun) J.Williams up the middle for 1 yard, TOUCHDOWN. B.Aubrey extra point is GOOD, Center-T.Sieg, Holder-B.Anger.",
+      "scoringPlay": true,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "14:56"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "401772510938",
+      "type": {
+       "id": "74",
+       "text": "Official Timeout",
+       "abbreviation": "Off TO"
+      },
+      "text": "Official Timeout at 14:56.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "14:56"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "21",
+     "abbreviation": "PHI",
+     "displayName": "Philadelphia Eagles",
+     "name": "Eagles"
+    },
+    "result": "TD",
+    "isScore": true,
+    "plays": [
+     {
+      "id": "401772510945",
+      "type": {
+       "id": "53",
+       "text": "Kickoff",
+       "abbreviation": "K"
+      },
+      "text": "B.Aubrey kicks 65 yards from DAL 35 to end zone, Touchback to the PHI 35.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "14:56"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510974",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) S.Barkley right end to PHI 41 for 6 yards (O.Odighizuwa; M.Hooker).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "14:56"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "401772510996",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short right to D.Smith to PHI 47 for 6 yards (K.Murray).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "14:12"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101021",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) S.Barkley right guard to DAL 49 for 4 yards (M.Hooker; S.Williams).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "13:29"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101043",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short right to D.Goedert to DAL 46 for 3 yards (K.Murray).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "12:48"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101068",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short middle to D.Goedert to DAL 39 for 7 yards (M.Hooker).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "12:01"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101093",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "J.Hurts pass short right to K.Granson ran ob at DAL 38 for 1 yard.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "11:19"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101123",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) J.Hurts scrambles left end to DAL 29 for 9 yards (K.Elam).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "10:38"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101145",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "S.Barkley right end to DAL 25 for 4 yards (M.Kneeland).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "9:52"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101167",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "W.Shipley left guard to DAL 24 for 1 yard (O.Odighizuwa).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "9:11"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101189",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) J.Hurts scrambles right tackle to DAL 9 for 15 yards (M.Hooker).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "8:27"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101211",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) S.Barkley up the middle to DAL 8 for 1 yard (S.Thomas).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "7:42"
+      },
+      "awayScore": 14,
+      "homeScore": 7,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101233",
+      "type": {
+       "id": "68",
+       "text": "Rushing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "(Shotgun) J.Hurts scrambles left end for 8 yards, TOUCHDOWN. J.Elliott extra point is GOOD, Center-C.Hughlett, Holder-B.Mann.",
+      "scoringPlay": true,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "6:46"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101264",
+      "type": {
+       "id": "74",
+       "text": "Official Timeout",
+       "abbreviation": "Off TO"
+      },
+      "text": "Official Timeout at 06:46.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "6:46"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "6",
+     "abbreviation": "DAL",
+     "displayName": "Dallas Cowboys",
+     "name": "Cowboys"
+    },
+    "result": "FG",
+    "isScore": true,
+    "plays": [
+     {
+      "id": "4017725101271",
+      "type": {
+       "id": "53",
+       "text": "Kickoff",
+       "abbreviation": "K"
+      },
+      "text": "J.Elliott kicks 57 yards from PHI 35 to DAL 8. K.Turpin to DAL 31 for 23 yards (S.Brown).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "6:46"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101301",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "D.Prescott pass short left to J.Ferguson to DAL 34 for 3 yards (R.Blankenship).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "6:41"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101326",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short left to K.Turpin pushed ob at 50 for 16 yards (A.Jackson).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "6:03"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101341",
+      "type": {
+       "id": "21",
+       "text": "Timeout",
+       "abbreviation": "TO"
+      },
+      "text": "Timeout #1 by DAL at 05:26.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "5:26"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101356",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "M.Sanders right end to 50 for no gain (N.Smith).PENALTY on PHI-N.Smith, Taunting, 15 yards, enforced at 50.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "5:26"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101396",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "D.Prescott scrambles left end to PHI 32 for 3 yards (Z.Baun).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "5:03"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101418",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) K.Turpin left tackle to PHI 27 for 5 yards (N.Smith; A.Jackson).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "4:14"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101440",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) J.Williams up the middle to PHI 23 for 4 yards (Z.Baun).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "3:33"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101462",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(No Huddle, Shotgun) D.Prescott pass incomplete short left to C.Lamb.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "2:54"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101485",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(Shotgun) D.Prescott pass incomplete short left to C.Lamb (A.Jackson).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "2:49"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101508",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(Shotgun) D.Prescott pass incomplete deep left to G.Pickens.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "2:43"
+      },
+      "awayScore": 14,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101531",
+      "type": {
+       "id": "59",
+       "text": "Field Goal Good",
+       "abbreviation": "FG"
+      },
+      "text": "B.Aubrey 41 yard field goal is GOOD, Center-T.Sieg, Holder-B.Anger.",
+      "scoringPlay": true,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "2:34"
+      },
+      "awayScore": 17,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101541",
+      "type": {
+       "id": "74",
+       "text": "Official Timeout",
+       "abbreviation": "Off TO"
+      },
+      "text": "Official Timeout at 02:34.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "2:34"
+      },
+      "awayScore": 17,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "21",
+     "abbreviation": "PHI",
+     "displayName": "Philadelphia Eagles",
+     "name": "Eagles"
+    },
+    "result": "TD",
+    "isScore": true,
+    "plays": [
+     {
+      "id": "4017725101551",
+      "type": {
+       "id": "53",
+       "text": "Kickoff",
+       "abbreviation": "K"
+      },
+      "text": "B.Aubrey kicks 61 yards from DAL 35 to PHI 4. W.Shipley MUFFS catch, and recovers at PHI 7. W.Shipley to PHI 19 for 12 yards (M.Liufau).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "2:34"
+      },
+      "awayScore": 17,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101581",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) S.Barkley left end to PHI 23 for 4 yards (S.Williams).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "2:29"
+      },
+      "awayScore": 17,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101592",
+      "type": {
+       "id": "75",
+       "text": "Two-minute warning",
+       "abbreviation": "2Min Warn"
+      },
+      "text": "Two-Minute Warning",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "2:00"
+      },
+      "awayScore": 17,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101603",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(Shotgun) J.Hurts pass incomplete short left [S.Williams].",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "2:00"
+      },
+      "awayScore": 17,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101647",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass deep middle to J.Dotson to DAL 26 for 51 yards (K.Elam).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "1:53"
+      },
+      "awayScore": 17,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101672",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(No Huddle, Shotgun) J.Hurts pass incomplete short left to S.Barkley.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "1:20"
+      },
+      "awayScore": 17,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101695",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short right to S.Barkley pushed ob at DAL 18 for 8 yards (K.Elam; K.Murray).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "1:16"
+      },
+      "awayScore": 17,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101725",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short left to S.Barkley ran ob at DAL 15 for 3 yards.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "1:09"
+      },
+      "awayScore": 17,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101750",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) J.Hurts scrambles right tackle ran ob at DAL 10 for 5 yards (D.Clark).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "1:04"
+      },
+      "awayScore": 17,
+      "homeScore": 14,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101782",
+      "type": {
+       "id": "68",
+       "text": "Rushing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "(Shotgun) S.Barkley right guard for 10 yards, TOUCHDOWN. J.Elliott extra point is GOOD, Center-C.Hughlett, Holder-B.Mann.",
+      "scoringPlay": true,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:51"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725101813",
+      "type": {
+       "id": "74",
+       "text": "Official Timeout",
+       "abbreviation": "Off TO"
+      },
+      "text": "Official Timeout at 00:51.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:51"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "6",
+     "abbreviation": "DAL",
+     "displayName": "Dallas Cowboys",
+     "name": "Cowboys"
+    },
+    "result": "FG",
+    "isScore": true,
+    "plays": [
+     {
+      "id": "4017725101820",
+      "type": {
+       "id": "53",
+       "text": "Kickoff",
+       "abbreviation": "K"
+      },
+      "text": "J.Elliott kicks 58 yards from PHI 35 to DAL 7. K.Turpin MUFFS catch, and recovers at DAL 3. K.Turpin to DAL 12 for 9 yards (S.Brown; J.Trotter).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:51"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101863",
+      "type": {
+       "id": "8",
+       "text": "Penalty",
+       "abbreviation": "PEN"
+      },
+      "text": "(Shotgun) D.Prescott pass incomplete short right to C.Lamb.PENALTY on PHI-J.Bennett, Defensive Pass Interference, 9 yards, enforced at DAL 12 - No Play.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:44"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101897",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short right to J.Ferguson to DAL 26 for 5 yards (J.Bennett).PENALTY on PHI-N.Smith, Roughing the Passer, 15 yards, enforced at DAL 26.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:40"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101933",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(No Huddle, Shotgun) D.Prescott pass short right to J.Ferguson to DAL 46 for 5 yards (J.Bennett).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:34"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101946",
+      "type": {
+       "id": "21",
+       "text": "Timeout",
+       "abbreviation": "TO"
+      },
+      "text": "Timeout #2 by DAL at 00:27.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:27"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101958",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short left to J.Tolbert pushed ob at DAL 46 for no gain (C.DeJean).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:27"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725101995",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short right to G.Pickens to PHI 45 for 9 yards (Q.Mitchell).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:20"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102008",
+      "type": {
+       "id": "21",
+       "text": "Timeout",
+       "abbreviation": "TO"
+      },
+      "text": "Timeout #3 by DAL at 00:15.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:15"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102014",
+      "type": {
+       "id": "21",
+       "text": "Timeout",
+       "abbreviation": "TO"
+      },
+      "text": "Timeout #1 by PHI at 00:15.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:15"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102020",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short right to C.Lamb to PHI 35 for 10 yards (J.Bennett).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:15"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102068",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(No Huddle) D.Prescott spiked the ball to stop the clock.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:04"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102080",
+      "type": {
+       "id": "21",
+       "text": "Timeout",
+       "abbreviation": "TO"
+      },
+      "text": "Timeout #2 by PHI at 00:03.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:03"
+      },
+      "awayScore": 17,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102091",
+      "type": {
+       "id": "59",
+       "text": "Field Goal Good",
+       "abbreviation": "FG"
+      },
+      "text": "B.Aubrey 53 yard field goal is GOOD, Center-T.Sieg, Holder-B.Anger.",
+      "scoringPlay": true,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:00"
+      },
+      "awayScore": 20,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102118",
+      "type": {
+       "id": "65",
+       "text": "End of Half",
+       "abbreviation": "EH"
+      },
+      "text": "END QUARTER 2",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:00"
+      },
+      "awayScore": 20,
+      "homeScore": 21,
+      "start": {},
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "21",
+     "abbreviation": "PHI",
+     "displayName": "Philadelphia Eagles",
+     "name": "Eagles"
+    },
+    "result": "FG",
+    "isScore": true,
+    "plays": [
+     {
+      "id": "4017725102136",
+      "type": {
+       "id": "53",
+       "text": "Kickoff",
+       "abbreviation": "K"
+      },
+      "text": "B.Aubrey kicks 57 yards from DAL 35 to PHI 8. J.Metchie pushed ob at PHI 28 for 20 yards (D.Clark).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "15:00"
+      },
+      "awayScore": 20,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102164",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short middle to D.Goedert to PHI 33 for 5 yards (J.Sanborn; K.Clark).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "14:55"
+      },
+      "awayScore": 20,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102189",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short left to D.Goedert to PHI 39 for 6 yards (M.Liufau).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "14:12"
+      },
+      "awayScore": 20,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102219",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(No Huddle, Shotgun) J.Hurts pass short right to D.Smith to PHI 42 for 3 yards (K.Elam).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "13:39"
+      },
+      "awayScore": 20,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102244",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) S.Barkley left tackle to DAL 46 for 12 yards (M.Hooker; J.Toia).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "12:55"
+      },
+      "awayScore": 20,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102266",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) A.Dillon left tackle to DAL 37 for 9 yards (M.Liufau).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "12:12"
+      },
+      "awayScore": 20,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102288",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) A.Dillon right guard to DAL 36 for 1 yard (S.Thomas).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "11:26"
+      },
+      "awayScore": 20,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102310",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) A.Dillon up the middle to DAL 36 for no gain (D.Wilson; K.Clark).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "10:47"
+      },
+      "awayScore": 20,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102332",
+      "type": {
+       "id": "7",
+       "text": "Sack"
+      },
+      "text": "(Shotgun) J.Hurts sacked at DAL 44 for -8 yards (M.Kneeland).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "10:02"
+      },
+      "awayScore": 20,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102352",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short right to J.Dotson to DAL 40 for 4 yards (D.Clark) [D.Fowler].",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "9:16"
+      },
+      "awayScore": 20,
+      "homeScore": 21,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102377",
+      "type": {
+       "id": "59",
+       "text": "Field Goal Good",
+       "abbreviation": "FG"
+      },
+      "text": "J.Elliott 58 yard field goal is GOOD, Center-C.Hughlett, Holder-B.Mann.",
+      "scoringPlay": true,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "8:30"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102387",
+      "type": {
+       "id": "74",
+       "text": "Official Timeout",
+       "abbreviation": "Off TO"
+      },
+      "text": "Official Timeout at 08:30.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "8:30"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "6",
+     "abbreviation": "DAL",
+     "displayName": "Dallas Cowboys",
+     "name": "Cowboys"
+    },
+    "result": "FUMBLE",
+    "isScore": false,
+    "plays": [
+     {
+      "id": "4017725102397",
+      "type": {
+       "id": "53",
+       "text": "Kickoff",
+       "abbreviation": "K"
+      },
+      "text": "J.Elliott kicks 56 yards from PHI 35 to DAL 9. J.Tolbert to DAL 29 for 20 yards (J.Metchie).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "8:30"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102432",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Williams left guard to DAL 35 for 6 yards (C.DeJean).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "8:22"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102454",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Williams up the middle to DAL 38 for 3 yards (J.Davis).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "7:48"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102476",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Williams left end to DAL 40 for 2 yards (Z.Baun; J.Hunt).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "7:07"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102498",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(Shotgun) D.Prescott pass incomplete deep middle to B.Spann-Ford (J.Campbell). PHI-S.Brown was injured during the play.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "6:27"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102511",
+      "type": {
+       "id": "74",
+       "text": "Official Timeout",
+       "abbreviation": "Off TO"
+      },
+      "text": "Official Timeout at 06:21.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "6:21"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102524",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) M.Sanders left end to PHI 11 for 49 yards (Z.Baun).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "6:21"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102553",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) M.Sanders left guard to PHI 8 for 3 yards (J.Davis).PENALTY on DAL-G.Pickens, Unnecessary Roughness, 15 yards, enforced at PHI 8.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "5:33"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102586",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(Shotgun) D.Prescott pass incomplete deep middle to J.Ferguson (Z.Baun).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "5:07"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102609",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(Shotgun) D.Prescott pass incomplete short left to J.Williams (J.Davis).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "5:02"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102632",
+      "type": {
+       "id": "8",
+       "text": "Penalty",
+       "abbreviation": "PEN"
+      },
+      "text": "(Shotgun) D.Prescott pass incomplete deep middle to J.Ferguson (R.Blankenship). ** Injury Update: PHI-S.Brown has returned to the game. PENALTY on PHI-R.Blankenship, Unnecessary Roughness, 12 yards, enforced at PHI 23 - No Play.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "4:58"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102666",
+      "type": {
+       "id": "29",
+       "text": "Fumble Recovery (Opponent)"
+      },
+      "text": "M.Sanders left guard to PHI 10 for 1 yard (J.Campbell; B.Young). FUMBLES (J.Campbell), RECOVERED by PHI-Q.Mitchell at PHI 10. Q.Mitchell to PHI 16 for 6 yards (D.Prescott).",
+      "scoringPlay": false,
+      "isTurnover": true,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "4:52"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102687",
+      "type": {
+       "id": "74",
+       "text": "Official Timeout",
+       "abbreviation": "Off TO"
+      },
+      "text": "Official Timeout at 04:44.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "4:44"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "21",
+     "abbreviation": "PHI",
+     "displayName": "Philadelphia Eagles",
+     "name": "Eagles"
+    },
+    "result": "PUNT",
+    "isScore": false,
+    "plays": [
+     {
+      "id": "4017725102758",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) S.Barkley left guard to PHI 15 for -1 yards (J.Sanborn, O.Odighizuwa).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "4:44"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102780",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(Shotgun) J.Hurts pass incomplete short left [O.Odighizuwa].",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "4:02"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102803",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) J.Hurts scrambles right end to PHI 23 for 8 yards (K.Murray).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "3:56"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725102825",
+      "type": {
+       "id": "52",
+       "text": "Punt",
+       "abbreviation": "PUNT"
+      },
+      "text": "B.Mann punts 51 yards to DAL 26, Center-C.Hughlett, fair catch by K.Turpin.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "3:18"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "6",
+     "abbreviation": "DAL",
+     "displayName": "Dallas Cowboys",
+     "name": "Cowboys"
+    },
+    "result": "PUNT",
+    "isScore": false,
+    "plays": [
+     {
+      "id": "4017725102845",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) J.Williams right guard to DAL 30 for 4 yards (J.Davis; N.Smith).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "3:10"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102867",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "D.Prescott pass short left to J.Ferguson to DAL 35 for 5 yards (A.Mukuba).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "2:29"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102892",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short middle to C.Lamb to DAL 49 for 14 yards (A.Jackson).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "1:46"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102917",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Williams up the middle to PHI 48 for 3 yards (J.Davis; N.Smith).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "1:07"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102939",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short left to C.Lamb to DAL 49 for -3 yards (J.Davis).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "0:27"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102964",
+      "type": {
+       "id": "2",
+       "text": "End Period",
+       "abbreviation": "EP"
+      },
+      "text": "END QUARTER 3",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 3
+      },
+      "clock": {
+       "displayValue": "0:00"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725102984",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(Shotgun) D.Prescott pass incomplete short middle to C.Lamb.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "15:00"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103007",
+      "type": {
+       "id": "52",
+       "text": "Punt",
+       "abbreviation": "PUNT"
+      },
+      "text": " B.Anger punts 38 yards to PHI 13, Center-T.Sieg, fair catch by J.Dotson.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "14:53"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "21",
+     "abbreviation": "PHI",
+     "displayName": "Philadelphia Eagles",
+     "name": "Eagles"
+    },
+    "result": "PUNT",
+    "isScore": false,
+    "plays": [
+     {
+      "id": "4017725103027",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short left to S.Barkley to PHI 21 for 8 yards (K.Elam; K.Murray).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "14:46"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103052",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) S.Barkley left guard to PHI 22 for 1 yard (M.Kneeland; S.Thomas).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "14:03"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103074",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Hurts up the middle to PHI 23 for 1 yard (J.Houston).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "13:24"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103101",
+      "type": {
+       "id": "8",
+       "text": "Penalty",
+       "abbreviation": "PEN"
+      },
+      "text": "(No Huddle, Shotgun) PENALTY on DAL, Defensive Too Many Men on Field, 5 yards, enforced at PHI 23 - No Play.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "12:46"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103125",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "S.Barkley right end to PHI 32 for 4 yards (D.Clark; J.Sanborn).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "12:27"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103147",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "S.Barkley left guard to PHI 32 for no gain (M.Hooker; S.Thomas).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "11:45"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103169",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Hurts up the middle to PHI 33 for 1 yard (J.Sanborn; K.Murray).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "11:05"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103191",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short left to D.Smith to PHI 40 for 7 yards (M.Hooker).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "10:21"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103219",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(No Huddle, Shotgun) J.Hurts pass short left to S.Barkley to PHI 45 for 5 yards (D.Bland) [D.Ezeiruaku].",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "9:46"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103244",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(No Huddle, Shotgun) S.Barkley left end to PHI 41 for -4 yards (J.Houston).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "9:11"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103255",
+      "type": {
+       "id": "21",
+       "text": "Timeout",
+       "abbreviation": "TO"
+      },
+      "text": "Timeout #1 by PHI at 08:26.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "8:26"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103266",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(Shotgun) J.Hurts pass incomplete short right.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "8:26"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103296",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short left to D.Goedert to 50 for 9 yards (T.Diggs).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "8:18"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103321",
+      "type": {
+       "id": "8",
+       "text": "Penalty",
+       "abbreviation": "PEN"
+      },
+      "text": "(No Huddle, Shotgun) PENALTY on PHI, Delay of Game, 5 yards, enforced at 50 - No Play.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "7:27"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103345",
+      "type": {
+       "id": "52",
+       "text": "Punt",
+       "abbreviation": "PUNT"
+      },
+      "text": "B.Mann punts 44 yards to DAL 11, Center-C.Hughlett, out of bounds. ** Injury Update: DAL-C.Goodwin has returned to the game.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "7:27"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103355",
+      "type": {
+       "id": "74",
+       "text": "Official Timeout",
+       "abbreviation": "Off TO"
+      },
+      "text": "Official Timeout at 07:20.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "7:20"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "6",
+     "abbreviation": "DAL",
+     "displayName": "Dallas Cowboys",
+     "name": "Cowboys"
+    },
+    "result": "PUNT",
+    "isScore": false,
+    "plays": [
+     {
+      "id": "4017725103364",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short left to C.Lamb to DAL 24 for 13 yards (Q.Mitchell).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "7:20"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103399",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Williams right guard to DAL 22 for -2 yards (J.Hunt, J.Davis).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "6:50"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103425",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short left to K.Turpin to DAL 24 for 2 yards (A.Mukuba, J.Campbell).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "6:12"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103451",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short right to J.Williams to DAL 27 for 3 yards (A.Jackson; Q.Mitchell).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "5:25"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103481",
+      "type": {
+       "id": "52",
+       "text": "Punt",
+       "abbreviation": "PUNT"
+      },
+      "text": " B.Anger punts 49 yards to PHI 24, Center-T.Sieg, fair catch by J.Dotson.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "4:50"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103491",
+      "type": {
+       "id": "74",
+       "text": "Official Timeout",
+       "abbreviation": "Off TO"
+      },
+      "text": "Official Timeout at 04:43.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "4:43"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "21",
+     "abbreviation": "PHI",
+     "displayName": "Philadelphia Eagles",
+     "name": "Eagles"
+    },
+    "result": "PUNT",
+    "isScore": false,
+    "plays": [
+     {
+      "id": "4017725103501",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) S.Barkley right guard to PHI 24 for no gain (K.Clark; S.Williams).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "4:43"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103530",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) J.Hurts scrambles left end pushed ob at PHI 27 for 3 yards (S.Williams).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "4:02"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103562",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short right to J.Dotson to PHI 31 for 4 yards (D.Bland).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "3:55"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103587",
+      "type": {
+       "id": "52",
+       "text": "Punt",
+       "abbreviation": "PUNT"
+      },
+      "text": "B.Mann punts 51 yards to DAL 18, Center-C.Hughlett, out of bounds.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "3:09"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103597",
+      "type": {
+       "id": "74",
+       "text": "Official Timeout",
+       "abbreviation": "Off TO"
+      },
+      "text": "Official Timeout at 03:02.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "3:02"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "6",
+     "abbreviation": "DAL",
+     "displayName": "Dallas Cowboys",
+     "name": "Cowboys"
+    },
+    "result": "DOWNS",
+    "isScore": false,
+    "plays": [
+     {
+      "id": "4017725103606",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short right to J.Ferguson pushed ob at DAL 23 for 5 yards (Z.Baun).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "3:02"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103643",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(No Huddle, Shotgun) D.Prescott pass incomplete deep right to C.Lamb.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "2:57"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103671",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short left to G.Pickens pushed ob at DAL 38 for 15 yards (A.Jackson).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "2:52"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103701",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(No Huddle, Shotgun) D.Prescott pass incomplete deep right to C.Lamb (Q.Mitchell).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "2:47"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103724",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(Shotgun) D.Prescott pass incomplete deep right to L.Schoonmaker (C.DeJean).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "2:40"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103747",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) D.Prescott pass short middle to J.Williams to DAL 45 for 7 yards (Z.Baun).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "2:33"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103760",
+      "type": {
+       "id": "75",
+       "text": "Two-minute warning",
+       "abbreviation": "2Min Warn"
+      },
+      "text": "Two-Minute Warning",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "2:00"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "6"
+       }
+      }
+     },
+     {
+      "id": "4017725103772",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(Shotgun) D.Prescott pass incomplete deep left to C.Lamb.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "2:00"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "6"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "21",
+     "abbreviation": "PHI",
+     "displayName": "Philadelphia Eagles",
+     "name": "Eagles"
+    },
+    "result": "END OF GAME",
+    "isScore": false,
+    "plays": [
+     {
+      "id": "4017725103802",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) S.Barkley right end to DAL 45 for -1 yards (S.Williams).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "1:54"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103813",
+      "type": {
+       "id": "21",
+       "text": "Timeout",
+       "abbreviation": "TO"
+      },
+      "text": "Timeout #1 by DAL at 01:51.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "1:51"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103824",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(Shotgun) J.Hurts pass short left to A.Brown to DAL 37 for 8 yards (K.Elam).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "1:51"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103843",
+      "type": {
+       "id": "21",
+       "text": "Timeout",
+       "abbreviation": "TO"
+      },
+      "text": "Timeout #2 by DAL at 01:45.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "1:45"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103861",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(Shotgun) J.Hurts scrambles up the middle to DAL 33 for 4 yards (K.Clark).",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "1:45"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103878",
+      "type": {
+       "id": "21",
+       "text": "Timeout",
+       "abbreviation": "TO"
+      },
+      "text": "Timeout #3 by DAL at 01:29.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "1:29"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103895",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Hurts kneels to DAL 34 for -1 yards.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "1:29"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103924",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Hurts kneels to DAL 35 for -1 yards.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "0:49"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103946",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "J.Hurts kneels to DAL 36 for -1 yards.",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "0:33"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {
+       "team": {
+        "id": "21"
+       }
+      },
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     },
+     {
+      "id": "4017725103968",
+      "type": {
+       "id": "66",
+       "text": "End of Game",
+       "abbreviation": "EG"
+      },
+      "text": "END GAME",
+      "scoringPlay": false,
+      "isTurnover": false,
+      "period": {
+       "number": 4
+      },
+      "clock": {
+       "displayValue": "0:00"
+      },
+      "awayScore": 20,
+      "homeScore": 24,
+      "start": {},
+      "end": {
+       "team": {
+        "id": "21"
+       }
+      }
+     }
+    ]
+   }
+  ]
+ }
+}

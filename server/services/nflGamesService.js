@@ -195,6 +195,24 @@ class NFLGamesService {
         // Parse epoch timestamp to integer if it's a string
         const epochTime = gameTime_epoch ? parseInt(parseFloat(gameTime_epoch)) : null;
 
+        // Never downgrade a finished game. Tank01's schedule endpoint lags the
+        // boxscores by hours (it still said "Scheduled" for games that had been
+        // Final for 90 minutes on 2026-09-13), so a schedule sync must not
+        // overwrite a Final status/score the live path already recorded.
+        let status = gameStatus || 'Scheduled';
+        let finalHome = homeScore, finalAway = awayScore, finalQuarter = quarter, finalTimeLeft = gameTimeLeft;
+        try {
+            const existing = await this.db.get('SELECT status, home_score, away_score, quarter, time_remaining FROM nfl_games WHERE game_id = ?', [gameID]);
+            if (existing && /^Final/i.test(String(existing.status || '')) && !/^Final/i.test(String(status))) {
+                logInfo(`Keeping Final status for ${gameID} (schedule feed says '${status}')`);
+                status = existing.status;
+                finalHome = existing.home_score; finalAway = existing.away_score;
+                finalQuarter = existing.quarter; finalTimeLeft = existing.time_remaining;
+            }
+        } catch (error) {
+            logWarn(`Could not read existing status for ${gameID}: ${error.message}`);
+        }
+
         await this.db.run(`
             INSERT OR REPLACE INTO nfl_games (
                 game_id, week, season, home_team, away_team,
@@ -207,14 +225,14 @@ class NFLGamesService {
             season,
             normalizeTeamCode(home),
             normalizeTeamCode(away),
-            homeScore,
-            awayScore,
+            finalHome,
+            finalAway,
             gameDate,
             gameTime,
             epochTime,
-            gameStatus || 'Scheduled',
-            quarter,
-            gameTimeLeft,
+            status,
+            finalQuarter,
+            finalTimeLeft,
             venue
         ]);
 
@@ -430,12 +448,25 @@ class NFLGamesService {
             }
 
             let statsCount = 0;
-            
+            let skippedUnknown = 0;
+
+            // player_stats.player_id has a FOREIGN KEY to nfl_players, which by design
+            // holds only draftable positions (QB/RB/WR/TE/K/DST). A Tank01 boxscore
+            // lists every player who touched the ball, so LB/CB/DT/P/OL entries used
+            // to fail the insert one by one - ~4,400 logged errors a day. Skip them
+            // up front with one id-set lookup per game and log a single summary.
+            const knownRows = await this.db.all('SELECT player_id FROM nfl_players');
+            const knownIds = new Set(knownRows.map(r => String(r.player_id)));
+
             // Process each player's stats
             for (const [playerId, stats] of Object.entries(playerStats)) {
                 try {
                     // Skip if not a valid stats object
                     if (!stats || typeof stats !== 'object') {
+                        continue;
+                    }
+                    if (!knownIds.has(String(playerId))) {
+                        skippedUnknown++;
                         continue;
                     }
                     
@@ -516,7 +547,7 @@ class NFLGamesService {
                         playerStatsObj.punt_return_tds,
                         fantasyPoints,  // Use our calculated value instead of Tank01's
                         stats.longName || '',
-                        stats.teamAbv || '',
+                        normalizeTeamCode(stats.teamAbv) || stats.teamAbv || '',  // canonical (Tank01 says WSH, we store WAS)
                         stats.position || ''
                     ]);
                     
@@ -526,7 +557,7 @@ class NFLGamesService {
                 }
             }
             
-            logInfo(`Updated ${statsCount} player stats for game ${gameId}`);
+            logInfo(`Updated ${statsCount} player stats for game ${gameId}${skippedUnknown ? ` (skipped ${skippedUnknown} non-draftable players not in nfl_players)` : ''}`);
         } catch (error) {
             logError(`Failed to update player stats from box score:`, error);
         }

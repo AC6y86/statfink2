@@ -82,7 +82,7 @@ The Team Defense **IS** awarded 8 points when the defense or kick-coverage unit 
 - Interception returned for TD
 - Opponent's fumble returned or recovered for TD (a takeaway — the fumbling team was on offense)
 - Blocked punt / blocked FG / blocked kick returned or recovered for TD
-- Muffed punt or returner's fumble recovered by the kicking (coverage) team for TD — a special-teams takeaway
+- Muffed punt, muffed kickoff, or returner's fumble recovered by the kicking (coverage) team for TD, including a kickoff the kicking team recovers in the end zone — a special-teams takeaway. Once the ball is kicked, the kicking team is the coverage unit, not the offense: it cannot make an "offensive recovery" of its own kick.
 
 The Team Defense is **NOT** awarded points when:
 

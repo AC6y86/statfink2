@@ -128,3 +128,32 @@ The determining question is: **did the ball change possession on the play (or wa
 - Takeaway and blocked-kick TDs (interception, opponent's fumble, blocked punt/kick/FG, muffed punt recovered by the coverage team) → 8 points to the Team Defense.
 - Regular kick/punt return TDs (same possession, special teams) → 20 points to the individual returner only.
 - Fumble recoveries by the team already on offense (own or teammate's fumble) → an OFFENSIVE TD: 8 points to the recovering player, nothing to the Team Defense. See docs/SCORING_SYSTEM.md "Defensive Touchdowns — Exact Award Logic".
+
+### 7. 2026 rule fixes (season-gated) and the 2025 known-unfixed errors
+
+The first Double Check calibration run (2026-09-13, docs/DOUBLECHECK.md) found
+errors in the blessed 2025 record that the corrections above did not cover.
+The logic is fixed for 2026 onward in `server/config/scoringRulesets.js`;
+2024 and 2025 keep the behaviour they were blessed with, so the golden-record
+tests are unchanged and these rows stay as they are in the official record:
+
+| week | play | what the record says | correct award | rule |
+|---|---|---|---|---|
+| 3 | "Blocked Kick Recovered by Jordan Davis (PHI)" (LAR@PHI) | DEF_PHI 0 | DEF_PHI +8 (Joe, DST_YA) | `blockedKickRecovery` — the parser required the word "return" |
+| 9 | "Blocked punt recovered by Marshawn Kneeland in end zone" (ARI@DAL) | DEF_DAL 0 | DEF_DAL +8 (Aaron, DST_YA) | `blockedKickRecovery` |
+| 2 | "George Holani Recovered Kickoff in End Zone" (SEA) | nobody | DEF_SEA +8 (unrostered) | `kickoffRecoveryTakeaway` |
+| 7 | HOU@SEA: Tank01 DST.safeties = 1, no safety in either play list | DEF_SEA safeties 1 (+2, Eli) | 0 | `parsedSafetiesAuthoritative` — `||` fell through to Tank01 on a parsed 0 |
+| 2 | "(Jayden Daniels Pass to Luke McCaffrey for Two-Point Conversio" (WAS@GB) | Daniels 0 / McCaffrey 0 | +2 each (Daniels: Aaron) | `twoPointFromPlayText` — Tank01's per-player field was absent |
+| 12 | PHI@DAL and IND@KC cached boxscores | Aubrey 0/1 FG (Chris, not in lineup); both game-winning FGs absent from the play lists | Aubrey 1/1 | Tank01 cache quarantine (`tank01Service.boxscoreQuarantine`, not season-gated: applies to newly fetched boxscores only) |
+
+No 2025 matchup result changes under the correct awards. The structured
+registry of these accepted errors is **server/config/knownScoringErrors.json**
+(one entry per wrong row: season, week, game, player, column, stored vs
+correct value, cause, the rule that fixes it from 2026). The Double Check
+downgrades any finding matching an entry to INFO ("KNOWN"), so audits of 2025
+read clean; the slow test `doublecheckRubricAgreement` asserts each entry's
+stored value is still what the database holds, and the calibration test
+asserts every entry is still observed. If the commissioner ever rules to
+apply one retroactively: lower the rule's season in scoringRulesets.js,
+recalc 2025, re-bless with `npm run baseline:2025`, delete the entry.
+

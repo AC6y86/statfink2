@@ -14,7 +14,9 @@ module.exports = {
     '/tests/2024/compareStats2024.test.js',
     '/tests/2025/compareStats2025.test.js',
     '/tests/integration/recalculateAndVerify2025.test.js',
-    '/tests/integration/compareStats2025baseline.test.js'
+    '/tests/integration/compareStats2025baseline.test.js',
+    '/tests/integration/doublecheckRubricAgreement.test.js',
+    '/tests/integration/doublecheckCalibration.test.js'
   ],
   collectCoverageFrom: [
     'server/**/*.js',
@@ -43,7 +45,9 @@ module.exports = {
         'recalculateAndVerify2024',
         'compareStats2024',
         'recalculateAndVerify2025',
-        'compareStats2025baseline'
+        'compareStats2025baseline',
+        'doublecheckRubricAgreement',
+        'doublecheckCalibration'
       ],
       testTimeout: 15000,
       maxWorkers: 2

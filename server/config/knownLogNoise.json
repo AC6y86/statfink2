@@ -1,0 +1,47 @@
+{
+  "description": "Known, accepted noise in the pm2 logs (scripts/log-sentinel.js). Each `pattern` is a case-insensitive regex tested against the sentinel's normalised fingerprint text (lowercase; integers -> N, hex -> H, paths -> /…, quoted strings -> \"…\"), so an entry survives small wording changes. A matching shape is still counted and listed on /admin/status under 'Log errors' (muted, 'known') but never colours the page. Shapes acknowledged from the page live in logs/log-sentinel/known.json instead. Remove an entry once the code that produced the noise is fixed, so a regression shows up as new again.",
+  "entries": [
+    {
+      "id": "fk-constraint-non-draftable-player",
+      "pattern": "foreign key constraint failed|failed to update stats for player n",
+      "note": "Live loop inserting player_stats for boxscore players absent from nfl_players (defensive players, non-draftable positions). ~4,400/day until nflGamesService.updatePlayerStatsFromBoxScore skips them up front (plan section D); remove this entry once that fix is deployed.",
+      "since": "2026-09-14"
+    },
+    {
+      "id": "player-sync-incomplete-data",
+      "pattern": "skipping player with incomplete data",
+      "note": "Daily player sync skipping Tank01 players with no position/team (practice-squad and inactive entries). Expected every 13:00 UTC sync; a counted summary line is the long-term fix.",
+      "since": "2026-09-14"
+    },
+    {
+      "id": "health-alert-echo",
+      "pattern": "^error: health alert \\[|^error: - .*'s team: n active players|teams don't have n active players",
+      "note": "HealthCheckService logs every recorded alert (and its per-team lines) at error level. The alert itself is already on the Alerts card of /admin/status, so the log copy is not a call to action.",
+      "since": "2026-09-14"
+    },
+    {
+      "id": "watchdog-narration",
+      "pattern": "^(site_down|degraded|stalled|recovered|idle|ok)/(critical|warning|ok)\\b|^n new line\\(s\\); incident:|^diagnosis[ :(]|^emailed [^ ]+@|^action (email|alert)\\b|^incident (opened|closed|escalated)\\b",
+      "note": "The watchdog, notifier and diagnosis scripts narrate every incident to stdout with the severity in the line. The live card on /admin/status is their real surface; the same lines in the log are not a second call to action.",
+      "since": "2026-09-27"
+    },
+    {
+      "id": "live-review-narration",
+      "pattern": "^done: (ok|warning|critical) —|^qwen( unreachable)?: network error|^qwen unreachable\\b",
+      "note": "Live play review summarises each pass ('done: warning — ...') and reports the local Qwen box being off (it lives on Joe's laptop). The live review card shows both; the log echo is noise.",
+      "since": "2026-09-27"
+    },
+    {
+      "id": "nightly-tests-narration",
+      "pattern": "^n suite\\(s\\) failed — details saved to|^suite \"…\": failed \\(exit n\\)",
+      "note": "Nightly test failures are the nightly-tests job's own status (red on the Jobs card); the stdout lines that describe them are not a new error shape.",
+      "since": "2026-09-27"
+    },
+    {
+      "id": "log-sentinel-own-summary",
+      "pattern": "^n file\\(s\\), n with new bytes, n error/warn entries;|^(new|spiking) \\[[a-z-]+/(error|warn)\\]",
+      "note": "The sentinel's own pass summary and NEW/SPIKING lines contain the words error/warn. They belong to the log-sentinel job; if they ever land in another job's log (an in-process run) they are not an error.",
+      "since": "2026-09-27"
+    }
+  ]
+}

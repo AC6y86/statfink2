@@ -4,6 +4,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const csrf = require('csurf');
 const crypto = require('crypto');
+const { trustedVia } = require('./trust');
 
 const sessionConfig = {
     secret: process.env.SESSION_SECRET || crypto.randomBytes(64).toString('hex'),
@@ -35,31 +36,17 @@ const loginLimiter = rateLimit({
     skipSuccessfulRequests: true
 });
 
+/**
+ * Password-free access (see server/auth/trust.js): requests on the
+ * loopback-only Tailscale listener get everything (pages + API); bare local
+ * calls (cron scripts) get /api/* only. Decided by socket, never by req.ip.
+ */
 function requireAuth(req, res, next) {
-    // Check if request is from localhost for API routes
-    // Use originalUrl which contains the full path including /api/admin
-    if (req.originalUrl && req.originalUrl.startsWith('/api/')) {
-        const clientIp = req.ip ||
-                        req.connection?.remoteAddress ||
-                        req.socket?.remoteAddress ||
-                        req.headers['x-forwarded-for']?.split(',')[0];
-
-        const localhostPatterns = [
-            '127.0.0.1',
-            '::1',
-            '::ffff:127.0.0.1',
-            'localhost'
-        ];
-
-        const isLocalhost = localhostPatterns.some(pattern =>
-            clientIp && (clientIp === pattern || clientIp.includes(pattern))
-        );
-
-        if (isLocalhost) {
-            // Allow localhost API requests without authentication
-            console.log(`Localhost API access: ${req.method} ${req.originalUrl}`);
-            return next();
-        }
+    const trust = trustedVia(req);
+    if (trust.via === 'tailscale' ||
+        (trust.via === 'localhost' && req.originalUrl && req.originalUrl.startsWith('/api/'))) {
+        req.adminVia = trust.via;
+        return next();
     }
 
     if (!req.session.userId) {
@@ -116,17 +103,23 @@ function setupAuth(app) {
     app.get('/login', (req, res, next) => {
         // Wrap csrfProtection to handle errors
         csrfProtection(req, res, (err) => {
+            // Where to send the browser on the tailnet host (same page it wanted here)
+            const tailnetUrl = process.env.TAILSCALE_HOSTNAME ? `https://${process.env.TAILSCALE_HOSTNAME}` : '';
+            const wanted = req.session && req.session.returnTo;
+            const returnPath = typeof wanted === 'string' && /^\/(?!\/)/.test(wanted) ? wanted : '/admin';
             const loginHTML = (csrfToken = '') => `
                 <!DOCTYPE html>
                 <html>
                 <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
                     <title>Login - StatFink</title>
                     <style>
-                        body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
-                        .login-container { max-width: 400px; margin: 100px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-                        h1 { color: #2c3e50; text-align: center; }
-                        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-                        button { width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+                        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0 16px; }
+                        .login-container { max-width: 400px; margin: 10vh auto; background: white; padding: 32px 24px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                        h1 { color: #2c3e50; text-align: center; font-size: 1.5rem; }
+                        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
+                        button { width: 100%; min-height: 44px; padding: 12px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
                         button:hover { background: #764ba2; }
                         .error { color: #e74c3c; text-align: center; margin: 10px 0; }
                         .info { color: #3498db; text-align: center; margin: 10px 0; }
@@ -145,7 +138,29 @@ function setupAuth(app) {
                             <input type="password" name="password" placeholder="Password" required autocomplete="current-password" autofocus>
                             <button type="submit">Login</button>
                         </form>
+                        ${tailnetUrl ? `<p class="info" id="tailnet-hint" style="font-size: 14px; margin-top: 18px;">On Tailscale? <a href="${tailnetUrl}${returnPath}" style="color: #667eea;">Open without a password</a></p>` : ''}
                     </div>
+                    ${tailnetUrl ? `<script>
+                    // If the browser can reach the tailnet host, it is on the tailnet:
+                    // go there instead of asking for a password. Off the tailnet the
+                    // host is unroutable and the probe times out (1.5 s), so we fall
+                    // through to the form. no-cors: reachability only, nothing read.
+                    (function () {
+                        var base = ${JSON.stringify(tailnetUrl)};
+                        var target = base + ${JSON.stringify(returnPath)};
+                        if (location.hostname === new URL(base).hostname || ${JSON.stringify(Boolean(req.query.stay))}) return;
+                        var ctrl = new AbortController();
+                        var timer = setTimeout(function () { ctrl.abort(); }, 1500);
+                        var hint = document.getElementById('tailnet-hint');
+                        if (hint) hint.textContent = 'Checking for Tailscale…';
+                        fetch(base + '/tailnet-ping', { mode: 'no-cors', cache: 'no-store', signal: ctrl.signal })
+                            .then(function () { location.replace(target); })
+                            .catch(function () {
+                                if (hint) hint.innerHTML = 'On Tailscale? <a href="' + target + '" style="color: #667eea;">Open without a password</a>';
+                            })
+                            .then(function () { clearTimeout(timer); });
+                    })();
+                    </script>` : ''}
                 </body>
                 </html>
             `;
@@ -191,7 +206,8 @@ function setupAuth(app) {
                 req.session.username = username;
                 req.session.regenerated = Date.now();
                 
-                const returnTo = req.session.returnTo || 'https://peninsulafootball.com/admin/dashboard';
+                // Relative: works on peninsulafootball.com and on the tailnet name alike
+                const returnTo = req.session.returnTo || '/admin/dashboard';
                 delete req.session.returnTo;
                 res.redirect(returnTo);
             });

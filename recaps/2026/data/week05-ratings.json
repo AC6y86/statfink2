@@ -1,0 +1,49 @@
+{
+  "season": 2026,
+  "week": 5,
+  "ratedAt": "2026-10-16T19:57:15.557Z",
+  "ratedBy": "claude-opus",
+  "recommended": null,
+  "ratings": {
+    "don-rickles": {
+      "stars": 4,
+      "blurb": "Going 'table by table' turns it into a real roast, with sharp jabs like Chris's 'tight end museum' and Cal's 'that's not climbing, that's leaning', but the 'hockey puck' and 'dummy' tics repeat and the Frank bar-tab line is an inside reference."
+    },
+    "gollum": {
+      "stars": 4,
+      "blurb": "The riddle headings and the Sméagol back-and-forth give it a shape, and 'Sean is like Gollum: he holds the shiny thing and it's no use to him' is a genuinely sharp take on the week, though the middle sections fall back into stat lists."
+    },
+    "forrest-gump": {
+      "stars": 3.5,
+      "blurb": "Titling Dan's section 'Lieutenant Dan' is an inspired gift from the persona, and the gentle voice holds, but the Bubba and ping-pong references feel forced and most sections are box scores told slowly."
+    },
+    "muhammad-ali": {
+      "stars": 3.5,
+      "blurb": "Couplets like 'Mitch came in a pigeon and he left without a wing' land and the fight card gives each game a frame, but the rhymes get formulaic and the bold-number lists between them read as a box score."
+    },
+    "dr-seuss": {
+      "stars": 3.5,
+      "blurb": "The Waiting Place comes back all the way through and 'a Sneetch with a star on his belly' is a perfect image for Sean, but long stretches of plain prose break the spell and the full verbatim injury dump drags."
+    },
+    "homer-simpson": {
+      "stars": 3,
+      "blurb": "The half-dozen doughnut box is a fun frame and 'find the other half of Cairo Santos's point' is a great closer, but it keeps quoting 'the storylines say' and 'the digest says', leaning on digest quirks owners won't follow."
+    },
+    "steve-irwin": {
+      "stars": 3,
+      "blurb": "Lively energy and the 'never turn your back on a croc that's just eaten' callback, but every game gets the same animal swap over the same stat list, and mentions of the 'storyline files' and 'field notes' break the voice."
+    },
+    "mr-t": {
+      "stars": 2.5,
+      "blurb": "'Call your mother' gives it a running motif, but the 'sucka' and 'I pity the fool' lines get hammered until they're wallpaper, and the rounds are mostly a list of player points with shouting added."
+    },
+    "marv-albert": {
+      "stars": 2.5,
+      "blurb": "The 'Yes!' and 'It counts!' calls are few and thin, the basketball metaphors fit a football week awkwardly (the 'Basketball, folks. I mean football.' gag admits it), and most of it reads as a straight box score."
+    }
+  },
+  "claude": {
+    "costUsd": 0.5736635999999999,
+    "durationMs": 21579
+  }
+}
