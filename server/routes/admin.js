@@ -2241,6 +2241,11 @@ router.get('/podcast/:season/:week', requireAdmin, asyncHandler(async (req, res)
     res.json({ success: true, data: { season, week, episode, running: runningHere, busy: !!run, gate: await podcastGate(env, season, week) } });
 }));
 
+// Ready-to-send emails about the show (podcast/emails/*.md), for Copy for Gmail.
+router.get('/podcast/emails', requireAdmin, asyncHandler(async (req, res) => {
+    res.json({ success: true, data: { emails: podcastStore.listEmails(podcastEnv(req).root) } });
+}));
+
 // Mark the outline Joe is using (the one that airs); next week's run builds on it.
 router.post('/podcast/:season/:week/choose', requireAdmin, asyncHandler(async (req, res) => {
     const { season, week } = recapWeekParams(req);

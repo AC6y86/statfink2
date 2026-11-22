@@ -323,11 +323,29 @@ function publishedAudioPath(file, root = DEFAULT_ROOT) {
     return path.join(audioDir(root), file);
 }
 
+// ---------- Emails (podcast/emails/*.md: "Subject: ..." line, blank line, markdown body) ----------
+
+function listEmails(root = DEFAULT_ROOT) {
+    const dir = path.join(root, 'emails');
+    let files = [];
+    try { files = fs.readdirSync(dir).filter(f => /^[a-z0-9][a-z0-9-]*\.md$/.test(f)); } catch (_) { return []; }
+    return files.map(f => {
+        const text = fs.readFileSync(path.join(dir, f), 'utf8');
+        const m = /^Subject:\s*(.+)\r?\n\r?\n?/.exec(text);
+        return {
+            slug: f.replace(/\.md$/, ''),
+            subject: m ? m[1].trim() : f.replace(/\.md$/, ''),
+            markdown: m ? text.slice(m[0].length).trim() : text.trim(),
+            updatedAt: fs.statSync(path.join(dir, f)).mtime.toISOString()
+        };
+    }).sort((a, b) => b.slug.localeCompare(a.slug));
+}
+
 module.exports = {
     DEFAULT_ROOT, DEFAULT_HOSTS, MAX_HOSTS, weekPad,
     hostsFile, episodeFile, normaliseHosts, readHosts, writeHosts,
     readEpisode, writeEpisode, listEpisodeWeeks, numbersNotInDigest,
     AUDIO_TYPES, MAX_AUDIO_BYTES, audioDir, audioExt, startUpload, appendChunk, readPublished,
     publishEpisode, updateEpisodeText, unpublishEpisode, publishedAudioPath,
-    IMAGE_TYPES, MAX_IMAGE_BYTES, imageExt, readShow, setShowCover, removeShowCover, coverPath
+    listEmails, IMAGE_TYPES, MAX_IMAGE_BYTES, imageExt, readShow, setShowCover, removeShowCover, coverPath
 };

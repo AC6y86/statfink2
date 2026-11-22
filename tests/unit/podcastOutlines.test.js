@@ -289,3 +289,18 @@ describe('cover art', () => {
         expect(own).toContain('og:image" content="https://peninsulafootball.com/podcast/cover/2026-week10-22222222.jpg"');
     });
 });
+
+describe('podcast emails', () => {
+    test('listEmails reads the subject line and body, newest first', () => {
+        const dir = tmp();
+        fs.mkdirSync(path.join(dir, 'emails'));
+        fs.writeFileSync(path.join(dir, 'emails', '2026-11-22-launch.md'), 'Subject: BOOM! On the air\n\nHey **everybody**.\n');
+        fs.writeFileSync(path.join(dir, 'emails', '2026-12-01-ep2.md'), 'No subject line here\n');
+        fs.writeFileSync(path.join(dir, 'emails', 'Bad Name.md'), 'Subject: ignored\n\nx');
+        const list = store.listEmails(dir);
+        expect(list.map(e => e.slug)).toEqual(['2026-12-01-ep2', '2026-11-22-launch']);
+        expect(list[1]).toMatchObject({ subject: 'BOOM! On the air', markdown: 'Hey **everybody**.' });
+        expect(list[0].subject).toBe('2026-12-01-ep2');
+        fs.rmSync(dir, { recursive: true, force: true });
+    });
+});

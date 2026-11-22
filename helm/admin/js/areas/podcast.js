@@ -9,6 +9,7 @@
 import { getData, api } from '../api.js';
 import { esc, ago, pill, card, toast, armed, busy, delegate, renderMarkdown } from '../ui.js';
 import { setContext } from '../main.js';
+import { emailHtml } from './recaps.js';
 
 export const title = 'Podcast';
 
@@ -32,6 +33,11 @@ export async function render(view) {
         </section>
         <div id="pod-reader"></div>
         <section class="card">
+            <div class="card-head"><h2>Emails</h2></div>
+            <div id="pod-emails"><div class="card-body"><span class="quiet">Loading…</span></div></div>
+        </section>
+        <div id="email-reader"></div>
+        <section class="card">
             <div class="card-head"><h2>Publishing</h2></div>
             <div class="card-body">
                 <p style="margin:0 0 6px">Post the finished episode audio at <a href="https://peninsulafootball.com/podcast_upload" target="_blank" rel="noopener"><strong>peninsulafootball.com/podcast_upload</strong></a> (it has its own password). The uploader asks for the week, a title and a description.</p>
@@ -46,7 +52,11 @@ export async function render(view) {
         open: el => openOutline(el.dataset.id),
         close: () => { sel.outline = null; root.querySelector('#pod-reader').innerHTML = ''; },
         copy: el => copyOutline(el),
-        choose: el => chooseOutline(el)
+        choose: el => chooseOutline(el),
+        'open-email': el => openEmail(el.dataset.slug),
+        'close-email': () => { root.querySelector('#email-reader').innerHTML = ''; },
+        'copy-subject': el => copySubject(el),
+        'copy-email': el => copyEmail(el)
     });
     root.addEventListener('input', event => { if (event.target.closest('#hosts-slot')) hostsDirty = true; });
     root.addEventListener('change', event => {
@@ -73,6 +83,7 @@ export async function refresh() {
     }
     renderPicker();
     await loadWeek();
+    await loadEmails();
 }
 
 // ---------- Hosts ----------
@@ -263,3 +274,91 @@ async function copyOutline(button) {
     });
 }
 
+
+// ---------- Emails (podcast/emails/*.md) ----------
+
+let emails = [];
+let openEmailSlug = null;
+
+async function loadEmails() {
+    const box = root && root.querySelector('#pod-emails');
+    if (!box) return;
+    try {
+        emails = (await getData('/api/admin/podcast/emails')).emails || [];
+    } catch (error) {
+        box.innerHTML = `<div class="card-body"><span class="err">${esc(error.message)}</span></div>`;
+        return;
+    }
+    box.innerHTML = emails.length
+        ? `<div class="table-wrap"><table class="table"><tbody>${emails.map(e => `
+            <tr class="clickable" data-action="open-email" data-slug="${esc(e.slug)}"><td><strong>${esc(e.subject)}</strong> <span class="dim">${esc(e.slug)}</span></td></tr>`).join('')}</tbody></table></div>`
+        : '<div class="card-body"><span class="quiet">No emails yet.</span></div>';
+}
+
+/** Gmail-ready HTML (inline styles, from the recap reader) with plain URLs turned into links. */
+function gmailHtml(markdown) {
+    const box = document.createElement('div');
+    box.innerHTML = emailHtml(markdown);
+    const walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) if (/https?:\/\//.test(walker.currentNode.nodeValue)) nodes.push(walker.currentNode);
+    for (const node of nodes) {
+        const frag = document.createDocumentFragment();
+        node.nodeValue.split(/(https?:\/\/[^\s<]+)/).forEach((part, i) => {
+            if (i % 2) {
+                const a = document.createElement('a');
+                a.href = part;
+                a.textContent = part;
+                a.setAttribute('style', 'color:#1a5fb4');
+                frag.appendChild(a);
+            } else if (part) frag.appendChild(document.createTextNode(part));
+        });
+        node.replaceWith(frag);
+    }
+    return box.innerHTML;
+}
+
+function openEmail(slug) {
+    const e = emails.find(x => x.slug === slug);
+    if (!e) return;
+    openEmailSlug = slug;
+    const reader = root.querySelector('#email-reader');
+    reader.innerHTML = card({
+        title: esc(e.subject),
+        actions: '<button class="btn sm" data-action="copy-subject">Copy subject</button> <button class="btn sm primary" data-action="copy-email">Copy for Gmail</button> <button class="btn sm ghost" data-action="close-email">Close</button>',
+        body: `<p class="muted" style="margin-top:0">Copy the subject into Gmail's subject line, then Copy for Gmail and paste into the message body.</p>
+            <div class="email-preview" id="pod-email-preview">${gmailHtml(e.markdown)}</div>`
+    });
+    reader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function copySubject(button) {
+    const e = emails.find(x => x.slug === openEmailSlug);
+    if (!e) return;
+    try { await navigator.clipboard.writeText(e.subject); toast('Subject copied', 'success'); } catch (error) { toast(`Copy failed: ${error.message}`, 'error'); }
+}
+
+async function copyEmail(button) {
+    const e = emails.find(x => x.slug === openEmailSlug);
+    const preview = root.querySelector('#pod-email-preview');
+    if (!e || !preview) return;
+    await busy(button, 'Copying…', async () => {
+        try {
+            if (!(navigator.clipboard && window.ClipboardItem)) throw new Error('no ClipboardItem');
+            await navigator.clipboard.write([new ClipboardItem({
+                'text/html': new Blob([preview.innerHTML], { type: 'text/html' }),
+                'text/plain': new Blob([e.markdown.replace(/\*\*([^*]+)\*\*/g, '$1').replace(/\*([^*]+)\*/g, '$1')], { type: 'text/plain' })
+            })]);
+            toast('Copied - paste into the Gmail message', 'success');
+        } catch (_) {
+            const range = document.createRange();
+            range.selectNodeContents(preview);
+            const sel2 = window.getSelection();
+            sel2.removeAllRanges();
+            sel2.addRange(range);
+            const ok = document.execCommand('copy');
+            sel2.removeAllRanges();
+            toast(ok ? 'Copied - paste into the Gmail message' : 'Copy failed - select the preview and copy it', ok ? 'success' : 'error');
+        }
+    });
+}
