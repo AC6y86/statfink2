@@ -77,3 +77,5 @@ server/league.db
 podcast/history/
 .env.bak*
 podcast/audio/
+podcast/published.json
+podcast/show.json

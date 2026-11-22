@@ -219,8 +219,17 @@ describe('/podcast_upload and /podcast', () => {
         expect(ranged.headers['content-type']).toBe('audio/mpeg');
         expect((await request(app).get('/podcast/audio/..%2F..%2Fv.json')).status).toBe(404);
 
+        const epPage = await request(app).get('/podcast/2026/week10');
+        expect(epPage.status).toBe(200);
+        expect(epPage.text).toContain('<h1 class="ep-title">Episode 1: &lt;Points&gt;</h1>');
+        expect(epPage.text).toContain('<meta property="og:url" content="https://peninsulafootball.com/podcast/2026/week10">');
+        expect(epPage.text).toContain('og:audio');
+        expect(epPage.text).toContain('data-share="https://peninsulafootball.com/podcast/2026/week10"');
+        expect(pageRes.text).toContain('href="/podcast/2026/week10"');
+
         expect((await agent.delete('/podcast_upload/api/episodes/2026/10').set('X-PFL-Upload', '1')).status).toBe(200);
-        expect((await request(app).get('/podcast')).text).toContain('first episode is on its way');
+        expect((await request(app).get('/podcast')).text).toContain('Episode 1 is in the studio');
+        expect((await request(app).get('/podcast/2026/week10')).status).toBe(404);
         expect((await agent.post('/podcast_upload/logout')).status).toBe(303);
         expect((await agent.get('/podcast_upload/api/state').set('X-PFL-Upload', '1')).status).toBe(401);
     });
@@ -229,5 +238,54 @@ describe('/podcast_upload and /podcast', () => {
         app.locals.podcastEnv.uploadPasswordHash = '';
         expect((await request(app).get('/podcast_upload')).status).toBe(503);
         expect((await request(app).post('/podcast_upload/login').type('form').send({ password: '' })).status).toBe(401);
+    });
+});
+
+describe('cover art', () => {
+    const PNG = Buffer.concat([Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]), Buffer.alloc(200, 1)]);
+    let dir;
+    beforeEach(() => { dir = tmp(); });
+    afterEach(() => fs.rmSync(dir, { recursive: true, force: true }));
+    const upload = buf => { const id = store.startUpload(dir); store.appendChunk(id, 0, buf, dir); return id; };
+
+    test('show cover: only real images, replacing removes the old file', () => {
+        expect(() => store.setShowCover(upload(Buffer.alloc(300, 0)), 'x.png', dir)).toThrow(/not a JPG, PNG or WebP/);
+        expect(() => store.setShowCover(upload(PNG), 'x.gif', dir)).toThrow(/JPG, PNG or WebP/);
+        const first = store.setShowCover(upload(PNG), 'Cover.PNG', dir);
+        expect(first).toMatch(/^show-[0-9a-f]{8}\.png$/);
+        expect(store.coverPath(first, dir)).toBeTruthy();
+        const second = store.setShowCover(upload(PNG), 'c.png', dir);
+        expect(store.coverPath(first, dir)).toBeNull();
+        expect(fs.existsSync(path.join(store.audioDir(dir), 'covers', first))).toBe(false);
+        expect(store.removeShowCover(dir)).toBe(second);
+        expect(store.readShow(dir).cover).toBeNull();
+    });
+
+    test('episode cover: set on publish, kept on audio replace, removable, deleted on unpublish', () => {
+        const audio = () => upload(Buffer.alloc(2048, 5));
+        const ep = store.publishEpisode({ season: 2026, week: 10, title: 'Ep 1', description: 'Long enough description', uploadId: audio(), filename: 'a.mp3', coverUploadId: upload(PNG), coverFilename: 'e.png' }, dir);
+        expect(ep.cover).toMatch(/^2026-week10-[0-9a-f]{8}\.png$/);
+        const again = store.publishEpisode({ season: 2026, week: 10, title: 'Ep 1', description: 'Long enough description', uploadId: audio(), filename: 'b.mp3' }, dir);
+        expect(again.cover).toBe(ep.cover);
+        const edited = store.updateEpisodeText({ season: 2026, week: 10, title: 'Ep 1', description: 'Long enough description', removeCover: true }, dir);
+        expect(edited.cover).toBeNull();
+        expect(store.coverPath(ep.cover, dir)).toBeNull();
+        const withCover = store.updateEpisodeText({ season: 2026, week: 10, title: 'Ep 1', description: 'Long enough description', coverUploadId: upload(PNG), coverFilename: 'n.png' }, dir);
+        store.unpublishEpisode(2026, 10, dir);
+        expect(fs.existsSync(path.join(store.audioDir(dir), 'covers', withCover.cover))).toBe(false);
+    });
+
+    test('public pages use the episode cover, else the show cover, and set og:image', () => {
+        const pub = require('../../server/routes/podcastPublic');
+        const e = { season: 2026, week: 10, title: 'Ep', description: 'Desc here', file: '2026-week10-aaaaaaaa.mp3', bytes: 1, mime: 'audio/mpeg', cover: null };
+        const plain = pub.renderPage([e], [], null);
+        expect(plain).toContain('<svg viewBox="0 0 120 120"');
+        expect(plain).not.toContain('og:image');
+        const show = pub.renderPage([e], [], 'show-11111111.png');
+        expect(show).toContain('class="hero-art" src="/podcast/cover/show-11111111.png"');
+        expect(show).toContain('<span class="wk">WK 10</span>');
+        expect(show).toContain('og:image" content="https://peninsulafootball.com/podcast/cover/show-11111111.png"');
+        const own = pub.renderEpisodePage([{ ...e, cover: '2026-week10-22222222.jpg' }], { ...e, cover: '2026-week10-22222222.jpg' }, [], 'show-11111111.png');
+        expect(own).toContain('og:image" content="https://peninsulafootball.com/podcast/cover/2026-week10-22222222.jpg"');
     });
 });

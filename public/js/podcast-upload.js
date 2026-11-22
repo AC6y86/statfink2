@@ -42,13 +42,17 @@ function fillForWeek() {
     $('desc').value = posted ? posted.description : '';
     $('replace-note').textContent = posted ? `Week ${week} is already posted (${size(posted.bytes)}). Leave the file empty to just update the title and description, or choose a file to replace the audio.` : '';
     $('submit').textContent = posted ? 'Save changes' : 'Post episode';
+    $('cover').value = '';
+    $('remove-cover').checked = false;
+    $('remove-cover-wrap').hidden = !(posted && posted.cover);
+    setThumb($('cover-preview'), episodeCoverFallback(), state.showCover ? 'Show cover' : 'Week tile');
 }
 
 function renderEpisodes() {
     const list = state.published;
     $('episodes').innerHTML = list.length ? list.map(e => `
         <div class="ep">
-            <div><strong>${esc(e.title)}</strong><div class="muted">${e.season} week ${e.week} · ${size(e.bytes)} · ${new Date(e.publishedAt).toLocaleString()}</div></div>
+            <div><strong><a href="/podcast/${e.season}/week${e.week}" target="_blank" rel="noopener">${esc(e.title)}</a></strong>${e.cover ? ' <span class="muted">· own cover</span>' : ''}<div class="muted">${e.season} week ${e.week} · ${size(e.bytes)} · ${new Date(e.publishedAt).toLocaleString()}</div></div>
             <button class="link" data-remove="${e.season}-${e.week}">Remove</button>
         </div>`).join('') : '<p class="muted">Nothing posted yet.</p>';
 }
@@ -63,6 +67,7 @@ async function load(keepWeek) {
         const posted = state.published.some(e => e.season === state.season && e.week === w);
         return `<option value="${v}" ${v === current ? 'selected' : ''}>${state.season} week ${w}${posted ? ' (posted)' : ''}</option>`;
     }).join('');
+    renderShowCover();
     fillForWeek();
     renderEpisodes();
 }
@@ -78,6 +83,76 @@ async function putChunk(id, offset, blob) {
     }
 }
 
+/** Upload any file in chunks; returns the upload id. */
+async function uploadFile(file, onProgress) {
+    const { uploadId } = await call('POST', '/uploads');
+    let offset = 0;
+    while (offset < file.size) {
+        offset = await putChunk(uploadId, offset, file.slice(offset, Math.min(offset + CHUNK, file.size)));
+        if (onProgress) onProgress(offset, file.size);
+    }
+    return uploadId;
+}
+
+function setThumb(el, src, emptyText) {
+    el.style.backgroundImage = src ? `url("${src}")` : '';
+    el.classList.toggle('has-img', !!src);
+    el.innerHTML = `<span>${esc(emptyText)}</span>`;
+}
+
+const coverSrc = file => (file ? `/podcast/cover/${encodeURIComponent(file)}` : null);
+
+function previewFile(input, thumb, fallbackSrc, emptyText) {
+    const f = input.files[0];
+    if (!f) { setThumb(thumb, fallbackSrc, emptyText); return; }
+    // data: URL, not blob: - the site's CSP allows img data: but not blob:
+    const reader = new FileReader();
+    reader.onload = () => setThumb(thumb, reader.result, emptyText);
+    reader.readAsDataURL(f);
+}
+
+function renderShowCover() {
+    setThumb($('show-cover-preview'), coverSrc(state.showCover), 'No cover yet');
+    $('show-cover-remove').hidden = !state.showCover;
+}
+
+async function saveShowCover(event) {
+    event.preventDefault();
+    const file = $('show-cover-file').files[0];
+    const out = $('show-cover-msg');
+    if (!file) { out.className = 'msg err'; out.textContent = 'Choose an image first.'; return; }
+    if (file.size > state.maxImageBytes) { out.className = 'msg err'; out.textContent = `That image is ${size(file.size)}; the limit is ${size(state.maxImageBytes)}.`; return; }
+    $('show-cover-save').disabled = true;
+    try {
+        out.className = 'msg'; out.textContent = 'Uploading…';
+        const uploadId = await uploadFile(file, (n, t) => { out.textContent = `Uploading… ${Math.floor((n / t) * 100)}%`; });
+        await json('POST', '/show-cover', { uploadId, filename: file.name });
+        $('show-cover-file').value = '';
+        await load($('week').value);
+        out.innerHTML = 'Show cover saved. See it on <a href="/podcast" target="_blank" rel="noopener">the podcast page</a>.';
+    } catch (error) {
+        out.className = 'msg err'; out.textContent = error.message;
+    } finally {
+        $('show-cover-save').disabled = false;
+    }
+}
+
+async function removeShowCover() {
+    if (!window.confirm('Remove the show cover?')) return;
+    try {
+        await call('DELETE', '/show-cover');
+        await load($('week').value);
+        $('show-cover-msg').textContent = 'Show cover removed.';
+    } catch (error) {
+        $('show-cover-msg').className = 'msg err'; $('show-cover-msg').textContent = error.message;
+    }
+}
+
+function episodeCoverFallback() {
+    const { posted } = selected();
+    return coverSrc((posted && posted.cover) || state.showCover);
+}
+
 async function submit(event) {
     event.preventDefault();
     if (busy) return;
@@ -85,6 +160,9 @@ async function submit(event) {
     const title = $('title').value.trim();
     const description = $('desc').value.trim();
     const file = $('file').files[0];
+    const coverFile = $('cover').files[0];
+    const removeCover = $('remove-cover').checked && !coverFile;
+    if (coverFile && coverFile.size > state.maxImageBytes) return msg(`That cover image is ${size(coverFile.size)}; the limit is ${size(state.maxImageBytes)}.`, true);
     if (title.length < 3) return msg('Give the episode a title.', true);
     if (description.length < 10) { $('desc').focus(); return msg('Write a description first. It goes on the podcast page.', true); }
     if (!file && !posted) return msg('Choose the audio file.', true);
@@ -92,21 +170,23 @@ async function submit(event) {
     busy = true;
     $('submit').disabled = true;
     try {
+        let coverUploadId = null;
+        if (coverFile) {
+            msg('Uploading cover…');
+            coverUploadId = await uploadFile(coverFile);
+        }
+        const coverFields = { coverUploadId, coverFilename: coverFile ? coverFile.name : null, removeCover };
         if (!file) {
-            await json('PUT', `/episodes/${season}/${week}`, { title, description });
+            await json('PUT', `/episodes/${season}/${week}`, { title, description, ...coverFields });
         } else {
-            const { uploadId } = await call('POST', '/uploads');
-            let offset = 0;
-            while (offset < file.size) {
-                offset = await putChunk(uploadId, offset, file.slice(offset, Math.min(offset + CHUNK, file.size)));
-                msg(`Uploading… ${Math.floor((offset / file.size) * 100)}% (${size(offset)} of ${size(file.size)})`);
-            }
+            const uploadId = await uploadFile(file, (n, t) => msg(`Uploading audio… ${Math.floor((n / t) * 100)}% (${size(n)} of ${size(t)})`));
             msg('Publishing…');
-            await json('POST', `/episodes/${season}/${week}`, { uploadId, filename: file.name, title, description });
+            await json('POST', `/episodes/${season}/${week}`, { uploadId, filename: file.name, title, description, ...coverFields });
         }
         $('file').value = '';
+        $('cover').value = '';
         await load(`${season}-${week}`);
-        msg('Done. It is live on <a href="/podcast" target="_blank" rel="noopener">peninsulafootball.com/podcast</a>.');
+        msg(`Done. It is live at <a href="/podcast/${season}/week${week}" target="_blank" rel="noopener">peninsulafootball.com/podcast/${season}/week${week}</a>.`);
     } catch (error) {
         msg(esc(error.message), true);
     } finally {
@@ -128,6 +208,11 @@ async function remove(button) {
 }
 
 $('upload-form').addEventListener('submit', submit);
+$('show-cover-form').addEventListener('submit', saveShowCover);
+$('show-cover-remove').addEventListener('click', removeShowCover);
+$('show-cover-file').addEventListener('change', () => previewFile($('show-cover-file'), $('show-cover-preview'), coverSrc(state && state.showCover), 'No cover yet'));
+$('cover').addEventListener('change', () => { if ($('cover').files[0]) $('remove-cover').checked = false; previewFile($('cover'), $('cover-preview'), episodeCoverFallback(), 'Show cover'); });
+$('remove-cover').addEventListener('change', () => setThumb($('cover-preview'), $('remove-cover').checked ? coverSrc(state.showCover) : episodeCoverFallback(), state.showCover ? 'Show cover' : 'Week tile'));
 $('week').addEventListener('change', () => { msg(''); fillForWeek(); });
 $('episodes').addEventListener('click', e => { const b = e.target.closest('[data-remove]'); if (b) remove(b); });
 load().catch(error => msg(esc(error.message), true));

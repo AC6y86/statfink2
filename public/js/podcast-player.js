@@ -73,7 +73,7 @@ function build(box) {
         knob.style.left = w;
         if (!dragging) seek.value = Math.round(p * 1000);
         cur.textContent = fmt(dragging ? p * audio.duration : audio.currentTime);
-        dur.textContent = audio.duration ? `-${fmt(audio.duration - (dragging ? p * audio.duration : audio.currentTime))}` : '--:--';
+        dur.textContent = audio.duration ? fmt(audio.duration) : '--:--';
     }
     function paintBuffered() {
         if (!audio.duration || !audio.buffered.length) return;
@@ -83,6 +83,8 @@ function build(box) {
         play.innerHTML = on ? ICON_PAUSE : ICON_PLAY;
         play.setAttribute('aria-label', `${on ? 'Pause' : 'Play'} ${title}`);
         box.classList.toggle('is-playing', on);
+        const card = box.closest('.ep');
+        if (card) card.classList.toggle('is-playing', on);
     }
 
     play.addEventListener('click', () => (audio.paused ? audio.play() : audio.pause()));
@@ -130,6 +132,7 @@ function build(box) {
     audio.addEventListener('ended', () => { setPlaying(false); store.del(key); paint(0); });
     audio.addEventListener('waiting', () => box.classList.add('is-loading'));
     audio.addEventListener('playing', () => box.classList.remove('is-loading'));
+    audio.addEventListener('error', () => { box.classList.remove('is-loading'); setPlaying(false); });
 
     players.push(audio);
     if (audio.readyState >= 1) audio.dispatchEvent(new Event('loadedmetadata'));
@@ -144,4 +147,22 @@ document.addEventListener('keydown', e => {
     if (!active) return;
     e.preventDefault();
     if (active.paused) active.play(); else active.pause();
+});
+
+// Share buttons: the phone share sheet where there is one, else copy the link.
+document.addEventListener('click', async e => {
+    const btn = e.target.closest('[data-share]');
+    if (!btn) return;
+    const url = btn.dataset.share;
+    const title = btn.dataset.shareTitle || 'The PFL Cast';
+    if (navigator.share) {
+        try { await navigator.share({ title: `The PFL Cast: ${title}`, url }); return; } catch (err) { if (err && err.name === 'AbortError') return; }
+    }
+    try { await navigator.clipboard.writeText(url); } catch (_) {
+        const ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    }
+    const label = btn.textContent;
+    btn.textContent = '✓ Link copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = label; btn.classList.remove('copied'); }, 2000);
 });

@@ -7,7 +7,8 @@
  * from the admin login: signing in sets req.session.podcastUploader, which
  * grants nothing else. The page (public/js/podcast-upload.js) asks for the
  * week, a title and a description, uploads the audio in chunks under nginx's
- * 1 MB request limit, then publishes it to /podcast.
+ * 1 MB request limit, then publishes it to /podcast. Also sets the show's
+ * cover and an optional cover per episode (JPG/PNG/WebP, chunked the same way).
  *
  * The JSON endpoints require the X-PFL-Upload header: a cross-site form
  * cannot set it, and a cross-site fetch with it is blocked by CORS preflight.
@@ -60,6 +61,14 @@ const STYLE = `
   .ep:first-of-type { border-top: 0; }
   .muted { color: var(--muted); font-size: 14px; }
   a { color: var(--accent); }
+  .cover-row { display: flex; gap: 14px; align-items: flex-start; }
+  .thumb { flex: none; width: 96px; height: 96px; border-radius: 12px; border: 1px dashed var(--line); background: var(--bg) center/cover no-repeat; display: grid; place-items: center; text-align: center; font-size: 12px; color: var(--muted); overflow: hidden; }
+  .thumb.has-img { border-style: solid; }
+  .thumb.has-img span { display: none; }
+  .cover-ctl { flex: 1; min-width: 0; }
+  .cover-ctl .row { display: flex; gap: 16px; align-items: center; }
+  .cover-ctl button { margin-top: 10px; }
+  label.check { display: flex; gap: 6px; align-items: center; font-weight: 400; margin-top: 10px; }
 `;
 
 function page(body, { script = false } = {}) {
@@ -85,6 +94,17 @@ function uploaderPage() {
     return page(`
         <h1>Post an episode</h1>
         <p class="sub">The PFL Cast · it goes live on <a href="/podcast" target="_blank" rel="noopener">peninsulafootball.com/podcast</a></p>
+        <form class="card" id="show-cover-form">
+            <label for="show-cover-file">Show cover <span class="hint">- the podcast's artwork: page header, link previews, and the default for episodes without their own. Square, at least 1400×1400, JPG or PNG.</span></label>
+            <div class="cover-row">
+                <div class="thumb" id="show-cover-preview"><span>No cover yet</span></div>
+                <div class="cover-ctl">
+                    <input type="file" id="show-cover-file" accept="image/jpeg,image/png,image/webp">
+                    <div class="row"><button type="submit" id="show-cover-save">Save show cover</button><button type="button" class="link" id="show-cover-remove" hidden>Remove</button></div>
+                </div>
+            </div>
+            <p class="msg" id="show-cover-msg" aria-live="polite"></p>
+        </form>
         <form class="card" id="upload-form">
             <label for="week">Week</label>
             <select id="week"></select>
@@ -94,6 +114,14 @@ function uploaderPage() {
             <textarea id="desc" maxlength="4000" required></textarea>
             <label for="file">Audio file <span class="hint">- MP3 recommended (M4A, WAV, OGG also work)</span></label>
             <input type="file" id="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg,.opus">
+            <label for="cover">Episode cover <span class="hint">- optional; without one the show cover is used</span></label>
+            <div class="cover-row">
+                <div class="thumb" id="cover-preview"><span>Show cover</span></div>
+                <div class="cover-ctl">
+                    <input type="file" id="cover" accept="image/jpeg,image/png,image/webp">
+                    <label class="check" id="remove-cover-wrap" hidden><input type="checkbox" id="remove-cover"> Remove this episode's cover</label>
+                </div>
+            </div>
             <p class="muted" id="replace-note"></p>
             <button type="submit" id="submit">Post episode</button>
             <p class="msg" id="msg" aria-live="polite"></p>
@@ -170,7 +198,7 @@ api.get('/state', wrap((req, res) => {
         const h = o && /^#\s+(.+)$/m.exec(o.markdown || '');
         if (h) suggestions[`${w.season}-${w.week}`] = h[1].replace(/^The PFL Cast\s*[—-]\s*/, '').trim();
     }
-    res.json({ success: true, data: { season, defaultWeek, maxWeek: 18, suggestions, published: store.readPublished(e.root), maxBytes: store.MAX_AUDIO_BYTES } });
+    res.json({ success: true, data: { season, defaultWeek, maxWeek: 18, suggestions, published: store.readPublished(e.root), showCover: store.readShow(e.root).cover || null, maxBytes: store.MAX_AUDIO_BYTES, maxImageBytes: store.MAX_IMAGE_BYTES } });
 }));
 
 api.post('/uploads', wrap((req, res) => {
@@ -185,14 +213,15 @@ api.put('/uploads/:id', express.raw({ type: 'application/octet-stream', limit: '
 api.post('/episodes/:season/:week', express.json({ limit: '64kb' }), wrap((req, res) => {
     const { season, week } = weekParams(req);
     const b = req.body || {};
-    const entry = store.publishEpisode({ season, week, title: b.title, description: b.description, uploadId: b.uploadId, filename: b.filename }, env(req).root);
+    const entry = store.publishEpisode({ season, week, title: b.title, description: b.description, uploadId: b.uploadId, filename: b.filename, coverUploadId: b.coverUploadId || null, coverFilename: b.coverFilename, removeCover: !!b.removeCover }, env(req).root);
     logInfo(`Podcast published via uploader: ${season} week ${week} "${entry.title}" (${entry.file}, ${entry.bytes} bytes)`);
     res.json({ success: true, data: { episode: entry } });
 }));
 
 api.put('/episodes/:season/:week', express.json({ limit: '64kb' }), wrap((req, res) => {
     const { season, week } = weekParams(req);
-    const entry = store.updateEpisodeText({ season, week, title: req.body && req.body.title, description: req.body && req.body.description }, env(req).root);
+    const b = req.body || {};
+    const entry = store.updateEpisodeText({ season, week, title: b.title, description: b.description, coverUploadId: b.coverUploadId || null, coverFilename: b.coverFilename, removeCover: !!b.removeCover }, env(req).root);
     logInfo(`Podcast episode text edited via uploader: ${season} week ${week}`);
     res.json({ success: true, data: { episode: entry } });
 }));
@@ -203,6 +232,19 @@ api.delete('/episodes/:season/:week', wrap((req, res) => {
     if (!removed) throw Object.assign(new Error('No episode posted for that week'), { status: 404 });
     logInfo(`Podcast removed via uploader: ${season} week ${week} (${removed.file})`);
     res.json({ success: true, data: { removed } });
+}));
+
+api.post('/show-cover', express.json({ limit: '8kb' }), wrap((req, res) => {
+    const b = req.body || {};
+    const cover = store.setShowCover(b.uploadId, b.filename, env(req).root);
+    logInfo(`Podcast show cover set via uploader: ${cover}`);
+    res.json({ success: true, data: { showCover: cover } });
+}));
+
+api.delete('/show-cover', wrap((req, res) => {
+    const removed = store.removeShowCover(env(req).root);
+    logInfo(`Podcast show cover removed via uploader: ${removed || 'none'}`);
+    res.json({ success: true, data: { showCover: null } });
 }));
 
 router.use('/api', api);

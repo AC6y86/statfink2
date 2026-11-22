@@ -185,7 +185,7 @@ function readPublished(root = DEFAULT_ROOT) {
 function sortEpisodes(list) { return [...list].sort((a, b) => b.season - a.season || b.week - a.week); }
 
 /** Move a finished upload into place and list it for the week (replacing an earlier one). */
-function publishEpisode({ season, week, title, description, uploadId, filename }, root = DEFAULT_ROOT) {
+function publishEpisode({ season, week, title, description, uploadId, filename, coverUploadId = null, coverFilename = null, removeCover = false }, root = DEFAULT_ROOT) {
     const t = String(title || '').replace(/\s+/g, ' ').trim();
     const d = String(description || '').replace(/\r\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
     if (t.length < 3 || t.length > 160) throw new Error('Give the episode a title (3-160 characters)');
@@ -196,20 +196,23 @@ function publishEpisode({ season, week, title, description, uploadId, filename }
     let bytes;
     try { bytes = fs.statSync(part).size; } catch (_) { throw new Error('Upload not found - start again'); }
     if (bytes < 1024) throw new Error('The audio file is empty');
+    const cover = coverUploadId ? finishCoverUpload(coverUploadId, coverFilename, `${season}-week${weekPad(week)}`, root) : null;
     const file = `${season}-week${weekPad(week)}-${crypto.randomBytes(4).toString('hex')}.${ext}`;
     fs.mkdirSync(audioDir(root), { recursive: true });
     fs.renameSync(part, path.join(audioDir(root), file));
     const episodes = readPublished(root);
     const old = episodes.find(e => e.season === season && e.week === week);
-    const entry = { season, week, title: t, description: d, file, mime: AUDIO_TYPES[ext], bytes, publishedAt: new Date().toISOString() };
+    const keptCover = cover || (!removeCover && old && old.cover) || null;
+    const entry = { season, week, title: t, description: d, file, mime: AUDIO_TYPES[ext], bytes, cover: keptCover, publishedAt: new Date().toISOString() };
     const next = sortEpisodes([...episodes.filter(e => e !== old), entry]);
     writeJsonAtomic(publishedFile(root), { episodes: next });
     if (old && old.file !== file) { try { fs.unlinkSync(path.join(audioDir(root), old.file)); } catch (_) { /* already gone */ } }
+    if (old && old.cover && old.cover !== keptCover) removeCoverFile(old.cover, root);
     return entry;
 }
 
 /** Edit the title/description of a published episode without re-uploading. */
-function updateEpisodeText({ season, week, title, description }, root = DEFAULT_ROOT) {
+function updateEpisodeText({ season, week, title, description, coverUploadId = null, coverFilename = null, removeCover = false }, root = DEFAULT_ROOT) {
     const episodes = readPublished(root);
     const ep = episodes.find(e => e.season === season && e.week === week);
     if (!ep) throw new Error('No published episode for that week');
@@ -217,10 +220,14 @@ function updateEpisodeText({ season, week, title, description }, root = DEFAULT_
     const d = String(description || '').replace(/\r\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
     if (t.length < 3 || t.length > 160) throw new Error('Give the episode a title (3-160 characters)');
     if (d.length < 10 || d.length > 4000) throw new Error('Write a description (10-4000 characters)');
+    const oldCover = ep.cover || null;
+    if (coverUploadId) ep.cover = finishCoverUpload(coverUploadId, coverFilename, `${season}-week${weekPad(week)}`, root);
+    else if (removeCover) ep.cover = null;
     ep.title = t;
     ep.description = d;
     ep.editedAt = new Date().toISOString();
     writeJsonAtomic(publishedFile(root), { episodes: sortEpisodes(episodes) });
+    if (oldCover && oldCover !== ep.cover) removeCoverFile(oldCover, root);
     return ep;
 }
 
@@ -230,7 +237,83 @@ function unpublishEpisode(season, week, root = DEFAULT_ROOT) {
     if (!ep) return null;
     writeJsonAtomic(publishedFile(root), { episodes: episodes.filter(e => e !== ep) });
     try { fs.unlinkSync(path.join(audioDir(root), ep.file)); } catch (_) { /* already gone */ }
+    removeCoverFile(ep.cover, root);
     return ep;
+}
+
+
+// ---------- Cover art ----------
+//   podcast/audio/covers/{show|2026-week10}-{id}.{ext}
+//   podcast/show.json  - { cover, updatedAt }  (the show's own cover)
+
+const IMAGE_TYPES = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' };
+const MAX_IMAGE_BYTES = 20 * 1024 * 1024;
+const COVER_FILE_RE = /^(show|\d{4}-week\d{2})-[0-9a-f]{8}\.(jpg|jpeg|png|webp)$/;
+
+function coverDir(root = DEFAULT_ROOT) { return path.join(audioDir(root), 'covers'); }
+function showFile(root = DEFAULT_ROOT) { return path.join(root, 'show.json'); }
+
+function imageExt(filename) {
+    const m = /\.([a-z0-9]+)$/i.exec(String(filename || ''));
+    const ext = m ? m[1].toLowerCase() : '';
+    return IMAGE_TYPES[ext] ? ext : null;
+}
+
+/** True when the bytes really are a JPEG, PNG or WebP (not just named like one). */
+function looksLikeImage(file) {
+    const fd = fs.openSync(file, 'r');
+    const b = Buffer.alloc(12);
+    try { fs.readSync(fd, b, 0, 12, 0); } finally { fs.closeSync(fd); }
+    return (b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff)
+        || b.slice(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))
+        || (b.slice(0, 4).toString('ascii') === 'RIFF' && b.slice(8, 12).toString('ascii') === 'WEBP');
+}
+
+/** Move a finished image upload into covers/ as `{prefix}-{id}.{ext}`; returns the file name. */
+function finishCoverUpload(uploadId, filename, prefix, root = DEFAULT_ROOT) {
+    const ext = imageExt(filename);
+    if (!ext) throw new Error('Cover must be a JPG, PNG or WebP image');
+    const part = uploadPath(uploadId, root);
+    let bytes;
+    try { bytes = fs.statSync(part).size; } catch (_) { throw new Error('Cover upload not found - start again'); }
+    if (bytes > MAX_IMAGE_BYTES) throw new Error(`Cover is larger than ${MAX_IMAGE_BYTES / 1024 / 1024} MB`);
+    if (bytes < 100 || !looksLikeImage(part)) throw new Error('That file is not a JPG, PNG or WebP image');
+    const file = `${prefix}-${crypto.randomBytes(4).toString('hex')}.${ext === 'jpeg' ? 'jpg' : ext}`;
+    fs.mkdirSync(coverDir(root), { recursive: true });
+    fs.renameSync(part, path.join(coverDir(root), file));
+    return file;
+}
+
+function removeCoverFile(file, root = DEFAULT_ROOT) {
+    if (!file || !COVER_FILE_RE.test(file)) return;
+    try { fs.unlinkSync(path.join(coverDir(root), file)); } catch (_) { /* already gone */ }
+}
+
+function readShow(root = DEFAULT_ROOT) {
+    try { return JSON.parse(fs.readFileSync(showFile(root), 'utf8')); } catch (_) { return { cover: null }; }
+}
+
+function setShowCover(uploadId, filename, root = DEFAULT_ROOT) {
+    const old = readShow(root);
+    const cover = finishCoverUpload(uploadId, filename, 'show', root);
+    writeJsonAtomic(showFile(root), { ...old, cover, updatedAt: new Date().toISOString() });
+    if (old.cover && old.cover !== cover) removeCoverFile(old.cover, root);
+    return cover;
+}
+
+function removeShowCover(root = DEFAULT_ROOT) {
+    const old = readShow(root);
+    if (!old.cover) return null;
+    writeJsonAtomic(showFile(root), { ...old, cover: null, updatedAt: new Date().toISOString() });
+    removeCoverFile(old.cover, root);
+    return old.cover;
+}
+
+/** Absolute path of a cover in use (the show's or an episode's), or null. */
+function coverPath(file, root = DEFAULT_ROOT) {
+    if (!COVER_FILE_RE.test(String(file))) return null;
+    const inUse = readShow(root).cover === file || readPublished(root).some(e => e.cover === file);
+    return inUse ? path.join(coverDir(root), file) : null;
 }
 
 /** Absolute path of a published audio file, or null for anything that is not one. */
@@ -245,5 +328,6 @@ module.exports = {
     hostsFile, episodeFile, normaliseHosts, readHosts, writeHosts,
     readEpisode, writeEpisode, listEpisodeWeeks, numbersNotInDigest,
     AUDIO_TYPES, MAX_AUDIO_BYTES, audioDir, audioExt, startUpload, appendChunk, readPublished,
-    publishEpisode, updateEpisodeText, unpublishEpisode, publishedAudioPath
+    publishEpisode, updateEpisodeText, unpublishEpisode, publishedAudioPath,
+    IMAGE_TYPES, MAX_IMAGE_BYTES, imageExt, readShow, setShowCover, removeShowCover, coverPath
 };
