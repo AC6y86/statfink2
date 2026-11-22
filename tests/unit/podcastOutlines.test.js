@@ -267,6 +267,10 @@ describe('cover art', () => {
         expect(ep.cover).toMatch(/^2026-week10-[0-9a-f]{8}\.png$/);
         const again = store.publishEpisode({ season: 2026, week: 10, title: 'Ep 1', description: 'Long enough description', uploadId: audio(), filename: 'b.mp3' }, dir);
         expect(again.cover).toBe(ep.cover);
+        const cast = store.publishEpisode({ season: 2026, week: 10, title: 'Ep 1', description: 'Long enough description', uploadId: audio(), filename: 'c.mp3', hosts: 'Peyton Manning, John Madden', guests: '' }, dir);
+        expect(cast.cast).toEqual({ hosts: ['Peyton Manning', 'John Madden'], guests: [] });
+        expect(store.updateEpisodeText({ season: 2026, week: 10, title: 'Ep 1', description: 'Long enough description' }, dir).cast).toEqual(cast.cast);
+        expect(store.updateEpisodeText({ season: 2026, week: 10, title: 'Ep 1', description: 'Long enough description', hosts: 'Al Michaels & Cris Collinsworth', guests: 'Tony Romo' }, dir).cast).toEqual({ hosts: ['Al Michaels', 'Cris Collinsworth'], guests: ['Tony Romo'] });
         const edited = store.updateEpisodeText({ season: 2026, week: 10, title: 'Ep 1', description: 'Long enough description', removeCover: true }, dir);
         expect(edited.cover).toBeNull();
         expect(store.coverPath(ep.cover, dir)).toBeNull();
@@ -278,14 +282,15 @@ describe('cover art', () => {
     test('public pages use the episode cover, else the show cover, and set og:image', () => {
         const pub = require('../../server/routes/podcastPublic');
         const e = { season: 2026, week: 10, title: 'Ep', description: 'Desc here', file: '2026-week10-aaaaaaaa.mp3', bytes: 1, mime: 'audio/mpeg', cover: null };
-        const plain = pub.renderPage([e], [], null);
+        const plain = pub.renderPage([e], null);
         expect(plain).toContain('<svg viewBox="0 0 120 120"');
         expect(plain).not.toContain('og:image');
-        const show = pub.renderPage([e], [], 'show-11111111.png');
+        const show = pub.renderPage([e], 'show-11111111.png', { '2026-10': { hosts: ['Peyton Manning', 'John Madden'], guests: ['Tony Romo'] } });
+        expect(show).toContain('<b>Peyton Manning &amp; John Madden</b> · <span>Guest: Tony Romo</span>');
         expect(show).toContain('class="hero-art" src="/podcast/cover/show-11111111.png"');
         expect(show).toContain('<span class="wk">WK 10</span>');
         expect(show).toContain('og:image" content="https://peninsulafootball.com/podcast/cover/show-11111111.png"');
-        const own = pub.renderEpisodePage([{ ...e, cover: '2026-week10-22222222.jpg' }], { ...e, cover: '2026-week10-22222222.jpg' }, [], 'show-11111111.png');
+        const own = pub.renderEpisodePage([{ ...e, cover: '2026-week10-22222222.jpg' }], { ...e, cover: '2026-week10-22222222.jpg' }, 'show-11111111.png', null);
         expect(own).toContain('og:image" content="https://peninsulafootball.com/podcast/cover/2026-week10-22222222.jpg"');
     });
 });

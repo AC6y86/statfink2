@@ -35,6 +35,22 @@ function fmtSize(bytes) {
     return bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;
 }
 
+/** Who was on an episode: what the uploader entered, else the lineup saved with its outlines. */
+function castOf(e, root) {
+    if (e.cast) return { hosts: e.cast.hosts || [], guests: e.cast.guests || [] };
+    const doc = store.readEpisode(e.season, e.week, root);
+    const hosts = doc && Array.isArray(doc.hosts) ? doc.hosts : [];
+    return {
+        hosts: hosts.filter(h => h.role !== 'guest').map(h => h.name),
+        guests: hosts.filter(h => h.role === 'guest').map(h => h.name)
+    };
+}
+
+function castLine(cast) {
+    if (!cast || (!cast.hosts.length && !cast.guests.length)) return '';
+    return `<div class="cast">🎙 ${cast.hosts.length ? `<b>${esc(cast.hosts.join(' & '))}</b>` : ''}${cast.guests.length ? `${cast.hosts.length ? ' · ' : ''}<span>Guest${cast.guests.length > 1 ? 's' : ''}: ${esc(cast.guests.join(', '))}</span>` : ''}</div>`;
+}
+
 function siteUrl() {
     return (process.env.PUBLIC_SITE_URL || 'https://peninsulafootball.com').replace(/\/+$/, '');
 }
@@ -62,13 +78,14 @@ function cover(e, big = false, showCover = null) {
     </div>`;
 }
 
-function episodeCard(e, num, featured, { single = false, showCover = null } = {}) {
+function episodeCard(e, num, featured, { single = false, showCover = null, cast = null } = {}) {
     return `
         <article class="ep${featured ? ' ep-featured' : ''}" id="${e.season}-week${e.week}">
             ${cover(e, featured, showCover)}
             <div class="ep-body">
                 <div class="kicker"><span class="num">EP ${String(num).padStart(2, '0')}</span>${featured && !single ? '<span class="new">New</span>' : ''}<span>Week ${esc(e.week)} · ${esc(e.season)}${e.publishedAt ? ` · ${esc(fmtDate(e.publishedAt))}` : ''}</span></div>
                 ${single ? `<h1 class="ep-title">${esc(e.title)}</h1>` : `<h2><a class="ep-link" href="${episodePath(e)}">${esc(e.title)}</a></h2>`}
+                ${castLine(cast)}
                 <div class="desc">${paragraphs(e.description)}</div>
                 <div class="player" data-title="${esc(e.title)}" data-file="${esc(e.file)}"><audio controls preload="${featured ? 'metadata' : 'none'}" src="/podcast/audio/${esc(e.file)}"></audio></div>
                 <div class="actions">
@@ -202,6 +219,9 @@ const STYLE = `<style>
     .hero-in.has-art { grid-template-columns: 1fr; gap: 20px; }
     .hero-art { order: 0; width: 140px; transform: none; border-radius: 16px; }
   }
+
+  .cast { margin: 2px 0 4px; font-size: 14px; color: var(--muted); }
+  .cast b { color: var(--text); font-weight: 700; }
   footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; color: var(--muted); }
   footer a { font-weight: 600; text-decoration: none; }
 
@@ -265,11 +285,11 @@ function plainText(text, max = 200) {
 /** Episode number = position in publish order (oldest is 1). */
 function numberOf(episodes, e) { return episodes.length - episodes.indexOf(e); }
 
-function renderPage(episodes, hosts = [], showCover = null) {
+function renderPage(episodes, showCover = null, casts = {}) {
     const latest = episodes[0];
     const total = episodes.length;
-    const featured = latest ? episodeCard(latest, total, true, { showCover }) : '';
-    const rest = episodes.slice(1).map(e => episodeCard(e, numberOf(episodes, e), false, { showCover })).join('\n');
+    const featured = latest ? episodeCard(latest, total, true, { showCover, cast: casts[`${latest.season}-${latest.week}`] }) : '';
+    const rest = episodes.slice(1).map(e => episodeCard(e, numberOf(episodes, e), false, { showCover, cast: casts[`${e.season}-${e.week}`] })).join('\n');
     const description = latest ? `New episode: ${latest.title}. The weekly podcast of the Peninsula Football League.` : 'The weekly podcast of the Peninsula Football League.';
     return shell({ title: 'The PFL Cast', description, url: `${siteUrl()}/podcast`, image: showCover, body: `
 <header class="hero">
@@ -278,8 +298,8 @@ function renderPage(episodes, hosts = [], showCover = null) {
     <div class="hero-text">
     <span class="onair"><i></i>${latest ? 'New every week' : 'Coming soon'}</span>
     <h1 class="wordmark"><span class="the">The</span>PFL <span class="cast">Cast</span></h1>
-    <p class="tag">The Peninsula Football League, out loud. The week's best stories, the awards nobody asked for, and picks we'll regret.</p>
-    ${hostChips(hosts, total)}
+    <p class="tag">The Peninsula Football League, out loud. A different crew at the mic each week: the best stories, the awards nobody asked for, and picks somebody will regret.</p>
+    ${hostChips([], total)}
     ${latest ? `<a class="listen" href="#${latest.season}-week${latest.week}">▶ Listen to the latest</a>` : ''}
     </div>
   </div>
@@ -292,7 +312,7 @@ function renderPage(episodes, hosts = [], showCover = null) {
 }
 
 /** One episode's own page (/podcast/2026/week10): shareable, with link-preview tags. */
-function renderEpisodePage(episodes, e, hosts = [], showCover = null) {
+function renderEpisodePage(episodes, e, showCover = null, cast = null) {
     const num = numberOf(episodes, e);
     const newer = episodes[episodes.indexOf(e) - 1];
     const older = episodes[episodes.indexOf(e) + 1];
@@ -312,11 +332,10 @@ function renderEpisodePage(episodes, e, hosts = [], showCover = null) {
     <a class="back" href="/podcast">← All episodes</a>
     <div class="wordmark wordmark-sm"><span class="the">The</span>PFL <span class="cast">Cast</span></div>
     <p class="tag">Episode ${num} · Week ${esc(e.week)}, ${esc(e.season)}</p>
-    ${hostChips(hosts, null)}
   </div>
 </header>
 <main class="wrap">
-  ${episodeCard(e, num, true, { single: true, showCover })}
+  ${episodeCard(e, num, true, { single: true, showCover, cast })}
   ${nav}
   ${FOOTER}
 </main>` });
@@ -324,7 +343,10 @@ function renderEpisodePage(episodes, e, hosts = [], showCover = null) {
 
 router.get('/', (req, res) => {
     res.set('Cache-Control', 'no-cache');
-    res.type('html').send(renderPage(store.readPublished(rootOf(req)), store.readHosts(rootOf(req)).hosts, store.readShow(rootOf(req)).cover));
+    const root = rootOf(req);
+    const episodes = store.readPublished(root);
+    const casts = Object.fromEntries(episodes.map(e => [`${e.season}-${e.week}`, castOf(e, root)]));
+    res.type('html').send(renderPage(episodes, store.readShow(root).cover, casts));
 });
 
 router.get('/:season(\\d{4})/week:week(\\d{1,2})', (req, res) => {
@@ -333,7 +355,7 @@ router.get('/:season(\\d{4})/week:week(\\d{1,2})', (req, res) => {
     const e = episodes.find(x => x.season === Number(req.params.season) && x.week === Number(req.params.week));
     res.set('Cache-Control', 'no-cache');
     if (!e) return res.status(404).type('html').send(shell({ title: 'Episode not found · The PFL Cast', description: 'The PFL Cast', url: `${siteUrl()}/podcast`, body: `<header class="hero hero-compact"><div class="hero-in"><a class="back" href="/podcast">← All episodes</a><div class="wordmark wordmark-sm"><span class="the">The</span>PFL <span class="cast">Cast</span></div><p class="tag">That episode isn't posted (yet).</p></div></header><main class="wrap">${FOOTER}</main>` }));
-    return res.type('html').send(renderEpisodePage(episodes, e, store.readHosts(root).hosts, store.readShow(root).cover));
+    return res.type('html').send(renderEpisodePage(episodes, e, store.readShow(root).cover, castOf(e, root)));
 });
 
 router.get('/cover/:file', (req, res) => {

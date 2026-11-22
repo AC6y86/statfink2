@@ -40,6 +40,9 @@ function fillForWeek() {
     const { season, week, posted } = selected();
     $('title').value = posted ? posted.title : (state.suggestions[`${season}-${week}`] || `Week ${week}`);
     $('desc').value = posted ? posted.description : '';
+    const lineup = posted && posted.cast ? posted.cast : (state.lineups[`${season}-${week}`] || { hosts: [], guests: [] });
+    $('hosts').value = lineup.hosts.join(', ');
+    $('guests').value = lineup.guests.join(', ');
     $('replace-note').textContent = posted ? `Week ${week} is already posted (${size(posted.bytes)}). Leave the file empty to just update the title and description, or choose a file to replace the audio.` : '';
     $('submit').textContent = posted ? 'Save changes' : 'Post episode';
     $('cover').value = '';
@@ -175,7 +178,7 @@ async function submit(event) {
             msg('Uploading cover…');
             coverUploadId = await uploadFile(coverFile);
         }
-        const coverFields = { coverUploadId, coverFilename: coverFile ? coverFile.name : null, removeCover };
+        const coverFields = { coverUploadId, coverFilename: coverFile ? coverFile.name : null, removeCover, hosts: $('hosts').value, guests: $('guests').value };
         if (!file) {
             await json('PUT', `/episodes/${season}/${week}`, { title, description, ...coverFields });
         } else {

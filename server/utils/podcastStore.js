@@ -182,10 +182,22 @@ function readPublished(root = DEFAULT_ROOT) {
     } catch (_) { return []; }
 }
 
+/** "A, B & C" / list -> ['A','B','C'] (names only, trimmed, max 6, 80 chars each). */
+function nameList(v) {
+    const arr = Array.isArray(v) ? v : String(v || '').split(/,|&|\band\b|\n/);
+    return arr.map(x => String(x).replace(/\s+/g, ' ').trim()).filter(Boolean).slice(0, 6).map(x => x.slice(0, 80));
+}
+
+function castFrom(hosts, guests) {
+    const h = nameList(hosts);
+    const g = nameList(guests);
+    return h.length || g.length ? { hosts: h, guests: g } : null;
+}
+
 function sortEpisodes(list) { return [...list].sort((a, b) => b.season - a.season || b.week - a.week); }
 
 /** Move a finished upload into place and list it for the week (replacing an earlier one). */
-function publishEpisode({ season, week, title, description, uploadId, filename, coverUploadId = null, coverFilename = null, removeCover = false }, root = DEFAULT_ROOT) {
+function publishEpisode({ season, week, title, description, uploadId, filename, coverUploadId = null, coverFilename = null, removeCover = false, hosts = undefined, guests = undefined }, root = DEFAULT_ROOT) {
     const t = String(title || '').replace(/\s+/g, ' ').trim();
     const d = String(description || '').replace(/\r\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
     if (t.length < 3 || t.length > 160) throw new Error('Give the episode a title (3-160 characters)');
@@ -203,7 +215,8 @@ function publishEpisode({ season, week, title, description, uploadId, filename, 
     const episodes = readPublished(root);
     const old = episodes.find(e => e.season === season && e.week === week);
     const keptCover = cover || (!removeCover && old && old.cover) || null;
-    const entry = { season, week, title: t, description: d, file, mime: AUDIO_TYPES[ext], bytes, cover: keptCover, publishedAt: new Date().toISOString() };
+    const cast = hosts === undefined && guests === undefined ? (old && old.cast) || null : castFrom(hosts, guests);
+    const entry = { season, week, title: t, description: d, file, mime: AUDIO_TYPES[ext], bytes, cover: keptCover, cast, publishedAt: new Date().toISOString() };
     const next = sortEpisodes([...episodes.filter(e => e !== old), entry]);
     writeJsonAtomic(publishedFile(root), { episodes: next });
     if (old && old.file !== file) { try { fs.unlinkSync(path.join(audioDir(root), old.file)); } catch (_) { /* already gone */ } }
@@ -212,7 +225,7 @@ function publishEpisode({ season, week, title, description, uploadId, filename, 
 }
 
 /** Edit the title/description of a published episode without re-uploading. */
-function updateEpisodeText({ season, week, title, description, coverUploadId = null, coverFilename = null, removeCover = false }, root = DEFAULT_ROOT) {
+function updateEpisodeText({ season, week, title, description, coverUploadId = null, coverFilename = null, removeCover = false, hosts = undefined, guests = undefined }, root = DEFAULT_ROOT) {
     const episodes = readPublished(root);
     const ep = episodes.find(e => e.season === season && e.week === week);
     if (!ep) throw new Error('No published episode for that week');
@@ -223,6 +236,7 @@ function updateEpisodeText({ season, week, title, description, coverUploadId = n
     const oldCover = ep.cover || null;
     if (coverUploadId) ep.cover = finishCoverUpload(coverUploadId, coverFilename, `${season}-week${weekPad(week)}`, root);
     else if (removeCover) ep.cover = null;
+    if (hosts !== undefined || guests !== undefined) ep.cast = castFrom(hosts, guests);
     ep.title = t;
     ep.description = d;
     ep.editedAt = new Date().toISOString();
@@ -347,5 +361,5 @@ module.exports = {
     readEpisode, writeEpisode, listEpisodeWeeks, numbersNotInDigest,
     AUDIO_TYPES, MAX_AUDIO_BYTES, audioDir, audioExt, startUpload, appendChunk, readPublished,
     publishEpisode, updateEpisodeText, unpublishEpisode, publishedAudioPath,
-    listEmails, IMAGE_TYPES, MAX_IMAGE_BYTES, imageExt, readShow, setShowCover, removeShowCover, coverPath
+    listEmails, castFrom, IMAGE_TYPES, MAX_IMAGE_BYTES, imageExt, readShow, setShowCover, removeShowCover, coverPath
 };

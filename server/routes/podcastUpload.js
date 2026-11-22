@@ -68,6 +68,8 @@ const STYLE = `
   .cover-ctl { flex: 1; min-width: 0; }
   .cover-ctl .row { display: flex; gap: 16px; align-items: center; }
   .cover-ctl button { margin-top: 10px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+  @media (max-width: 520px) { .two { grid-template-columns: 1fr; } }
   label.check { display: flex; gap: 6px; align-items: center; font-weight: 400; margin-top: 10px; }
 `;
 
@@ -110,6 +112,10 @@ function uploaderPage() {
             <select id="week"></select>
             <label for="title">Title</label>
             <input type="text" id="title" maxlength="160" required>
+            <div class="two">
+                <div><label for="hosts">Hosts <span class="hint">- comma separated</span></label><input type="text" id="hosts" maxlength="300" placeholder="e.g. Peyton Manning, John Madden"></div>
+                <div><label for="guests">Guests <span class="hint">- optional</span></label><input type="text" id="guests" maxlength="300"></div>
+            </div>
             <label for="desc">Description <span class="hint">- what is in this episode? Shown on the podcast page.</span></label>
             <textarea id="desc" maxlength="4000" required></textarea>
             <label for="file">Audio file <span class="hint">- MP3 recommended (M4A, WAV, OGG also work)</span></label>
@@ -192,13 +198,15 @@ api.get('/state', wrap((req, res) => {
     const season = validation && validation.season ? Number(validation.season) : new Date().getFullYear();
     const defaultWeek = validation && validation.week ? Number(validation.week) : 1;
     const suggestions = {};
+    const lineups = {};
     for (const w of store.listEpisodeWeeks(e.root)) {
         const doc = store.readEpisode(w.season, w.week, e.root);
         const o = doc && doc.outlines && (doc.outlines.find(x => x.id === doc.chosen) || doc.outlines.find(x => x.id === doc.favorite));
         const h = o && /^#\s+(.+)$/m.exec(o.markdown || '');
         if (h) suggestions[`${w.season}-${w.week}`] = h[1].replace(/^The PFL Cast\s*[—-]\s*/, '').trim();
+        if (doc && Array.isArray(doc.hosts)) lineups[`${w.season}-${w.week}`] = { hosts: doc.hosts.filter(x => x.role !== 'guest').map(x => x.name), guests: doc.hosts.filter(x => x.role === 'guest').map(x => x.name) };
     }
-    res.json({ success: true, data: { season, defaultWeek, maxWeek: 18, suggestions, published: store.readPublished(e.root), showCover: store.readShow(e.root).cover || null, maxBytes: store.MAX_AUDIO_BYTES, maxImageBytes: store.MAX_IMAGE_BYTES } });
+    res.json({ success: true, data: { season, defaultWeek, maxWeek: 18, suggestions, lineups, published: store.readPublished(e.root), showCover: store.readShow(e.root).cover || null, maxBytes: store.MAX_AUDIO_BYTES, maxImageBytes: store.MAX_IMAGE_BYTES } });
 }));
 
 api.post('/uploads', wrap((req, res) => {
@@ -213,7 +221,7 @@ api.put('/uploads/:id', express.raw({ type: 'application/octet-stream', limit: '
 api.post('/episodes/:season/:week', express.json({ limit: '64kb' }), wrap((req, res) => {
     const { season, week } = weekParams(req);
     const b = req.body || {};
-    const entry = store.publishEpisode({ season, week, title: b.title, description: b.description, uploadId: b.uploadId, filename: b.filename, coverUploadId: b.coverUploadId || null, coverFilename: b.coverFilename, removeCover: !!b.removeCover }, env(req).root);
+    const entry = store.publishEpisode({ season, week, title: b.title, description: b.description, uploadId: b.uploadId, filename: b.filename, coverUploadId: b.coverUploadId || null, coverFilename: b.coverFilename, removeCover: !!b.removeCover, hosts: b.hosts, guests: b.guests }, env(req).root);
     logInfo(`Podcast published via uploader: ${season} week ${week} "${entry.title}" (${entry.file}, ${entry.bytes} bytes)`);
     res.json({ success: true, data: { episode: entry } });
 }));
@@ -221,7 +229,7 @@ api.post('/episodes/:season/:week', express.json({ limit: '64kb' }), wrap((req, 
 api.put('/episodes/:season/:week', express.json({ limit: '64kb' }), wrap((req, res) => {
     const { season, week } = weekParams(req);
     const b = req.body || {};
-    const entry = store.updateEpisodeText({ season, week, title: b.title, description: b.description, coverUploadId: b.coverUploadId || null, coverFilename: b.coverFilename, removeCover: !!b.removeCover }, env(req).root);
+    const entry = store.updateEpisodeText({ season, week, title: b.title, description: b.description, coverUploadId: b.coverUploadId || null, coverFilename: b.coverFilename, removeCover: !!b.removeCover, hosts: b.hosts, guests: b.guests }, env(req).root);
     logInfo(`Podcast episode text edited via uploader: ${season} week ${week}`);
     res.json({ success: true, data: { episode: entry } });
 }));

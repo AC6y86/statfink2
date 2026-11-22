@@ -74,7 +74,8 @@ function previousEpisode(season, week) {
     if (!prev || !Array.isArray(prev.outlines)) return null;
     // Joe's pick (the one that aired) wins over Claude's favorite.
     const chosen = prev.outlines.find(o => o.id === prev.chosen) || prev.outlines.find(o => o.id === prev.favorite) || null;
-    return chosen ? { week: week - 1, title: chosen.title, markdown: chosen.markdown } : null;
+    const hosts = Array.isArray(prev.hosts) ? prev.hosts.map(h => h.name).join(', ') : null;
+    return chosen ? { week: week - 1, title: chosen.title, markdown: chosen.markdown, hosts } : null;
 }
 
 /** House rules that apply to a spoken show (the written-recap mechanics are left out). */
@@ -108,6 +109,7 @@ function sharedBrief({ season, week, hosts, digest, storylines, prev, house }) {
         '- Bring out each host\'s real personality traits, and give every segment at least one genuine disagreement between them.',
         '- Tone: affectionate roast. The owners should laugh, not wince. Nobody gets roasted twice.',
         '- Segments: a cold open, 2-3 big storylines, an awards/roast bit, next-week picks from each host with some stakes, a sign-off.',
+        '- The lineup changes from week to week: different hosts and guests, and nobody is guaranteed to come back. Introduce whoever is on the show as this week\'s crew. Never promise these hosts will return or "see you next week" as a pair, and never set up stakes that need them back next week; stakes should pay off within this episode (a dare, a forfeit, a bet settled on air).',
         '',
         'LEAGUE FACTS JELLYPOD WILL GET WRONG UNLESS TOLD (put a "Never say" list in the outline):',
         '- There is no starting lineup: the scoring lineup fills itself from the best scorers, so nobody "started", "benched" or "sat" anyone.',
@@ -120,7 +122,7 @@ function sharedBrief({ season, week, hosts, digest, storylines, prev, house }) {
         ...house.rules.map(r => `- ${r.replace(/^-\s*/, '')}`),
         '',
         house.taste ? `JOE'S TASTE (what he actually sends to the league):\n${house.taste}\n` : null,
-        prev ? `LAST WEEK'S EPISODE (Week ${prev.week}, "${prev.title}"). If it made picks, grade them against this week's results in the digest ("checking the receipts"). Do not repeat its jokes or awards names unless they are a deliberate running bit:\n<<<\n${prev.markdown.trim()}\n>>>\n` : null,
+        prev ? `LAST WEEK'S EPISODE (Week ${prev.week}, "${prev.title}"), possibly with a different crew${prev.hosts ? ` (${prev.hosts})` : ''}. If it made picks, this week's hosts can grade them against this week's results in the digest ("checking last week's receipts"); if the hosts were different people, treat those picks as someone else's and feel free to mock them. Do not repeat its jokes or award names:\n<<<\n${prev.markdown.trim()}\n>>>\n` : null,
         storylines ? `SEASON STORYLINES (context; numbers must still match the digest):\n<<<\n${storylines.trim()}\n>>>\n` : null,
         `THE WEEK ${week} DIGEST (the only source of facts):\n<<<\n${digest.trim()}\n>>>`
     ].filter(l => l !== null).join('\n');
