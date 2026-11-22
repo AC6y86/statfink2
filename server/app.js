@@ -261,6 +261,10 @@ app.get('/c', (req, res) => {
     res.redirect(301, 'https://script.google.com/macros/s/AKfycbx0mhtv3PX5HF_RRzRl7t2rzUNV4KOgrJamPXFGvCItu7h4HIl3ov9hEMg4aHl5Nj7Xgg/exec?view=cards');
 });
 
+// The PFL Cast: password-protected uploader (own password, PODCAST_UPLOAD_PASSWORD_HASH) and the public episode page + audio
+app.use('/podcast_upload', require('./routes/podcastUpload'));
+app.use('/podcast', require('./routes/podcastPublic'));
+
 // Roster moves page
 app.get('/moves', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/moves.html'));
@@ -280,7 +284,7 @@ app.get('/admin', (req, res) => {
 // the old single-file dashboard stays reachable at /admin/legacy.
 const adminApp = (req, res) => res.sendFile(path.join(__dirname, '../helm/admin/index.html'));
 app.get('/admin/dashboard', adminApp);
-app.get('/admin/:area(thisweek|status|moves|data|recaps|settings)', adminApp);
+app.get('/admin/:area(thisweek|status|moves|data|recaps|podcast|settings)', adminApp);
 app.use('/admin/assets', express.static(path.join(__dirname, '../helm/admin'), { index: false }));
 app.get('/admin/legacy', (req, res) => {
     res.sendFile(path.join(__dirname, '../helm/dashboard.html'));

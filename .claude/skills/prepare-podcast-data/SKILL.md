@@ -1,12 +1,12 @@
 ---
 name: prepare-podcast-data
-description: Prepare the weekly factual data briefing for PFL Live, the Peninsula Football League podcast. Use when asked to prepare podcast data, a podcast briefing, or the PFL Live fact pack for a week.
+description: Prepare the weekly factual data briefing for The PFL Cast, the Peninsula Football League podcast. Use when asked to prepare podcast data, a podcast briefing, or the The PFL Cast fact pack for a week.
 argument-hint: [season] [week]
 ---
 
 # Prepare Podcast Data
 
-You are preparing the weekly data briefing for PFL Live, a podcast covering the
+You are preparing the weekly data briefing for The PFL Cast, a podcast covering the
 Peninsula Football League. The briefing is handed to another AI system that
 turns it into the podcast. Your job is to give that system enough verified
 fact to find the week's stories, discuss every matchup, compare teams,

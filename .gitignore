@@ -76,3 +76,4 @@ server/league.db
 # League history copied from the private pfl-draft-advisor repo (names league members)
 podcast/history/
 .env.bak*
+podcast/audio/

@@ -2147,4 +2147,125 @@ router.post('/recaps/:season/:week/:slug/draft', requireAdmin, asyncHandler(asyn
     }
 }));
 
-module.exports = router;
+module.exports = router;// ---- Podcast (/admin/podcast): The PFL Cast outlines for Jellypod ----
+// Hosts live in podcast/hosts.json; scripts/podcast-outlines.js writes five
+// outlines + Claude's favorite to podcast/{season}/data/week{NN}-episode.json.
+const podcastStore = require('../utils/podcastStore');
+const PODCAST_ACTIVE_MS = 40 * 60 * 1000;
+
+/** Test seam: app.locals.podcastEnv = { root, recapsRoot, statusDir, validationFile, spawnScript }. */
+function podcastEnv(req) {
+    const env = (req && req.app && req.app.locals && req.app.locals.podcastEnv) || {};
+    return {
+        root: env.root || podcastStore.DEFAULT_ROOT,
+        recapsRoot: env.recapsRoot || RECAPS_ROOT,
+        statusDir: env.statusDir || JOB_STATUS_DIR,
+        validationFile: env.validationFile || path.join(__dirname, '../../logs/weekly-validation-latest.json'),
+        spawnScript: env.spawnScript || spawnScript
+    };
+}
+
+/** The outline run that is genuinely still going (fresh, process alive), or null. */
+async function activePodcastRun(env) {
+    const st = await readJobStatusFile('podcast-outlines', env.statusDir);
+    if (!st || st.status !== 'running') return null;
+    if (Date.now() - Date.parse(st.ts) > PODCAST_ACTIVE_MS) return null;
+    if (!pidAlive(st.details && st.details.pid)) return null;
+    return st;
+}
+
+async function readValidation(env) {
+    try { return JSON.parse(await fs.readFile(env.validationFile, 'utf8')); } catch (_) { return null; }
+}
+
+/** Weeks that have a recap digest on disk: Set of "season-week". */
+async function digestWeeks(env) {
+    const out = new Set();
+    for (const root of [env.recapsRoot, env.root]) {
+        let seasons = [];
+        try { seasons = (await fs.readdir(root)).filter(d => /^\d{4}$/.test(d)); } catch (_) { continue; }
+        for (const s of seasons) {
+            let files = [];
+            try { files = await fs.readdir(path.join(root, s, 'data')); } catch (_) { continue; }
+            for (const f of files) { const m = /^week(\d{2})-digest\.md$/.exec(f); if (m) out.add(`${s}-${Number(m[1])}`); }
+        }
+    }
+    return out;
+}
+
+/** Why outlines cannot be generated for this week, or null. */
+async function podcastGate(env, season, week) {
+    if ((await digestWeeks(env)).has(`${season}-${week}`)) return null;
+    const v = await readValidation(env);
+    if (v && Number(v.season) === season && Number(v.week) === week && ['PASS', 'WARN'].includes(v.overallStatus)) return null;
+    return `Week ${week} is not validated yet - outlines need the 13:00 UTC daily validation to pass first`;
+}
+
+router.get('/podcast', requireAdmin, asyncHandler(async (req, res) => {
+    const env = podcastEnv(req);
+    const { hosts, updatedAt } = podcastStore.readHosts(env.root);
+    const keys = new Map();
+    for (const e of podcastStore.listEpisodeWeeks(env.root)) keys.set(`${e.season}-${e.week}`, { ...e, hasEpisode: true });
+    for (const k of await digestWeeks(env)) {
+        const [season, week] = k.split('-').map(Number);
+        if (!keys.has(k)) keys.set(k, { season, week, hasEpisode: false });
+    }
+    const v = await readValidation(env);
+    if (v && v.season && v.week && ['PASS', 'WARN'].includes(v.overallStatus)) {
+        const k = `${Number(v.season)}-${Number(v.week)}`;
+        if (!keys.has(k)) keys.set(k, { season: Number(v.season), week: Number(v.week), hasEpisode: false });
+    }
+    const weeks = [...keys.values()].sort((a, b) => b.season - a.season || b.week - a.week);
+    const run = await activePodcastRun(env);
+    res.json({ success: true, data: { hosts, hostsUpdatedAt: updatedAt, maxHosts: podcastStore.MAX_HOSTS, weeks, running: run ? { season: run.season, week: run.week, summary: run.summary, since: run.ts } : null } });
+}));
+
+router.put('/podcast/hosts', requireAdmin, asyncHandler(async (req, res) => {
+    const env = podcastEnv(req);
+    let doc;
+    try { doc = podcastStore.writeHosts(req.body ? req.body.hosts : null, env.root); } catch (error) { throw new APIError(error.message, 400); }
+    logInfo(`Podcast hosts saved: ${doc.hosts.map(h => `${h.name} (${h.role})`).join(', ')}`);
+    res.json({ success: true, data: doc });
+}));
+
+router.get('/podcast/:season/:week', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    const env = podcastEnv(req);
+    const episode = podcastStore.readEpisode(season, week, env.root);
+    const run = await activePodcastRun(env);
+    const runningHere = !!(run && Number(run.season) === season && Number(run.week) === week);
+    if (episode && episode.status === 'running' && !runningHere) {
+        episode.status = 'failed';
+        episode.error = episode.error || 'The run stopped without reporting (see logs/podcast-outlines-admin.log)';
+    }
+    res.json({ success: true, data: { season, week, episode, running: runningHere, busy: !!run, gate: await podcastGate(env, season, week) } });
+}));
+
+// Mark the outline Joe is using (the one that airs); next week's run builds on it.
+router.post('/podcast/:season/:week/choose', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    const env = podcastEnv(req);
+    const doc = podcastStore.readEpisode(season, week, env.root);
+    if (!doc || !Array.isArray(doc.outlines)) throw new APIError('No outlines for that week', 404);
+    const id = req.body && req.body.id;
+    if (!doc.outlines.some(o => o.id === id)) throw new APIError('Unknown outline', 400);
+    doc.chosen = id;
+    doc.chosenAt = new Date().toISOString();
+    podcastStore.writeEpisode(doc, env.root);
+    logInfo(`Podcast ${season} week ${week}: using ${id}`);
+    res.json({ success: true, data: { chosen: id } });
+}));
+
+router.post('/podcast/:season/:week/generate', requireAdmin, asyncHandler(async (req, res) => {
+    const { season, week } = recapWeekParams(req);
+    const env = podcastEnv(req);
+    const gate = await podcastGate(env, season, week);
+    if (gate) throw new APIError(gate, 409);
+    const run = await activePodcastRun(env);
+    if (run) throw new APIError(`Already writing outlines for ${run.season} week ${run.week} - wait for it to finish`, 409);
+    // Written before the spawn so a double tap gets a 409; the script overwrites it with its pid.
+    await writeJobStatusTo(env.statusDir, 'podcast-outlines', { status: 'running', summary: `writing outlines for ${season} week ${week}`, season, week, link: '/admin/podcast', details: { pid: null, by: req.adminVia || 'session' } });
+    const spawned = env.spawnScript('podcast-outlines.js', ['--season', String(season), '--week', String(week)], 'Podcast outlines');
+    res.json({ success: true, data: { ...spawned, season, week, message: 'Writing 5 outlines and picking a favorite - about 5 minutes' } });
+}));
+

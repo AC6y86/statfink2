@@ -13,9 +13,10 @@ import * as status from './areas/status.js';
 import * as moves from './areas/moves.js';
 import * as data from './areas/data.js';
 import * as recaps from './areas/recaps.js';
+import * as podcast from './areas/podcast.js';
 import * as settings from './areas/settings.js';
 
-const AREAS = { thisweek, status, moves, data, recaps, settings };
+const AREAS = { thisweek, status, moves, data, recaps, podcast, settings };
 const LEGACY_HASH = { sync: 'data', status: 'status', traffic: 'settings', players: 'moves', rosters: 'moves',
     database: 'data', tests: 'data', recaps: 'recaps', settings: 'settings' };
 const REFRESH_MS = 60000;

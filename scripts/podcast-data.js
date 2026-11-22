@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Podcast fact pack generator - the computed half of the PFL Live briefing
+ * Podcast fact pack generator - the computed half of The PFL Cast briefing
  * (/prepare-podcast-data).
  *
  * Usage: node scripts/podcast-data.js [season] [week] [--allow-incomplete] [--out <path>]
@@ -428,7 +428,7 @@ async function main() {
     const push = (...lines) => L.push(...lines);
     const analyst = text => push(`<!-- ANALYST: ${text} -->`, '');
 
-    push(`# PFL Live — ${season} Week ${week} Data Briefing`, '');
+    push(`# The PFL Cast — ${season} Week ${week} Data Briefing`, '');
     push(`- Generated: ${new Date().toISOString()}`);
     push(`- Source: fantasy_football.db (the league's official record), read-only`);
     push(`- Weekly validation: ${validationNote}`);
