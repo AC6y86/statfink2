@@ -173,7 +173,7 @@ async function loadWeek() {
     setContext(`${sel.season} week ${sel.week} · ${running ? 'writing outlines…' : ep && ep.status === 'ok' ? `${ep.outlines.length} outlines · ${ago(ep.finishedAt)}` : 'no outlines yet'}`);
 
     let action;
-    if (running) action = '<span class="muted">Writing 5 outlines… (about 5 minutes)</span>';
+    if (running) action = '<span class="muted">Researching players and writing 5 outlines… (about 10 minutes)</span>';
     else if (episodeView.gate) action = `<span class="muted">${esc(episodeView.gate)}</span>`;
     else if (episodeView.busy) action = '<span class="muted">Another week is being written - wait for it to finish</span>';
     else action = `<button class="btn sm primary" data-action="generate">${ep && ep.outlines && ep.outlines.length ? 'Write 5 new outlines' : 'Write 5 outlines'}</button>`;
@@ -192,7 +192,9 @@ async function loadWeek() {
             <span class="muted">${ep && ep.status === 'failed' ? `<span class="err">Last run failed: ${esc(ep.error || 'unknown error')}</span>` : ep && ep.status === 'ok' ? `With ${esc(cast)}${fav ? ` · ★ Claude's favorite: <strong>${esc(fav.title)}</strong>${ep.favoriteReason ? ` - ${esc(ep.favoriteReason)}` : ''}` : ''}${ep.error ? ` · ${esc(ep.error)}` : ''}` : 'Outlines are segments and talking points for Jellypod, built from the validated digest.'}</span>
             <span>${action}</span>
         </div>
-        ${rows ? `<div class="table-wrap"><table class="table"><thead><tr><th>Outline</th><th>Rating</th></tr></thead><tbody>${rows}</tbody></table></div>` : ''}`;
+        ${rows ? `<div class="table-wrap"><table class="table"><thead><tr><th>Outline</th><th>Rating</th></tr></thead><tbody>${rows}</tbody></table></div>` : ''}
+        ${episodeView.playerNotes && ep && ep.playerNotes ? `<div class="card-body"><details class="disclosure"><summary>Player notes (researched on the web, with sources)</summary><div class="prose">${renderMarkdown(episodeView.playerNotes)}</div></details></div>` : ''}
+        ${ep && ep.researchError ? `<div class="card-body muted">Player research did not finish, so these outlines were written without it: ${esc(ep.researchError)}</div>` : ''}`;
 
     clearTimeout(pollTimer);
     if (running || (summary && summary.running)) pollTimer = setTimeout(() => refresh().catch(() => {}), 20000);

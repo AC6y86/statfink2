@@ -2238,7 +2238,10 @@ router.get('/podcast/:season/:week', requireAdmin, asyncHandler(async (req, res)
         episode.status = 'failed';
         episode.error = episode.error || 'The run stopped without reporting (see logs/podcast-outlines-admin.log)';
     }
-    res.json({ success: true, data: { season, week, episode, running: runningHere, busy: !!run, gate: await podcastGate(env, season, week) } });
+    // Sourced player notes the outlines were written from (scripts/podcast-outlines.js research step)
+    let playerNotes = null;
+    try { playerNotes = await fs.readFile(path.join(env.root, String(season), 'data', `week${podcastStore.weekPad(week)}-players.md`), 'utf8'); } catch (_) { /* none yet */ }
+    res.json({ success: true, data: { season, week, episode, playerNotes, running: runningHere, busy: !!run, gate: await podcastGate(env, season, week) } });
 }));
 
 // Ready-to-send emails about the show (podcast/emails/*.md), for Copy for Gmail.
@@ -2271,6 +2274,6 @@ router.post('/podcast/:season/:week/generate', requireAdmin, asyncHandler(async 
     // Written before the spawn so a double tap gets a 409; the script overwrites it with its pid.
     await writeJobStatusTo(env.statusDir, 'podcast-outlines', { status: 'running', summary: `writing outlines for ${season} week ${week}`, season, week, link: '/admin/podcast', details: { pid: null, by: req.adminVia || 'session' } });
     const spawned = env.spawnScript('podcast-outlines.js', ['--season', String(season), '--week', String(week)], 'Podcast outlines');
-    res.json({ success: true, data: { ...spawned, season, week, message: 'Writing 5 outlines and picking a favorite - about 5 minutes' } });
+    res.json({ success: true, data: { ...spawned, season, week, message: 'Researching players, writing 5 outlines and picking a favorite - about 10 minutes' } });
 }));
 

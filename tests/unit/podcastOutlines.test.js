@@ -110,7 +110,9 @@ describe('/api/admin/podcast routes', () => {
         store.writeEpisode({ season: 2026, week: 10, status: 'running', outlines: [] }, env.root);
         fs.mkdirSync(env.statusDir, { recursive: true });
         fs.writeFileSync(path.join(env.statusDir, 'podcast-outlines.json'), JSON.stringify({ status: 'running', ts: new Date().toISOString(), season: 2026, week: 10, details: { pid: 999999 } }));
+        fs.writeFileSync(path.join(env.root, '2026', 'data', 'week10-players.md'), '## Player notes');
         const res = await request(app).get('/api/admin/podcast/2026/10');
+        expect(res.body.data.playerNotes).toBe('## Player notes');
         expect(res.body.data.episode.status).toBe('failed');
         expect(res.body.data.running).toBe(false);
     });
@@ -307,5 +309,47 @@ describe('podcast emails', () => {
         expect(list[1]).toMatchObject({ subject: 'BOOM! On the air', markdown: 'Hey **everybody**.' });
         expect(list[0].subject).toBe('2026-12-01-ep2');
         fs.rmSync(dir, { recursive: true, force: true });
+    });
+});
+
+describe('player color (research step)', () => {
+    test('research prompt demands sources, this season, no invented facts and no fantasy points', () => {
+        const p = outlines.researchPrompt({ season: 2026, week: 10, digest: 'DIGEST', storylines: null });
+        expect(p).toMatch(/6-8 players/);
+        expect(p).toMatch(/Every fact needs a source/);
+        expect(p).toMatch(/Never fill a gap from memory/);
+        expect(p).toMatch(/2026 season, Week 10/);
+        expect(p).toMatch(/Do not restate or contradict PFL fantasy points/);
+        expect(p).toContain('DIGEST');
+    });
+
+    test('brief carries the notes as the only player-fact source, and the old shape without them', () => {
+        const base = { season: 2026, week: 10, hosts: store.DEFAULT_HOSTS, digest: 'D', storylines: null, prev: null, house: { rules: [], taste: '' } };
+        const withNotes = outlines.sharedBrief({ ...base, playerNotes: '## Puka Nacua (WR, LAR)\n- **Who they are:** ... [https://x]' });
+        expect(withNotes).toContain('PLAYER NOTES (researched on the web');
+        expect(withNotes).toContain('## Puka Nacua');
+        expect(withNotes).toMatch(/Get into the players themselves/);
+        expect(withNotes).toMatch(/or the player notes \(real NFL game details\)/);
+        const without = outlines.sharedBrief(base);
+        expect(without).not.toContain('PLAYER NOTES (');
+        expect(without).toMatch(/Every number must come from the digest below\. /);
+    });
+
+    test('outline format asks for Player color; judge disqualifies invented player facts', () => {
+        expect(outlines.outlinePrompt('B', { title: 't', premise: 'p', runningBit: 'r' }, store.DEFAULT_HOSTS)).toContain('**Player color**');
+        expect(outlines.judgePrompt('B', [{ id: 'o1', title: 't', markdown: 'm' }], 10)).toMatch(/an invented player fact .* can never be the favorite/);
+    });
+
+    test('researchPlayers reuses saved notes without calling claude', async () => {
+        const file = outlines.playersFile(2099, 3);
+        fs.mkdirSync(path.dirname(file), { recursive: true });
+        fs.writeFileSync(file, '# Player notes\n## Someone\n- note [https://x]\n');
+        try {
+            const r = await outlines.researchPlayers({ season: 2099, week: 3, digest: 'D', storylines: null, model: 'none' });
+            expect(r).toMatchObject({ reused: true, error: null, costUsd: 0 });
+            expect(r.notes).toContain('## Someone');
+        } finally {
+            fs.rmSync(path.join(store.DEFAULT_ROOT, '2099'), { recursive: true, force: true });
+        }
     });
 });
